@@ -1,5 +1,7 @@
 export {
   Avatar,
+  AvatarFallback,
+  AvatarImage,
   Banner,
   Blockquote,
   Calendar,

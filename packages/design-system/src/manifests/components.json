@@ -304,7 +304,9 @@
       ],
       "neverInvent": [
         "Viewport-width font scaling",
-        "Unstable media boxes"
+        "Unstable media boxes",
+        "Left/right-only layout rules",
+        "Utopia brand primitives inside reusable component logic"
       ]
     },
     {
@@ -330,7 +332,9 @@
         "Decorative profile filler"
       ],
       "neverInvent": [
-        "Generic fake people"
+        "Generic fake people",
+        "Left/right-only layout rules",
+        "Utopia brand primitives inside reusable component logic"
       ]
     },
     {
@@ -361,7 +365,9 @@
       ],
       "neverInvent": [
         "Extra badge color families",
-        "Long badge copy"
+        "Long badge copy",
+        "Left/right-only layout rules",
+        "Utopia brand primitives inside reusable component logic"
       ]
     },
     {
@@ -388,7 +394,9 @@
         "Primary navigation"
       ],
       "neverInvent": [
-        "Directional icon without RTL rule"
+        "Directional icon without RTL rule",
+        "Left/right-only layout rules",
+        "Utopia brand primitives inside reusable component logic"
       ]
     },
     {
@@ -433,7 +441,9 @@
       "neverInvent": [
         "New button colors",
         "Gradient states",
-        "Unlabeled icon-only buttons"
+        "Unlabeled icon-only buttons",
+        "Left/right-only layout rules",
+        "Utopia brand primitives inside reusable component logic"
       ]
     },
     {
@@ -471,7 +481,8 @@
         "Button group colors",
         "Left/right-only spacing",
         "Serialized React children arrays",
-        "Multiple primary actions without hierarchy"
+        "Multiple primary actions without hierarchy",
+        "Utopia brand primitives inside reusable component logic"
       ]
     },
     {
@@ -497,7 +508,9 @@
         "Hijri calendar without localization requirements"
       ],
       "neverInvent": [
-        "Locale-specific calendar behavior"
+        "Locale-specific calendar behavior",
+        "Left/right-only layout rules",
+        "Utopia brand primitives inside reusable component logic"
       ]
     },
     {
@@ -530,7 +543,9 @@
       "neverInvent": [
         "Drop shadows",
         "Rounded marketing panels",
-        "Decorative card grids"
+        "Decorative card grids",
+        "Left/right-only layout rules",
+        "Utopia brand primitives inside reusable component logic"
       ]
     },
     {
@@ -625,7 +640,9 @@
         "Single persistent settings"
       ],
       "neverInvent": [
-        "Left/right label placement"
+        "Left/right label placement",
+        "Left/right-only layout rules",
+        "Utopia brand primitives inside reusable component logic"
       ]
     },
     {
@@ -723,7 +740,9 @@
         "Simple menus"
       ],
       "neverInvent": [
-        "Hidden commands without labels"
+        "Hidden commands without labels",
+        "Left/right-only layout rules",
+        "Utopia brand primitives inside reusable component logic"
       ]
     },
     {
@@ -749,7 +768,9 @@
         "Primary workflows"
       ],
       "neverInvent": [
-        "Unavailable actions with no disabled state"
+        "Unavailable actions with no disabled state",
+        "Left/right-only layout rules",
+        "Utopia brand primitives inside reusable component logic"
       ]
     },
     {
@@ -951,7 +972,9 @@
         "Primary page nav"
       ],
       "neverInvent": [
-        "Menu items without labels"
+        "Menu items without labels",
+        "Left/right-only layout rules",
+        "Utopia brand primitives inside reusable component logic"
       ]
     },
     {
@@ -978,7 +1001,9 @@
         "Error states"
       ],
       "neverInvent": [
-        "Marketing filler copy"
+        "Marketing filler copy",
+        "Left/right-only layout rules",
+        "Utopia brand primitives inside reusable component logic"
       ]
     },
     {
@@ -1005,7 +1030,9 @@
         "Inline metadata"
       ],
       "neverInvent": [
-        "Placeholder-only labels"
+        "Placeholder-only labels",
+        "Left/right-only layout rules",
+        "Utopia brand primitives inside reusable component logic"
       ]
     },
     {
@@ -1035,7 +1062,9 @@
       ],
       "neverInvent": [
         "Required content hidden on hover",
-        "Unbounded popover widths"
+        "Unbounded popover widths",
+        "Left/right-only layout rules",
+        "Utopia brand primitives inside reusable component logic"
       ]
     },
     {
@@ -1061,7 +1090,9 @@
         "Long-form writing"
       ],
       "neverInvent": [
-        "Placeholder-only labels"
+        "Placeholder-only labels",
+        "Left/right-only layout rules",
+        "Utopia brand primitives inside reusable component logic"
       ]
     },
     {
@@ -1406,7 +1437,8 @@
       ],
       "neverInvent": [
         "Modal behavior",
-        "Left/right-only placement"
+        "Left/right-only placement",
+        "Utopia brand primitives inside reusable component logic"
       ]
     },
     {
@@ -1431,7 +1463,9 @@
         "Unknown loading states"
       ],
       "neverInvent": [
-        "No aria-valuenow"
+        "No aria-valuenow",
+        "Left/right-only layout rules",
+        "Utopia brand primitives inside reusable component logic"
       ]
     },
     {
@@ -1456,7 +1490,9 @@
         "Independent booleans"
       ],
       "neverInvent": [
-        "Checkbox behavior"
+        "Checkbox behavior",
+        "Left/right-only layout rules",
+        "Utopia brand primitives inside reusable component logic"
       ]
     },
     {
@@ -1552,7 +1588,9 @@
         "Few visible choices where radio is clearer"
       ],
       "neverInvent": [
-        "Menu without keyboard labels"
+        "Menu without keyboard labels",
+        "Left/right-only layout rules",
+        "Utopia brand primitives inside reusable component logic"
       ]
     },
     {
@@ -1681,7 +1719,9 @@
         "Finished empty states"
       ],
       "neverInvent": [
-        "Spinner-only page skeletons"
+        "Spinner-only page skeletons",
+        "Left/right-only layout rules",
+        "Utopia brand primitives inside reusable component logic"
       ]
     },
     {
@@ -1706,7 +1746,9 @@
         "Exact numeric entry only"
       ],
       "neverInvent": [
-        "Unlabeled ranges"
+        "Unlabeled ranges",
+        "Left/right-only layout rules",
+        "Utopia brand primitives inside reusable component logic"
       ]
     },
     {
@@ -1764,7 +1806,9 @@
         "Large page loading"
       ],
       "neverInvent": [
-        "Unannounced loading state"
+        "Unannounced loading state",
+        "Left/right-only layout rules",
+        "Utopia brand primitives inside reusable component logic"
       ]
     },
     {
@@ -1790,7 +1834,9 @@
         "Submit actions"
       ],
       "neverInvent": [
-        "Toggle button behavior"
+        "Toggle button behavior",
+        "Left/right-only layout rules",
+        "Utopia brand primitives inside reusable component logic"
       ]
     },
     {
@@ -1815,7 +1861,9 @@
         "Simple metadata"
       ],
       "neverInvent": [
-        "Div-based tables"
+        "Div-based tables",
+        "Left/right-only layout rules",
+        "Utopia brand primitives inside reusable component logic"
       ]
     },
     {
@@ -1842,7 +1890,9 @@
         "Page navigation"
       ],
       "neverInvent": [
-        "Tabs as unrelated links"
+        "Tabs as unrelated links",
+        "Left/right-only layout rules",
+        "Utopia brand primitives inside reusable component logic"
       ]
     },
     {
@@ -1867,7 +1917,9 @@
         "Single-line labels"
       ],
       "neverInvent": [
-        "Fixed tiny text areas"
+        "Fixed tiny text areas",
+        "Left/right-only layout rules",
+        "Utopia brand primitives inside reusable component logic"
       ]
     },
     {
@@ -1893,7 +1945,9 @@
         "Critical blocking errors"
       ],
       "neverInvent": [
-        "Toast-only error handling"
+        "Toast-only error handling",
+        "Left/right-only layout rules",
+        "Utopia brand primitives inside reusable component logic"
       ]
     },
     {
@@ -1928,7 +1982,8 @@
       "neverInvent": [
         "New pressed colors",
         "Checkbox behavior",
-        "Left/right-only state names"
+        "Left/right-only state names",
+        "Utopia brand primitives inside reusable component logic"
       ]
     },
     {
@@ -1964,7 +2019,8 @@
       "neverInvent": [
         "Serialized React children arrays",
         "Button group colors",
-        "Left/right-only orientation logic"
+        "Left/right-only orientation logic",
+        "Utopia brand primitives inside reusable component logic"
       ]
     },
     {
@@ -1993,7 +2049,9 @@
       ],
       "neverInvent": [
         "Interactive tooltip content",
-        "Untranslated production Arabic copy"
+        "Untranslated production Arabic copy",
+        "Left/right-only layout rules",
+        "Utopia brand primitives inside reusable component logic"
       ]
     },
     {
@@ -2030,7 +2088,9 @@
       "neverInvent": [
         "Viewport-scaled body text",
         "Negative letter spacing",
-        "Arabic copy not supplied by the product team"
+        "Arabic copy not supplied by the product team",
+        "Left/right-only layout rules",
+        "Utopia brand primitives inside reusable component logic"
       ]
     }
   ]

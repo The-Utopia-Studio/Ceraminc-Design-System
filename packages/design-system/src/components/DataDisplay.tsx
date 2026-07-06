@@ -1,8 +1,44 @@
 import * as React from 'react'
+import * as AvatarPrimitive from '@radix-ui/react-avatar'
 import { cn } from '../lib/utils'
 
-export function Avatar({ className, ...props }: React.HTMLAttributes<HTMLDivElement>) {
-  return <div className={cn('uds-avatar', className)} {...props} />
+export function Avatar({
+  alt,
+  children,
+  className,
+  src,
+  ...props
+}: React.ComponentProps<typeof AvatarPrimitive.Root> & {
+  alt?: string
+  src?: string
+}) {
+  return (
+    <AvatarPrimitive.Root className={cn('uds-avatar', className)} {...props}>
+      {src ? <AvatarPrimitive.Image alt={alt ?? ''} className="uds-avatar-image" src={src} /> : null}
+      <AvatarPrimitive.Fallback className="uds-avatar-fallback">
+        {children ?? fallbackFromAlt(alt)}
+      </AvatarPrimitive.Fallback>
+    </AvatarPrimitive.Root>
+  )
+}
+
+export function AvatarImage({ className, ...props }: React.ComponentProps<typeof AvatarPrimitive.Image>) {
+  return <AvatarPrimitive.Image className={cn('uds-avatar-image', className)} {...props} />
+}
+
+export function AvatarFallback({ className, ...props }: React.ComponentProps<typeof AvatarPrimitive.Fallback>) {
+  return <AvatarPrimitive.Fallback className={cn('uds-avatar-fallback', className)} {...props} />
+}
+
+function fallbackFromAlt(alt?: string) {
+  if (!alt) return 'U'
+  return alt
+    .split(/\s+/)
+    .filter(Boolean)
+    .slice(0, 2)
+    .map((part) => part[0])
+    .join('')
+    .toUpperCase()
 }
 
 export function Banner({ className, ...props }: React.HTMLAttributes<HTMLDivElement>) {
