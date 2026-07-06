@@ -1,0 +1,440 @@
+{
+  "$schema": "https://utopia-studio.co/design-system/catalog.schema.json",
+  "name": "Utopia Design System Catalog",
+  "version": "0.1.0",
+  "purpose": "Standalone source of truth for the Utopia Design System home, docs, component catalog, templates, themes, and AI agent workflow.",
+  "topLevelAreas": [
+    {
+      "id": "docs",
+      "label": "Docs",
+      "description": "Guides, foundations, libraries, AI setup, and Arabic-friendly rules.",
+      "groups": [
+        {
+          "id": "guide",
+          "label": "Guide",
+          "items": [
+            "Getting Started",
+            "Quick Start with AI",
+            "Working with AI",
+            "Principles",
+            "Theme System",
+            "Arabic Friendly",
+            "Styling Components",
+            "Styling Library Interop",
+            "Migration Guide"
+          ]
+        },
+        {
+          "id": "foundations",
+          "label": "Foundations",
+          "items": [
+            "All Tokens",
+            "Color",
+            "Typography",
+            "Spacing",
+            "Shape",
+            "Motion",
+            "Elevation",
+            "Icons",
+            "Illustrations"
+          ]
+        },
+        {
+          "id": "libraries",
+          "label": "Libraries",
+          "items": [
+            "@utopia-studio-design/design-system",
+            "@utopia-studio-design/design-system-cli",
+            "shadcn/ui foundation"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "components",
+      "label": "Components",
+      "description": "shadcn/ui-founded primitives, Utopia wrappers, planned catalog coverage, and AI component contracts.",
+      "groups": [
+        {
+          "id": "actions",
+          "label": "Actions",
+          "items": [
+            "Button",
+            "Button Group",
+            "Toggle",
+            "Toggle Group"
+          ]
+        },
+        {
+          "id": "surfaces",
+          "label": "Surfaces",
+          "items": [
+            "Card",
+            "Hover Card",
+            "Popover",
+            "Tooltip"
+          ]
+        },
+        {
+          "id": "forms",
+          "label": "Forms",
+          "items": [
+            "Checkbox",
+            "Combobox",
+            "Date Picker",
+            "Field",
+            "Input",
+            "Input Group",
+            "Input OTP",
+            "Label",
+            "Native Select",
+            "Radio Group",
+            "Select",
+            "Slider",
+            "Switch",
+            "Textarea"
+          ]
+        },
+        {
+          "id": "navigation",
+          "label": "Navigation",
+          "items": [
+            "Breadcrumb",
+            "Command",
+            "Context Menu",
+            "Dropdown Menu",
+            "Menubar",
+            "Navigation Menu",
+            "Pagination",
+            "Sidebar",
+            "Tabs"
+          ]
+        },
+        {
+          "id": "feedback",
+          "label": "Feedback",
+          "items": [
+            "Alert",
+            "Alert Dialog",
+            "Dialog",
+            "Drawer",
+            "Sheet",
+            "Sonner",
+            "Toast"
+          ]
+        },
+        {
+          "id": "layout",
+          "label": "Layout",
+          "items": [
+            "Accordion",
+            "Aspect Ratio",
+            "Collapsible",
+            "Direction",
+            "Resizable",
+            "Scroll Area",
+            "Separator"
+          ]
+        },
+        {
+          "id": "data",
+          "label": "Data Display",
+          "items": [
+            "Attachment",
+            "Avatar",
+            "Badge",
+            "Bubble",
+            "Calendar",
+            "Carousel",
+            "Chart",
+            "Data Table",
+            "Empty",
+            "Item",
+            "Kbd",
+            "Marker",
+            "Message",
+            "Message Scroller",
+            "Progress",
+            "Skeleton",
+            "Spinner",
+            "Table",
+            "Typography"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "templates",
+      "label": "Templates",
+      "description": "Website pages, product/SaaS surfaces, and production-reference templates for AI page generation.",
+      "groups": [
+        {
+          "id": "website-pages",
+          "label": "Website Pages",
+          "items": [
+            "Studio Landing Page",
+            "Program Page",
+            "Portfolio Page",
+            "Resource Article",
+            "Application Page"
+          ]
+        },
+        {
+          "id": "product-saas",
+          "label": "Product / SaaS",
+          "items": [
+            "Product App Shell",
+            "Product Dashboard",
+            "AI Chat Product Surface",
+            "Settings",
+            "Table / Data",
+            "Form Flow"
+          ]
+        },
+        {
+          "id": "production-examples",
+          "label": "Production Examples",
+          "items": [
+            "Utopia Studio Website",
+            "Design System Page"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "themes",
+      "label": "Themes",
+      "description": "Token-contract implementations. Utopia Default is the first locked theme, not the whole system.",
+      "groups": [
+        {
+          "id": "active",
+          "label": "Active",
+          "items": [
+            "Utopia Default"
+          ]
+        },
+        {
+          "id": "planned",
+          "label": "Planned Theme Slots",
+          "items": [
+            "Venture Proof",
+            "Operator Console",
+            "Editorial Resource",
+            "Application Flow"
+          ]
+        },
+        {
+          "id": "arabic-friendly",
+          "label": "Arabic Friendly",
+          "items": [
+            "RTL Layout",
+            "Mixed Script",
+            "Localized Typography",
+            "Directional Icons"
+          ]
+        }
+      ]
+    }
+  ],
+  "componentStatus": {
+    "available": [
+      "Attachment",
+      "Bubble",
+      "Marker",
+      "Message",
+      "Message Scroller",
+      "Accordion",
+      "Alert",
+      "Alert Dialog",
+      "Aspect Ratio",
+      "Avatar",
+      "Badge",
+      "Breadcrumb",
+      "Button",
+      "Button Group",
+      "Calendar",
+      "Card",
+      "Carousel",
+      "Chart",
+      "Checkbox",
+      "Collapsible",
+      "Combobox",
+      "Command",
+      "Context Menu",
+      "Data Table",
+      "Date Picker",
+      "Dialog",
+      "Direction",
+      "Drawer",
+      "Dropdown Menu",
+      "Empty",
+      "Field",
+      "Hover Card",
+      "Input",
+      "Input Group",
+      "Input OTP",
+      "Item",
+      "Kbd",
+      "Label",
+      "Menubar",
+      "Native Select",
+      "Navigation Menu",
+      "Pagination",
+      "Popover",
+      "Progress",
+      "Radio Group",
+      "Resizable",
+      "Scroll Area",
+      "Select",
+      "Separator",
+      "Sheet",
+      "Sidebar",
+      "Skeleton",
+      "Slider",
+      "Sonner",
+      "Spinner",
+      "Switch",
+      "Table",
+      "Tabs",
+      "Textarea",
+      "Toast",
+      "Toggle",
+      "Toggle Group",
+      "Tooltip",
+      "Typography"
+    ],
+    "utopiaWrapped": [
+      "Attachment",
+      "Bubble",
+      "Marker",
+      "Message",
+      "Message Scroller",
+      "Accordion",
+      "Alert",
+      "Alert Dialog",
+      "Aspect Ratio",
+      "Avatar",
+      "Badge",
+      "Breadcrumb",
+      "Button",
+      "Button Group",
+      "Calendar",
+      "Card",
+      "Carousel",
+      "Chart",
+      "Checkbox",
+      "Collapsible",
+      "Combobox",
+      "Command",
+      "Context Menu",
+      "Data Table",
+      "Date Picker",
+      "Dialog",
+      "Direction",
+      "Drawer",
+      "Dropdown Menu",
+      "Empty",
+      "Field",
+      "Hover Card",
+      "Input",
+      "Input Group",
+      "Input OTP",
+      "Item",
+      "Kbd",
+      "Label",
+      "Menubar",
+      "Native Select",
+      "Navigation Menu",
+      "Pagination",
+      "Popover",
+      "Progress",
+      "Radio Group",
+      "Resizable",
+      "Scroll Area",
+      "Select",
+      "Separator",
+      "Sheet",
+      "Sidebar",
+      "Skeleton",
+      "Slider",
+      "Sonner",
+      "Spinner",
+      "Switch",
+      "Table",
+      "Tabs",
+      "Textarea",
+      "Toast",
+      "Toggle",
+      "Toggle Group",
+      "Tooltip",
+      "Typography"
+    ],
+    "shadcnFallback": [
+      "attachment",
+      "bubble",
+      "marker",
+      "message",
+      "message-scroller",
+      "accordion",
+      "alert",
+      "alert-dialog",
+      "aspect-ratio",
+      "avatar",
+      "badge",
+      "breadcrumb",
+      "button",
+      "button-group",
+      "calendar",
+      "card",
+      "carousel",
+      "chart",
+      "checkbox",
+      "collapsible",
+      "combobox",
+      "command",
+      "context-menu",
+      "data-table",
+      "date-picker",
+      "dialog",
+      "direction",
+      "drawer",
+      "dropdown-menu",
+      "empty",
+      "field",
+      "hover-card",
+      "input",
+      "input-group",
+      "input-otp",
+      "item",
+      "kbd",
+      "label",
+      "menubar",
+      "native-select",
+      "navigation-menu",
+      "pagination",
+      "popover",
+      "progress",
+      "radio-group",
+      "resizable",
+      "scroll-area",
+      "select",
+      "separator",
+      "sheet",
+      "sidebar",
+      "skeleton",
+      "slider",
+      "sonner",
+      "spinner",
+      "switch",
+      "table",
+      "tabs",
+      "textarea",
+      "toast",
+      "toggle",
+      "toggle-group",
+      "tooltip",
+      "typography"
+    ],
+    "planned": []
+  }
+}

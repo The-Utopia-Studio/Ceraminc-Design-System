@@ -1,0 +1,52 @@
+{
+  "defaultTheme": "utopia-default",
+  "intent": "Themes are token-contract and visual-policy implementations. Utopia Default is the first locked theme, not the entire design system.",
+  "coreBoundary": {
+    "owns": ["semantic token contract", "component APIs", "accessibility", "Arabic-friendly baseline", "theme extension mechanism"],
+    "doesNotOwn": ["brand palette", "brand typography", "brand icon policy", "brand voice", "brand-specific layout philosophy"]
+  },
+  "requiredSemanticRoles": ["--background", "--foreground", "--card", "--card-foreground", "--primary", "--primary-foreground", "--secondary", "--secondary-foreground", "--muted", "--muted-foreground", "--border", "--input", "--ring", "--radius", "--radius-control", "--radius-surface", "--font-sans", "--font-arabic", "--line-height-arabic", "--button-height", "--card-padding"],
+  "themes": [
+    {
+      "id": "utopia-default",
+      "name": "Utopia Default",
+      "locked": true,
+      "role": "reference theme",
+      "description": "Special Black, White, Brick Red, Light Grey, TWK Lausanne, square geometry, border-led depth.",
+      "policyManifest": "packages/design-system/src/manifests/theme-utopia-default.json",
+      "css": "packages/design-system/src/themes/utopia-default.css",
+      "iconSystem": "utopia-dot-bar",
+      "values": {
+        "--background": "#3C3235",
+        "--foreground": "#FFFFFF",
+        "--card": "#FFFFFF",
+        "--card-foreground": "#3C3235",
+        "--primary": "#CC5536",
+        "--primary-foreground": "#FFFFFF",
+        "--secondary": "#EEEEEE",
+        "--secondary-foreground": "#3C3235",
+        "--muted": "#635B5E",
+        "--muted-foreground": "#BDB7B9",
+        "--border": "rgba(255,255,255,0.18)",
+        "--input": "rgba(255,255,255,0.24)",
+        "--ring": "#CC5536",
+        "--radius": "0px",
+        "--radius-control": "0px",
+        "--radius-surface": "0px",
+        "--font-sans": "TWK Lausanne",
+        "--font-arabic": "IBM Plex Sans Arabic",
+        "--line-height-arabic": "1.75"
+      }
+    }
+  ],
+  "plannedThemeSlots": [
+    { "id": "venture", "name": "Venture Proof", "purpose": "Portfolio and company proof surfaces." },
+    { "id": "operator", "name": "Operator Console", "purpose": "Dense product and internal tool interfaces." },
+    { "id": "editorial", "name": "Editorial Resource", "purpose": "Resource articles and technical guides." },
+    { "id": "application", "name": "Application Flow", "purpose": "Forms, eligibility, conversion, and onboarding flows." }
+  ],
+  "arabicFriendly": {
+    "required": true,
+    "rules": ["Support dir=\"ltr\" and dir=\"rtl\".", "Use logical CSS properties.", "Use start/end naming, not left/right APIs.", "Validate mixed English/Arabic labels.", "Do not invent Arabic copy."]
+  }
+}

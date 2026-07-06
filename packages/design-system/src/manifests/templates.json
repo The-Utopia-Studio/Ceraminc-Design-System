@@ -1,0 +1,25 @@
+{
+  "templates": [
+    {
+      "id": "template-studio-landing",
+      "title": "Studio Landing Page",
+      "category": "website-page",
+      "purpose": "First-touch Utopia page for thesis, proof, and audience paths.",
+      "sections": ["Topbar", "PageHero", "Thesis", "Proof cards", "Audience paths", "CTA"]
+    },
+    {
+      "id": "template-app-shell",
+      "title": "Product App Shell",
+      "category": "product-saas",
+      "purpose": "Themeable product shell with navigation, toolbar, and responsive content region.",
+      "sections": ["Shell frame", "Navigation", "Toolbar", "Main content", "Empty state"]
+    },
+    {
+      "id": "template-ai-chat",
+      "title": "AI Chat Product Surface",
+      "category": "product-saas",
+      "purpose": "Assistant/chat product surface with messages, composer, and tool-call regions.",
+      "sections": ["Conversation layout", "Message list", "Composer", "Tool calls", "Citations"]
+    }
+  ]
+}

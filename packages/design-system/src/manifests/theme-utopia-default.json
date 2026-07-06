@@ -1,0 +1,77 @@
+{
+  "$schema": "https://utopia-studio.co/design-system/theme.schema.json",
+  "id": "utopia-default",
+  "name": "Utopia Default",
+  "type": "theme-policy",
+  "locked": true,
+  "summary": "The first locked Utopia Studio theme. It maps the core semantic contract to the APFEL-derived Utopia Studio brand system.",
+  "sourceFiles": [
+    "packages/design-system/src/themes/utopia-default.css",
+    "packages/design-system/src/manifests/theme-utopia-default.json"
+  ],
+  "brandPrimitives": {
+    "colors": {
+      "brickRed": "#CC5536",
+      "specialBlack": "#3C3235",
+      "lightGrey": "#EEEEEE",
+      "white": "#FFFFFF"
+    },
+    "typography": {
+      "family": "TWK Lausanne",
+      "arabicFamily": "IBM Plex Sans Arabic",
+      "weights": [350, 500, 700],
+      "arabicWeights": [400, 500, 700],
+      "headlineCasing": "uppercase",
+      "headlineTracking": "0.02em to 0.04em"
+    },
+    "geometry": {
+      "surfaceRadius": "0px",
+      "controlRadius": "0px",
+      "elevation": "hairline borders and background shifts; no brand-surface drop shadows"
+    }
+  },
+  "semanticMappings": {
+    "--background": "Special Black",
+    "--foreground": "White",
+    "--primary": "Brick Red",
+    "--secondary": "Light Grey",
+    "--radius-control": "Square geometry",
+    "--radius-surface": "Square geometry",
+    "--font-sans": "TWK Lausanne",
+    "--font-arabic": "IBM Plex Sans Arabic",
+    "--line-height-arabic": "1.75"
+  },
+  "visualPolicy": {
+    "tone": ["warm", "confident", "architectural", "serious", "spare"],
+    "allow": [
+      "asymmetric layouts",
+      "large uppercase headlines",
+      "Brick Red as a 5-15% accent",
+      "hairline borders",
+      "solid Special Black, Light Grey, Brick Red, and White surfaces"
+    ],
+    "avoid": [
+      "startup-cute styling",
+      "generic SaaS gradients",
+      "drop shadows on brand surfaces",
+      "glassmorphism",
+      "textures",
+      "rounded marketing cards",
+      "pure black"
+    ]
+  },
+  "iconPolicy": {
+    "system": "utopia-dot-bar",
+    "description": "Icons are brand marks made from solid dots and rectangular bars. They are graphic breaks, not decoration.",
+    "allow": ["solid circles", "rectangular bars", "three-bar mark", "monochrome Special Black or current foreground"],
+    "avoid": ["Lucide", "Heroicons", "Feather", "emoji", "outlined icon sets", "rounded bubbly forms"],
+    "coreNote": "This restriction belongs to Utopia Default only. Other themes may declare different icon systems."
+  },
+  "aiRules": [
+    "Read this theme policy after the core semantic contract.",
+    "Do not apply Utopia brand restrictions to other themes unless their manifests say so.",
+    "Do not hardcode Brick Red, Special Black, TWK Lausanne, or Utopia icon rules inside reusable core components.",
+    "When Arabic or lang=\"ar\" content is present, use --font-arabic mapped to IBM Plex Sans Arabic and the Arabic line-height role.",
+    "When this theme is active, do not use Lucide icons as brand-facing component icons."
+  ]
+}

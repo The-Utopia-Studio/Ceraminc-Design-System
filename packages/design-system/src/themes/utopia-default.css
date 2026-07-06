@@ -1,0 +1,182 @@
+@font-face {
+  font-family: "TWK Lausanne";
+  src: url("./fonts/TWKLausanne-350.ttf") format("truetype");
+  font-weight: 350;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "TWK Lausanne";
+  src: url("./fonts/TWKLausanne-500.ttf") format("truetype");
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "TWK Lausanne";
+  src: url("./fonts/TWKLausanne-700.ttf") format("truetype");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "IBM Plex Sans Arabic";
+  src: url("./fonts/IBMPlexSansArabic-Regular.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+  unicode-range:
+    U+0600-06FF,
+    U+0750-077F,
+    U+0870-089F,
+    U+08A0-08FF,
+    U+FB50-FDFF,
+    U+FE70-FEFF;
+}
+
+@font-face {
+  font-family: "IBM Plex Sans Arabic";
+  src: url("./fonts/IBMPlexSansArabic-Medium.ttf") format("truetype");
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+  unicode-range:
+    U+0600-06FF,
+    U+0750-077F,
+    U+0870-089F,
+    U+08A0-08FF,
+    U+FB50-FDFF,
+    U+FE70-FEFF;
+}
+
+@font-face {
+  font-family: "IBM Plex Sans Arabic";
+  src: url("./fonts/IBMPlexSansArabic-Bold.ttf") format("truetype");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+  unicode-range:
+    U+0600-06FF,
+    U+0750-077F,
+    U+0870-089F,
+    U+08A0-08FF,
+    U+FB50-FDFF,
+    U+FE70-FEFF;
+}
+
+:root,
+[data-theme="utopia-default"] {
+  color-scheme: dark;
+
+  --utopia-brick-red: #cc5536;
+  --utopia-special-black: #3c3235;
+  --utopia-light-grey: #eeeeee;
+  --utopia-white: #ffffff;
+
+  --utopia-black-80: #635b5e;
+  --utopia-black-60: #8f898b;
+  --utopia-black-40: #bdb7b9;
+  --utopia-black-20: #e3e1e2;
+
+  --utopia-red-80: #d77a59;
+  --utopia-red-60: #e3a385;
+  --utopia-red-40: #f0c6af;
+  --utopia-red-20: #f6e2d7;
+
+  --background: var(--utopia-special-black);
+  --foreground: var(--utopia-white);
+  --foreground-muted: var(--utopia-black-40);
+  --foreground-subtle: var(--utopia-black-60);
+  --card: var(--surface);
+  --card-foreground: var(--foreground);
+  --primary: var(--utopia-brick-red);
+  --primary-foreground: var(--utopia-white);
+  --primary-hover: #b8472c;
+  --primary-active: #9e3d25;
+  --destructive: #6f403b;
+  --destructive-hover: #7d4842;
+  --destructive-active: #5d3430;
+  --destructive-foreground: var(--utopia-white);
+  --success: var(--utopia-light-grey);
+  --success-foreground: var(--utopia-special-black);
+  --secondary: var(--utopia-light-grey);
+  --secondary-foreground: var(--utopia-special-black);
+  --secondary-hover: var(--utopia-black-20);
+  --secondary-active: var(--utopia-black-40);
+  --muted: var(--utopia-black-80);
+  --muted-foreground: var(--utopia-black-40);
+  --border: rgb(255 255 255 / 16%);
+  --input: rgb(255 255 255 / 24%);
+  --ring: var(--utopia-brick-red);
+
+  --surface: rgb(255 255 255 / 4.5%);
+  --surface-strong: rgb(255 255 255 / 8%);
+  --surface-elevated: rgb(255 255 255 / 7%);
+  --surface-inverse: var(--utopia-white);
+  --ghost-hover: rgb(255 255 255 / 8%);
+  --ghost-active: rgb(255 255 255 / 12%);
+  --outline-hover: rgb(255 255 255 / 8%);
+  --outline-active: rgb(255 255 255 / 12%);
+
+  --radius: 0;
+  --radius-control: 0;
+  --radius-surface: 0;
+
+  --font-sans: "TWK Lausanne", "Helvetica Neue", Arial, sans-serif;
+  --font-arabic: "IBM Plex Sans Arabic", "Noto Sans Arabic", "Tajawal", "Cairo", Arial, sans-serif;
+  --font-mono: "JetBrains Mono", Menlo, Consolas, monospace;
+  --font-weight-body: 350;
+  --font-weight-medium: 500;
+  --font-weight-strong: 700;
+  --line-height-arabic: 1.75;
+
+  --tracking-heading: 0.03em;
+  --tracking-eyebrow: 0.08em;
+
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-4: 16px;
+  --space-8: 32px;
+  --space-16: 64px;
+  --space-24: 96px;
+  --space-32: 128px;
+
+  --shadow-surface: none;
+  --shadow-popover: none;
+
+  --duration-fast: 120ms;
+  --duration-medium: 220ms;
+  --duration-slow: 420ms;
+  --ease-standard: cubic-bezier(0.2, 0, 0, 1);
+
+  --focus-ring-width: 2px;
+  --focus-ring-offset: 2px;
+  --icon-system: utopia-dot-bar;
+
+  --button-height: 40px;
+  --button-height-sm: 32px;
+  --button-height-lg: 48px;
+  --button-padding-inline: 16px;
+  --button-padding-inline-sm: 12px;
+  --button-padding-inline-lg: 24px;
+  --button-font-size: 14px;
+  --button-font-size-sm: 13px;
+  --button-font-size-lg: 16px;
+  --button-group-gap: 8px;
+  --button-group-gap-compact: 4px;
+
+  --badge-padding-block: 4px;
+  --badge-padding-inline: 8px;
+  --badge-font-size: 12px;
+
+  --card-padding: 24px;
+  --card-title-size: 20px;
+}
+
+:where(:lang(ar), [lang|="ar"]) {
+  font-family: var(--font-arabic);
+  line-height: var(--line-height-arabic);
+}
