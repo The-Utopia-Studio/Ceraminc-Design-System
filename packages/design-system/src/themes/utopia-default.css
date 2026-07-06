@@ -100,6 +100,8 @@
   --destructive-hover: #7d4842;
   --destructive-active: #5d3430;
   --destructive-foreground: var(--utopia-white);
+  --warning: var(--utopia-red-80);
+  --warning-foreground: var(--utopia-special-black);
   --success: var(--utopia-light-grey);
   --success-foreground: var(--utopia-special-black);
   --secondary: var(--utopia-light-grey);
@@ -174,6 +176,8 @@
 
   --card-padding: 24px;
   --card-title-size: 20px;
+  --z-overlay: 40;
+  --z-modal: 50;
 }
 
 :where(:lang(ar), [lang|="ar"]) {

@@ -1240,7 +1240,7 @@ function renderGenericPreview(name: string) {
   if (name === 'Select') return <Selector defaultValue="one"><option value="one">One</option><option value="two">Two</option></Selector>
   if (name === 'Slider') return <Field><FieldLabel>Volume 40%</FieldLabel><Slider defaultValue={40} /></Field>
   if (name === 'Switch') return <label><Switch defaultChecked /> Enable notifications</label>
-  if (name === 'Avatar') return <Avatar>US</Avatar>
+  if (name === 'Avatar') return <Avatar alt="Utopia Studio">US</Avatar>
   if (name === 'Calendar') return <Calendar>Calendar preview</Calendar>
   if (name === 'Empty') return <EmptyState>No items yet.</EmptyState>
   if (name === 'Progress') return <Field><FieldLabel>Upload progress 62%</FieldLabel><ProgressBar value={62} /></Field>
@@ -1328,6 +1328,39 @@ function renderShadcnMappedPreview(name: string) {
   }
 
   if (['Alert', 'Alert Dialog', 'Dialog', 'Drawer', 'Sheet', 'Sonner'].includes(name)) {
+    if (name === 'Alert') {
+      return (
+        <ShadcnPrimitives.Alert>
+          <ShadcnPrimitives.AlertTitle>System notice</ShadcnPrimitives.AlertTitle>
+          <ShadcnPrimitives.AlertDescription>
+            Alert communicates important status without hardcoded brand color.
+          </ShadcnPrimitives.AlertDescription>
+        </ShadcnPrimitives.Alert>
+      )
+    }
+
+    if (name === 'Alert Dialog') {
+      return (
+        <ShadcnPrimitives.AlertDialog>
+          <ShadcnPrimitives.AlertDialogTrigger asChild>
+            <Button variant="destructive">Open confirmation</Button>
+          </ShadcnPrimitives.AlertDialogTrigger>
+          <ShadcnPrimitives.AlertDialogContent>
+            <ShadcnPrimitives.AlertDialogHeader>
+              <ShadcnPrimitives.AlertDialogTitle>Confirm action</ShadcnPrimitives.AlertDialogTitle>
+              <ShadcnPrimitives.AlertDialogDescription>
+                Use Alert Dialog for decisions that need explicit confirmation.
+              </ShadcnPrimitives.AlertDialogDescription>
+            </ShadcnPrimitives.AlertDialogHeader>
+            <ShadcnPrimitives.AlertDialogFooter>
+              <ShadcnPrimitives.AlertDialogCancel>Cancel</ShadcnPrimitives.AlertDialogCancel>
+              <ShadcnPrimitives.AlertDialogAction>Continue</ShadcnPrimitives.AlertDialogAction>
+            </ShadcnPrimitives.AlertDialogFooter>
+          </ShadcnPrimitives.AlertDialogContent>
+        </ShadcnPrimitives.AlertDialog>
+      )
+    }
+
     const Component = shadcnPrimitiveComponent(name)
     if (Component) {
       return (
@@ -1543,6 +1576,70 @@ export function Example() {
 
 export function Example() {
   return <Badge variant="outline">Available</Badge>;
+}`
+  }
+
+  if (name === 'Alert') {
+    return `import {
+  Alert,
+  AlertDescription,
+  AlertTitle,
+} from '@utopia-studio-design/design-system/ShadcnPrimitives';
+
+export function Example() {
+  return (
+    <Alert>
+      <AlertTitle>System notice</AlertTitle>
+      <AlertDescription>
+        Alert communicates important status with semantic tokens.
+      </AlertDescription>
+    </Alert>
+  );
+}`
+  }
+
+  if (name === 'Alert Dialog') {
+    return `import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from '@utopia-studio-design/design-system/ShadcnPrimitives';
+import { Button } from '@utopia-studio-design/design-system/Button';
+
+export function Example() {
+  return (
+    <AlertDialog>
+      <AlertDialogTrigger asChild>
+        <Button variant="destructive">Delete project</Button>
+      </AlertDialogTrigger>
+      <AlertDialogContent>
+        <AlertDialogHeader>
+          <AlertDialogTitle>Delete project?</AlertDialogTitle>
+          <AlertDialogDescription>
+            This action needs explicit confirmation.
+          </AlertDialogDescription>
+        </AlertDialogHeader>
+        <AlertDialogFooter>
+          <AlertDialogCancel>Cancel</AlertDialogCancel>
+          <AlertDialogAction>Delete</AlertDialogAction>
+        </AlertDialogFooter>
+      </AlertDialogContent>
+    </AlertDialog>
+  );
+}`
+  }
+
+  if (name === 'Avatar') {
+    return `import { Avatar } from '@utopia-studio-design/design-system/DataDisplay';
+
+export function Example() {
+  return <Avatar alt="Utopia Studio">US</Avatar>;
 }`
   }
 
