@@ -78,6 +78,8 @@
   --destructive-hover: color-mix(in srgb, var(--destructive) 88%, CanvasText 12%);
   --destructive-active: color-mix(in srgb, var(--destructive) 78%, CanvasText 22%);
   --destructive-foreground: var(--primary-foreground);
+  --warning: var(--secondary);
+  --warning-foreground: var(--secondary-foreground);
   --success: var(--secondary);
   --success-foreground: var(--secondary-foreground);
 
@@ -103,6 +105,8 @@
   --nav-item-height: 36px;
   --input-height: 40px;
   --avatar-size: 40px;
+  --z-overlay: 40;
+  --z-modal: 50;
 }
 
 * {
@@ -1145,6 +1149,111 @@ a {
   color: var(--muted-foreground);
   padding-block: 0 var(--space-4);
   padding-inline: var(--space-4);
+}
+
+.uds-alert {
+  display: grid;
+  gap: var(--space-2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-surface);
+  background: var(--surface);
+  color: var(--foreground);
+  padding: var(--space-4);
+}
+
+.uds-alert--warning {
+  border-color: var(--warning, var(--border));
+}
+
+.uds-alert--destructive {
+  border-color: var(--destructive);
+  color: var(--destructive);
+}
+
+.uds-alert-title {
+  margin: 0;
+  color: inherit;
+  font-size: var(--font-size-body);
+  font-weight: var(--font-weight-medium);
+}
+
+.uds-alert-description {
+  color: var(--muted-foreground);
+}
+
+.uds-alert--destructive .uds-alert-description {
+  color: var(--foreground);
+}
+
+.uds-alert-dialog-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-overlay);
+  background: color-mix(in srgb, var(--background) 72%, transparent);
+}
+
+.uds-alert-dialog-content {
+  position: fixed;
+  inset-block-start: 50%;
+  inset-inline-start: 50%;
+  z-index: var(--z-modal);
+  display: grid;
+  gap: var(--space-6);
+  inline-size: min(calc(100vw - var(--space-8)), 32rem);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-surface);
+  background: var(--surface);
+  color: var(--foreground);
+  padding: var(--space-6);
+  transform: translate(-50%, -50%);
+}
+
+:dir(rtl) .uds-alert-dialog-content {
+  transform: translate(50%, -50%);
+}
+
+.uds-alert-dialog-header {
+  display: grid;
+  gap: var(--space-2);
+}
+
+.uds-alert-dialog-title {
+  margin: 0;
+  font-size: var(--font-size-body-lg);
+  font-weight: var(--font-weight-strong);
+}
+
+.uds-alert-dialog-description {
+  color: var(--muted-foreground);
+}
+
+.uds-alert-dialog-footer {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: var(--space-2);
+}
+
+.uds-alert-dialog-action,
+.uds-alert-dialog-cancel {
+  min-block-size: var(--button-height);
+  border: 1px solid transparent;
+  border-radius: var(--radius-control);
+  font: inherit;
+  font-weight: var(--font-weight-medium);
+  padding-block: 0;
+  padding-inline: var(--space-4);
+}
+
+.uds-alert-dialog-action {
+  background: var(--primary);
+  color: var(--primary-foreground);
+}
+
+.uds-alert-dialog-cancel {
+  border-color: var(--border);
+  background: var(--secondary);
+  color: var(--secondary-foreground);
 }
 
 .uds-attachment {
