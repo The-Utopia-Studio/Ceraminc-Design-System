@@ -501,13 +501,54 @@ a {
 .uds-badge {
   display: inline-flex;
   align-items: center;
+  justify-content: center;
+  gap: var(--space-1);
   width: fit-content;
+  min-width: 0;
   border: 1px solid transparent;
   border-radius: var(--radius-control);
   padding: var(--badge-padding-block) var(--badge-padding-inline);
   font-size: var(--badge-font-size);
   font-weight: var(--font-weight-medium);
   line-height: 1;
+  white-space: nowrap;
+  transition:
+    background-color var(--duration-fast) var(--ease-standard),
+    border-color var(--duration-fast) var(--ease-standard),
+    color var(--duration-fast) var(--ease-standard),
+    transform var(--duration-fast) var(--ease-standard);
+}
+
+.uds-badge-label {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.uds-badge-slot {
+  display: inline-flex;
+  flex: 0 0 auto;
+  align-items: center;
+  justify-content: center;
+  color: currentColor;
+}
+
+.uds-badge-slot svg {
+  width: 1em;
+  height: 1em;
+  stroke-width: 2;
+}
+
+.uds-badge--sm {
+  padding-block: calc(var(--badge-padding-block) * 0.75);
+  padding-inline: calc(var(--badge-padding-inline) * 0.75);
+  font-size: calc(var(--badge-font-size) * 0.92);
+}
+
+.uds-badge--lg {
+  padding-block: calc(var(--badge-padding-block) * 1.25);
+  padding-inline: calc(var(--badge-padding-inline) * 1.35);
+  font-size: calc(var(--badge-font-size) * 1.18);
 }
 
 .uds-badge--default {
@@ -521,17 +562,32 @@ a {
 }
 
 .uds-badge--success {
-  background: var(--success);
-  color: var(--success-foreground);
+  border-color: var(--success-border);
+  background: var(--success-surface);
+  color: var(--success-text);
+}
+
+.uds-badge--info {
+  border-color: var(--border);
+  background: var(--surface-strong);
+  color: var(--foreground);
+}
+
+.uds-badge--warning {
+  border-color: var(--warning-border);
+  background: var(--warning-surface);
+  color: var(--warning-text);
 }
 
 .uds-badge--destructive {
-  background: var(--destructive);
-  color: var(--destructive-foreground);
+  border-color: var(--destructive-border);
+  background: var(--destructive-surface);
+  color: var(--destructive-text);
 }
 
 .uds-badge--outline {
   border-color: var(--border);
+  background: transparent;
   color: var(--foreground);
 }
 

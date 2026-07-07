@@ -53,6 +53,7 @@ export function ComponentDetailPage({ componentId, tab = 'overview' }: Component
   if (entry.name === 'Button Group') return <ButtonGroupDetailPage tab={tab} />
   if (entry.name === 'Alert') return <AlertDetailPage tab={tab} />
   if (entry.name === 'Avatar') return <AvatarDetailPage tab={tab} />
+  if (entry.name === 'Badge') return <BadgeDetailPage tab={tab} />
   if (entry.name === 'Dropdown Menu') return <DropdownMenuDetailPage tab={tab} />
   if (entry.name === 'Select') return <SelectDetailPage tab={tab} />
   if (entry.name === 'Toggle Button') return <ToggleButtonDetailPage tab={tab} name="Toggle Button" />
@@ -1842,6 +1843,154 @@ function AvatarDetailPage({ tab }: { tab: string }) {
       usageDescription={isArabic
         ? 'يمثل Avatar شخصا أو حسابا أو كيانا. استخدم الأحرف الأولى كافتراضي، والصورة كتحسين اختياري فقط عندما تكون موثقة.'
         : 'Avatar represents a person, account, or entity. Use initials as the default and image as an optional enhancement only when verified.'}
+    />
+  )
+}
+
+function BadgeDetailPage({ tab }: { tab: string }) {
+  const { locale } = useI18n()
+  const isArabic = locale === 'ar'
+  const isProperties = tab === 'properties'
+  const manifestEntry = components.components.find((component) => component.name === 'Badge')
+  const [label, setLabel] = useState(isArabic ? 'متاح' : 'Available')
+  const [variant, setVariant] = useState<'default' | 'secondary' | 'destructive' | 'outline' | 'success' | 'info' | 'warning'>('default')
+  const [size, setSize] = useState<'sm' | 'md' | 'lg'>('md')
+  const [startContent, setStartContent] = useState(false)
+  const [endContent, setEndContent] = useState(false)
+  const previewLabel = label.trim() || (isArabic ? 'شارة' : 'Badge')
+
+  const defaultVariants = isArabic
+    ? [
+        ['default', 'شارة'],
+        ['secondary', 'ثانوي'],
+        ['destructive', 'خطر'],
+        ['outline', 'حدود'],
+      ] as const
+    : [
+        ['default', 'Badge'],
+        ['secondary', 'Secondary'],
+        ['destructive', 'Destructive'],
+        ['outline', 'Outline'],
+      ] as const
+
+  const statusVariants = isArabic
+    ? [
+        ['success', 'نشط'],
+        ['info', 'مراجعة'],
+        ['warning', 'معلّق'],
+      ] as const
+    : [
+        ['success', 'Active'],
+        ['info', 'Review'],
+        ['warning', 'Pending'],
+      ] as const
+
+  const liveBadge = (
+    <div className="badge-demo-preview" dir={isArabic ? 'rtl' : 'ltr'} lang={isArabic ? 'ar' : 'en'}>
+      <Badge
+        endContent={endContent ? (isArabic ? '٣' : '3') : undefined}
+        size={size}
+        startContent={startContent ? <Tag aria-hidden="true" /> : undefined}
+        variant={variant}
+      >
+        {previewLabel}
+      </Badge>
+    </div>
+  )
+
+  const overview = (
+    <div className="badge-demo-preview" dir={isArabic ? 'rtl' : 'ltr'} lang={isArabic ? 'ar' : 'en'}>
+      <HStack className="badge-demo-row" gap={2}>
+        {defaultVariants.map(([badgeVariant, badgeLabel]) => (
+          <Badge key={badgeVariant} variant={badgeVariant}>{badgeLabel}</Badge>
+        ))}
+      </HStack>
+      <HStack className="badge-demo-row" gap={2}>
+        {statusVariants.map(([badgeVariant, badgeLabel]) => (
+          <Badge key={badgeVariant} startContent={<Tag aria-hidden="true" />} variant={badgeVariant}>{badgeLabel}</Badge>
+        ))}
+      </HStack>
+      <HStack className="badge-demo-row" gap={2}>
+        <Badge endContent={isArabic ? '١٢' : '12'} variant="secondary">{isArabic ? 'رسائل' : 'Messages'}</Badge>
+        <Badge size="sm" variant="outline">{isArabic ? 'صغير' : 'Small'}</Badge>
+        <Badge size="lg" variant="default">{isArabic ? 'كبير' : 'Large'}</Badge>
+      </HStack>
+    </div>
+  )
+
+  const propsPanel = (
+    <div className="props-table" dir={isArabic ? 'rtl' : undefined} lang={isArabic ? 'ar' : undefined}>
+      <PropRow
+        control={<PropTextControl label="children value" onChange={setLabel} placeholder={isArabic ? 'متاح' : 'Available'} value={label} />}
+        description={isArabic ? 'نص قصير جدا. يجب أن يأتي النص العربي من الترجمة أو المحتوى المعتمد.' : 'Short visible label. Arabic copy must come from localization or approved content.'}
+        name="children"
+        type="ReactNode"
+      />
+      <PropRow
+        control={<PropSelectControl label="variant value" onChange={(value) => setVariant(value as typeof variant)} options={['default', 'secondary', 'destructive', 'outline', 'success', 'info', 'warning']} value={variant} />}
+        description={isArabic ? 'متغير دلالي يستخدم توكنات النظام ولا يربط المكوّن بألوان Utopia الخام.' : 'Semantic variant. Uses system tokens instead of binding the component to raw Utopia colors.'}
+        name="variant"
+        type="'default' | 'secondary' | 'destructive' | 'outline' | 'success' | 'info' | 'warning'"
+      />
+      <PropRow
+        control={<PropSelectControl label="size value" onChange={(value) => setSize(value as typeof size)} options={['sm', 'md', 'lg']} value={size} />}
+        description={isArabic ? 'حجم الشارة. لا تستخدم الحجم لتعويض نص طويل؛ اختصر التسمية.' : 'Badge size. Do not use size to compensate for long copy; shorten the label.'}
+        name="size"
+        type="'sm' | 'md' | 'lg'"
+      />
+      <PropRow
+        control={<PropBooleanControl checked={startContent} label="startContent value" onChange={setStartContent} />}
+        description={isArabic ? 'محتوى بداية منطقي. في RTL ينتقل إلى بداية السطر تلقائيا.' : 'Logical start slot. In RTL it moves to inline-start automatically.'}
+        name="startContent"
+        type="ReactNode"
+      />
+      <PropRow
+        control={<PropBooleanControl checked={endContent} label="endContent value" onChange={setEndContent} />}
+        description={isArabic ? 'محتوى نهاية منطقي مثل عدد قصير. استخدم أرقاما عربية عند الواجهة العربية.' : 'Logical end slot, commonly a short count. Use Arabic numerals in Arabic UI.'}
+        name="endContent"
+        type="ReactNode"
+      />
+      <PropRow
+        description={isArabic ? 'منفذ تركيب فقط. لا تستخدمه لتجاوز ألوان أو مسافات الثيم.' : 'Composition escape hatch only. Do not use it to override theme color or spacing roles.'}
+        name="className"
+        type="string"
+      />
+    </div>
+  )
+
+  return (
+    <ActionDocPage
+      aiRules={isArabic
+        ? 'استخدم Badge كعلامة حالة قصيرة أو تصنيف. لا تستخدمه للجمل الطويلة، ولا تخترع نصا عربيا أو ألوانا محلية.'
+        : 'Use Badge for short status, taxonomy, and compact markers. Do not use it for sentences, invented local colors, or decorative noise.'}
+      examples={[
+        [isArabic ? 'المتغيرات الأساسية' : 'Core variants', overview],
+        [isArabic ? 'شارة بعدد' : 'Badge with count', (
+          <HStack className="badge-demo-row" dir={isArabic ? 'rtl' : 'ltr'} gap={2} lang={isArabic ? 'ar' : 'en'}>
+            <Badge endContent={isArabic ? '١٢' : '12'} variant="secondary">{isArabic ? 'الوارد' : 'Inbox'}</Badge>
+            <Badge endContent={isArabic ? '٣' : '3'} variant="outline">{isArabic ? 'مراجعات' : 'Reviews'}</Badge>
+          </HStack>
+        )],
+        [isArabic ? 'شارة حالة' : 'Status badges', (
+          <HStack className="badge-demo-row" dir={isArabic ? 'rtl' : 'ltr'} gap={2} lang={isArabic ? 'ar' : 'en'}>
+            <Badge variant="success">{isArabic ? 'نشط' : 'Active'}</Badge>
+            <Badge variant="warning">{isArabic ? 'معلّق' : 'Pending'}</Badge>
+            <Badge variant="destructive">{isArabic ? 'يتطلب انتباها' : 'Needs attention'}</Badge>
+          </HStack>
+        )],
+      ]}
+      importCode="import { Badge } from '@utopia-studio-design/design-system/Badge';"
+      isProperties={isProperties}
+      name="Badge"
+      overview={isProperties ? liveBadge : overview}
+      overviewPropsPanel={propsPanel}
+      propsPanel={propsPanel}
+      propsInteractive
+      tokens={manifestEntry?.requiredTokens ?? ['--primary', '--primary-foreground', '--secondary', '--secondary-foreground', '--border', '--radius-control', '--badge-padding-block', '--badge-padding-inline', '--badge-font-size']}
+      usageCode={usageFor('Badge', locale)}
+      usageDescription={isArabic
+        ? 'يعرض Badge حالة قصيرة أو تصنيفا صغيرا بجانب محتوى أكبر. يجب أن يبقى قصيرا، دلاليا، وسهل القراءة في LTR وRTL.'
+        : 'Badge displays a short status or taxonomy marker alongside larger content. Keep it brief, semantic, and readable in both LTR and RTL.'}
     />
   )
 }

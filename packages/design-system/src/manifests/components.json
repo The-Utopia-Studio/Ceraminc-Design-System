@@ -407,27 +407,57 @@
         "--secondary",
         "--secondary-foreground",
         "--success",
-        "--success-foreground",
+        "--success-surface",
+        "--success-border",
+        "--success-text",
+        "--warning-surface",
+        "--warning-border",
+        "--warning-text",
         "--destructive",
-        "--destructive-foreground",
+        "--destructive-surface",
+        "--destructive-border",
+        "--destructive-text",
         "--border",
-        "--radius-control"
+        "--radius-control",
+        "--badge-padding-block",
+        "--badge-padding-inline",
+        "--badge-font-size"
       ],
       "useWhen": [
         "Short status",
         "Taxonomy",
-        "Type markers"
+        "Type markers",
+        "Unread counts",
+        "Compact metadata"
       ],
       "avoidWhen": [
         "Full sentences",
-        "Pure decoration"
+        "Pure decoration",
+        "Primary actions",
+        "Unlocalized status copy"
       ],
       "neverInvent": [
         "Extra badge color families",
         "Long badge copy",
         "Left/right-only layout rules",
         "Utopia brand primitives inside reusable component logic"
-      ]
+      ],
+      "ai": {
+        "props": {
+          "variant": "Semantic visual role. Use default, secondary, destructive, outline, success, info, or warning.",
+          "size": "Compact sizing role. Use sm, md, or lg; do not use size to fix long copy.",
+          "startContent": "Optional inline-start content such as a non-directional icon.",
+          "endContent": "Optional inline-end content such as a localized count.",
+          "children": "Short visible label from product copy or localization."
+        },
+        "rules": [
+          "Use Badge for short status, taxonomy, and compact metadata only.",
+          "Do not hardcode raw Utopia colors inside Badge usage.",
+          "Use semantic variants instead of one-off classes.",
+          "Keep labels short enough to avoid truncation in dense navigation or tables."
+        ],
+        "arabicFriendly": "Badge must support dir=\"rtl\", logical start/end slots, Arabic numerals for counts, IBM Plex Sans Arabic through theme typography tokens, and localized short labels. Do not invent Arabic production copy."
+      }
     },
     {
       "name": "Breadcrumb",

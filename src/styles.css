@@ -1656,6 +1656,18 @@ body {
   margin: auto;
 }
 
+.badge-demo-preview {
+  display: grid;
+  gap: var(--space-4);
+  inline-size: min(100%, 34rem);
+  margin: auto;
+}
+
+.badge-demo-row {
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
 .attachment-demo-preview .uds-attachment-media svg {
   inline-size: 1.25rem;
   block-size: 1.25rem;
