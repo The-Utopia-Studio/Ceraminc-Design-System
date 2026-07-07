@@ -644,6 +644,59 @@ body {
   max-inline-size: 220px;
 }
 
+.component-gallery-sheet-preview {
+  position: relative;
+  inline-size: min(280px, 100%);
+  block-size: 7.5rem;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-surface);
+  background: var(--surface);
+}
+
+.component-gallery-sheet-scrim {
+  position: absolute;
+  inset: 0;
+  background: color-mix(in srgb, var(--background) 40%, transparent);
+}
+
+.component-gallery-sheet-panel {
+  position: absolute;
+  inset-block: 0;
+  inset-inline-end: 0;
+  display: grid;
+  gap: var(--space-2);
+  inline-size: 9.5rem;
+  background: var(--surface-strong);
+  color: var(--foreground);
+  padding: var(--space-4);
+  font-size: var(--font-size-small);
+}
+
+.component-gallery-sheet-panel strong {
+  font-weight: var(--font-weight-medium);
+}
+
+.component-gallery-sheet-field {
+  display: block;
+  block-size: 2rem;
+  border-radius: var(--radius-control);
+  background: var(--secondary);
+}
+
+.component-gallery-preview .uds-menubar,
+.component-gallery-preview .uds-navigation-menu {
+  position: relative;
+}
+
+.component-gallery-preview .uds-menubar-content,
+.component-gallery-preview .uds-navigation-menu-content {
+  position: absolute;
+  inset-block-start: calc(100% + var(--space-1));
+  inset-inline-start: 0;
+  z-index: 1;
+}
+
 .checkbox-gallery-preview {
   align-items: start;
   gap: var(--space-2);

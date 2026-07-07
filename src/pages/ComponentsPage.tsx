@@ -12,12 +12,21 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSepara
 import { Popover, PopoverContent, PopoverTrigger, Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '../../packages/design-system/src/Surface'
 import { ToggleButton } from '../../packages/design-system/src/ToggleButton'
 import { ToggleButtonGroup, ToggleButtonGroupItem } from '../../packages/design-system/src/ToggleButtonGroup'
+import { QueuedComponentPreview, queuedComponentNames } from '../components/QueuedComponentPreviews'
 import { categoryLabel, componentLabel, t, useI18n } from '../i18n'
 
 type ComponentEntry = typeof components.components[number]
 
 export function ComponentsPage() {
   const { locale } = useI18n()
+  const checklistAliases = [
+    { label: 'Sidebar', target: 'side-nav', previewName: 'Side Nav' },
+    { label: 'Toggle', target: 'toggle-button', previewName: 'Toggle Button' },
+    { label: 'Toggle Group', target: 'toggle-button-group', previewName: 'Toggle Button Group' },
+    { label: 'MarkerNew', target: 'markernew', previewName: 'Marker' },
+    { label: 'MessageNew', target: 'messagenew', previewName: 'Message' },
+    { label: 'Message ScrollerNew', target: 'message-scrollernew', previewName: 'Message Scroller' },
+  ] as const
   const componentsByName = new Map(components.components.map((entry) => [entry.name, entry]))
   const componentAreaGroups = getComponentAreaGroups()
   const componentFamilies = getComponentFamilies()
@@ -32,6 +41,24 @@ export function ComponentsPage() {
         <Button onClick={() => { window.location.hash = '#/docs#install' }} variant="secondary">
           {t(locale, 'installCoreLibrary')}
         </Button>
+      </section>
+
+      <div className="components-library-divider" />
+
+      <section className="component-gallery-section">
+        <h2>{locale === 'ar' ? 'أسماء مرادفة للقائمة' : 'Checklist aliases'}</h2>
+        <div className="component-gallery-grid">
+          {checklistAliases.map((alias) => (
+            <article className="component-gallery-card" key={alias.label}>
+              <span className="component-gallery-preview" aria-hidden="true">
+                <ComponentPreview name={alias.previewName} />
+              </span>
+              <a className="component-gallery-name" href={`#/components/${alias.target}`}>
+                {alias.label}
+              </a>
+            </article>
+          ))}
+        </div>
       </section>
 
       <div className="components-library-divider" />
@@ -91,6 +118,11 @@ export function ComponentsPage() {
 
 function ComponentPreview({ name }: { name: string }) {
   const { locale } = useI18n()
+
+  if (queuedComponentNames.has(name)) {
+    return <QueuedComponentPreview locale={locale} name={name} />
+  }
+
   const previewText = {
     primary: locale === 'ar' ? 'أساسي' : 'Primary',
     secondary: locale === 'ar' ? 'ثانوي' : 'Secondary',
@@ -442,9 +474,6 @@ function ComponentPreview({ name }: { name: string }) {
   if (name === 'Account Status') return <AccountStatus avatarAlt={locale === 'ar' ? 'مستخدم' : 'Y K'} avatarFallback={locale === 'ar' ? 'م' : 'YK'} description={previewText.pro} label={locale === 'ar' ? 'مستخدم تجريبي' : 'ykkkk12314'} />
   if (name === 'Avatar') return <Avatar alt={locale === 'ar' ? 'استوديو يوتوبيا' : 'Utopia Studio'}>{locale === 'ar' ? 'ي' : 'US'}</Avatar>
   if (name === 'Badge') return <Badge>{previewText.available}</Badge>
-  if (name === 'Skeleton') return <span className="library-skeleton-preview" />
-  if (name === 'Spinner') return <span className="uds-spinner" aria-hidden="true" />
-  if (name === 'Progress') return <span className="library-progress-preview"><span /></span>
 
   return (
     <VStack gap={2} align="center">

@@ -80,3 +80,5 @@ export const ToggleButton = React.forwardRef<
 )
 
 ToggleButton.displayName = 'ToggleButton'
+
+export const Toggle = ToggleButton

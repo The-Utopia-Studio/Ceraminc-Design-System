@@ -591,6 +591,13 @@ export function TabPanel({ className, ...props }: React.ComponentProps<typeof Ta
   return <TabsPrimitive.Content className={cn('uds-tab-panel', className)} {...props} />
 }
 
+export const Sidebar = SideNav
+export const SidebarContent = SideNavContent
+export const SidebarSection = SideNavSection
+export const SidebarHeading = SideNavHeading
+export const SidebarItem = SideNavItem
+export const SidebarCollapseButton = SideNavCollapseButton
+
 export function DropdownMenu(props: React.ComponentProps<typeof DropdownMenuPrimitive.Root>) {
   return <DropdownMenuPrimitive.Root {...props} />
 }

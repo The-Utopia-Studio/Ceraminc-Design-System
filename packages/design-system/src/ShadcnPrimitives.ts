@@ -112,6 +112,7 @@ export {
   ScrollAreaViewport,
   ScrollBar,
   Separator,
+  SeparatorLabel,
   Sheet,
   SheetClose,
   SheetContent,

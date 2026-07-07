@@ -29,6 +29,7 @@ export {
   TableRow,
   Toast,
   ToastDescription,
+  ToastIcon,
   ToastTitle,
   TreeList,
 } from './components/DataDisplay'

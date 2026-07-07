@@ -127,17 +127,68 @@ export function MetadataList({ className, ...props }: React.HTMLAttributes<HTMLD
   return <dl className={cn('uds-metadata-list', className)} {...props} />
 }
 
-export function ProgressBar({ className, value = 0, ...props }: React.HTMLAttributes<HTMLDivElement> & { value?: number }) {
-  return <div aria-valuemax={100} aria-valuemin={0} aria-valuenow={value} className={cn('uds-progress', className)} role="progressbar" {...props}><span style={{ inlineSize: `${value}%` }} /></div>
+export function ProgressBar({
+  className,
+  label,
+  showValue = false,
+  value = 0,
+  ...props
+}: React.HTMLAttributes<HTMLDivElement> & {
+  label?: React.ReactNode
+  showValue?: boolean
+  value?: number
+}) {
+  const bar = (
+    <div aria-valuemax={100} aria-valuemin={0} aria-valuenow={value} className="uds-progress" role="progressbar" {...props}>
+      <span style={{ inlineSize: `${Math.max(0, Math.min(100, value))}%` }} />
+    </div>
+  )
+
+  if (!label && !showValue) {
+    return (
+      <div aria-valuemax={100} aria-valuemin={0} aria-valuenow={value} className={cn('uds-progress', className)} role="progressbar" {...props}>
+        <span style={{ inlineSize: `${Math.max(0, Math.min(100, value))}%` }} />
+      </div>
+    )
+  }
+
+  return (
+    <div className={cn('uds-progress-root', className)}>
+      <div className="uds-progress-header">
+        {label ? <span className="uds-progress-label">{label}</span> : <span />}
+        {showValue ? <span className="uds-progress-value">{Math.round(value)}%</span> : null}
+      </div>
+      {bar}
+    </div>
+  )
+}
+export const Progress = ProgressBar
+
+export function Skeleton({
+  className,
+  variant = 'block',
+  ...props
+}: React.HTMLAttributes<HTMLDivElement> & {
+  variant?: 'block' | 'circle' | 'line'
+}) {
+  return <div className={cn('uds-skeleton', `uds-skeleton--${variant}`, className)} {...props} />
 }
 
-export function Skeleton({ className, ...props }: React.HTMLAttributes<HTMLDivElement>) {
-  return <div className={cn('uds-skeleton', className)} {...props} />
-}
-
-export function Spinner({ className, ...props }: React.HTMLAttributes<HTMLSpanElement>) {
+export function Spinner({
+  className,
+  size = 'sm',
+  ...props
+}: React.HTMLAttributes<HTMLSpanElement> & {
+  size?: 'sm' | 'md'
+}) {
   const isDecorative = !props['aria-label'] && !props['aria-labelledby'] && !props.role
-  return <span aria-hidden={isDecorative ? true : undefined} className={cn('uds-spinner', className)} {...props} />
+  return (
+    <span
+      aria-hidden={isDecorative ? true : undefined}
+      className={cn('uds-spinner', size === 'md' && 'uds-spinner--md', className)}
+      {...props}
+    />
+  )
 }
 
 export function StatusDot({ className, ...props }: React.HTMLAttributes<HTMLSpanElement>) {
@@ -170,6 +221,10 @@ export function TableCell({ className, ...props }: React.TdHTMLAttributes<HTMLTa
 
 export function Toast({ className, ...props }: React.HTMLAttributes<HTMLDivElement>) {
   return <div className={cn('uds-toast', className)} role="status" {...props} />
+}
+
+export function ToastIcon({ className, ...props }: React.HTMLAttributes<HTMLSpanElement>) {
+  return <span aria-hidden="true" className={cn('uds-toast-icon', className)} {...props} />
 }
 
 export function ToastTitle({ className, ...props }: React.HTMLAttributes<HTMLHeadingElement>) {

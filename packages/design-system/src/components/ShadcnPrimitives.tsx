@@ -28,6 +28,10 @@ function PrimitiveItem({ className, ...props }: DivProps) {
 
 export const Separator = ({ className, ...props }: React.HTMLAttributes<HTMLHRElement>) => <hr className={cn('uds-separator', className)} {...props} />
 
+export function SeparatorLabel({ className, ...props }: DivProps) {
+  return <div className={cn('uds-separator-label', className)} role="separator" {...props} />
+}
+
 export function Sheet(props: React.ComponentProps<typeof DialogPrimitive.Root>) {
   return <DialogPrimitive.Root {...props} />
 }
@@ -69,8 +73,14 @@ export function Sonner({ className, ...props }: DivProps) {
   return <div aria-live="polite" className={cn('uds-sonner', className)} role="status" {...props} />
 }
 
-export function SonnerToast({ className, ...props }: DivProps) {
-  return <div className={cn('uds-sonner-toast', className)} {...props} />
+export function SonnerToast({
+  className,
+  tone = 'default',
+  ...props
+}: DivProps & {
+  tone?: 'default' | 'inverse'
+}) {
+  return <div className={cn('uds-sonner-toast', tone === 'inverse' && 'uds-sonner-toast--inverse', className)} {...props} />
 }
 
 export function SonnerTitle({ className, ...props }: React.HTMLAttributes<HTMLHeadingElement>) {
@@ -661,8 +671,26 @@ export function Bubble({
   return <div className={cn('uds-bubble', `uds-bubble--${tone}`, className)} {...props} />
 }
 
-export function Marker({ className, tone = 'default', ...props }: SpanProps & { tone?: 'default' | 'accent' | 'muted' }) {
-  return <span className={cn('uds-marker', `uds-marker--${tone}`, className)} {...props} />
+export function Marker({
+  children,
+  className,
+  tone = 'default',
+  variant = 'pill',
+  ...props
+}: SpanProps & {
+  tone?: 'default' | 'accent' | 'muted'
+  variant?: 'pill' | 'check'
+}) {
+  if (variant === 'check') {
+    return (
+      <span className={cn('uds-marker-check', className)} {...props}>
+        <span aria-hidden="true" className="uds-marker-check-box" />
+        {children ? <span className="uds-marker-check-label">{children}</span> : null}
+      </span>
+    )
+  }
+
+  return <span className={cn('uds-marker', `uds-marker--${tone}`, className)} {...props}>{children}</span>
 }
 
 export function Message({
@@ -670,20 +698,22 @@ export function Message({
   children,
   className,
   meta,
+  variant = 'thread',
   ...props
 }: DivProps & {
   author?: React.ReactNode
   meta?: React.ReactNode
+  variant?: 'thread' | 'bubble'
 }) {
   return (
-    <article className={cn('uds-message', className)} {...props}>
+    <article className={cn('uds-message', variant === 'bubble' && 'uds-message--bubble', className)} {...props}>
       {author || meta ? (
         <header className="uds-message-header">
           {author ? <strong>{author}</strong> : null}
           {meta ? <span>{meta}</span> : null}
         </header>
       ) : null}
-      <div className="uds-message-content">{children}</div>
+      <div className={cn('uds-message-content', variant === 'bubble' && 'uds-message-bubble')}>{children}</div>
     </article>
   )
 }
@@ -691,6 +721,10 @@ export function Message({
 export function MessageScroller({ className, ...props }: DivProps) {
   return <div className={cn('uds-message-scroller', className)} role="log" {...props} />
 }
+
+export const MarkerNew = Marker
+export const MessageNew = Message
+export const MessageScrollerNew = MessageScroller
 
 export function InputOTP({
   className,

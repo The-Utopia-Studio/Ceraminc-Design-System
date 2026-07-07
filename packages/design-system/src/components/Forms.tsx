@@ -22,6 +22,7 @@ export function TextInput({ className, ...props }: React.InputHTMLAttributes<HTM
 export function TextArea({ className, ...props }: React.TextareaHTMLAttributes<HTMLTextAreaElement>) {
   return <textarea className={cn('uds-input uds-textarea', className)} {...props} />
 }
+export const Textarea = TextArea
 
 export function Checkbox({
   className,

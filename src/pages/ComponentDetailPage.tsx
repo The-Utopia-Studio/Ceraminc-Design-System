@@ -30,6 +30,12 @@ type ComponentDetailPageProps = {
 export function ComponentDetailPage({ componentId, tab = 'overview' }: ComponentDetailPageProps) {
   const { locale } = useI18n()
   const aliases: Record<string, string> = {
+    markernew: 'marker',
+    messagenew: 'message',
+    'message-scrollernew': 'message-scroller',
+    sidebar: 'side-nav',
+    progressbar: 'progress',
+    'text-area': 'textarea',
     toggle: 'toggle-button',
     'toggle-group': 'toggle-button-group',
   }

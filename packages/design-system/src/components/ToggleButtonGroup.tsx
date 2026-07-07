@@ -75,3 +75,6 @@ export const ToggleButtonGroupItem = React.forwardRef<
 ))
 
 ToggleButtonGroupItem.displayName = 'ToggleButtonGroupItem'
+
+export const ToggleGroup = ToggleButtonGroup
+export const ToggleGroupItem = ToggleButtonGroupItem
