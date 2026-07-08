@@ -67,7 +67,7 @@
     U+FE70-FEFF;
 }
 
-:root,
+:root:not([data-theme]),
 [data-theme="utopia-default"] {
   color-scheme: dark;
 

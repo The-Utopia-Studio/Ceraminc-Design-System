@@ -1,0 +1,146 @@
+@import url("https://api.fontshare.com/v2/css?f[]=clash-grotesk@300,400,500,600,700&f[]=satoshi@400,500,700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&display=swap");
+
+[data-theme="dextrum"] {
+  color-scheme: dark;
+
+  --dx-dark-blue: #192b39;
+  --dx-ocean-blue: #3e8ecc;
+  --dx-charcoal-blue: #2f3f4c;
+  --dx-matte-black: #141414;
+  --dx-timid-white: #eaeaea;
+  --dx-logo-teal: #063946;
+  --dx-neutral-100: #f7f7f7;
+  --dx-ocean-100: #e4effa;
+  --dx-ocean-500: #26689a;
+
+  --background: var(--dx-dark-blue);
+  --foreground: var(--dx-timid-white);
+  --foreground-muted: color-mix(in srgb, var(--dx-timid-white) 72%, var(--dx-dark-blue) 28%);
+  --foreground-subtle: color-mix(in srgb, var(--dx-timid-white) 55%, var(--dx-dark-blue) 45%);
+  --card: var(--dx-charcoal-blue);
+  --card-foreground: var(--dx-timid-white);
+  --primary: var(--dx-ocean-blue);
+  --primary-foreground: var(--dx-timid-white);
+  --primary-hover: #4a9ad4;
+  --primary-active: var(--dx-ocean-500);
+  --destructive: #8b4d45;
+  --destructive-hover: #9a5a52;
+  --destructive-active: #744038;
+  --destructive-foreground: var(--dx-timid-white);
+  --destructive-surface: rgb(139 77 69 / 14%);
+  --destructive-border: rgb(139 77 69 / 44%);
+  --destructive-text: #e3a89f;
+  --warning: #d4a574;
+  --warning-foreground: var(--dx-dark-blue);
+  --warning-surface: rgb(212 165 116 / 12%);
+  --warning-border: rgb(212 165 116 / 38%);
+  --warning-text: #e8c9a4;
+  --success: #7eb4de;
+  --success-foreground: var(--dx-dark-blue);
+  --success-surface: rgb(126 180 222 / 12%);
+  --success-border: rgb(126 180 222 / 38%);
+  --success-text: var(--dx-timid-white);
+  --secondary: var(--dx-charcoal-blue);
+  --secondary-foreground: var(--dx-timid-white);
+  --secondary-hover: color-mix(in srgb, var(--dx-charcoal-blue) 88%, var(--dx-timid-white) 12%);
+  --secondary-active: color-mix(in srgb, var(--dx-charcoal-blue) 78%, var(--dx-timid-white) 22%);
+  --muted: color-mix(in srgb, var(--dx-timid-white) 12%, var(--dx-dark-blue) 88%);
+  --muted-foreground: color-mix(in srgb, var(--dx-timid-white) 62%, var(--dx-dark-blue) 38%);
+  --border: rgb(234 234 234 / 14%);
+  --input: rgb(234 234 234 / 20%);
+  --ring: var(--dx-ocean-blue);
+
+  --surface: rgb(234 234 234 / 4.5%);
+  --surface-strong: rgb(234 234 234 / 8%);
+  --surface-elevated: var(--dx-charcoal-blue);
+  --surface-hover: rgb(234 234 234 / 10%);
+  --surface-inverse: var(--dx-timid-white);
+  --overlay: color-mix(in srgb, var(--dx-dark-blue) 84%, transparent);
+  --modal-surface: var(--dx-charcoal-blue);
+  --popover-surface: var(--dx-charcoal-blue);
+  --ghost-hover: rgb(234 234 234 / 8%);
+  --ghost-active: rgb(234 234 234 / 12%);
+  --outline-hover: rgb(234 234 234 / 8%);
+  --outline-active: rgb(234 234 234 / 12%);
+
+  --radius: 0.375rem;
+  --radius-control: 0.375rem;
+  --radius-surface: 0.5rem;
+
+  --font-display: "Manrope", "Helvetica Neue", Arial, sans-serif;
+  --font-sans: "Manrope", "Helvetica Neue", Arial, sans-serif;
+  --font-ui-support: "Satoshi", "Helvetica Neue", Arial, sans-serif;
+  --font-marketing-display: "Clash Grotesk", "Helvetica Neue", Arial, sans-serif;
+  --font-arabic: "IBM Plex Sans Arabic", "Noto Sans Arabic", "Tajawal", "Cairo", Arial, sans-serif;
+  --font-arabic-display: var(--font-arabic);
+  --font-arabic-body: var(--font-arabic);
+  --font-mono: "JetBrains Mono", Menlo, Consolas, monospace;
+  --font-weight-body: 400;
+  --font-weight-regular: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-strong: 700;
+  --font-weight-arabic-body: 400;
+  --font-weight-arabic-display: 700;
+  --font-size-small: 0.8125rem;
+  --font-size-2: 1rem;
+  --font-size-eyebrow: 0.75rem;
+  --font-size-supporting: 0.75rem;
+  --font-size-body: 1rem;
+  --font-size-body-lg: 1.125rem;
+  --font-size-display: clamp(2.75rem, 7vw, 5.5rem);
+  --font-size-arabic-body: 1rem;
+  --font-size-arabic-body-lg: 1.125rem;
+  --font-size-arabic-display: clamp(2.625rem, 6.6vw, 5.25rem);
+  --line-height-tight: 1.08;
+  --line-height-supporting: 0.875rem;
+  --line-height-arabic: 1.75;
+  --line-height-arabic-body: 1.75;
+  --line-height-arabic-display: 1.14;
+
+  --tracking-heading: -0.03em;
+  --tracking-eyebrow: 0.18em;
+  --tracking-arabic: 0;
+  --tracking-arabic-display: 0;
+
+  --shadow-surface: none;
+  --shadow-popover: 0 8px 24px rgb(0 0 0 / 24%);
+
+  --icon-system: lucide;
+
+  --button-height: 40px;
+  --button-height-sm: 32px;
+  --button-height-lg: 48px;
+  --button-padding-inline: 16px;
+  --button-padding-inline-sm: 12px;
+  --button-padding-inline-lg: 24px;
+  --button-font-size: 0.875rem;
+  --button-font-size-sm: 0.8125rem;
+  --button-font-size-lg: 1rem;
+  --button-group-gap: 8px;
+  --button-group-gap-compact: 4px;
+
+  --badge-padding-block: 4px;
+  --badge-padding-inline: 8px;
+  --badge-font-size: 0.75rem;
+
+  --card-padding: 24px;
+  --card-title-size: 1.25rem;
+  --z-overlay: 40;
+  --z-popover: 45;
+  --z-modal: 50;
+}
+
+[data-theme="dextrum"] :where([data-typography="marketing"], .dextrum-marketing-display) :where(h1, h2, h3, .uds-heading, [data-display="true"]) {
+  font-family: var(--font-marketing-display);
+  letter-spacing: var(--tracking-heading);
+}
+
+[data-theme="dextrum"] :where(:lang(ar), [lang|="ar"]) {
+  font-family: var(--font-arabic-body);
+  font-weight: var(--font-weight-arabic-body);
+  line-height: var(--line-height-arabic-body);
+  letter-spacing: var(--tracking-arabic);
+  text-transform: none;
+}

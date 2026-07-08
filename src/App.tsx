@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
-import { catalog, getComponentAreaGroups, getComponentFamilies, routeMap } from './data/design-system'
+import { catalog, dextrumTypographyHref, getComponentAreaGroups, getComponentFamilies, getDocFamilies, routeMap } from './data/design-system'
 import { LocaleTransitionOverlay } from './components/LocaleTransitionOverlay'
 import { TopNavigation } from './components/TopNavigation'
 import { ArabicFriendlyPage } from './pages/ArabicFriendlyPage'
@@ -10,6 +10,7 @@ import { DocsPage } from './pages/DocsPage'
 import { TemplatesPage } from './pages/TemplatesPage'
 import { ThemesPage } from './pages/ThemesPage'
 import { I18nProvider, categoryLabel, docsLabel, routeLabel, sideNavLabel, t, type Locale } from './i18n'
+import { ThemeProvider, useTheme } from './theme'
 import {
   SideNav,
   SideNavCollapseButton,
@@ -39,6 +40,7 @@ function slugFor(value: string) {
 
 function getActiveAreaId(path: string) {
   if (path.startsWith('/components')) return 'components'
+  if (path.startsWith('/themes')) return 'themes'
   if (path === '/' || path === '/arabic-friendly' || path.startsWith('/docs')) return 'docs'
   return path.replace('/', '')
 }
@@ -108,7 +110,7 @@ function getToc(path: string, tab: string) {
     }
 
     if (path.endsWith('/color')) return [common[0], common[1], { id: 'roles', label: 'Color Roles' }, { id: 'swatches', label: 'Theme Swatches' }, { id: 'states', label: 'State Matrix' }, common[2], common[3], common[4], common[5]]
-    if (path.endsWith('/typography')) return [common[0], common[1], { id: 'type-scale', label: 'Type Scale' }, { id: 'arabic-display', label: 'Arabic Display' }, { id: 'mixed-script', label: 'Mixed Script' }, common[2], common[3], common[4], common[5]]
+    if (path.endsWith('/typography')) return [common[0], common[1], { id: 'type-scale', label: 'Type Scale' }, { id: 'dextrum-typography', label: 'Dextrum Typography' }, { id: 'arabic-display', label: 'Arabic Display' }, { id: 'mixed-script', label: 'Mixed Script' }, common[2], common[3], common[4], common[5]]
     if (path.endsWith('/spacing')) return [common[0], common[1], { id: 'scale', label: 'Spacing Scale' }, { id: 'logical-layout', label: 'Logical Layout' }, common[2], common[3], common[4], common[5]]
     if (path.endsWith('/shape')) return [common[0], common[1], { id: 'radius-preview', label: 'Radius Roles' }, { id: 'theme-variance', label: 'Theme Variance' }, common[2], common[3], common[4], common[5]]
     if (path.endsWith('/motion')) return [common[0], common[1], { id: 'motion-scale', label: 'Motion Scale' }, { id: 'mirroring-rules', label: 'Directional Motion' }, common[2], common[3], common[4], common[5]]
@@ -155,10 +157,31 @@ function getToc(path: string, tab: string) {
   if (path === '/themes') {
     return [
       { id: 'utopia-default', label: 'Utopia Default' },
+      { id: 'dextrum', label: 'Dextrum' },
       { id: 'theme-policy', label: 'Theme policy' },
       { id: 'icon-policy', label: 'Icon policy' },
       { id: 'core-boundary', label: 'Core boundary' },
       { id: 'semantic-contract', label: 'Stable semantic contract' },
+    ]
+  }
+  if (path === '/docs/foundations/typography/dextrum/marketing-sales') {
+    return [
+      { id: 'overview', label: 'Overview' },
+      { id: 'pairing', label: 'Font pairing' },
+      { id: 'tokens', label: 'Token mapping' },
+      { id: 'specimens', label: 'Specimens' },
+      { id: 'usage', label: 'Usage' },
+      { id: 'ai-rules', label: 'AI rules' },
+    ]
+  }
+  if (path === '/docs/foundations/typography/dextrum/app-website') {
+    return [
+      { id: 'overview', label: 'Overview' },
+      { id: 'pairing', label: 'Font pairing' },
+      { id: 'tokens', label: 'Token mapping' },
+      { id: 'specimens', label: 'Specimens' },
+      { id: 'usage', label: 'Usage' },
+      { id: 'ai-rules', label: 'AI rules' },
     ]
   }
   if (path === '/arabic-friendly') {
@@ -223,6 +246,15 @@ function getInitialLocale(): Locale {
 }
 
 export function App() {
+  return (
+    <ThemeProvider>
+      <AppShell />
+    </ThemeProvider>
+  )
+}
+
+function AppShell() {
+  const { brand } = useTheme()
   const [path, setPath] = useState(getCurrentPath)
   const [section, setSection] = useState(getCurrentSection)
   const [tab, setTab] = useState(getCurrentTab)
@@ -281,6 +313,7 @@ export function App() {
   const route = useMemo(() => {
     if (path.startsWith('/components/')) return routeMap.find((item) => item.id === 'components')!
     if (path.startsWith('/docs')) return docsRoute
+    if (path.startsWith('/themes')) return routeMap.find((item) => item.id === 'themes')!
     return routeMap.find((item) => item.path === path) ?? routeMap[0]
   }, [path])
   const Page = pageMap[route.path as keyof typeof pageMap]
@@ -288,11 +321,18 @@ export function App() {
   const toc = getToc(path, tab)
   const componentId = path.startsWith('/components/') ? path.replace('/components/', '') : ''
   const isComponentsArea = sidebarArea.id === 'components'
+  const isDocsArea = sidebarArea.id === 'docs'
+  const isThemesArea = sidebarArea.id === 'themes'
   const normalizedComponentSearch = componentSearch.trim().toLowerCase()
   const componentFamilies = isComponentsArea ? getComponentFamilies() : []
+  const docFamilies = isDocsArea ? getDocFamilies() : []
   const familyByParent = new Map(componentFamilies.map((family) => [family.parent, family]))
+  const docFamilyByParent = new Map(docFamilies.map((family) => [family.parent, family]))
   const familyChildItems = new Set(componentFamilies.flatMap((family) => family.items))
-  const baseSidebarGroups = isComponentsArea ? getComponentAreaGroups() : sidebarArea.groups
+  const docFamilyChildItems = new Set(docFamilies.flatMap((family) => family.items))
+  const baseSidebarGroups = isComponentsArea
+    ? getComponentAreaGroups()
+    : sidebarArea.groups
   const sidebarGroups = isComponentsArea && normalizedComponentSearch
     ? baseSidebarGroups
       .map((group) => ({
@@ -310,22 +350,27 @@ export function App() {
     ...topNav.filter((item) => item.id !== 'docs').map((item) => ({
       href: `#${item.path}`,
       label: routeLabel(locale, item.id, item.label),
-      active: route.path === item.path,
+      active: item.path === '/themes' ? path.startsWith('/themes') : route.path === item.path,
     })),
   ]
 
   const isComponentsOverview = path === '/components'
-  const isDocsArea = sidebarArea.id === 'docs'
 
   function sidebarHref(groupId: string, item: string) {
     const slug = slugFor(item)
     if (isComponentsArea) return `#/components/${slug}`
     if (isDocsArea && groupId === 'guide' && item === 'Getting Started') return '#/docs'
     if (isDocsArea && groupId === 'guide') return `#/docs/guide/${slug}`
-    if (isDocsArea && groupId === 'foundations') return `#/docs/foundations/${slug}`
+    if (isDocsArea && groupId === 'foundations') {
+      const dextrumHref = dextrumTypographyHref(item)
+      if (dextrumHref) return dextrumHref
+      return `#/docs/foundations/${slug}`
+    }
     if (isDocsArea && groupId === 'libraries') return `#/docs/libraries/${slug}`
     if (isDocsArea && item === 'Arabic Friendly') return '#/docs#arabic-friendly'
     if (isDocsArea) return `#/docs#${slug}`
+    if (isThemesArea && item === 'Utopia Default') return '#/themes#utopia-default'
+    if (isThemesArea && item === 'Dextrum') return '#/themes#dextrum'
     return `#/${sidebarArea.id}`
   }
 
@@ -363,10 +408,10 @@ export function App() {
                 <PanelIcon />
               </SideNavCollapseButton>
             )}
-            icon={<img alt="" src="/brand/the-utopia-studio-wordmark.avif" />}
-            label="Ceramic"
+            icon={<img alt={brand.logoAlt} src={brand.logo} />}
+            label={brand.label}
             mediaSize="wordmark"
-            subtitle="Design System"
+            subtitle={brand.subtitle}
             variant="brand"
           />
         )}
@@ -405,8 +450,9 @@ export function App() {
           <SideNavContent className="side-nav-content">
             {sidebarGroups.map((group) => (
               <SideNavSection key={group.id} className="side-nav-group" collapsible label={sideNavLabel(locale, group.label)}>
-                {group.items.filter((item) => !familyChildItems.has(item)).map((item) => {
+                {group.items.filter((item) => !familyChildItems.has(item) && !docFamilyChildItems.has(item)).map((item) => {
                   const family = familyByParent.get(item)
+                  const docFamily = isDocsArea && group.id === 'foundations' ? docFamilyByParent.get(item) : undefined
 
                   if (family) {
                     return (
@@ -440,11 +486,48 @@ export function App() {
                     )
                   }
 
+                  if (docFamily) {
+                    const typographyPath = '/docs/foundations/typography'
+                    const onTypographyRoute = path === typographyPath || path.startsWith(`${typographyPath}/`)
+
+                    return (
+                      <SideNavSection
+                        className="side-nav-family"
+                        key={item}
+                        collapsedLabel={`${docFamily.label} section`}
+                        collapsible
+                        defaultExpanded={onTypographyRoute}
+                        label={sideNavLabel(locale, docFamily.label)}
+                        variant="nested"
+                      >
+                        <SideNavItem
+                          aria-current={path === typographyPath ? 'page' : undefined}
+                          depth={2}
+                          href={sidebarHref(group.id, item)}
+                        >
+                          {sideNavLabel(locale, item)}
+                        </SideNavItem>
+                        {docFamily.items.map((familyItem) => (
+                          <SideNavItem
+                            key={familyItem}
+                            aria-current={path === sidebarHref(group.id, familyItem).replace(/^#/, '') ? 'page' : undefined}
+                            depth={2}
+                            href={sidebarHref(group.id, familyItem)}
+                          >
+                            {sideNavLabel(locale, familyItem)}
+                          </SideNavItem>
+                        ))}
+                      </SideNavSection>
+                    )
+                  }
+
                   return (
                     (() => {
                       const href = sidebarHref(group.id, item)
                       const hrefTarget = href.replace(/^#/, '')
-                      const current = hrefTarget === path || (path === '/docs' && item === 'Getting Started')
+                      const current = hrefTarget === path
+                        || (path === '/docs' && item === 'Getting Started')
+                        || (isDocsArea && item === 'Typography' && path.startsWith('/docs/foundations/typography'))
                       return (
                     <SideNavItem
                       key={item}

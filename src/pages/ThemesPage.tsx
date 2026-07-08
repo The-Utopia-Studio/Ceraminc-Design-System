@@ -1,8 +1,19 @@
-import { getArea, themes, utopiaDefaultTheme } from '../data/design-system'
+import { getArea, themes, utopiaDefaultTheme, dextrumTheme } from '../data/design-system'
+import { useTheme, type ThemeId } from '../theme'
 
-export function ThemesPage() {
+const themePolicyById = {
+  'utopia-default': utopiaDefaultTheme,
+  dextrum: dextrumTheme,
+} as const
+
+type ThemesPageProps = {
+  path?: string
+}
+
+export function ThemesPage(_props: ThemesPageProps = {}) {
   const area = getArea('themes')
-  const theme = themes.themes[0]
+  const { setThemeId, themeId, themeEntry } = useTheme()
+  const activePolicy = themePolicyById[themeId]
 
   return (
     <div className="page">
@@ -23,33 +34,58 @@ export function ThemesPage() {
         </aside>
 
         <div className="card-grid wide">
-          <article className="theme-card" id="utopia-default">
-            <div className="card-row">
-              <span className="kicker">{theme.role}</span>
-              <span className="pill">locked</span>
-            </div>
-            <h3>{theme.name}</h3>
-            <p>{theme.description}</p>
-            <div className="swatches">
-              {Object.entries(theme.values).slice(0, 10).map(([key, value]) => (
-                <span key={key} style={{ background: value }} title={`${key}: ${value}`} />
-              ))}
-            </div>
-          </article>
+          {themes.themes.map((theme) => {
+            const isActive = theme.id === themeId
+
+            return (
+              <article
+                className={`theme-card${isActive ? ' theme-card--active' : ''}`}
+                id={theme.id}
+                key={theme.id}
+              >
+                <div className="card-row">
+                  <span className="kicker">{theme.role}</span>
+                  {theme.locked ? <span className="pill">locked</span> : null}
+                  {isActive ? <span className="pill">active</span> : null}
+                </div>
+                <h3>{theme.name}</h3>
+                <p>{theme.description}</p>
+                <div className="swatches">
+                  {Object.entries(theme.values).slice(0, 10).map(([key, value]) => (
+                    <span key={key} style={{ background: value }} title={`${key}: ${value}`} />
+                  ))}
+                </div>
+                <button
+                  className="theme-activate-button"
+                  disabled={isActive}
+                  onClick={() => setThemeId(theme.id as ThemeId)}
+                  type="button"
+                >
+                  {isActive ? 'Currently active' : `Activate ${theme.name}`}
+                </button>
+                {theme.id === 'dextrum' ? (
+                  <div className="dextrum-type-links">
+                    <a href="#/docs/foundations/typography/dextrum/marketing-sales">View Marketing &amp; Sales typography docs →</a>
+                    <a href="#/docs/foundations/typography/dextrum/app-website">View App &amp; Website typography docs →</a>
+                  </div>
+                ) : null}
+              </article>
+            )
+          })}
 
           <article className="card accent" id="theme-policy">
             <span className="kicker">Theme policy</span>
-            <h3>Brand philosophy lives here, not in core.</h3>
-            <p>{utopiaDefaultTheme.summary}</p>
-            <code>{theme.policyManifest}</code>
+            <h3>{activePolicy.name}</h3>
+            <p>{activePolicy.summary}</p>
+            <code>{themeEntry.policyManifest}</code>
           </article>
 
           <article className="card" id="icon-policy">
             <span className="kicker">Icon policy</span>
-            <h3>{utopiaDefaultTheme.iconPolicy.system}</h3>
-            <p>{utopiaDefaultTheme.iconPolicy.description}</p>
+            <h3>{activePolicy.iconPolicy.system}</h3>
+            <p>{activePolicy.iconPolicy.description}</p>
             <div className="chip-list">
-              {utopiaDefaultTheme.iconPolicy.avoid.map((rule) => <span key={rule}>{rule}</span>)}
+              {activePolicy.iconPolicy.allow.map((rule) => <span key={rule}>{rule}</span>)}
             </div>
           </article>
 

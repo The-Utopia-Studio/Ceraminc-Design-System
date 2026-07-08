@@ -5,6 +5,7 @@ import {
   TopNavItem,
 } from '../../packages/design-system/src/Navigation'
 import { t, type Locale } from '../i18n'
+import { useTheme } from '../theme'
 
 type TopNavigationLink = {
   href: string
@@ -20,14 +21,16 @@ type TopNavigationProps = {
 }
 
 export function TopNavigation({ links, locale, onLocaleChange, showBrand = true }: TopNavigationProps) {
+  const { brand } = useTheme()
+
   return (
     <header className="topbar" data-has-brand={showBrand ? 'true' : 'false'}>
       {showBrand ? (
-        <a className="topbar-brand" href="#/" aria-label="Utopia Design System home">
+        <a className="topbar-brand" href="#/" aria-label={`${brand.label} Design System home`}>
           <TopNavHeading
-            icon={<img alt="" src="/brand/the-utopia-studio-wordmark.avif" />}
-            label="Ceramic"
-            subtitle="Design System"
+            icon={<img alt="" src={brand.logo} />}
+            label={brand.label}
+            subtitle={brand.subtitle}
           />
         </a>
       ) : <span className="topbar-spacer" aria-hidden="true" />}

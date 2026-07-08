@@ -3,6 +3,7 @@ import { ArrowLeft, ArrowRight, Bell, ChevronDown, Download, Home, PanelLeft, Se
 import { themes, utopiaDefaultTheme } from '../data/design-system'
 import { ArabicDisplay, ArabicText } from '../../packages/design-system/src/Typography'
 import { docsLabel, t, useI18n } from '../i18n'
+import { DextrumTypographySubpage, dextrumTypographySegmentFromPath } from './DextrumTypographySubpage'
 
 type DocsPageProps = {
   path?: string
@@ -214,6 +215,11 @@ function tokensFor(groups: TokenRow['group'][]) {
 }
 
 export function DocsPage({ path = '/docs' }: DocsPageProps) {
+  const typographySegment = dextrumTypographySegmentFromPath(path)
+  if (typographySegment) {
+    return <DextrumTypographySubpage segment={typographySegment} />
+  }
+
   if (path.startsWith('/docs/guide/')) {
     const slug = guideSlugFromPath(path)
     const page = guidePages[slug] ?? guidePages['quick-start-with-ai']
@@ -486,6 +492,15 @@ function FoundationsPage({ page, slug }: { page: typeof foundationPages[keyof ty
             <FoundationSection id="type-scale" title="Type Scale">
               <TypeScale />
             </FoundationSection>
+            {slug === 'typography' ? (
+              <FoundationSection id="dextrum-typography" title="Dextrum Typography">
+                <p>Theme-specific font pairings for the Dextrum brand — marketing display type and product UI type. Activate Dextrum under Themes for accurate specimens.</p>
+                <div className="dextrum-type-links">
+                  <a href="#/docs/foundations/typography/dextrum/marketing-sales">Marketing &amp; Sales typography →</a>
+                  <a href="#/docs/foundations/typography/dextrum/app-website">App &amp; Website typography →</a>
+                </div>
+              </FoundationSection>
+            ) : null}
             <FoundationSection id="arabic-display" title="Arabic Display Is Not Uppercase">
               <ArabicDisplayPreview />
             </FoundationSection>
