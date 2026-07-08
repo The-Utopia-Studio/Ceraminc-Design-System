@@ -47,6 +47,14 @@
             "@utopia-studio-design/design-system-cli",
             "shadcn/ui foundation"
           ]
+        },
+        {
+          "id": "dextrum-typography",
+          "label": "Dextrum Typography",
+          "items": [
+            "Marketing & Sales",
+            "App & Website"
+          ]
         }
       ]
     },

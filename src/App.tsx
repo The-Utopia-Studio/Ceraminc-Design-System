@@ -40,6 +40,7 @@ function slugFor(value: string) {
 
 function getActiveAreaId(path: string) {
   if (path.startsWith('/components')) return 'components'
+  if (path.startsWith('/themes')) return 'themes'
   if (path === '/' || path === '/arabic-friendly' || path.startsWith('/docs')) return 'docs'
   return path.replace('/', '')
 }
@@ -161,6 +162,26 @@ function getToc(path: string, tab: string) {
       { id: 'icon-policy', label: 'Icon policy' },
       { id: 'core-boundary', label: 'Core boundary' },
       { id: 'semantic-contract', label: 'Stable semantic contract' },
+    ]
+  }
+  if (path === '/docs/foundations/typography/dextrum/marketing-sales') {
+    return [
+      { id: 'overview', label: 'Overview' },
+      { id: 'pairing', label: 'Font pairing' },
+      { id: 'tokens', label: 'Token mapping' },
+      { id: 'specimens', label: 'Specimens' },
+      { id: 'usage', label: 'Usage' },
+      { id: 'ai-rules', label: 'AI rules' },
+    ]
+  }
+  if (path === '/docs/foundations/typography/dextrum/app-website') {
+    return [
+      { id: 'overview', label: 'Overview' },
+      { id: 'pairing', label: 'Font pairing' },
+      { id: 'tokens', label: 'Token mapping' },
+      { id: 'specimens', label: 'Specimens' },
+      { id: 'usage', label: 'Usage' },
+      { id: 'ai-rules', label: 'AI rules' },
     ]
   }
   if (path === '/arabic-friendly') {
@@ -292,6 +313,7 @@ function AppShell() {
   const route = useMemo(() => {
     if (path.startsWith('/components/')) return routeMap.find((item) => item.id === 'components')!
     if (path.startsWith('/docs')) return docsRoute
+    if (path.startsWith('/themes')) return routeMap.find((item) => item.id === 'themes')!
     return routeMap.find((item) => item.path === path) ?? routeMap[0]
   }, [path])
   const Page = pageMap[route.path as keyof typeof pageMap]
@@ -303,7 +325,9 @@ function AppShell() {
   const componentFamilies = isComponentsArea ? getComponentFamilies() : []
   const familyByParent = new Map(componentFamilies.map((family) => [family.parent, family]))
   const familyChildItems = new Set(componentFamilies.flatMap((family) => family.items))
-  const baseSidebarGroups = isComponentsArea ? getComponentAreaGroups() : sidebarArea.groups
+  const baseSidebarGroups = isComponentsArea
+    ? getComponentAreaGroups()
+    : sidebarArea.groups
   const sidebarGroups = isComponentsArea && normalizedComponentSearch
     ? baseSidebarGroups
       .map((group) => ({
@@ -321,12 +345,13 @@ function AppShell() {
     ...topNav.filter((item) => item.id !== 'docs').map((item) => ({
       href: `#${item.path}`,
       label: routeLabel(locale, item.id, item.label),
-      active: route.path === item.path,
+      active: item.path === '/themes' ? path.startsWith('/themes') : route.path === item.path,
     })),
   ]
 
   const isComponentsOverview = path === '/components'
   const isDocsArea = sidebarArea.id === 'docs'
+  const isThemesArea = sidebarArea.id === 'themes'
 
   function sidebarHref(groupId: string, item: string) {
     const slug = slugFor(item)
@@ -335,8 +360,12 @@ function AppShell() {
     if (isDocsArea && groupId === 'guide') return `#/docs/guide/${slug}`
     if (isDocsArea && groupId === 'foundations') return `#/docs/foundations/${slug}`
     if (isDocsArea && groupId === 'libraries') return `#/docs/libraries/${slug}`
+    if (isDocsArea && groupId === 'dextrum-typography' && item === 'Marketing & Sales') return '#/docs/foundations/typography/dextrum/marketing-sales'
+    if (isDocsArea && groupId === 'dextrum-typography' && item === 'App & Website') return '#/docs/foundations/typography/dextrum/app-website'
     if (isDocsArea && item === 'Arabic Friendly') return '#/docs#arabic-friendly'
     if (isDocsArea) return `#/docs#${slug}`
+    if (isThemesArea && item === 'Utopia Default') return '#/themes#utopia-default'
+    if (isThemesArea && item === 'Dextrum') return '#/themes#dextrum'
     return `#/${sidebarArea.id}`
   }
 
@@ -455,7 +484,9 @@ function AppShell() {
                     (() => {
                       const href = sidebarHref(group.id, item)
                       const hrefTarget = href.replace(/^#/, '')
-                      const current = hrefTarget === path || (path === '/docs' && item === 'Getting Started')
+                      const current = hrefTarget === path
+                        || (path === '/docs' && item === 'Getting Started')
+                        || (isDocsArea && path.startsWith('/docs/foundations/typography/dextrum/') && hrefTarget === path)
                       return (
                     <SideNavItem
                       key={item}

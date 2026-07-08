@@ -1616,6 +1616,119 @@ body {
   object-fit: contain;
 }
 
+.dextrum-type-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+.dextrum-type-links a {
+  border: 1px solid var(--border);
+  border-radius: var(--radius-control);
+  background: var(--surface);
+  color: var(--primary);
+  font-size: var(--font-size-small);
+  padding-block: var(--space-2);
+  padding-inline: var(--space-3);
+  text-decoration: none;
+}
+
+.dextrum-type-links a:hover,
+.dextrum-type-links a:focus-visible {
+  background: var(--surface-hover);
+  outline: none;
+}
+
+.dextrum-type-note {
+  margin-block-start: var(--space-4);
+  color: var(--foreground-muted);
+  font-size: 15px;
+  line-height: 1.55;
+}
+
+.dextrum-specimen-grid {
+  display: grid;
+  gap: var(--space-4);
+}
+
+.dextrum-specimen-card {
+  display: grid;
+  gap: var(--space-3);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-surface);
+  background: var(--surface);
+  padding: var(--space-4);
+}
+
+.dextrum-specimen-meta {
+  color: var(--foreground-subtle);
+  font-family: var(--font-mono);
+  font-size: 12px;
+}
+
+.dextrum-type-specimen {
+  margin: 0;
+  color: var(--foreground);
+}
+
+.dextrum-type-specimen--display {
+  font-family: var(--font-display);
+  letter-spacing: var(--tracking-heading);
+}
+
+.dextrum-type-specimen--sans {
+  font-family: var(--font-sans);
+}
+
+.dextrum-type-specimen--support {
+  font-family: var(--font-ui-support);
+}
+
+.dextrum-type-specimen--hero {
+  font-size: clamp(2.25rem, 5vw, 4.5rem);
+  font-weight: var(--font-weight-strong);
+  line-height: var(--line-height-tight);
+}
+
+.dextrum-type-specimen--section {
+  font-size: clamp(1.5rem, 3vw, 2.25rem);
+  font-weight: var(--font-weight-semibold);
+  line-height: 1.12;
+}
+
+.dextrum-type-specimen--ui-heading {
+  font-size: 1.5rem;
+  font-weight: var(--font-weight-semibold);
+  line-height: 1.2;
+}
+
+.dextrum-type-specimen--body {
+  font-size: var(--font-size-body);
+  font-weight: var(--font-weight-body);
+  line-height: 1.6;
+}
+
+.dextrum-type-specimen--eyebrow {
+  color: var(--foreground-muted);
+  font-size: var(--font-size-eyebrow);
+  font-weight: var(--font-weight-medium);
+  letter-spacing: var(--tracking-eyebrow);
+  text-transform: uppercase;
+}
+
+.dextrum-type-specimen--meta {
+  color: var(--foreground-muted);
+  font-size: var(--font-size-small);
+  font-weight: var(--font-weight-medium);
+  line-height: 1.4;
+}
+
+.dextrum-type-specimen--label {
+  font-size: var(--font-size-small);
+  font-weight: var(--font-weight-medium);
+  line-height: 1.35;
+}
+
 .theme-card h3 {
   margin: 0;
   color: var(--foreground);

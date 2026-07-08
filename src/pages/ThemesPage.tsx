@@ -6,7 +6,11 @@ const themePolicyById = {
   dextrum: dextrumTheme,
 } as const
 
-export function ThemesPage() {
+type ThemesPageProps = {
+  path?: string
+}
+
+export function ThemesPage(_props: ThemesPageProps = {}) {
   const area = getArea('themes')
   const { setThemeId, themeId, themeEntry } = useTheme()
   const activePolicy = themePolicyById[themeId]
@@ -59,6 +63,12 @@ export function ThemesPage() {
                 >
                   {isActive ? 'Currently active' : `Activate ${theme.name}`}
                 </button>
+                {theme.id === 'dextrum' ? (
+                  <div className="dextrum-type-links">
+                    <a href="#/docs/foundations/typography/dextrum/marketing-sales">View Marketing &amp; Sales typography docs →</a>
+                    <a href="#/docs/foundations/typography/dextrum/app-website">View App &amp; Website typography docs →</a>
+                  </div>
+                ) : null}
               </article>
             )
           })}

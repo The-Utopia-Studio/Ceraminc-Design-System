@@ -3,6 +3,7 @@ import { ArrowLeft, ArrowRight, Bell, ChevronDown, Download, Home, PanelLeft, Se
 import { themes, utopiaDefaultTheme } from '../data/design-system'
 import { ArabicDisplay, ArabicText } from '../../packages/design-system/src/Typography'
 import { docsLabel, t, useI18n } from '../i18n'
+import { DextrumTypographySubpage, dextrumTypographySegmentFromPath } from './DextrumTypographySubpage'
 
 type DocsPageProps = {
   path?: string
@@ -211,6 +212,11 @@ function tokensFor(groups: TokenRow['group'][]) {
 }
 
 export function DocsPage({ path = '/docs' }: DocsPageProps) {
+  const typographySegment = dextrumTypographySegmentFromPath(path)
+  if (typographySegment) {
+    return <DextrumTypographySubpage segment={typographySegment} />
+  }
+
   if (path.startsWith('/docs/guide/')) {
     const slug = guideSlugFromPath(path)
     const page = guidePages[slug] ?? guidePages['quick-start-with-ai']
