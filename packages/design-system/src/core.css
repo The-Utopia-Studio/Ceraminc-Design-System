@@ -90,6 +90,9 @@
   --focus-ring: var(--ring);
 
   --icon-system: theme-defined;
+  --icon-size-xs: 0.875rem;
+  --icon-size-sm: 1rem;
+  --icon-size-md: 1.25rem;
   --gutter: clamp(20px, 5vw, 72px);
 
   --primary-hover: color-mix(in srgb, var(--primary) 88%, CanvasText 12%);
@@ -141,6 +144,19 @@
   --nav-item-height: 36px;
   --input-height: 40px;
   --avatar-size: 40px;
+  --chat-composer-max-inline-size: 44rem;
+  --chat-composer-min-block-size: 104px;
+  --chat-bubble-max-inline-size: 36rem;
+  --radius-chat-bubble: var(--radius-surface);
+  --radius-chat-composer: var(--radius-surface);
+  --radius-chat-token: var(--radius-control);
+  --chat-bubble-padding-block: var(--space-3);
+  --chat-bubble-padding-inline: var(--space-4);
+  --chat-token-padding-block: var(--space-1);
+  --chat-token-padding-inline: var(--space-2);
+  --chart-block-size: 12rem;
+  --chart-bar-size: 2.5rem;
+  --chart-grid-color: color-mix(in srgb, var(--border) 64%, transparent);
   --z-overlay: 40;
   --z-popover: 45;
   --z-modal: 50;
@@ -821,6 +837,36 @@ a {
     block-size: 0;
     opacity: 0;
   }
+}
+
+@keyframes uds-drawer-in-end {
+  from { transform: translateX(100%); }
+  to { transform: translateX(0); }
+}
+
+@keyframes uds-drawer-out-end {
+  from { transform: translateX(0); }
+  to { transform: translateX(100%); }
+}
+
+@keyframes uds-drawer-in-start {
+  from { transform: translateX(-100%); }
+  to { transform: translateX(0); }
+}
+
+@keyframes uds-drawer-out-start {
+  from { transform: translateX(0); }
+  to { transform: translateX(-100%); }
+}
+
+@keyframes uds-drawer-in-bottom {
+  from { transform: translateY(100%); }
+  to { transform: translateY(0); }
+}
+
+@keyframes uds-drawer-out-bottom {
+  from { transform: translateY(0); }
+  to { transform: translateY(100%); }
 }
 
 .uds-stack {
@@ -2679,14 +2725,15 @@ a {
 }
 
 .uds-calendar {
+  position: relative;
   display: grid;
-  gap: var(--space-4);
-  inline-size: min(100%, 22rem);
+  gap: var(--space-5);
+  inline-size: min(100%, 21rem);
   border: 1px solid var(--border);
   border-radius: var(--radius-surface);
   background: var(--surface);
   color: var(--foreground);
-  padding: var(--space-4);
+  padding: var(--space-5);
 }
 
 .uds-calendar-rdp-root,
@@ -2695,10 +2742,13 @@ a {
   inline-size: 100%;
 }
 
-.uds-calendar-month {
+.uds-calendar-rdp-root {
   position: relative;
+}
+
+.uds-calendar-month {
   display: grid;
-  gap: var(--space-4);
+  gap: var(--space-5);
 }
 
 .uds-calendar-nav {
@@ -2706,13 +2756,14 @@ a {
   inset-block-start: 0;
   inset-inline: 0;
   z-index: 1;
-  display: block;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
   pointer-events: none;
 }
 
 .uds-calendar-nav-button {
-  position: absolute;
-  inset-block-start: 0;
+  position: static;
   display: inline-grid;
   place-items: center;
   inline-size: var(--button-height-sm);
@@ -2727,14 +2778,6 @@ a {
     background var(--duration-fast) var(--ease-standard),
     border-color var(--duration-fast) var(--ease-standard),
     color var(--duration-fast) var(--ease-standard);
-}
-
-.uds-calendar-nav-button-previous {
-  inset-inline-start: 0;
-}
-
-.uds-calendar-nav-button-next {
-  inset-inline-end: 0;
 }
 
 .uds-calendar-nav-button:hover {
@@ -2758,7 +2801,7 @@ a {
   align-items: center;
   justify-content: center;
   min-block-size: var(--button-height-sm);
-  padding-inline: calc(var(--button-height-sm) + var(--space-2));
+  padding-inline: calc(var(--button-height-sm) + var(--space-3));
 }
 
 .uds-calendar-title {
@@ -2770,8 +2813,15 @@ a {
   white-space: nowrap;
 }
 
+.uds-calendar-title,
 .uds-calendar-dropdowns {
-  display: flex;
+  min-inline-size: 0;
+  max-inline-size: 100%;
+}
+
+.uds-calendar-dropdowns {
+  position: relative;
+  display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: var(--space-2);
@@ -2779,20 +2829,50 @@ a {
 
 .uds-calendar-select-root {
   position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  min-block-size: var(--button-height-sm);
 }
 
-.uds-calendar-select {
+.uds-calendar-select-root .uds-calendar-title {
+  display: inline-flex;
+  align-items: center;
   min-block-size: var(--button-height-sm);
   border: 1px solid var(--input);
   border-radius: var(--radius-control);
   background: var(--background);
-  color: var(--foreground);
-  font: inherit;
-  padding-block: 0;
   padding-inline: var(--space-2);
+  pointer-events: none;
+}
+
+.uds-calendar-select {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  inline-size: 100%;
+  block-size: 100%;
+  min-block-size: 0;
+  margin: 0;
+  border: 0;
+  appearance: none;
+  background: transparent;
+  color: transparent;
+  cursor: pointer;
+  font: inherit;
+  opacity: 0;
+  padding: 0;
+}
+
+.uds-calendar-select:focus-visible + .uds-calendar-title,
+.uds-calendar-select:focus-visible ~ .uds-calendar-title {
+  outline: var(--focus-ring-width) solid var(--focus-ring);
+  outline-offset: var(--focus-ring-offset);
 }
 
 .uds-calendar-grid {
+  display: grid;
+  gap: var(--space-2);
   inline-size: 100%;
   border-collapse: collapse;
   table-layout: fixed;
@@ -2802,6 +2882,7 @@ a {
 .uds-calendar-week {
   display: grid;
   grid-template-columns: repeat(7, minmax(0, 1fr));
+  gap: var(--space-2);
 }
 
 .uds-calendar-weekday {
@@ -2832,6 +2913,8 @@ a {
   color: var(--foreground);
   cursor: pointer;
   font: inherit;
+  font-size: var(--font-size-body);
+  line-height: var(--line-height-tight);
   transition:
     background var(--duration-fast) var(--ease-standard),
     border-color var(--duration-fast) var(--ease-standard),
@@ -3269,32 +3352,58 @@ a {
 
 .uds-chart {
   display: grid;
-  gap: var(--space-3);
-  inline-size: min(100%, 24rem);
+  gap: var(--space-4);
+  inline-size: min(100%, 34rem);
   border: 1px solid var(--border);
   border-radius: var(--radius-surface);
   background: var(--surface);
   color: var(--foreground);
-  padding: var(--space-4);
+  padding: var(--space-5);
 }
 
 .uds-chart-title {
-  color: var(--muted-foreground);
+  color: var(--foreground);
   font-size: var(--font-size-small, 0.875rem);
+  font-weight: var(--font-weight-medium);
 }
 
 .uds-chart-bars {
-  display: flex;
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: minmax(var(--chart-bar-size), 1fr);
   align-items: end;
-  gap: var(--space-2);
-  block-size: 10rem;
+  gap: var(--space-3);
+  block-size: var(--chart-block-size);
+  padding-block-start: var(--space-3);
+  border-block-end: 1px solid var(--chart-grid-color);
+  background-image: linear-gradient(to top, var(--chart-grid-color) 1px, transparent 1px);
+  background-size: 100% 25%;
 }
 
 .uds-chart-bar {
-  flex: 1 1 0;
+  display: grid;
+  align-content: end;
+  justify-items: center;
+  block-size: 100%;
   min-block-size: var(--space-1);
+  color: var(--foreground);
+}
+
+.uds-chart-bar::before {
+  content: '';
+  inline-size: 100%;
+  block-size: var(--chart-bar-value, 50%);
+  min-block-size: var(--space-2);
   border-radius: var(--radius-control) var(--radius-control) 0 0;
   background: var(--primary);
+  transition: block-size var(--duration-medium) var(--ease-standard);
+}
+
+.uds-chart-bar-label {
+  margin-block-start: var(--space-2);
+  color: var(--muted-foreground);
+  font-size: var(--font-size-small);
+  line-height: 1.2;
 }
 
 .uds-combobox {
@@ -3329,9 +3438,10 @@ a {
   gap: var(--space-1);
   border: 1px solid var(--border);
   border-radius: var(--radius-surface);
-  background: var(--surface);
+  background: var(--popover-surface);
   color: var(--foreground);
   padding: var(--space-2);
+  box-shadow: var(--shadow-popover);
 }
 
 .uds-combobox-option {
@@ -3407,6 +3517,9 @@ a {
   border-radius: 0 0 var(--radius-surface) var(--radius-surface);
   background: var(--surface);
   color: var(--muted-foreground);
+}
+
+.uds-collapsible-content-inner {
   padding: var(--space-4);
 }
 
@@ -3495,11 +3608,13 @@ a {
   z-index: var(--z-popover);
   inline-size: max-content;
   max-inline-size: calc(100vw - var(--space-8));
-  padding: var(--space-2);
+  padding: 0;
 }
 
 .uds-date-picker-content .uds-calendar {
-  inline-size: min(22rem, calc(100vw - var(--space-8)));
+  inline-size: min(21rem, calc(100vw - var(--space-8)));
+  border: 0;
+  background: var(--popover-surface);
 }
 
 .uds-date-picker-trigger:focus-visible,
@@ -3591,10 +3706,26 @@ a {
   border-end-start-radius: var(--radius-surface);
 }
 
+.uds-drawer-content--end[data-state='open'] {
+  animation: uds-drawer-in-end var(--duration-medium) var(--ease-standard);
+}
+
+.uds-drawer-content--end[data-state='closed'] {
+  animation: uds-drawer-out-end var(--duration-medium) var(--ease-standard);
+}
+
 .uds-drawer-content--start {
   inset-inline-start: 0;
   border-start-end-radius: var(--radius-surface);
   border-end-end-radius: var(--radius-surface);
+}
+
+.uds-drawer-content--start[data-state='open'] {
+  animation: uds-drawer-in-start var(--duration-medium) var(--ease-standard);
+}
+
+.uds-drawer-content--start[data-state='closed'] {
+  animation: uds-drawer-out-start var(--duration-medium) var(--ease-standard);
 }
 
 .uds-drawer-content--bottom {
@@ -3605,6 +3736,14 @@ a {
   max-inline-size: none;
   border-start-start-radius: var(--radius-surface);
   border-start-end-radius: var(--radius-surface);
+}
+
+.uds-drawer-content--bottom[data-state='open'] {
+  animation: uds-drawer-in-bottom var(--duration-medium) var(--ease-standard);
+}
+
+.uds-drawer-content--bottom[data-state='closed'] {
+  animation: uds-drawer-out-bottom var(--duration-medium) var(--ease-standard);
 }
 
 .uds-sheet-content {
@@ -4168,7 +4307,7 @@ a {
 
 .uds-message-scroller-bubble {
   max-inline-size: 78%;
-  border-radius: calc(var(--radius-surface) + 2px);
+  border-radius: var(--radius-chat-bubble);
   background: var(--surface-strong);
   color: var(--foreground);
   font-size: var(--font-size-small);
@@ -4195,7 +4334,7 @@ a {
 }
 
 .uds-message-bubble {
-  border-radius: calc(var(--radius-surface) + 2px);
+  border-radius: var(--radius-chat-bubble);
   background: var(--surface-strong);
   color: var(--foreground);
   font-size: var(--font-size-small);
@@ -4657,6 +4796,299 @@ a {
   text-transform: none;
 }
 
+.uds-chat-layout,
+.uds-chat-message-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  inline-size: 100%;
+  min-inline-size: 0;
+  color: var(--foreground);
+}
+
+.uds-chat-layout {
+  justify-content: center;
+}
+
+.uds-chat-layout-messages {
+  min-inline-size: 0;
+}
+
+.uds-chat-layout-composer {
+  display: grid;
+  justify-items: center;
+  inline-size: 100%;
+  margin-block-start: var(--space-6);
+}
+
+.uds-chat-message {
+  display: grid;
+  gap: var(--space-2);
+  min-inline-size: 0;
+}
+
+.uds-chat-message[data-role='user'] {
+  justify-items: end;
+}
+
+.uds-chat-message[data-role='assistant'] {
+  justify-items: start;
+}
+
+.uds-chat-message-body {
+  display: grid;
+  gap: var(--space-2);
+  max-inline-size: 100%;
+}
+
+.uds-chat-message-bubble {
+  max-inline-size: min(100%, var(--chat-bubble-max-inline-size));
+  border-radius: var(--radius-chat-bubble);
+  background: var(--surface-strong);
+  color: var(--foreground);
+  padding-block: var(--chat-bubble-padding-block);
+  padding-inline: var(--chat-bubble-padding-inline);
+  font-size: var(--font-size-body);
+  line-height: var(--line-height-body);
+}
+
+.uds-chat-message-bubble[data-tone='primary'] {
+  background: var(--secondary);
+  color: var(--secondary-foreground);
+}
+
+.uds-chat-message-metadata {
+  color: var(--foreground-subtle);
+  font-size: var(--font-size-small);
+  line-height: 1.35;
+}
+
+.uds-chat-system-message {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+  align-items: center;
+  gap: var(--space-4);
+  inline-size: 100%;
+  color: var(--foreground-subtle);
+  font-size: var(--font-size-small);
+  line-height: 1.35;
+  text-align: center;
+}
+
+.uds-chat-system-message::before,
+.uds-chat-system-message::after {
+  content: '';
+  min-inline-size: 1rem;
+  border-block-start: 1px solid color-mix(in srgb, var(--border) 72%, transparent);
+}
+
+.uds-chat-system-message-label,
+.uds-chat-system-message-body {
+  min-inline-size: 0;
+}
+
+.uds-chat-tokenized-text {
+  display: inline-flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  max-inline-size: min(100%, var(--chat-bubble-max-inline-size));
+  border-radius: var(--radius-chat-bubble);
+  background: var(--surface-strong);
+  color: var(--foreground);
+  padding-block: var(--space-3);
+  padding-inline: var(--space-4);
+  line-height: var(--line-height-body);
+}
+
+.uds-chat-composer {
+  display: grid;
+  gap: var(--space-3);
+  inline-size: min(100%, var(--chat-composer-max-inline-size));
+  min-inline-size: 0;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-chat-composer);
+  background: var(--surface);
+  color: var(--foreground);
+  padding: var(--space-4);
+  box-shadow: var(--shadow-surface);
+}
+
+.uds-chat-composer-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: end;
+  gap: var(--space-3);
+  min-block-size: var(--chat-composer-min-block-size);
+}
+
+.uds-chat-composer-input {
+  display: block;
+  inline-size: 100%;
+  min-inline-size: 0;
+  min-block-size: var(--chat-composer-min-block-size);
+  resize: none;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  color: var(--foreground);
+  padding: 0;
+  font: inherit;
+  font-size: var(--font-size-body-lg);
+  line-height: var(--line-height-body);
+  outline: none;
+}
+
+.uds-chat-composer-input::placeholder {
+  color: var(--foreground-subtle);
+}
+
+.uds-chat-composer-actions {
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: var(--space-2);
+  align-self: end;
+}
+
+.uds-chat-send-button,
+.uds-chat-dictation-button,
+.uds-chat-layout-scroll-button {
+  flex: 0 0 auto;
+}
+
+.uds-chat-send-button svg,
+.uds-chat-dictation-button svg,
+.uds-chat-layout-scroll-button svg {
+  inline-size: var(--icon-size-md);
+  block-size: var(--icon-size-md);
+  stroke-width: 2;
+}
+
+.uds-chat-composer-drawer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  padding-block-end: var(--space-3);
+  border-block-end: 1px solid color-mix(in srgb, var(--border) 72%, transparent);
+}
+
+.uds-chat-composer-token {
+  border-radius: var(--radius-chat-token);
+  padding-block: var(--chat-token-padding-block);
+  padding-inline: var(--chat-token-padding-inline);
+  font-size: var(--font-size-small);
+}
+
+.uds-chat-tool-calls {
+  inline-size: min(100%, 34rem);
+  color: var(--foreground-muted);
+}
+
+.uds-chat-tool-calls-summary {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  cursor: pointer;
+  list-style: none;
+}
+
+.uds-chat-tool-calls-summary::-webkit-details-marker {
+  display: none;
+}
+
+.uds-chat-tool-calls-icon,
+.uds-chat-tool-calls-disclosure,
+.uds-chat-tool-call-status svg {
+  inline-size: var(--icon-size-sm);
+  block-size: var(--icon-size-sm);
+  color: currentColor;
+  stroke: currentColor;
+  stroke-width: 2;
+  fill: none !important;
+}
+
+.uds-chat-tool-calls[open] .uds-chat-tool-calls-disclosure {
+  transform: rotate(180deg);
+}
+
+.uds-chat-tool-calls-list {
+  display: grid;
+  gap: var(--space-2);
+  margin-block-start: var(--space-3);
+}
+
+.uds-chat-tool-call {
+  display: grid;
+  grid-template-columns: auto auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: var(--space-2);
+  min-inline-size: 0;
+  font-family: var(--font-mono);
+  font-size: var(--font-size-small);
+  line-height: 1.35;
+}
+
+.uds-chat-tool-call-status {
+  display: inline-grid;
+  place-items: center;
+  color: var(--foreground-subtle);
+}
+
+.uds-chat-tool-call[data-status='success'] .uds-chat-tool-call-status {
+  color: var(--success-text);
+}
+
+.uds-chat-tool-call[data-status='error'] .uds-chat-tool-call-status {
+  color: var(--destructive-text);
+}
+
+.uds-chat-tool-call-label {
+  color: var(--foreground);
+}
+
+.uds-chat-tool-call-description,
+.uds-chat-tool-call-duration {
+  min-inline-size: 0;
+  color: var(--foreground-subtle);
+}
+
+.uds-chat-tool-call-description {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+:where(:lang(ar), [lang|='ar']) .uds-chat-composer-input,
+:where(:lang(ar), [lang|='ar']) .uds-chat-message-bubble,
+:where(:lang(ar), [lang|='ar']) .uds-chat-tokenized-text {
+  font-family: var(--font-arabic-body);
+  line-height: var(--line-height-arabic-body);
+}
+
+:where([dir='rtl']) .uds-chat-message[data-role='user'] {
+  justify-items: start;
+}
+
+:where([dir='rtl']) .uds-chat-message[data-role='assistant'] {
+  justify-items: end;
+}
+
+:where([dir='rtl']) .uds-chat-composer-row {
+  grid-template-columns: auto minmax(0, 1fr);
+}
+
+:where([dir='rtl']) .uds-chat-composer-actions {
+  grid-column: 1;
+  grid-row: 1;
+}
+
+:where([dir='rtl']) .uds-chat-composer-input {
+  grid-column: 2;
+  grid-row: 1;
+  text-align: start;
+}
+
 /* --- Shadcn Component Checklist Additions --- */
 .uds-toast { display: flex; align-items: flex-start; gap: var(--space-3); border: 1px solid var(--border); border-radius: var(--radius-surface); background: var(--surface-strong); color: var(--foreground); padding: var(--space-4); box-shadow: var(--shadow-popover); }
 .uds-toast-icon { display: inline-grid; flex: 0 0 auto; place-items: center; inline-size: 1.25rem; block-size: 1.25rem; border-radius: 999px; background: var(--primary); color: var(--primary-foreground); margin-block-start: 1px; }
@@ -4691,11 +5123,11 @@ a {
 
 .uds-message-scroller { display: flex; flex-direction: column; gap: var(--space-2); max-block-size: 11rem; padding: var(--space-3); }
 .uds-message-scroller-day { color: var(--foreground-subtle); font-size: 0.625rem; letter-spacing: 0.15em; text-align: center; text-transform: uppercase; }
-.uds-message-scroller-bubble { max-inline-size: 78%; border-radius: calc(var(--radius-surface) + 2px); background: var(--surface-strong); color: var(--foreground); font-size: var(--font-size-small); line-height: 1.5; padding-block: var(--space-2); padding-inline: var(--space-3); }
+.uds-message-scroller-bubble { max-inline-size: 78%; border-radius: var(--radius-chat-bubble); background: var(--surface-strong); color: var(--foreground); font-size: var(--font-size-small); line-height: 1.5; padding-block: var(--space-2); padding-inline: var(--space-3); }
 .uds-message-scroller-bubble--outgoing { align-self: flex-end; background: var(--primary); color: var(--primary-foreground); }
 
 .uds-message--bubble { max-inline-size: 17.5rem; }
-.uds-message-bubble { border-radius: calc(var(--radius-surface) + 2px); background: var(--surface-strong); color: var(--foreground); font-size: var(--font-size-small); line-height: 1.5; padding-block: var(--space-3); padding-inline: var(--space-4); }
+.uds-message-bubble { border-radius: var(--radius-chat-bubble); background: var(--surface-strong); color: var(--foreground); font-size: var(--font-size-small); line-height: 1.5; padding-block: var(--space-3); padding-inline: var(--space-4); }
 
 .uds-sonner-toast--inverse { border-color: transparent; background: var(--primary); color: var(--primary-foreground); }
 .uds-sonner-toast--inverse .uds-sonner-description { color: color-mix(in srgb, var(--primary-foreground) 72%, transparent); }

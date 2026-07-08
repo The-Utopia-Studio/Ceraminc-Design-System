@@ -3265,7 +3265,7 @@ function ChatPreview({ locale, name }: { locale: Locale; name: string }) {
     return (
       <div className="chat-preview chat-preview--row">
         <ChatSendButton icon={<ArrowUp size={18} />} />
-        <ChatSendButton icon={<span className="uds-chat-ai-glyph">AI</span>} label="Send with AI" variant="secondary" />
+        <ChatSendButton icon={<ArrowUp size={18} />} label={isArabic ? 'إرسال ثانوي' : 'Secondary send'} variant="secondary" />
         <ChatSendButton disabled icon={<ArrowUp size={18} />} label="Send disabled" variant="secondary" />
       </div>
     )
@@ -4242,17 +4242,19 @@ function renderShadcnMappedPreview(name: string, locale: Locale = 'en') {
       return (
         <ShadcnPrimitives.Drawer>
           <ShadcnPrimitives.DrawerTrigger asChild>
-            <Button variant="secondary">Open drawer</Button>
+            <Button variant="secondary">{isArabic ? 'افتح الدرج' : 'Open drawer'}</Button>
           </ShadcnPrimitives.DrawerTrigger>
-          <ShadcnPrimitives.DrawerContent side="end">
+          <ShadcnPrimitives.DrawerContent dir={isArabic ? 'rtl' : undefined} side="end">
             <ShadcnPrimitives.DrawerHeader>
-              <ShadcnPrimitives.DrawerTitle>Drawer title</ShadcnPrimitives.DrawerTitle>
+              <ShadcnPrimitives.DrawerTitle>{isArabic ? 'عنوان الدرج' : 'Drawer title'}</ShadcnPrimitives.DrawerTitle>
               <ShadcnPrimitives.DrawerDescription>
-                Drawer uses logical start/end placement so RTL themes can mirror it.
+                {isArabic
+                  ? 'يستخدم الدرج مواضع البداية والنهاية المنطقية حتى ينعكس في واجهات RTL.'
+                  : 'Drawer uses logical start/end placement so RTL themes can mirror it.'}
               </ShadcnPrimitives.DrawerDescription>
             </ShadcnPrimitives.DrawerHeader>
             <ShadcnPrimitives.DrawerFooter>
-              <ShadcnPrimitives.DrawerClose>Close</ShadcnPrimitives.DrawerClose>
+              <ShadcnPrimitives.DrawerClose>{isArabic ? 'إغلاق' : 'Close'}</ShadcnPrimitives.DrawerClose>
             </ShadcnPrimitives.DrawerFooter>
           </ShadcnPrimitives.DrawerContent>
         </ShadcnPrimitives.Drawer>
@@ -4409,7 +4411,18 @@ function renderShadcnMappedPreview(name: string, locale: Locale = 'en') {
     }
 
     if (name === 'Chart') {
-      return <ShadcnPrimitives.Chart title="Component coverage"><ShadcnPrimitives.ChartBars values={[42, 68, 86, 74]} /></ShadcnPrimitives.Chart>
+      return (
+        <ShadcnPrimitives.Chart title={isArabic ? 'تغطية المكوّنات' : 'Component coverage'} dir={isArabic ? 'rtl' : undefined}>
+          <ShadcnPrimitives.ChartBars
+            values={[
+              { label: isArabic ? 'أزرار' : 'Buttons', value: 86 },
+              { label: isArabic ? 'نماذج' : 'Forms', value: 64 },
+              { label: isArabic ? 'تنقّل' : 'Nav', value: 72 },
+              { label: isArabic ? 'بيانات' : 'Data', value: 58 },
+            ]}
+          />
+        </ShadcnPrimitives.Chart>
+      )
     }
 
     if (name === 'Data Table') {

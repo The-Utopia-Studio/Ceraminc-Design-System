@@ -2189,13 +2189,14 @@ body {
   min-block-size: 420px;
   padding-block: var(--space-8);
   padding-inline: var(--space-4);
-  overflow: hidden;
+  box-sizing: border-box;
+  overflow: visible;
 }
 
 .chat-preview > .uds-chat-message-list,
 .chat-preview > .uds-chat-layout,
 .chat-preview > .uds-chat-tool-calls {
-  inline-size: min(100%, 38rem);
+  inline-size: min(100%, 42rem);
   max-inline-size: 100%;
 }
 
@@ -2208,7 +2209,7 @@ body {
 }
 
 .chat-preview--composer .uds-chat-composer {
-  inline-size: min(100%, 38rem);
+  inline-size: min(100%, 42rem);
   max-inline-size: 100%;
 }
 

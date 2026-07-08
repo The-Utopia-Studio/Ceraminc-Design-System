@@ -303,7 +303,7 @@ export function Calendar({
         locale={isArabicLocale ? arSA : enUS}
         mode="single"
         month={visibleMonth}
-        navLayout="around"
+        navLayout="after"
         onMonthChange={setVisibleMonth}
         onSelect={(date) => {
           if (date) selectDay(date)

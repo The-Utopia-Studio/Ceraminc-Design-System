@@ -293,7 +293,7 @@ export function DrawerContent({ className, side = 'end', ...props }: React.Compo
   return (
     <DialogPrimitive.Portal>
       <DialogPrimitive.Overlay className="uds-dialog-overlay" />
-      <DialogPrimitive.Content className={cn('uds-drawer-content', `uds-drawer-content--${side}`, className)} {...props} />
+      <DialogPrimitive.Content className={cn('uds-drawer-content', `uds-drawer-content--${side}`, className)} data-side={side} {...props} />
     </DialogPrimitive.Portal>
   )
 }
@@ -339,17 +339,30 @@ export function Chart({
   )
 }
 
-export function ChartBars({ className, values = [42, 68, 54], ...props }: DivProps & { values?: number[] }) {
+export type ChartBarValue = number | {
+  label?: React.ReactNode
+  value: number
+}
+
+export function ChartBars({ className, values = [42, 68, 54], ...props }: DivProps & { values?: ChartBarValue[] }) {
   return (
     <div className={cn('uds-chart-bars', className)} {...props}>
-      {values.map((value, index) => (
-        <span
-          key={`${value}-${index}`}
-          aria-label={`${value}%`}
-          className="uds-chart-bar"
-          style={{ blockSize: `${Math.max(4, Math.min(100, value))}%` }}
-        />
-      ))}
+      {values.map((entry, index) => {
+        const value = typeof entry === 'number' ? entry : entry.value
+        const label = typeof entry === 'number' ? undefined : entry.label
+        const clampedValue = Math.max(4, Math.min(100, value))
+
+        return (
+          <span
+            key={`${value}-${index}`}
+            aria-label={label ? `${label}: ${value}%` : `${value}%`}
+            className="uds-chart-bar"
+            style={{ '--chart-bar-value': `${clampedValue}%` } as React.CSSProperties}
+          >
+            {label ? <span className="uds-chart-bar-label">{label}</span> : null}
+          </span>
+        )
+      })}
     </div>
   )
 }
@@ -406,8 +419,12 @@ export function CollapsibleTrigger({ className, ...props }: React.ComponentProps
   return <CollapsiblePrimitive.Trigger className={cn('uds-collapsible-trigger', className)} {...props} />
 }
 
-export function CollapsibleContent({ className, ...props }: React.ComponentProps<typeof CollapsiblePrimitive.Content>) {
-  return <CollapsiblePrimitive.Content className={cn('uds-collapsible-content', className)} {...props} />
+export function CollapsibleContent({ children, className, ...props }: React.ComponentProps<typeof CollapsiblePrimitive.Content>) {
+  return (
+    <CollapsiblePrimitive.Content className={cn('uds-collapsible-content', className)} {...props}>
+      <div className="uds-collapsible-content-inner">{children}</div>
+    </CollapsiblePrimitive.Content>
+  )
 }
 
 type AlertVariant = 'default' | 'info' | 'success' | 'warning' | 'destructive'
