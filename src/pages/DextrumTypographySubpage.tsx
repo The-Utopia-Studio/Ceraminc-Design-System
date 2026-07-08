@@ -14,8 +14,8 @@ const pageMeta = {
     pairing: dextrumTheme.brandPrimitives.typography.marketingSales,
     rationale: 'Marketing type sets the vibe — bold display rhythm, confident headlines, and campaign-ready energy. Use this pairing when the surface is selling, announcing, or framing a narrative.',
     specimens: [
-      { role: 'Display headline', token: '--font-display', sample: 'Build with precision.', className: 'dextrum-type-specimen dextrum-type-specimen--display dextrum-type-specimen--hero' },
-      { role: 'Section heading', token: '--font-display', sample: 'Ocean-blue clarity for technical brands.', className: 'dextrum-type-specimen dextrum-type-specimen--display dextrum-type-specimen--section' },
+      { role: 'Display headline', token: '--font-marketing-display', sample: 'Build with precision.', className: 'dextrum-type-specimen dextrum-type-specimen--display dextrum-type-specimen--hero' },
+      { role: 'Section heading', token: '--font-marketing-display', sample: 'Ocean-blue clarity for technical brands.', className: 'dextrum-type-specimen dextrum-type-specimen--display dextrum-type-specimen--section' },
       { role: 'Marketing body', token: '--font-ui-support', sample: 'Satoshi keeps long-form campaign copy readable without stealing focus from Clash Grotesk display moments.', className: 'dextrum-type-specimen dextrum-type-specimen--support dextrum-type-specimen--body' },
       { role: 'Eyebrow / label', token: '--font-ui-support', sample: 'DEXTRUM PLATFORM', className: 'dextrum-type-specimen dextrum-type-specimen--support dextrum-type-specimen--eyebrow' },
     ],
@@ -26,7 +26,7 @@ const pageMeta = {
       ['Avoid', 'Do not use Clash Grotesk in dense app menus, data tables, or long dashboard paragraphs.'],
     ],
     tokens: [
-      ['Display', '--font-display', 'Clash Grotesk', 'Hero headlines, slide titles, website headers'],
+      ['Marketing display', '--font-marketing-display', 'Clash Grotesk', 'Hero headlines, slide titles, website headers — opt in via data-typography="marketing" or .dextrum-marketing-display'],
       ['Body / support', '--font-ui-support', 'Satoshi', 'Marketing paragraphs, eyebrows, supporting labels'],
       ['Arabic', '--font-arabic', 'IBM Plex Sans Arabic', 'Arabic marketing copy — never apply Latin tracking rules'],
     ],
@@ -51,6 +51,7 @@ const pageMeta = {
     ],
     tokens: [
       ['UI / body', '--font-sans', 'Manrope', 'Navigation, forms, tables, dashboards, long reading'],
+      ['Product display', '--font-display', 'Manrope', 'In-product headings and hero copy — same stack as --font-sans'],
       ['UI support', '--font-ui-support', 'Satoshi', 'Metadata, compact labels, secondary UI text'],
       ['Arabic', '--font-arabic', 'IBM Plex Sans Arabic', 'Arabic product UI — separate display/body rhythm from Latin'],
     ],
@@ -117,7 +118,7 @@ export function DextrumTypographySubpage({ segment }: DextrumTypographySubpagePr
 
         <section id="tokens">
           <h2>Token Mapping</h2>
-          <p>Dextrum maps brand font choices to Ceramic semantic tokens. Components consume token names — never hardcode font families.</p>
+          <p>Dextrum maps brand font choices to Ceramic semantic tokens. Product chrome consumes Manrope via <code>--font-sans</code> and <code>--font-display</code>. Clash Grotesk is available only through <code>--font-marketing-display</code> on explicit marketing surfaces.</p>
           <div className="token-chip-grid">
             {page.tokens.map(([, token]) => <span key={token}>{token}</span>)}
           </div>
@@ -144,7 +145,7 @@ export function DextrumTypographySubpage({ segment }: DextrumTypographySubpagePr
         <section id="specimens">
           <h2>Specimens</h2>
           <p>Previews use active Dextrum theme tokens. Activate Dextrum under Themes if specimens look off-brand.</p>
-          <div className="dextrum-specimen-grid">
+          <div className="dextrum-specimen-grid" data-typography={segment === 'marketing-sales' ? 'marketing' : undefined}>
             {page.specimens.map((specimen) => (
               <article className="dextrum-specimen-card" key={specimen.role}>
                 <span className="dextrum-specimen-meta">{specimen.role} · <code>{specimen.token}</code></span>

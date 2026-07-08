@@ -1672,7 +1672,7 @@ body {
 }
 
 .dextrum-type-specimen--display {
-  font-family: var(--font-display);
+  font-family: var(--font-marketing-display);
   letter-spacing: var(--tracking-heading);
 }
 
