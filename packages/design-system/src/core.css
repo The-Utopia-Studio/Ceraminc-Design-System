@@ -14,6 +14,7 @@
   --muted: color-mix(in srgb, CanvasText 12%, Canvas 88%);
   --muted-foreground: color-mix(in srgb, CanvasText 62%, Canvas 38%);
   --border: color-mix(in srgb, CanvasText 18%, Canvas 82%);
+  --border-width-strong: 2px;
   --input: color-mix(in srgb, CanvasText 24%, Canvas 76%);
   --ring: Highlight;
 
@@ -132,6 +133,7 @@
   --badge-padding-block: 0.25rem;
   --badge-padding-inline: 0.5rem;
   --badge-font-size: 0.75rem;
+  --badge-height: 1.5rem;
 
   --card-padding: var(--space-6);
   --card-title-size: 1.25rem;
@@ -592,11 +594,37 @@ a {
 }
 
 .uds-card {
+  position: relative;
+  overflow: hidden;
   border: 1px solid var(--border);
   border-radius: var(--radius-surface);
   background: var(--card);
   color: var(--card-foreground);
   box-shadow: var(--shadow-surface);
+}
+
+.uds-card::before {
+  content: '';
+  position: absolute;
+  inset-block-start: 0;
+  inset-inline: 0;
+  block-size: var(--border-width-strong);
+  background: var(--primary);
+  opacity: 0;
+  transform: scaleX(0);
+  transform-origin: center;
+  transition:
+    opacity var(--duration-fast) var(--ease-standard),
+    transform var(--duration-normal) var(--ease-standard);
+}
+
+.uds-card[data-accent='always']::before,
+.uds-card[data-accent='hover']:hover::before,
+.uds-card[data-accent='hover']:focus-visible::before,
+.uds-card--interactive:hover::before,
+.uds-card--interactive:focus-visible::before {
+  opacity: 1;
+  transform: scaleX(1);
 }
 
 .uds-card[data-size='sm'] {
@@ -635,6 +663,35 @@ a {
   grid-row: 1 / span 2;
   align-self: start;
   justify-self: end;
+}
+
+.uds-card-footer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  align-items: center;
+  justify-content: flex-end;
+  border-block-start: 1px solid var(--border);
+}
+
+[dir='rtl'] .uds-card-footer {
+  justify-content: flex-start;
+}
+
+.uds-card-status {
+  display: inline-flex;
+  align-items: center;
+  min-block-size: var(--badge-height);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-control);
+  background: var(--surface);
+  color: var(--foreground);
+  font-size: var(--font-size-small);
+  font-weight: var(--font-weight-medium);
+  line-height: var(--line-height-tight);
+  padding-block: var(--badge-padding-block);
+  padding-inline: var(--badge-padding-inline);
+  white-space: nowrap;
 }
 
 .uds-card-title,
@@ -907,6 +964,36 @@ a {
   display: inline-flex;
   align-items: center;
   color: var(--foreground-subtle);
+}
+
+.uds-breadcrumb-ellipsis {
+  display: inline-grid;
+  place-items: center;
+  min-inline-size: calc(var(--space-6) + var(--space-2));
+  block-size: var(--button-height-sm);
+  border: 1px solid transparent;
+  border-radius: var(--radius-control);
+  background: transparent;
+  color: var(--muted-foreground);
+  cursor: pointer;
+  font: inherit;
+  line-height: 1;
+  padding-block: 0;
+  padding-inline: var(--space-2);
+  transition:
+    background var(--duration-fast) var(--ease-standard),
+    border-color var(--duration-fast) var(--ease-standard),
+    color var(--duration-fast) var(--ease-standard);
+}
+
+.uds-breadcrumb-ellipsis:hover {
+  background: var(--surface-hover);
+  color: var(--foreground);
+}
+
+.uds-breadcrumb-ellipsis:focus-visible {
+  outline: var(--focus-ring-width) solid var(--focus-ring);
+  outline-offset: var(--focus-ring-offset);
 }
 
 .uds-top-nav {
@@ -2602,54 +2689,181 @@ a {
   padding: var(--space-4);
 }
 
-.uds-calendar-header {
-  font-weight: var(--font-weight-medium);
+.uds-calendar-rdp-root,
+.uds-calendar-month,
+.uds-calendar-months {
+  inline-size: 100%;
+}
+
+.uds-calendar-month {
+  position: relative;
+  display: grid;
+  gap: var(--space-4);
+}
+
+.uds-calendar-nav {
+  position: absolute;
+  inset-block-start: 0;
+  inset-inline: 0;
+  z-index: 1;
+  display: block;
+  pointer-events: none;
+}
+
+.uds-calendar-nav-button {
+  position: absolute;
+  inset-block-start: 0;
+  display: inline-grid;
+  place-items: center;
+  inline-size: var(--button-height-sm);
+  block-size: var(--button-height-sm);
+  border: 1px solid transparent;
+  border-radius: var(--radius-control);
+  background: transparent;
+  color: var(--foreground);
+  cursor: pointer;
+  pointer-events: auto;
+  transition:
+    background var(--duration-fast) var(--ease-standard),
+    border-color var(--duration-fast) var(--ease-standard),
+    color var(--duration-fast) var(--ease-standard);
+}
+
+.uds-calendar-nav-button-previous {
+  inset-inline-start: 0;
+}
+
+.uds-calendar-nav-button-next {
+  inset-inline-end: 0;
+}
+
+.uds-calendar-nav-button:hover {
+  border-color: var(--border-strong);
+  background: var(--surface-hover);
+}
+
+.uds-calendar-nav-button:focus-visible {
+  outline: var(--focus-ring-width) solid var(--focus-ring);
+  outline-offset: var(--focus-ring-offset);
+}
+
+.uds-calendar-chevron {
+  inline-size: var(--icon-size-sm);
+  block-size: var(--icon-size-sm);
+  color: currentColor;
+}
+
+.uds-calendar-caption {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-block-size: var(--button-height-sm);
+  padding-inline: calc(var(--button-height-sm) + var(--space-2));
+}
+
+.uds-calendar-title {
+  color: var(--foreground);
+  font-size: var(--font-size-body-lg);
+  font-weight: var(--font-weight-semibold);
+  line-height: var(--line-height-tight);
   text-align: center;
+  white-space: nowrap;
+}
+
+.uds-calendar-dropdowns {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+}
+
+.uds-calendar-select-root {
+  position: relative;
+}
+
+.uds-calendar-select {
+  min-block-size: var(--button-height-sm);
+  border: 1px solid var(--input);
+  border-radius: var(--radius-control);
+  background: var(--background);
+  color: var(--foreground);
+  font: inherit;
+  padding-block: 0;
+  padding-inline: var(--space-2);
 }
 
 .uds-calendar-grid {
+  inline-size: 100%;
+  border-collapse: collapse;
+  table-layout: fixed;
+}
+
+.uds-calendar-weekdays,
+.uds-calendar-week {
   display: grid;
   grid-template-columns: repeat(7, minmax(0, 1fr));
-  gap: var(--space-1);
 }
 
 .uds-calendar-weekday {
+  display: grid;
+  place-items: center;
+  min-block-size: var(--button-height-sm);
   color: var(--muted-foreground);
-  font-size: var(--font-size-eyebrow);
+  font-size: var(--font-size-small);
   font-weight: var(--font-weight-medium);
   text-align: center;
 }
 
 .uds-calendar-day {
-  display: inline-grid;
+  display: grid;
   place-items: center;
   min-inline-size: 0;
-  aspect-ratio: 1;
+  padding: 0;
+}
+
+.uds-calendar-day-button {
+  display: inline-grid;
+  place-items: center;
+  inline-size: var(--button-height-sm);
+  block-size: var(--button-height-sm);
   border: 1px solid transparent;
   border-radius: var(--radius-control);
   background: transparent;
   color: var(--foreground);
   cursor: pointer;
   font: inherit;
+  transition:
+    background var(--duration-fast) var(--ease-standard),
+    border-color var(--duration-fast) var(--ease-standard),
+    color var(--duration-fast) var(--ease-standard);
 }
 
-.uds-calendar-day:hover {
-  background: var(--secondary);
-  color: var(--secondary-foreground);
+.uds-calendar-day-button:hover {
+  background: var(--surface-hover);
 }
 
-.uds-calendar-day:focus-visible {
-  outline: var(--focus-ring-width) solid var(--ring);
+.uds-calendar-day-button:focus-visible {
+  outline: var(--focus-ring-width) solid var(--focus-ring);
   outline-offset: var(--focus-ring-offset);
 }
 
-.uds-calendar-day[data-outside='true'] {
+.uds-calendar-day-outside .uds-calendar-day-button {
   color: var(--foreground-subtle);
 }
 
-.uds-calendar-day[data-selected='true'] {
+.uds-calendar-day-selected .uds-calendar-day-button {
   background: var(--primary);
   color: var(--primary-foreground);
+}
+
+.uds-calendar-day-today:not(.uds-calendar-day-selected) .uds-calendar-day-button {
+  border-color: var(--border-strong);
+}
+
+.uds-calendar-day-disabled .uds-calendar-day-button {
+  color: var(--foreground-subtle);
+  cursor: not-allowed;
+  opacity: var(--opacity-disabled);
 }
 
 .uds-banner,
@@ -3224,7 +3438,9 @@ a {
 
 .uds-date-picker-trigger {
   display: grid;
-  gap: var(--space-1);
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  column-gap: var(--space-3);
   inline-size: 100%;
   min-block-size: var(--input-height);
   border: 1px solid var(--input);
@@ -3238,13 +3454,52 @@ a {
   text-align: start;
 }
 
-.uds-date-picker-trigger span {
+.uds-date-picker-trigger-copy {
+  display: grid;
+  gap: var(--space-1);
+  min-inline-size: 0;
+}
+
+.uds-date-picker-label {
   color: var(--muted-foreground);
   font-size: var(--font-size-small);
 }
 
 .uds-date-picker-trigger strong {
+  color: var(--foreground);
   font-weight: var(--font-weight-medium);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.uds-date-picker-trigger strong[data-placeholder] {
+  color: var(--muted-foreground);
+  font-weight: var(--font-weight-normal);
+}
+
+.uds-date-picker-trigger-icons {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  color: var(--muted-foreground);
+}
+
+.uds-date-picker-trigger-icons svg {
+  inline-size: var(--icon-size-sm);
+  block-size: var(--icon-size-sm);
+  color: currentColor;
+}
+
+.uds-date-picker-content {
+  z-index: var(--z-popover);
+  inline-size: max-content;
+  max-inline-size: calc(100vw - var(--space-8));
+  padding: var(--space-2);
+}
+
+.uds-date-picker-content .uds-calendar {
+  inline-size: min(22rem, calc(100vw - var(--space-8)));
 }
 
 .uds-date-picker-trigger:focus-visible,
@@ -4463,4 +4718,3 @@ a {
     grid-template-columns: 1fr;
   }
 }
-

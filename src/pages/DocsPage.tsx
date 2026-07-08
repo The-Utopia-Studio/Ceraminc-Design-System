@@ -1,6 +1,7 @@
 import type { ReactNode } from 'react'
 import { ArrowLeft, ArrowRight, Bell, ChevronDown, Download, Home, PanelLeft, Search, Settings } from 'lucide-react'
-import { themes, utopiaDefaultTheme } from '../data/design-system'
+import { dextrumTheme, themes, utopiaDefaultTheme } from '../data/design-system'
+import { DextrumTypographySubpage, dextrumTypographySegmentFromPath } from './DextrumTypographySubpage'
 import { ArabicDisplay, ArabicText } from '../../packages/design-system/src/Typography'
 import { docsLabel, t, useI18n } from '../i18n'
 
@@ -214,6 +215,12 @@ function tokensFor(groups: TokenRow['group'][]) {
 }
 
 export function DocsPage({ path = '/docs' }: DocsPageProps) {
+  const dextrumTypographySegment = dextrumTypographySegmentFromPath(path)
+
+  if (dextrumTypographySegment) {
+    return <DextrumTypographySubpage segment={dextrumTypographySegment} />
+  }
+
   if (path.startsWith('/docs/guide/')) {
     const slug = guideSlugFromPath(path)
     const page = guidePages[slug] ?? guidePages['quick-start-with-ai']
@@ -485,6 +492,9 @@ function FoundationsPage({ page, slug }: { page: typeof foundationPages[keyof ty
           <>
             <FoundationSection id="type-scale" title="Type Scale">
               <TypeScale />
+            </FoundationSection>
+            <FoundationSection id="dextrum-typography" title="Dextrum Typography">
+              <DextrumTypographyLinks />
             </FoundationSection>
             <FoundationSection id="arabic-display" title="Arabic Display Is Not Uppercase">
               <ArabicDisplayPreview />
@@ -829,6 +839,35 @@ function TypeScale() {
         <code>import {'{ Button }'} from '@utopia-studio-design/design-system/Button'</code>
         <p>Code and token names use mono styling for copy-paste reliability.</p>
       </article>
+    </div>
+  )
+}
+
+function DextrumTypographyLinks() {
+  const pairings = [
+    {
+      href: '#/docs/foundations/typography/dextrum/marketing-sales',
+      label: 'Marketing & Sales',
+      title: 'Clash Grotesk + Satoshi',
+      description: dextrumTheme.brandPrimitives.typography.marketingSales.use,
+    },
+    {
+      href: '#/docs/foundations/typography/dextrum/app-website',
+      label: 'App & Website',
+      title: 'Manrope + Satoshi',
+      description: dextrumTheme.brandPrimitives.typography.appWebsite.use,
+    },
+  ]
+
+  return (
+    <div className="foundation-card-grid">
+      {pairings.map((pairing) => (
+        <a className="foundation-card link-card" href={pairing.href} key={pairing.href}>
+          <span className="kicker">{pairing.label}</span>
+          <strong>{pairing.title}</strong>
+          <p>{pairing.description}</p>
+        </a>
+      ))}
     </div>
   )
 }

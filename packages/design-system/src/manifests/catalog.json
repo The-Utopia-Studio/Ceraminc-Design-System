@@ -122,6 +122,8 @@
           "label": "Navigation",
           "items": [
             "Breadcrumb",
+            "Breadcrumb Item",
+            "Breadcrumbs",
             "Command",
             "Context Menu",
             "Dropdown Menu",
@@ -248,7 +250,8 @@
           "id": "active",
           "label": "Active",
           "items": [
-            "Utopia Default"
+            "Utopia Default",
+            "Dextrum"
           ]
         },
         {
@@ -506,6 +509,19 @@
     ],
     "planned": []
   },
+  "docFamilies": [
+    {
+      "id": "dextrum-typography",
+      "label": "Dextrum Typography",
+      "parent": "Typography",
+      "group": "foundations",
+      "items": [
+        "Marketing & Sales",
+        "App & Website"
+      ],
+      "description": "Dextrum theme font pairings for marketing surfaces and product UI."
+    }
+  ],
   "componentFamilies": [
     {
       "id": "side-nav",

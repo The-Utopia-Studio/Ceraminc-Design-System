@@ -1,0 +1,235 @@
+{
+
+  "$schema": "https://utopia-studio.co/design-system/theme.schema.json",
+
+  "id": "dextrum",
+
+  "name": "Dextrum",
+
+  "type": "theme-policy",
+
+  "locked": false,
+
+  "summary": "Dextrum brand theme mapped to the Ceramic semantic contract. Ocean blue accents on dark blue surfaces with Manrope driving product UI, docs, and default headings. Clash Grotesk is reserved for explicit marketing surfaces.",
+
+  "sourceFiles": [
+
+    "packages/design-system/src/themes/dextrum.css",
+
+    "packages/design-system/src/manifests/theme-dextrum.json"
+
+  ],
+
+  "brandPrimitives": {
+
+    "colors": {
+
+      "darkBlue": "#192B39",
+
+      "oceanBlue": "#3E8ECC",
+
+      "charcoalBlue": "#2F3F4C",
+
+      "matteBlack": "#141414",
+
+      "timidWhite": "#EAEAEA",
+
+      "logoTeal": "#063946"
+
+    },
+
+    "typography": {
+
+      "marketingSales": {
+
+        "display": "Clash Grotesk",
+
+        "body": "Satoshi",
+
+        "use": "Pitch decks, campaigns, sales collateral, and website headers"
+
+      },
+
+      "appWebsite": {
+
+        "ui": "Manrope",
+
+        "support": "Satoshi",
+
+        "use": "Product UI, dashboards, documentation, and long-form web reading"
+
+      },
+
+      "arabicFamily": "IBM Plex Sans Arabic",
+
+      "weights": {
+
+        "clashGrotesk": [300, 400, 500, 600, 700],
+
+        "satoshi": [400, 500, 700],
+
+        "manrope": [300, 400, 500, 600, 700, 800]
+
+      },
+
+      "arabicWeights": [400, 500, 700],
+
+      "headlineCasing": "sentence",
+
+      "headlineTracking": "-0.03em to -0.05em",
+
+      "arabicDisplayFamily": "IBM Plex Sans Arabic",
+
+      "arabicDisplayCasing": "none",
+
+      "arabicDisplayRule": "Use Arabic display scale and IBM Plex Sans Arabic. Do not apply Latin negative tracking rules to Arabic.",
+
+      "rationale": "Marketing type sets brand vibe; app type optimizes readability on small screens and in dark mode. Marketing display may still appear in website headers."
+
+    },
+
+    "geometry": {
+
+      "surfaceRadius": "8px",
+
+      "controlRadius": "6px",
+
+      "elevation": "calm surfaces with subtle borders; restrained shadow on floating layers only"
+
+    }
+
+  },
+
+  "semanticMappings": {
+
+    "--background": "Dark Blue",
+
+    "--foreground": "Timid White",
+
+    "--primary": "Ocean Blue",
+
+    "--secondary": "Charcoal Blue",
+
+    "--radius-control": "6px rounded controls",
+
+    "--radius-surface": "8px rounded surfaces",
+
+    "--font-display": "Manrope (product UI headings and display scale)",
+
+    "--font-sans": "Manrope",
+
+    "--font-ui-support": "Satoshi",
+
+    "--font-marketing-display": "Clash Grotesk (marketing surfaces only)",
+
+    "--font-arabic": "IBM Plex Sans Arabic",
+
+    "--overlay": "Dark Blue modal dim",
+
+    "--modal-surface": "Charcoal Blue",
+
+    "--popover-surface": "Charcoal Blue"
+
+  },
+
+  "visualPolicy": {
+
+    "tone": [
+
+      "precise",
+
+      "technical",
+
+      "calm",
+
+      "confident"
+
+    ],
+
+    "allow": [
+
+      "dark blue structural surfaces",
+
+      "ocean blue accents for action and links",
+
+      "rounded controls and cards",
+
+      "muted neutral hierarchy",
+
+      "Clash Grotesk for marketing display and website headers",
+
+      "Manrope for product UI and long reading"
+
+    ],
+
+    "avoid": [
+
+      "Utopia brick red palette",
+
+      "square Utopia geometry defaults",
+
+      "decorative gradients",
+
+      "heavy glass effects",
+
+      "startup-cute styling",
+
+      "fancy marketing display fonts in dense app menus or long paragraphs"
+
+    ]
+
+  },
+
+  "iconPolicy": {
+
+    "system": "lucide",
+
+    "description": "Dextrum uses standard lucide icons inside product UI while keeping the Dextrum mark for brand surfaces.",
+
+    "allow": [
+
+      "lucide icons in components",
+
+      "monochrome currentColor icons",
+
+      "directional mirroring in RTL"
+
+    ],
+
+    "avoid": [
+
+      "Utopia dot-bar icon policy",
+
+      "emoji",
+
+      "mixed icon families in one surface"
+
+    ],
+
+    "coreNote": "Icon policy is theme-owned. Core components remain icon-system neutral."
+
+  },
+
+  "aiRules": [
+
+    "Read this theme policy after the core semantic contract.",
+
+    "Map Dextrum palette through semantic tokens only.",
+
+    "Use Ocean Blue for primary actions and links, not as a full-page wash.",
+
+    "Prefer dark blue and charcoal surfaces with timid white type.",
+
+    "Use Manrope for Latin app UI and body copy in this theme.",
+
+    "Use Clash Grotesk for marketing display and website headers only.",
+
+    "Use Satoshi for marketing body copy and supporting UI labels where needed.",
+
+    "Keep Arabic on IBM Plex Sans Arabic tokens.",
+
+    "Do not import Utopia brand primitives into Dextrum-themed surfaces."
+
+  ]
+
+}

@@ -17,6 +17,10 @@ function readDoc(topic) {
   return readFileSync(path, 'utf8')
 }
 
+function normalizeLookup(value) {
+  return String(value).toLowerCase().replace(/[^a-z0-9]/g, '')
+}
+
 function help() {
   console.log(`Utopia Design System CLI
 
@@ -44,7 +48,10 @@ function component() {
     return
   }
 
-  const entry = manifest.components.find((item) => item.name.toLowerCase() === name.toLowerCase())
+  const normalizedName = normalizeLookup(name)
+  const entry = manifest.components.find(
+    (item) => item.name.toLowerCase() === name.toLowerCase() || normalizeLookup(item.name) === normalizedName,
+  )
   if (!entry) throw new Error(`Unknown component "${name}". Run component --list.`)
 
   console.log([

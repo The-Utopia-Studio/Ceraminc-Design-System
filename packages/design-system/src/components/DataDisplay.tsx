@@ -375,7 +375,9 @@ export function DatePicker({
   ...calendarProps
 }: DatePickerProps) {
   const [uncontrolledDate, setUncontrolledDate] = React.useState<Date | undefined>(defaultSelectedDate)
+  const [uncontrolledOpen, setUncontrolledOpen] = React.useState(false)
   const activeDate = selectedDate ?? uncontrolledDate
+  const activeOpen = open ?? uncontrolledOpen
   const isArabicLocale = locale.toLowerCase().startsWith('ar')
   const triggerLabel = label ?? (isArabicLocale ? 'اختر التاريخ' : 'Select date')
   const triggerPlaceholder = placeholder ?? (isArabicLocale ? 'اختر تاريخاً' : 'Pick a date')
@@ -383,16 +385,23 @@ export function DatePicker({
     ? valueFormatter?.(activeDate, locale) ?? new Intl.DateTimeFormat(locale, { dateStyle: 'long' }).format(activeDate)
     : triggerPlaceholder
 
+  const setOpen = React.useCallback((nextOpen: boolean) => {
+    if (open === undefined) {
+      setUncontrolledOpen(nextOpen)
+    }
+    onOpenChange?.(nextOpen)
+  }, [onOpenChange, open])
+
   const handleSelect = (date: Date) => {
     if (selectedDate === undefined) {
       setUncontrolledDate(date)
     }
     onSelect?.(date)
-    onOpenChange?.(false)
+    setOpen(false)
   }
 
   return (
-    <PopoverPrimitive.Root open={open} onOpenChange={onOpenChange}>
+    <PopoverPrimitive.Root open={activeOpen} onOpenChange={setOpen}>
       <PopoverPrimitive.Trigger asChild>
         <button className={cn('uds-date-picker-trigger', triggerClassName)} dir={isArabicLocale ? 'rtl' : undefined} type="button">
           <span className="uds-date-picker-trigger-copy">
@@ -408,7 +417,8 @@ export function DatePicker({
       <PopoverPrimitive.Portal>
         <PopoverPrimitive.Content
           align={isArabicLocale ? 'end' : 'start'}
-          className={cn('uds-date-picker-content', className)}
+          className={cn('uds-floating-content uds-date-picker-content', className)}
+          collisionPadding={16}
           dir={isArabicLocale ? 'rtl' : undefined}
           sideOffset={8}
         >

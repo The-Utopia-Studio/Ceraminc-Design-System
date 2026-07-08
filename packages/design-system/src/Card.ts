@@ -6,8 +6,10 @@ export {
   CardDescription,
   CardFooter,
   CardHeader,
+  CardStatus,
   CardTitle,
   SelectableCard,
+  type ClickableCardProps,
   type CardProps,
   type SelectableCardProps,
 } from './components/Card'

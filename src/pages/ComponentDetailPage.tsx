@@ -6,7 +6,7 @@ import { Badge } from '../../packages/design-system/src/Badge'
 import { Button } from '../../packages/design-system/src/Button'
 import { ButtonGroup, ButtonGroupSeparator, ButtonGroupText } from '../../packages/design-system/src/ButtonGroup'
 import { IconButton } from '../../packages/design-system/src/IconButton'
-import { Card, CardAction, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '../../packages/design-system/src/Card'
+import { Card, CardAction, CardContent, CardDescription, CardFooter, CardHeader, CardStatus, CardTitle } from '../../packages/design-system/src/Card'
 import { Field, FieldLabel, TextInput, TextArea, Checkbox, RadioGroup, RadioGroupItem, Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectScrollDownButton, SelectScrollUpButton, SelectSeparator, SelectTrigger, SelectValue, Slider, Switch } from '../../packages/design-system/src/Forms'
 import { AspectRatio, Center, Grid, HStack, VStack } from '../../packages/design-system/src/Layout'
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '../../packages/design-system/src/Accordion'
@@ -14,7 +14,7 @@ import { Alert, AlertDescription, AlertTitle } from '../../packages/design-syste
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from '../../packages/design-system/src/AlertDialog'
 import { Attachment, AttachmentAction, AttachmentActions, AttachmentContent, AttachmentDescription, AttachmentGroup, AttachmentMedia, AttachmentTitle, AttachmentTrigger } from '../../packages/design-system/src/Attachment'
 import { ChatComposer, ChatComposerInput, ChatComposerTokenElement, ChatDictationButton, ChatLayout, ChatLayoutScrollButton, ChatMessage, ChatMessageBubble, ChatMessageList, ChatMessageMetadata, ChatSendButton, ChatSystemMessage, ChatTokenizedText, ChatToolCalls } from '../../packages/design-system/src/Chat'
-import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator, Breadcrumbs, CommandPalette, CommandPaletteEmpty, CommandPaletteGroup, CommandPaletteInput, CommandPaletteItem, CommandPaletteList, ContextMenu, ContextMenuContent, ContextMenuItem, ContextMenuTrigger, DropdownMenu, DropdownMenuCheckboxItem, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuLabel, DropdownMenuRadioGroup, DropdownMenuRadioItem, DropdownMenuSeparator, DropdownMenuShortcut, DropdownMenuSub, DropdownMenuSubContent, DropdownMenuSubTrigger, DropdownMenuTrigger, MobileNav, MobileNavContent, MobileNavToggle, MobileNavTrigger, NavHeadingMenu, NavHeadingMenuContent, NavHeadingMenuTrigger, NavIcon, PanelIcon, SideNav, SideNavCollapseButton, SideNavContent, SideNavHeading, SideNavItem, SideNavSection, Tab, TabList, TabPanel, Tabs, TopNav, TopNavHeading, TopNavItem, TopNavMegaMenu, TopNavMegaMenuFeaturedCard, TopNavMegaMenuItem, TopNavMenu, TopNavMenuItem } from '../../packages/design-system/src/Navigation'
+import { Breadcrumb, BreadcrumbEllipsis, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator, Breadcrumbs, CommandPalette, CommandPaletteEmpty, CommandPaletteGroup, CommandPaletteInput, CommandPaletteItem, CommandPaletteList, ContextMenu, ContextMenuContent, ContextMenuItem, ContextMenuTrigger, DropdownMenu, DropdownMenuCheckboxItem, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuLabel, DropdownMenuRadioGroup, DropdownMenuRadioItem, DropdownMenuSeparator, DropdownMenuShortcut, DropdownMenuSub, DropdownMenuSubContent, DropdownMenuSubTrigger, DropdownMenuTrigger, MobileNav, MobileNavContent, MobileNavToggle, MobileNavTrigger, NavHeadingMenu, NavHeadingMenuContent, NavHeadingMenuTrigger, NavIcon, PanelIcon, SideNav, SideNavCollapseButton, SideNavContent, SideNavHeading, SideNavItem, SideNavSection, Tab, TabList, TabPanel, Tabs, TopNav, TopNavHeading, TopNavItem, TopNavMegaMenu, TopNavMegaMenuFeaturedCard, TopNavMegaMenuItem, TopNavMenu, TopNavMenuItem } from '../../packages/design-system/src/Navigation'
 import { HoverCard, HoverCardContent, HoverCardTrigger, Popover, PopoverContent, PopoverTrigger, Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '../../packages/design-system/src/Surface'
 import { ToggleButton } from '../../packages/design-system/src/ToggleButton'
 import { ToggleButtonGroup, ToggleButtonGroupItem } from '../../packages/design-system/src/ToggleButtonGroup'
@@ -79,6 +79,7 @@ export function ComponentDetailPage({ componentId, tab = 'overview' }: Component
   if (entry.name === 'Alert') return <AlertDetailPage tab={tab} />
   if (entry.name === 'Avatar') return <AvatarDetailPage tab={tab} />
   if (entry.name === 'Badge') return <BadgeDetailPage tab={tab} />
+  if (entry.name === 'Card') return <CardDetailPage tab={tab} />
   if (entry.name === 'Dropdown Menu') return <DropdownMenuDetailPage tab={tab} />
   if (entry.name === 'Select') return <SelectDetailPage tab={tab} />
   if (entry.name === 'Toggle Button') return <ToggleButtonDetailPage tab={tab} name="Toggle Button" />
@@ -2020,6 +2021,149 @@ function BadgeDetailPage({ tab }: { tab: string }) {
   )
 }
 
+function CardDetailPage({ tab }: { tab: string }) {
+  const { locale } = useI18n()
+  const isArabic = locale === 'ar'
+  const isProperties = tab === 'properties'
+  const [title, setTitle] = useState(isArabic ? 'ملخص البرنامج' : 'Program snapshot')
+  const [description, setDescription] = useState(isArabic ? 'سطح قابل لإعادة الاستخدام مع رأس ومحتوى وتذييل.' : 'Reusable surface with header, content, and footer.')
+  const [status, setStatus] = useState(isArabic ? 'متاح' : 'Available')
+  const [size, setSize] = useState<'default' | 'sm'>('default')
+  const [accent, setAccent] = useState<'none' | 'hover' | 'always'>('hover')
+  const [interactive, setInteractive] = useState(false)
+
+  const preview = (
+    <div className="card-demo-stage" dir={isArabic ? 'rtl' : 'ltr'} lang={isArabic ? 'ar' : 'en'}>
+      <Card accent={accent === 'none' ? false : accent} interactive={interactive} size={size}>
+        <CardHeader>
+          <CardTitle>{title}</CardTitle>
+          <CardDescription>{description}</CardDescription>
+          {status ? (
+            <CardAction>
+              <CardStatus>{status}</CardStatus>
+            </CardAction>
+          ) : null}
+        </CardHeader>
+        <CardContent>
+          {isArabic
+            ? 'استخدم البطاقة للمحتوى المتكرر أو البيانات المجمعة أو أسطح الأدوات المؤطرة. النص هنا تجريبي فقط.'
+            : 'Use cards for repeated content, grouped data, or framed tool surfaces. This copy is example content only.'}
+        </CardContent>
+        <CardFooter>
+          <Button variant="secondary">{isArabic ? 'عرض التفاصيل' : 'View details'}</Button>
+          <Button variant="ghost">{isArabic ? 'فتح' : 'Open'}</Button>
+        </CardFooter>
+      </Card>
+    </div>
+  )
+
+  const propsPanel = (
+    <div className="props-table" dir={isArabic ? 'rtl' : undefined} lang={isArabic ? 'ar' : undefined}>
+      <PropRow
+        control={<PropTextControl label="CardTitle value" onChange={setTitle} placeholder={isArabic ? 'ملخص البرنامج' : 'Program snapshot'} value={title} />}
+        description={isArabic ? 'عنوان البطاقة. استخدم CardTitle داخل CardHeader.' : 'Card headline. Use CardTitle inside CardHeader.'}
+        name="CardTitle"
+        type="ReactNode"
+      />
+      <PropRow
+        control={<PropTextControl label="CardDescription value" onChange={setDescription} placeholder={isArabic ? 'وصف قصير' : 'Short description'} value={description} />}
+        description={isArabic ? 'نص مساند داخل الرأس. يبقى المحتوى والترجمة ملكا للمنتج.' : 'Supporting copy in the header. Product content and localization stay app-owned.'}
+        name="CardDescription"
+        type="ReactNode"
+      />
+      <PropRow
+        control={<PropTextControl label="status value" onChange={setStatus} placeholder={isArabic ? 'متاح' : 'Available'} value={status} />}
+        description={isArabic ? 'حالة قصيرة تظهر عادة داخل CardAction باستخدام CardStatus.' : 'Short status rendered through CardAction with CardStatus.'}
+        name="status"
+        type="ReactNode"
+      />
+      <PropRow
+        control={<PropSelectControl label="size value" onChange={(value) => setSize(value as typeof size)} options={['default', 'sm']} value={size} />}
+        description={isArabic ? 'كثافة المساحة الداخلية. لا تمرر قيما بكسلية مباشرة.' : 'Internal spacing density. Do not pass raw pixel values.'}
+        name="size"
+        type="'default' | 'sm'"
+      />
+      <PropRow
+        control={<PropSelectControl label="accent value" onChange={(value) => setAccent(value as typeof accent)} options={['none', 'hover', 'always']} value={accent} />}
+        description={isArabic ? 'خط بداية كتلي دلالي. يستخدم --primary ويظهر عند التحويم أو دائما حسب القيمة.' : 'Semantic block-start accent line. Uses --primary and appears on hover or always depending on value.'}
+        name="accent"
+        type="false | 'hover' | 'always'"
+      />
+      <PropRow
+        control={<PropBooleanControl checked={interactive} label="interactive value" onChange={setInteractive} />}
+        description={isArabic ? 'يضيف حالات التحويم والتركيز فقط. استخدم ClickableCard أو SelectableCard عندما يكون السلوك رابطا أو اختيارا.' : 'Adds hover and focus-visible treatment only. Use ClickableCard or SelectableCard for link or selection behavior.'}
+        name="interactive"
+        type="boolean"
+      />
+      <PropRow
+        description={isArabic ? 'مناطق تركيب shadcn-style. لا تضع بطاقة داخل بطاقة.' : 'shadcn-style composition regions. Do not place a card inside another card.'}
+        name="CardHeader / CardContent / CardFooter"
+        type="component"
+      />
+    </div>
+  )
+
+  return (
+    <ActionDocPage
+      aiRules={isArabic
+        ? 'استخدم Card لتركيب سطح واحد واضح. يجب أن يستهلك التوكنات الدلالية، يدعم RTL عبر الخصائص المنطقية، ولا يخترع ألوانا أو ظلالا أو محتوى عربيا إنتاجيا.'
+        : 'Use Card for one clear framed surface. It must consume semantic tokens, support RTL through logical properties, and never invent colors, shadows, or Arabic production copy.'}
+      examples={[
+        [isArabic ? 'بطاقة تسجيل دخول' : 'Login card structure', (
+          <Card>
+            <CardHeader>
+              <CardTitle>{isArabic ? 'تسجيل الدخول' : 'Login to your account'}</CardTitle>
+              <CardDescription>{isArabic ? 'أدخل بريدك للمتابعة.' : 'Enter your email below to continue.'}</CardDescription>
+              <CardAction><Button variant="ghost">{isArabic ? 'إنشاء حساب' : 'Sign up'}</Button></CardAction>
+            </CardHeader>
+            <CardContent>
+              <VStack gap={4}>
+                <Field><FieldLabel>{isArabic ? 'البريد الإلكتروني' : 'Email'}</FieldLabel><TextInput placeholder="m@example.com" /></Field>
+                <Field><FieldLabel>{isArabic ? 'كلمة المرور' : 'Password'}</FieldLabel><TextInput type="password" /></Field>
+              </VStack>
+            </CardContent>
+            <CardFooter><Button>{isArabic ? 'دخول' : 'Login'}</Button><Button variant="outline">{isArabic ? 'الدخول باستخدام Google' : 'Login with Google'}</Button></CardFooter>
+          </Card>
+        )],
+        [isArabic ? 'بطاقة إنتاجية بلهجة Ceramic' : 'Ceramic hover accent', (
+          <Card accent="hover" interactive>
+            <CardHeader>
+              <CardTitle>{isArabic ? 'الزمالة' : 'Fellows'}</CardTitle>
+              <CardDescription>{isArabic ? 'مثال محتوى محلي فقط.' : 'Current fellows, co-building model, and FAQ.'}</CardDescription>
+              <CardAction><CardStatus>01</CardStatus></CardAction>
+            </CardHeader>
+            <CardContent><Button variant="ghost">{isArabic ? 'عرض' : 'View'}</Button></CardContent>
+          </Card>
+        )],
+        [isArabic ? 'العربية وRTL' : 'Arabic / RTL', (
+          <div dir="rtl" lang="ar">
+            <Card accent="hover" interactive>
+              <CardHeader>
+                <CardTitle>بطاقة النظام</CardTitle>
+                <CardDescription>نص تجريبي لا يمثل نسخة إنتاجية.</CardDescription>
+                <CardAction><CardStatus>نشط</CardStatus></CardAction>
+              </CardHeader>
+              <CardContent>يجب أن تبقى المسافات والحالة في جهة النهاية المنطقية.</CardContent>
+            </Card>
+          </div>
+        )],
+      ]}
+      importCode="import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter, CardAction, CardStatus } from '@utopia-studio-design/design-system/Card';"
+      isProperties={isProperties}
+      name="Card"
+      overview={preview}
+      overviewPropsPanel={propsPanel}
+      propsPanel={propsPanel}
+      propsInteractive
+      tokens={['--card', '--card-foreground', '--border', '--primary', '--surface-hover', '--radius-surface', '--card-padding', '--card-title-size', '--focus-ring-width']}
+      usageCode={usageFor('Card', locale)}
+      usageDescription={isArabic
+        ? 'تعرض Card سطحا مؤطرا له رأس ومحتوى وتذييل. استخدمها للمحتوى المتكرر أو البيانات المجمعة أو أسطح الأدوات، وليس كقسم صفحة عائم.'
+        : 'Card displays a framed surface with header, content, and footer. Use it for repeated content, grouped data, or tool surfaces, not as a floating page section.'}
+    />
+  )
+}
+
 function ActionDocPage({
   aiRules,
   examples,
@@ -2267,11 +2411,11 @@ function genericExamples(name: string, locale: Locale): Array<[string, ReactNode
   if (name === 'Card') {
     return [
       ['Surface composition', (
-        <Card>
+        <Card accent="hover">
           <CardHeader>
             <CardTitle>{name}</CardTitle>
             <CardDescription>Header, content, action, and footer use a shared spacing contract.</CardDescription>
-            <CardAction><Badge variant="outline">Available</Badge></CardAction>
+            <CardAction><CardStatus>Available</CardStatus></CardAction>
           </CardHeader>
           <CardContent>Use this structure for repeated content or framed tool surfaces.</CardContent>
           <CardFooter><Button variant="secondary">View details</Button></CardFooter>
@@ -3221,9 +3365,7 @@ function BreadcrumbPreview({ locale, openMenu = true, variant = 'root' }: { loca
         <BreadcrumbItem>
           <DropdownMenu defaultOpen={openMenu}>
             <DropdownMenuTrigger asChild>
-              <button aria-label={labels.more} className="breadcrumb-demo-ellipsis" type="button">
-                <span style={{ cursor: 'pointer', padding: '0 4px' }}>...</span>
-              </button>
+              <BreadcrumbEllipsis aria-label={labels.more} />
             </DropdownMenuTrigger>
             <DropdownMenuContent align="start">
               <DropdownMenuItem>{labels.docs}</DropdownMenuItem>
@@ -5174,16 +5316,17 @@ export function Example() {
   CardDescription,
   CardFooter,
   CardHeader,
+  CardStatus,
   CardTitle,
 } from '@utopia-studio-design/design-system/Card';
 
 export function Example() {
   return (
-    <Card>
+    <Card accent="hover">
       <CardHeader>
         <CardTitle>Program snapshot</CardTitle>
         <CardDescription>Reusable surface content.</CardDescription>
-        <CardAction>Available</CardAction>
+        <CardAction><CardStatus>Available</CardStatus></CardAction>
       </CardHeader>
       <CardContent>Use cards for repeated content, grouped data, or framed tool surfaces.</CardContent>
       <CardFooter>Updated today</CardFooter>

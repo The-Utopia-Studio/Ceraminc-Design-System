@@ -513,6 +513,94 @@
         "arabicFriendly": "Breadcrumb order, separator spacing, dropdown alignment, and focus rings must follow dir=\"rtl\" using logical properties. Arabic labels must come from localization."
       }
     },
+    {
+      "name": "Breadcrumb Item",
+      "category": "Navigation",
+      "status": "available",
+      "packageImport": "import { BreadcrumbItem, BreadcrumbLink, BreadcrumbPage, BreadcrumbSeparator } from '@utopia-studio-design/design-system/Navigation';",
+      "sourcePath": "packages/design-system/src/components/Navigation.tsx",
+      "shadcnFoundation": [
+        "breadcrumb item",
+        "semantic list item",
+        "shadcn/ui breadcrumb",
+        "ordered-list composition"
+      ],
+      "fallbackToShadcn": "breadcrumb",
+      "requiredTokens": [
+        "--foreground",
+        "--muted-foreground",
+        "--foreground-subtle",
+        "--space-2",
+        "--font-weight-medium"
+      ],
+      "useWhen": [
+        "A breadcrumb path needs one ancestor, separator, current page, or collapsed menu segment",
+        "Each path segment needs semantic list structure for screen readers",
+        "A current page must expose aria-current through BreadcrumbPage"
+      ],
+      "avoidWhen": [
+        "The item is not part of a breadcrumb hierarchy",
+        "Primary navigation rows are needed; use Side Nav Item, Top Nav Item, or Navigation Menu",
+        "The path segment should trigger an action unrelated to navigation"
+      ],
+      "neverInvent": [
+        "Directional icon without RTL rule",
+        "Left/right-only layout rules",
+        "Utopia brand primitives inside reusable component logic"
+      ],
+      "ai": {
+        "props": {
+          "BreadcrumbItem": "List item wrapper for a breadcrumb link, current page, separator, or collapsed menu trigger.",
+          "BreadcrumbLink": "Clickable ancestor path segment. Compose with a router link when needed.",
+          "BreadcrumbPage": "Current page path segment. It owns aria-current=page.",
+          "BreadcrumbSeparator": "Visual hierarchy separator. Keep spacing logical and mirror directional separators in RTL."
+        },
+        "arabicFriendly": "Breadcrumb Item must preserve DOM order, logical spacing, current-page semantics, and mixed-script labels in dir=\"rtl\". Use localized path labels."
+      }
+    },
+    {
+      "name": "Breadcrumbs",
+      "category": "Navigation",
+      "status": "available",
+      "packageImport": "import { Breadcrumb, Breadcrumbs, BreadcrumbItem, BreadcrumbLink, BreadcrumbPage, BreadcrumbSeparator } from '@utopia-studio-design/design-system/Navigation';",
+      "sourcePath": "packages/design-system/src/components/Navigation.tsx",
+      "shadcnFoundation": [
+        "breadcrumb list",
+        "semantic ordered list",
+        "shadcn/ui breadcrumb",
+        "ordered-list composition"
+      ],
+      "fallbackToShadcn": "breadcrumb",
+      "requiredTokens": [
+        "--foreground",
+        "--muted-foreground",
+        "--foreground-subtle",
+        "--space-2",
+        "--font-weight-medium"
+      ],
+      "useWhen": [
+        "A breadcrumb path needs the compact ordered-list alias",
+        "A component page or app surface needs a full path rendered inside a Breadcrumb landmark",
+        "A hierarchy needs multiple Breadcrumb Item children with separators"
+      ],
+      "avoidWhen": [
+        "A single current page label is enough",
+        "The UI needs tabs, side navigation, or top navigation instead of hierarchy context",
+        "A progress or wizard path is being represented"
+      ],
+      "neverInvent": [
+        "Directional icon without RTL rule",
+        "Left/right-only layout rules",
+        "Utopia brand primitives inside reusable component logic"
+      ],
+      "ai": {
+        "props": {
+          "Breadcrumbs": "Compact alias for BreadcrumbList. Use inside Breadcrumb as the ordered list wrapper.",
+          "children": "BreadcrumbItem and BreadcrumbSeparator children in hierarchy order."
+        },
+        "arabicFriendly": "Breadcrumbs must keep equivalent hierarchy discovery in dir=\"rtl\", including logical spacing, separator treatment, dropdown alignment, and localized labels."
+      }
+    },
 
     {
       "name": "Bubble",
@@ -732,36 +820,75 @@
       "name": "Card",
       "category": "Surface",
       "status": "available",
-      "packageImport": "import { Card } from '@utopia-studio-design/design-system/Card';",
+      "packageImport": "import { Card, CardHeader, CardTitle, CardDescription, CardAction, CardStatus, CardContent, CardFooter } from '@utopia-studio-design/design-system/Card';",
       "sourcePath": "packages/design-system/src/components/Card.tsx",
       "shadcnFoundation": [
-        "card",
-        "composition"
+        "shadcn/ui card",
+        "header/content/footer composition",
+        "semantic surface wrapper"
       ],
       "fallbackToShadcn": "card",
       "requiredTokens": [
         "--card",
         "--card-foreground",
         "--border",
+        "--border-width-strong",
+        "--primary",
+        "--surface",
+        "--surface-hover",
+        "--foreground",
+        "--muted-foreground",
         "--radius-surface",
-        "--card-padding"
+        "--radius-control",
+        "--card-padding",
+        "--card-title-size",
+        "--badge-height",
+        "--badge-padding-block",
+        "--badge-padding-inline",
+        "--focus-ring-width",
+        "--duration-fast",
+        "--duration-normal",
+        "--ease-standard"
       ],
       "useWhen": [
-        "Repeated content",
-        "Grouped data",
-        "Framed tool surfaces"
+        "A surface needs a clear header, content, and footer contract",
+        "Repeated content such as resource cards, product summaries, or dashboard modules",
+        "Grouped data where status or secondary action belongs in the header inline-end",
+        "Framed tool surfaces that need the Utopia Ceramic hover accent"
       ],
       "avoidWhen": [
-        "Full page sections",
-        "Nested cards"
+        "Full page sections or marketing bands",
+        "Nested cards",
+        "Navigation rows that should use SideNavItem, TopNavItem, Breadcrumbs, or List",
+        "Clickable behavior without using ClickableCard, SelectableCard, or explicit interactive semantics"
       ],
       "neverInvent": [
+        "Raw colors",
+        "Raw shadows",
+        "Raw radius values",
         "Drop shadows",
         "Rounded marketing panels",
         "Decorative card grids",
         "Left/right-only layout rules",
         "Utopia brand primitives inside reusable component logic"
-      ]
+      ],
+      "ai": {
+        "props": {
+          "Card.accent": "false | 'hover' | 'always'. Shows the semantic block-start accent line using --primary.",
+          "Card.interactive": "boolean. Adds hover and focus-visible treatment only; use semantic link or button wrappers when the whole card is actionable.",
+          "Card.size": "'default' | 'sm'. Changes density through --card-padding and --card-title-size.",
+          "CardHeader": "Header region. Place CardTitle, CardDescription, and optional CardAction here.",
+          "CardAction": "Header inline-end region for compact actions or CardStatus.",
+          "CardStatus": "Compact status pill that uses badge/control tokens instead of raw colors.",
+          "CardContent": "Main content region.",
+          "CardFooter": "Footer region for actions. Uses logical border-block-start and wraps safely.",
+          "ClickableCard": "Anchor wrapper for full-card links. Defaults to hover accent.",
+          "SelectableCard": "Button wrapper for selectable surfaces. Defaults to hover accent and exposes aria-pressed."
+        },
+        "arabicFriendly": "Card uses logical block/inline layout, puts CardAction at inline-end through CSS grid, supports dir='rtl', tolerates mixed Arabic/English status text, and does not provide production Arabic copy.",
+        "shadcnConversion": "Keep the shadcn/ui Card family shape but consume Utopia semantic CSS tokens and exports only.",
+        "cli": "npm run ds -- component Card --dense"
+      }
     },
     {
       "name": "Carousel",
