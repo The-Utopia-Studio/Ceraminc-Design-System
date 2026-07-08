@@ -1,6 +1,7 @@
 @import "../packages/design-system/src/core.css";
 @import "../packages/design-system/src/themes/utopia-default.css";
 @import "../packages/design-system/src/themes/dextrum.css";
+@import "../packages/design-system/src/themes/barrier-intelligence.css";
 
 html {
   scroll-behavior: smooth;
@@ -1610,7 +1611,7 @@ body {
   opacity: 0.72;
 }
 
-[data-theme="dextrum"] .app-sidebar-heading .uds-side-nav-heading-icon > img {
+.app-sidebar-heading .uds-side-nav-heading-icon > img {
   inline-size: min(100%, 7.5rem);
   block-size: auto;
   object-fit: contain;

@@ -1,0 +1,99 @@
+{
+  "$schema": "https://utopia-studio.co/design-system/theme.schema.json",
+  "id": "barrier-intelligence",
+  "name": "Barrier Intelligence",
+  "type": "theme-policy",
+  "locked": false,
+  "summary": "Barrier Intelligence brand theme mapped to the Ceramic semantic contract. Near-black product surfaces with warm gold accents and a measured neutral hierarchy. Hanken Grotesk drives product UI and documentation; any marketing typography remains scoped to theme-owned selectors only.",
+  "sourceFiles": [
+    "packages/design-system/src/themes/barrier-intelligence.css",
+    "packages/design-system/src/manifests/theme-barrier-intelligence.json"
+  ],
+  "brandPrimitives": {
+    "colors": {
+      "black": "#000000",
+      "bgElev": "#0A0A0A",
+      "card": "#0E0E0E",
+      "cardHi": "#141414",
+      "hairline": "#1C1C1C",
+      "ink": "#F5F5F2",
+      "ink2": "#C9C7C1",
+      "ink3": "#9A9893",
+      "ink4": "#6D6B67",
+      "goldDark": "#8A6637",
+      "gold": "#A6824C",
+      "goldLight": "#D2AC6C"
+    },
+    "typography": {
+      "appWebsite": {
+        "ui": "Hanken Grotesk",
+        "use": "Product UI, dashboards, documentation, and long-form reading"
+      },
+      "arabicFamily": "IBM Plex Sans Arabic",
+      "weights": {
+        "hankenGrotesk": [400, 500, 600, 700]
+      },
+      "arabicWeights": [400, 500, 700],
+      "headlineCasing": "sentence",
+      "headlineTracking": "-0.02em to -0.04em",
+      "arabicDisplayFamily": "IBM Plex Sans Arabic",
+      "arabicDisplayCasing": "none",
+      "arabicDisplayRule": "Use Arabic display scale and IBM Plex Sans Arabic. Do not apply Latin negative tracking rules to Arabic.",
+      "rationale": "The brand language is quiet and rigorous: restrained type, high legibility on dark surfaces, and gold accents reserved for signal and action."
+    },
+    "geometry": {
+      "surfaceRadius": "14px",
+      "controlRadius": "6px",
+      "elevation": "border-led depth with subtle floating shadow on popovers only"
+    }
+  },
+  "semanticMappings": {
+    "--background": "Black",
+    "--foreground": "Ink",
+    "--primary": "Gold",
+    "--secondary": "Card High",
+    "--border": "Hairline",
+    "--radius-control": "6px rounded controls",
+    "--radius-surface": "14px rounded surfaces",
+    "--font-display": "Hanken Grotesk (headings + display scale)",
+    "--font-sans": "Hanken Grotesk",
+    "--font-arabic": "IBM Plex Sans Arabic",
+    "--overlay": "Black modal dim",
+    "--modal-surface": "Card High",
+    "--popover-surface": "Card High"
+  },
+  "visualPolicy": {
+    "tone": ["rigorous", "quiet", "technical", "premium"],
+    "allow": [
+      "near-black structural surfaces",
+      "warm gold accents for primary action and signal",
+      "neutral ink hierarchy for reading",
+      "rounded cards with hairline borders",
+      "minimal shadow; depth via border and surface steps"
+    ],
+    "avoid": [
+      "bright neon accents",
+      "colorful gradients as a default surface treatment",
+      "overly rounded, playful geometry",
+      "Utopia brick red palette",
+      "marketing display fonts in dense app UI"
+    ]
+  },
+  "iconPolicy": {
+    "system": "lucide",
+    "description": "Barrier Intelligence uses lucide icons in UI; brand marks remain outside Ceramic shell chrome.",
+    "allow": ["lucide icons in components", "monochrome currentColor icons", "directional mirroring in RTL"],
+    "avoid": ["emoji", "mixed icon families in one surface"],
+    "coreNote": "Icon policy is theme-owned. Core components remain icon-system neutral."
+  },
+  "aiRules": [
+    "Read this theme policy after the core semantic contract.",
+    "Map Barrier Intelligence palette through semantic tokens only.",
+    "Use gold for primary actions and high-signal emphasis, not as a full-page wash.",
+    "Prefer near-black and stepped card surfaces with ink hierarchy.",
+    "Use Hanken Grotesk for Latin app UI and body copy in this theme.",
+    "Keep Arabic on IBM Plex Sans Arabic tokens.",
+    "Do not swap Ceramic shell navigation branding when this theme is active."
+  ]
+}
+

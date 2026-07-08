@@ -1,0 +1,139 @@
+@import url("https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700&display=swap");
+
+[data-theme="barrier-intelligence"] {
+  color-scheme: dark;
+
+  --bi-black: #000000;
+  --bi-bg-elev: #0a0a0a;
+  --bi-card: #0e0e0e;
+  --bi-card-hi: #141414;
+  --bi-hair: #1c1c1c;
+  --bi-ink: #f5f5f2;
+  --bi-ink-2: #c9c7c1;
+  --bi-ink-3: #9a9893;
+  --bi-ink-4: #6d6b67;
+  --bi-gold-dk: #8a6637;
+  --bi-gold: #a6824c;
+  --bi-gold-lt: #d2ac6c;
+
+  --background: var(--bi-black);
+  --foreground: var(--bi-ink);
+  --foreground-muted: var(--bi-ink-2);
+  --foreground-subtle: var(--bi-ink-3);
+
+  --card: var(--bi-card);
+  --card-foreground: var(--bi-ink);
+
+  --primary: var(--bi-gold);
+  --primary-foreground: #1a1208;
+  --primary-hover: var(--bi-gold-lt);
+  --primary-active: var(--bi-gold-dk);
+
+  --secondary: var(--bi-card-hi);
+  --secondary-foreground: var(--bi-ink);
+  --secondary-hover: color-mix(in srgb, var(--bi-card-hi) 85%, var(--bi-ink) 15%);
+  --secondary-active: color-mix(in srgb, var(--bi-card-hi) 75%, var(--bi-ink) 25%);
+
+  --muted: var(--bi-bg-elev);
+  --muted-foreground: var(--bi-ink-3);
+
+  --border: color-mix(in srgb, var(--bi-hair) 82%, transparent);
+  --input: color-mix(in srgb, var(--bi-hair) 70%, transparent);
+  --ring: var(--bi-gold);
+
+  --surface: color-mix(in srgb, var(--bi-ink) 4.5%, var(--bi-black));
+  --surface-strong: color-mix(in srgb, var(--bi-ink) 7.5%, var(--bi-black));
+  --surface-elevated: var(--bi-card-hi);
+  --surface-hover: color-mix(in srgb, var(--bi-ink) 10%, var(--bi-black));
+  --surface-inverse: var(--bi-ink);
+
+  --overlay: color-mix(in srgb, var(--bi-black) 86%, transparent);
+  --modal-surface: var(--bi-card-hi);
+  --popover-surface: var(--bi-card-hi);
+
+  --ghost-hover: color-mix(in srgb, var(--bi-ink) 7.5%, var(--bi-black));
+  --ghost-active: color-mix(in srgb, var(--bi-ink) 12%, var(--bi-black));
+  --outline-hover: color-mix(in srgb, var(--bi-ink) 7.5%, var(--bi-black));
+  --outline-active: color-mix(in srgb, var(--bi-ink) 12%, var(--bi-black));
+
+  --radius: 0.75rem;
+  --radius-control: 0.375rem;
+  --radius-surface: 0.875rem;
+
+  --font-display: "Hanken Grotesk", "Helvetica Neue", "Inter", system-ui, sans-serif;
+  --font-sans: "Hanken Grotesk", "Helvetica Neue", "Inter", system-ui, sans-serif;
+  --font-arabic: "IBM Plex Sans Arabic", "Noto Sans Arabic", "Tajawal", "Cairo", Arial, sans-serif;
+  --font-arabic-display: var(--font-arabic);
+  --font-arabic-body: var(--font-arabic);
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+
+  --font-weight-body: 400;
+  --font-weight-regular: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-strong: 700;
+
+  --font-weight-arabic-body: 400;
+  --font-weight-arabic-display: 700;
+
+  --font-size-small: 0.8125rem;
+  --font-size-2: 1rem;
+  --font-size-eyebrow: 0.75rem;
+  --font-size-supporting: 0.75rem;
+  --font-size-body: 1rem;
+  --font-size-body-lg: 1.125rem;
+  --font-size-display: clamp(2.875rem, 7.6vw, 5.75rem);
+  --font-size-arabic-body: 1rem;
+  --font-size-arabic-body-lg: 1.125rem;
+  --font-size-arabic-display: clamp(2.75rem, 7.2vw, 5.5rem);
+
+  --line-height-tight: 1.06;
+  --line-height-supporting: 0.875rem;
+  --line-height-arabic: 1.75;
+  --line-height-arabic-body: 1.75;
+  --line-height-arabic-display: 1.14;
+
+  --tracking-heading: -0.03em;
+  --tracking-eyebrow: 0.18em;
+  --tracking-arabic: 0;
+  --tracking-arabic-display: 0;
+
+  --shadow-surface: none;
+  --shadow-popover: 0 10px 28px rgb(0 0 0 / 34%);
+
+  --icon-system: lucide;
+
+  --button-height: 40px;
+  --button-height-sm: 32px;
+  --button-height-lg: 48px;
+
+  --button-padding-inline: 16px;
+  --button-padding-inline-sm: 12px;
+  --button-padding-inline-lg: 24px;
+
+  --button-font-size: 0.875rem;
+  --button-font-size-sm: 0.8125rem;
+  --button-font-size-lg: 1rem;
+
+  --button-group-gap: 8px;
+  --button-group-gap-compact: 4px;
+
+  --badge-padding-block: 4px;
+  --badge-padding-inline: 8px;
+  --badge-font-size: 0.75rem;
+
+  --card-padding: 24px;
+  --card-title-size: 1.25rem;
+
+  --z-overlay: 40;
+  --z-popover: 45;
+  --z-modal: 50;
+}
+
+[data-theme="barrier-intelligence"] :where(:lang(ar), [lang|="ar"]) {
+  font-family: var(--font-arabic-body);
+  font-weight: var(--font-weight-arabic-body);
+  line-height: var(--line-height-arabic-body);
+  letter-spacing: var(--tracking-arabic);
+  text-transform: none;
+}

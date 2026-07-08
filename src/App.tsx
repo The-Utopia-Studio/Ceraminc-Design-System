@@ -10,7 +10,7 @@ import { DocsPage } from './pages/DocsPage'
 import { TemplatesPage } from './pages/TemplatesPage'
 import { ThemesPage } from './pages/ThemesPage'
 import { I18nProvider, categoryLabel, docsLabel, routeLabel, sideNavLabel, t, type Locale } from './i18n'
-import { ThemeProvider, useTheme } from './theme'
+import { CERAMIC_SHELL_BRAND, ThemeProvider } from './theme'
 import {
   SideNav,
   SideNavCollapseButton,
@@ -158,6 +158,7 @@ function getToc(path: string, tab: string) {
     return [
       { id: 'utopia-default', label: 'Utopia Default' },
       { id: 'dextrum', label: 'Dextrum' },
+      { id: 'barrier-intelligence', label: 'Barrier Intelligence' },
       { id: 'theme-policy', label: 'Theme policy' },
       { id: 'icon-policy', label: 'Icon policy' },
       { id: 'core-boundary', label: 'Core boundary' },
@@ -254,7 +255,7 @@ export function App() {
 }
 
 function AppShell() {
-  const { brand } = useTheme()
+  const brand = CERAMIC_SHELL_BRAND
   const [path, setPath] = useState(getCurrentPath)
   const [section, setSection] = useState(getCurrentSection)
   const [tab, setTab] = useState(getCurrentTab)
@@ -371,6 +372,7 @@ function AppShell() {
     if (isDocsArea) return `#/docs#${slug}`
     if (isThemesArea && item === 'Utopia Default') return '#/themes#utopia-default'
     if (isThemesArea && item === 'Dextrum') return '#/themes#dextrum'
+    if (isThemesArea && item === 'Barrier Intelligence') return '#/themes#barrier-intelligence'
     return `#/${sidebarArea.id}`
   }
 
@@ -388,7 +390,6 @@ function AppShell() {
         links={navLinks}
         locale={locale}
         onLocaleChange={transitionLocale}
-        showBrand={false}
       />
 
       <SideNav

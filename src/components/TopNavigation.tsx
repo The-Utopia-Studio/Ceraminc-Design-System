@@ -5,7 +5,7 @@ import {
   TopNavItem,
 } from '../../packages/design-system/src/Navigation'
 import { t, type Locale } from '../i18n'
-import { useTheme } from '../theme'
+import { CERAMIC_SHELL_BRAND } from '../theme'
 
 type TopNavigationLink = {
   href: string
@@ -21,7 +21,7 @@ type TopNavigationProps = {
 }
 
 export function TopNavigation({ links, locale, onLocaleChange, showBrand = true }: TopNavigationProps) {
-  const { brand } = useTheme()
+  const brand = CERAMIC_SHELL_BRAND
 
   return (
     <header className="topbar" data-has-brand={showBrand ? 'true' : 'false'}>

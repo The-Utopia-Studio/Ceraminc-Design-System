@@ -1,9 +1,10 @@
-import { getArea, themes, utopiaDefaultTheme, dextrumTheme } from '../data/design-system'
+import { getArea, themes, utopiaDefaultTheme, dextrumTheme, barrierIntelligenceTheme } from '../data/design-system'
 import { useTheme, type ThemeId } from '../theme'
 
 const themePolicyById = {
   'utopia-default': utopiaDefaultTheme,
   dextrum: dextrumTheme,
+  'barrier-intelligence': barrierIntelligenceTheme,
 } as const
 
 type ThemesPageProps = {
@@ -12,15 +13,16 @@ type ThemesPageProps = {
 
 export function ThemesPage(_props: ThemesPageProps = {}) {
   const area = getArea('themes')
-  const { setThemeId, themeId, themeEntry } = useTheme()
-  const activePolicy = themePolicyById[themeId]
+  const { setActiveThemeId, activeThemeId, themeEntry } = useTheme()
+  const activePolicy = themePolicyById[activeThemeId]
 
   return (
     <div className="page">
       <section className="page-hero compact">
         <p className="eyebrow">Themes</p>
-        <h1>Token-contract implementations.</h1>
+        <h1>Preview token-contract implementations.</h1>
         <p>{area?.description}</p>
+        <p className="note">Theme preview updates component tokens and styling only. Ceramic navigation and docs chrome stay Utopia/Ceramic.</p>
       </section>
 
       <section className="split-grid">
@@ -35,7 +37,7 @@ export function ThemesPage(_props: ThemesPageProps = {}) {
 
         <div className="card-grid wide">
           {themes.themes.map((theme) => {
-            const isActive = theme.id === themeId
+            const isActive = theme.id === activeThemeId
 
             return (
               <article
@@ -58,10 +60,10 @@ export function ThemesPage(_props: ThemesPageProps = {}) {
                 <button
                   className="theme-activate-button"
                   disabled={isActive}
-                  onClick={() => setThemeId(theme.id as ThemeId)}
+                  onClick={() => setActiveThemeId(theme.id as ThemeId)}
                   type="button"
                 >
-                  {isActive ? 'Currently active' : `Activate ${theme.name}`}
+                  {isActive ? 'Currently previewing' : `Preview ${theme.name}`}
                 </button>
                 {theme.id === 'dextrum' ? (
                   <div className="dextrum-type-links">
