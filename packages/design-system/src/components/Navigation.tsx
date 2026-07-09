@@ -705,8 +705,50 @@ export function ContextMenuContent({ className, ...props }: React.ComponentProps
   )
 }
 
+export function ContextMenuLabel({ className, ...props }: React.ComponentProps<typeof ContextMenuPrimitive.Label>) {
+  return <ContextMenuPrimitive.Label className={cn('uds-menu-label', className)} {...props} />
+}
+
 export function ContextMenuItem({ className, ...props }: React.ComponentProps<typeof ContextMenuPrimitive.Item>) {
   return <ContextMenuPrimitive.Item className={cn('uds-menu-item', className)} {...props} />
+}
+
+export function ContextMenuCheckboxItem({ children, className, ...props }: React.ComponentProps<typeof ContextMenuPrimitive.CheckboxItem>) {
+  return (
+    <ContextMenuPrimitive.CheckboxItem className={cn('uds-menu-item uds-menu-check-item', className)} {...props}>
+      <ContextMenuPrimitive.ItemIndicator className="uds-menu-item-indicator">✓</ContextMenuPrimitive.ItemIndicator>
+      <span className="uds-menu-item-content">{children}</span>
+    </ContextMenuPrimitive.CheckboxItem>
+  )
+}
+
+export function ContextMenuSeparator({ className, ...props }: React.ComponentProps<typeof ContextMenuPrimitive.Separator>) {
+  return <ContextMenuPrimitive.Separator className={cn('uds-menu-separator', className)} {...props} />
+}
+
+export function ContextMenuShortcut({ className, ...props }: React.HTMLAttributes<HTMLSpanElement>) {
+  return <span className={cn('uds-menu-shortcut', className)} {...props} />
+}
+
+export function ContextMenuSub(props: React.ComponentProps<typeof ContextMenuPrimitive.Sub>) {
+  return <ContextMenuPrimitive.Sub {...props} />
+}
+
+export function ContextMenuSubTrigger({ className, children, ...props }: React.ComponentProps<typeof ContextMenuPrimitive.SubTrigger>) {
+  return (
+    <ContextMenuPrimitive.SubTrigger className={cn('uds-menu-item uds-menu-sub-trigger', className)} {...props}>
+      <span className="uds-menu-item-content">{children}</span>
+      <span aria-hidden="true" className="uds-menu-sub-indicator">›</span>
+    </ContextMenuPrimitive.SubTrigger>
+  )
+}
+
+export function ContextMenuSubContent({ className, sideOffset = 8, ...props }: React.ComponentProps<typeof ContextMenuPrimitive.SubContent>) {
+  return (
+    <ContextMenuPrimitive.Portal>
+      <ContextMenuPrimitive.SubContent className={cn('uds-menu', className)} sideOffset={sideOffset} {...props} />
+    </ContextMenuPrimitive.Portal>
+  )
 }
 
 export function CommandPalette({ className, ...props }: React.ComponentProps<typeof CommandPrimitive>) {

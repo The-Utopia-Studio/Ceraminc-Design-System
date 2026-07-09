@@ -2450,6 +2450,49 @@ body {
   margin-block: var(--space-1);
 }
 
+.command-detail-preview {
+  inline-size: min(100%, 34rem);
+}
+
+.command-detail-preview [cmdk-list] {
+  padding-block-start: var(--space-2);
+}
+
+.combobox-detail-preview {
+  inline-size: min(100%, 24rem);
+}
+
+.chart-detail-preview {
+  inline-size: min(100%, 36rem);
+}
+
+.chart-detail-summary {
+  display: grid;
+  gap: var(--space-1);
+  color: var(--muted-foreground);
+  font-size: var(--font-size-small);
+}
+
+.chart-detail-summary strong {
+  color: var(--foreground);
+  font-size: var(--font-size-heading-3);
+  line-height: var(--line-height-heading);
+}
+
+.data-table-detail-preview {
+  inline-size: min(100%, 48rem);
+}
+
+.data-table-preview-chevron,
+.data-table-preview-sort {
+  inline-size: 1rem;
+  block-size: 1rem;
+}
+
+.data-table-preview-chevron {
+  transform: rotate(90deg);
+}
+
 .menu-anatomy-menubar,
 .menu-anatomy-nav-row {
   display: inline-flex;

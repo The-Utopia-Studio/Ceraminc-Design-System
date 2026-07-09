@@ -601,7 +601,6 @@
         "arabicFriendly": "Breadcrumbs must keep equivalent hierarchy discovery in dir=\"rtl\", including logical spacing, separator treatment, dropdown alignment, and localized labels."
       }
     },
-
     {
       "name": "Bubble",
       "category": "Data Display",
@@ -936,7 +935,8 @@
       "sourcePath": "packages/design-system/src/components/ShadcnPrimitives.tsx",
       "shadcnFoundation": [
         "chart",
-        "semantic data display",
+        "shadcn/ui chart pattern",
+        "semantic Utopia data display wrapper",
         "shadcn/ui registry"
       ],
       "fallbackToShadcn": "chart",
@@ -947,12 +947,17 @@
         "--border",
         "--radius-surface",
         "--radius-control",
-        "--primary"
+        "--primary",
+        "--chart-bar-size",
+        "--chart-block-size",
+        "--chart-grid-color",
+        "--duration-medium",
+        "--ease-standard"
       ],
       "useWhen": [
-        "Simple visual summaries",
-        "Component docs examples",
-        "Token-safe data display before product chart logic is selected"
+        "Simple visual summaries with explicit labels and values",
+        "Component docs examples that need a token-safe chart scaffold",
+        "AI-generated dashboards before product-specific chart logic is selected"
       ],
       "avoidWhen": [
         "Financial or analytics charts without domain requirements",
@@ -1959,6 +1964,7 @@
         "--radius-surface",
         "--radius-control",
         "--input",
+        "--surface-hover",
         "--focus-ring-width"
       ],
       "useWhen": [
@@ -1981,12 +1987,13 @@
       "name": "Command",
       "category": "Navigation",
       "status": "available",
-      "packageImport": "import { Command, CommandPaletteInput, CommandPaletteList, CommandPaletteItem } from '@utopia-studio-design/design-system/Navigation';",
+      "packageImport": "import { Command, CommandPaletteEmpty, CommandPaletteGroup, CommandPaletteInput, CommandPaletteItem, CommandPaletteList } from '@utopia-studio-design/design-system/Navigation';",
       "sourcePath": "packages/design-system/src/components/Navigation.tsx",
       "shadcnFoundation": [
         "command",
         "cmdk",
-        "shadcn/ui command"
+        "shadcn/ui command",
+        "semantic Utopia navigation wrapper"
       ],
       "fallbackToShadcn": "command",
       "requiredTokens": [
@@ -1997,14 +2004,19 @@
         "--focus-ring-width",
         "--foreground",
         "--muted-foreground",
-        "--popover-surface"
+        "--popover-surface",
+        "--surface-hover",
+        "--button-height"
       ],
       "useWhen": [
-        "Keyboard-first navigation",
-        "Global search"
+        "Keyboard-first navigation and app command palettes",
+        "Global search with grouped suggestions and shortcuts",
+        "AI-generated admin surfaces where commands need explicit values and labels"
       ],
       "avoidWhen": [
-        "Simple menus"
+        "Small static menus that should use Dropdown Menu or Context Menu",
+        "Unstructured free-text search without command actions",
+        "Hidden shortcuts with no visible label or accessible value"
       ],
       "neverInvent": [
         "Hidden commands without labels",
@@ -2016,11 +2028,13 @@
       "name": "Context Menu",
       "category": "Navigation",
       "status": "available",
-      "packageImport": "import { ContextMenu, ContextMenuContent, ContextMenuItem, ContextMenuTrigger } from '@utopia-studio-design/design-system/Navigation';",
+      "packageImport": "import { ContextMenu, ContextMenuCheckboxItem, ContextMenuContent, ContextMenuItem, ContextMenuLabel, ContextMenuSeparator, ContextMenuShortcut, ContextMenuSub, ContextMenuSubContent, ContextMenuSubTrigger, ContextMenuTrigger } from '@utopia-studio-design/design-system/Navigation';",
       "sourcePath": "packages/design-system/src/components/Navigation.tsx",
       "shadcnFoundation": [
         "context-menu",
-        "Radix Context Menu"
+        "Radix Context Menu",
+        "shadcn/ui context-menu",
+        "semantic Utopia menu wrapper"
       ],
       "fallbackToShadcn": "context-menu",
       "requiredTokens": [
@@ -2030,13 +2044,19 @@
         "--focus-ring-width",
         "--foreground",
         "--muted-foreground",
-        "--popover-surface"
+        "--popover-surface",
+        "--surface-hover",
+        "--button-height"
       ],
       "useWhen": [
-        "Secondary contextual actions"
+        "Secondary contextual actions triggered from right-click or long-press surfaces",
+        "Dense command sets that need labels, shortcuts, separators, checked state, or submenus",
+        "AI-generated product tools where contextual actions should stay separate from primary navigation"
       ],
       "avoidWhen": [
-        "Primary workflows"
+        "Primary workflows that must be visible without right click",
+        "Mobile-only critical actions unless an equivalent visible trigger exists",
+        "Navigation menus that should be discoverable as Top Nav, Side Nav, or Dropdown Menu"
       ],
       "neverInvent": [
         "Unavailable actions with no disabled state",
@@ -2048,10 +2068,11 @@
       "name": "Data Table",
       "category": "Data Display",
       "status": "available",
-      "packageImport": "import { DataTable, DataTableBody, DataTableCell, DataTableHead, DataTableHeader, DataTableRow } from '@utopia-studio-design/design-system/ShadcnPrimitives';",
+      "packageImport": "import { DataTable, DataTableBody, DataTableCell, DataTableFooter, DataTableHead, DataTableHeader, DataTableRow, DataTableShell, DataTableToolbar } from '@utopia-studio-design/design-system/ShadcnPrimitives';",
       "sourcePath": "packages/design-system/src/components/ShadcnPrimitives.tsx",
       "shadcnFoundation": [
         "data-table",
+        "TanStack Table-compatible composition pattern",
         "shadcn/ui registry",
         "semantic Utopia wrapper"
       ],
@@ -2062,7 +2083,11 @@
         "--surface",
         "--border",
         "--radius-surface",
+        "--radius-control",
         "--muted-foreground",
+        "--surface-hover",
+        "--surface-strong",
+        "--input",
         "--focus-ring-width"
       ],
       "useWhen": [
@@ -2782,76 +2807,6 @@
         "Simple page navigation where Top Nav or Navigation Menu is clearer",
         "Mobile-first primary navigation",
         "Menu labels without accessible text"
-      ],
-      "neverInvent": [
-        "Raw shadcn theme colors",
-        "Left/right-only layout rules",
-        "Utopia brand primitives inside reusable component logic"
-      ]
-    },
-    {
-      "name": "Message",
-      "category": "Data Display",
-      "status": "available",
-      "packageImport": "import { Message } from '@utopia-studio-design/design-system/ShadcnPrimitives';",
-      "sourcePath": "packages/design-system/src/components/ShadcnPrimitives.tsx",
-      "shadcnFoundation": [
-        "message",
-        "shadcn/ui registry",
-        "semantic Utopia wrapper"
-      ],
-      "fallbackToShadcn": "message",
-      "requiredTokens": [
-        "--background",
-        "--foreground",
-        "--surface",
-        "--border",
-        "--radius-surface",
-        "--focus-ring-width"
-      ],
-      "useWhen": [
-        "Use when the shadcn/ui message pattern is required",
-        "Use as the Utopia semantic-token wrapper before deeper specialization",
-        "Use when AI needs a safe conversion target from shadcn source code"
-      ],
-      "avoidWhen": [
-        "A more specific Utopia primitive already exists",
-        "The behavior requires product-specific copy or data rules"
-      ],
-      "neverInvent": [
-        "Raw shadcn theme colors",
-        "Left/right-only layout rules",
-        "Utopia brand primitives inside reusable component logic"
-      ]
-    },
-    {
-      "name": "Message Scroller",
-      "category": "Data Display",
-      "status": "available",
-      "packageImport": "import { MessageScroller } from '@utopia-studio-design/design-system/ShadcnPrimitives';",
-      "sourcePath": "packages/design-system/src/components/ShadcnPrimitives.tsx",
-      "shadcnFoundation": [
-        "message-scroller",
-        "shadcn/ui registry",
-        "semantic Utopia wrapper"
-      ],
-      "fallbackToShadcn": "message-scroller",
-      "requiredTokens": [
-        "--background",
-        "--foreground",
-        "--surface",
-        "--border",
-        "--radius-surface",
-        "--focus-ring-width"
-      ],
-      "useWhen": [
-        "Use when the shadcn/ui message-scroller pattern is required",
-        "Use as the Utopia semantic-token wrapper before deeper specialization",
-        "Use when AI needs a safe conversion target from shadcn source code"
-      ],
-      "avoidWhen": [
-        "A more specific Utopia primitive already exists",
-        "The behavior requires product-specific copy or data rules"
       ],
       "neverInvent": [
         "Raw shadcn theme colors",

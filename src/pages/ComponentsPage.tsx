@@ -24,8 +24,6 @@ export function ComponentsPage() {
     { label: 'Toggle', target: 'toggle-button', previewName: 'Toggle Button' },
     { label: 'Toggle Group', target: 'toggle-button-group', previewName: 'Toggle Button Group' },
     { label: 'MarkerNew', target: 'markernew', previewName: 'Marker' },
-    { label: 'MessageNew', target: 'messagenew', previewName: 'Message' },
-    { label: 'Message ScrollerNew', target: 'message-scrollernew', previewName: 'Message Scroller' },
   ] as const
   const componentsByName = new Map(components.components.map((entry) => [entry.name, entry]))
   const componentAreaGroups = getComponentAreaGroups()

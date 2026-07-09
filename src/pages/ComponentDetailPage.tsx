@@ -1,6 +1,6 @@
 import { useState, type ElementType, type ReactNode } from 'react'
 import { motion } from 'framer-motion'
-import { Archive, ArrowDown, ArrowUp, Bell, Box, CalendarPlus, Clock, Component, FileCode, FileText, ListFilter, LoaderCircle, MailOpen, Menu, Mic, MoreHorizontal, Search, Tag, Trash2, UserCircle, X } from 'lucide-react'
+import { Archive, ArrowDown, ArrowUp, BarChart3, Bell, Box, Calculator, CalendarDays, CalendarPlus, Check, ChevronRight, Clock, Component, CreditCard, FileCode, FileText, ListFilter, LoaderCircle, MailOpen, Menu, Mic, MoreHorizontal, Search, Settings, Smile, Tag, Trash2, User, UserCircle, X } from 'lucide-react'
 import { components, slugify } from '../data/design-system'
 import { Badge } from '../../packages/design-system/src/Badge'
 import { Button } from '../../packages/design-system/src/Button'
@@ -14,7 +14,7 @@ import { Alert, AlertDescription, AlertTitle } from '../../packages/design-syste
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from '../../packages/design-system/src/AlertDialog'
 import { Attachment, AttachmentAction, AttachmentActions, AttachmentContent, AttachmentDescription, AttachmentGroup, AttachmentMedia, AttachmentTitle, AttachmentTrigger } from '../../packages/design-system/src/Attachment'
 import { ChatComposer, ChatComposerInput, ChatComposerTokenElement, ChatDictationButton, ChatLayout, ChatLayoutScrollButton, ChatMessage, ChatMessageBubble, ChatMessageList, ChatMessageMetadata, ChatSendButton, ChatSystemMessage, ChatTokenizedText, ChatToolCalls } from '../../packages/design-system/src/Chat'
-import { Breadcrumb, BreadcrumbEllipsis, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator, Breadcrumbs, CommandPalette, CommandPaletteEmpty, CommandPaletteGroup, CommandPaletteInput, CommandPaletteItem, CommandPaletteList, ContextMenu, ContextMenuContent, ContextMenuItem, ContextMenuTrigger, DropdownMenu, DropdownMenuCheckboxItem, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuLabel, DropdownMenuRadioGroup, DropdownMenuRadioItem, DropdownMenuSeparator, DropdownMenuShortcut, DropdownMenuSub, DropdownMenuSubContent, DropdownMenuSubTrigger, DropdownMenuTrigger, MobileNav, MobileNavContent, MobileNavToggle, MobileNavTrigger, NavHeadingMenu, NavHeadingMenuContent, NavHeadingMenuTrigger, NavIcon, PanelIcon, SideNav, SideNavCollapseButton, SideNavContent, SideNavHeading, SideNavItem, SideNavSection, Tab, TabList, TabPanel, Tabs, TopNav, TopNavHeading, TopNavItem, TopNavMegaMenu, TopNavMegaMenuFeaturedCard, TopNavMegaMenuItem, TopNavMenu, TopNavMenuItem } from '../../packages/design-system/src/Navigation'
+import { Breadcrumb, BreadcrumbEllipsis, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator, Breadcrumbs, CommandPalette, CommandPaletteEmpty, CommandPaletteGroup, CommandPaletteInput, CommandPaletteItem, CommandPaletteList, ContextMenu, ContextMenuCheckboxItem, ContextMenuContent, ContextMenuItem, ContextMenuLabel, ContextMenuSeparator, ContextMenuShortcut, ContextMenuSub, ContextMenuSubContent, ContextMenuSubTrigger, ContextMenuTrigger, DropdownMenu, DropdownMenuCheckboxItem, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuLabel, DropdownMenuRadioGroup, DropdownMenuRadioItem, DropdownMenuSeparator, DropdownMenuShortcut, DropdownMenuSub, DropdownMenuSubContent, DropdownMenuSubTrigger, DropdownMenuTrigger, MobileNav, MobileNavContent, MobileNavToggle, MobileNavTrigger, NavHeadingMenu, NavHeadingMenuContent, NavHeadingMenuTrigger, NavIcon, PanelIcon, SideNav, SideNavCollapseButton, SideNavContent, SideNavHeading, SideNavItem, SideNavSection, Tab, TabList, TabPanel, Tabs, TopNav, TopNavHeading, TopNavItem, TopNavMegaMenu, TopNavMegaMenuFeaturedCard, TopNavMegaMenuItem, TopNavMenu, TopNavMenuItem } from '../../packages/design-system/src/Navigation'
 import { HoverCard, HoverCardContent, HoverCardTrigger, Popover, PopoverContent, PopoverTrigger, Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '../../packages/design-system/src/Surface'
 import { ToggleButton } from '../../packages/design-system/src/ToggleButton'
 import { ToggleButtonGroup, ToggleButtonGroupItem } from '../../packages/design-system/src/ToggleButtonGroup'
@@ -50,8 +50,6 @@ export function ComponentDetailPage({ componentId, tab = 'overview' }: Component
   const { locale } = useI18n()
   const aliases: Record<string, string> = {
     markernew: 'marker',
-    messagenew: 'message',
-    'message-scrollernew': 'message-scroller',
     progressbar: 'progress',
     sidebar: 'side-nav',
     'text-area': 'textarea',
@@ -2810,7 +2808,7 @@ function genericArabicProps(name: string, interactive = false) {
         { name: 'AlertDescription', type: 'ReactNode', description: 'تفاصيل مساندة للتنبيه. حافظ على التفاف النص المختلط داخل RTL.', control: <PropTextControl label="AlertDescription value" placeholder="تمت معالجة العملية." /> },
       ]
     }
-    if (['Message', 'Message Scroller', 'Marker', 'Sonner', 'Spinner'].includes(name)) {
+    if (['Marker', 'Sonner', 'Spinner'].includes(name)) {
       return [
         { name: 'aria-label', type: 'string', description: 'تسمية قابلة للوصول عندما لا يكفي النص المرئي.', control: <input aria-label="aria-label value" placeholder="تسمية" /> },
         { name: 'role', type: 'string', description: 'الدور الدلالي للحالة أو الرسالة أو الإشعار عند الحاجة.', control: <input aria-label="role value" placeholder="status" /> },
@@ -3110,7 +3108,7 @@ function genericPropRows(name: string) {
     ]
   }
 
-  if (['Avatar', 'Badge', 'Calendar', 'Carousel', 'Chart', 'Data Table', 'Empty', 'Item', 'Kbd', 'Progress', 'Skeleton', 'Spinner', 'Table', 'Attachment', 'Bubble', 'Marker', 'Message', 'Message Scroller'].includes(name)) {
+  if (['Avatar', 'Badge', 'Calendar', 'Carousel', 'Chart', 'Data Table', 'Empty', 'Item', 'Kbd', 'Progress', 'Skeleton', 'Spinner', 'Table', 'Attachment', 'Bubble', 'Marker'].includes(name)) {
     return [
       { name: 'aria-label', type: 'string', description: 'Accessible label when visible text is insufficient.', control: <input aria-label="aria-label value" placeholder={`${name} label`} /> },
       { name: 'data-state', type: 'string', description: 'Optional state attribute for token-safe styling and AI-readable examples.', control: <input aria-label="data-state value" placeholder="active" /> },
@@ -3412,8 +3410,6 @@ function renderGenericPreview(name: string, locale: Locale = 'en') {
   if (name === 'Table') return <TablePreview locale={locale} />
   if (name === 'Spinner') return <SpinnerPreview locale={locale} />
   if (name === 'Sonner') return <SonnerPreview locale={locale} />
-  if (name === 'Message') return <MessagePreview locale={locale} />
-  if (name === 'Message Scroller') return <MessageScrollerPreview locale={locale} />
   if (name === 'Marker') return <MarkerPreview locale={locale} />
   if (CHAT_COMPONENTS.includes(name)) return <ChatPreview name={name} locale={locale} />
 
@@ -3567,20 +3563,7 @@ function renderGenericPreview(name: string, locale: Locale = 'en') {
   }
   if (name === 'Dropdown Menu') return <MenuAnatomyPreview kind="dropdown" locale={locale} />
   if (name === 'Context Menu') return <MenuAnatomyPreview kind="context" locale={locale} />
-  if (name === 'Command') {
-    return (
-      <CommandPalette>
-        <CommandPaletteInput placeholder={isArabic ? 'ابحث في الأوامر...' : 'Search commands...'} />
-        <CommandPaletteList>
-          <CommandPaletteEmpty>{isArabic ? 'لم يتم العثور على أمر.' : 'No command found.'}</CommandPaletteEmpty>
-          <CommandPaletteGroup heading={isArabic ? 'نظام التصميم' : 'Design System'}>
-            <CommandPaletteItem>{isArabic ? 'افتح المكونات' : 'Open components'}</CommandPaletteItem>
-            <CommandPaletteItem>{isArabic ? 'ابحث في التوكنات' : 'Search tokens'}</CommandPaletteItem>
-          </CommandPaletteGroup>
-        </CommandPaletteList>
-      </CommandPalette>
-    )
-  }
+  if (name === 'Command') return <CommandPreview locale={locale} />
   if (name === 'Field') return <Field><FieldLabel>{isArabic ? 'التسمية' : 'Label'}</FieldLabel><TextInput placeholder={isArabic ? 'القيمة' : 'Value'} /></Field>
   if (name === 'Input') return <Field><FieldLabel>{isArabic ? 'بحث' : 'Search'}</FieldLabel><TextInput placeholder={isArabic ? 'ابحث في المكونات' : 'Search components'} /></Field>
   if (name === 'Textarea') return <Field><FieldLabel>{isArabic ? 'ملاحظة المشروع' : 'Project note'}</FieldLabel><TextArea placeholder={isArabic ? 'اكتب ملاحظة' : 'Write a note'} /></Field>
@@ -4085,40 +4068,167 @@ function MarkerPreview({ locale }: { locale: Locale }) {
   return <ShadcnPrimitives.Marker tone="accent">{locale === 'ar' ? 'ذكي' : 'AI'}</ShadcnPrimitives.Marker>
 }
 
-function MessagePreview({ locale }: { locale: Locale }) {
+function CommandPreview({ locale }: { locale: Locale }) {
   const isArabic = locale === 'ar'
+  const copy = {
+    billing: isArabic ? 'الفوترة' : 'Billing',
+    calculator: isArabic ? 'الحاسبة' : 'Calculator',
+    calendar: isArabic ? 'التقويم' : 'Calendar',
+    profile: isArabic ? 'الملف الشخصي' : 'Profile',
+    searchEmoji: isArabic ? 'البحث عن رمز' : 'Search Emoji',
+    settings: isArabic ? 'الإعدادات' : 'Settings',
+    settingsGroup: isArabic ? 'الإعدادات' : 'Settings',
+    suggestions: isArabic ? 'اقتراحات' : 'Suggestions',
+    placeholder: isArabic ? 'اكتب أمرا أو ابحث...' : 'Type a command or search...',
+    empty: isArabic ? 'لا توجد نتائج.' : 'No results found.',
+  }
 
   return (
-    <div dir={isArabic ? 'rtl' : 'ltr'} lang={isArabic ? 'ar' : 'en'}>
-      <ShadcnPrimitives.Message author={isArabic ? 'مساعد Ceramic' : 'Ceramic AI'} meta={isArabic ? 'الآن' : 'Now'}>
-        <ShadcnPrimitives.Bubble tone="accent">
-          {isArabic
-            ? 'تحافظ الرسالة على الاتجاه العربي وتدعم النص المختلط دون كسر التباعد.'
-            : 'Message content keeps direction, spacing, and mixed-script support intact.'}
-        </ShadcnPrimitives.Bubble>
-      </ShadcnPrimitives.Message>
-    </div>
+    <CommandPalette className="command-detail-preview" dir={isArabic ? 'rtl' : 'ltr'} lang={isArabic ? 'ar' : 'en'}>
+      <CommandPaletteInput placeholder={copy.placeholder} />
+      <CommandPaletteList>
+        <CommandPaletteEmpty>{copy.empty}</CommandPaletteEmpty>
+        <CommandPaletteGroup heading={copy.suggestions}>
+          <CommandPaletteItem value="calendar">
+            <CalendarDays aria-hidden="true" />
+            <span>{copy.calendar}</span>
+          </CommandPaletteItem>
+          <CommandPaletteItem value="emoji">
+            <Smile aria-hidden="true" />
+            <span>{copy.searchEmoji}</span>
+          </CommandPaletteItem>
+          <CommandPaletteItem disabled value="calculator">
+            <Calculator aria-hidden="true" />
+            <span>{copy.calculator}</span>
+          </CommandPaletteItem>
+        </CommandPaletteGroup>
+        <CommandPaletteGroup heading={copy.settingsGroup}>
+          <CommandPaletteItem value="profile">
+            <User aria-hidden="true" />
+            <span>{copy.profile}</span>
+            <kbd>⌘ P</kbd>
+          </CommandPaletteItem>
+          <CommandPaletteItem value="billing">
+            <CreditCard aria-hidden="true" />
+            <span>{copy.billing}</span>
+            <kbd>⌘ B</kbd>
+          </CommandPaletteItem>
+          <CommandPaletteItem value="settings">
+            <Settings aria-hidden="true" />
+            <span>{copy.settings}</span>
+            <kbd>⌘ S</kbd>
+          </CommandPaletteItem>
+        </CommandPaletteGroup>
+      </CommandPaletteList>
+    </CommandPalette>
   )
 }
 
-function MessageScrollerPreview({ locale }: { locale: Locale }) {
+function ComboboxPreview({ locale }: { locale: Locale }) {
   const isArabic = locale === 'ar'
+  const options = isArabic
+    ? ['زر', 'الأوامر', 'جدول البيانات']
+    : ['Button', 'Command', 'Data Table']
 
   return (
-    <ShadcnPrimitives.MessageScroller dir={isArabic ? 'rtl' : 'ltr'} lang={isArabic ? 'ar' : 'en'}>
-      <ShadcnPrimitives.Message author={isArabic ? 'مصمم' : 'Designer'} meta="09:30">
-        <ShadcnPrimitives.Bubble>
-          {isArabic ? 'هل يمكن تلخيص قواعد RTL؟' : 'Can you summarize the RTL rules?'}
-        </ShadcnPrimitives.Bubble>
-      </ShadcnPrimitives.Message>
-      <ShadcnPrimitives.Message author={isArabic ? 'مساعد Ceramic' : 'Ceramic AI'} meta="09:31">
-        <ShadcnPrimitives.Bubble tone="accent">
-          {isArabic
-            ? 'استخدم start/end والتوكنات الدلالية وتحقق من النص العربي فعليا.'
-            : 'Use start/end, semantic tokens, and verify Arabic text in the real UI.'}
-        </ShadcnPrimitives.Bubble>
-      </ShadcnPrimitives.Message>
-    </ShadcnPrimitives.MessageScroller>
+    <ShadcnPrimitives.Combobox className="combobox-detail-preview" dir={isArabic ? 'rtl' : 'ltr'} lang={isArabic ? 'ar' : 'en'}>
+      <ShadcnPrimitives.ComboboxTrigger aria-expanded="true">
+        {isArabic ? 'اختر مكونا' : 'Select component'}
+      </ShadcnPrimitives.ComboboxTrigger>
+      <ShadcnPrimitives.ComboboxContent>
+        <ShadcnPrimitives.ComboboxInput
+          aria-label={isArabic ? 'البحث في المكونات' : 'Search components'}
+          placeholder={isArabic ? 'ابحث في المكونات' : 'Search components'}
+        />
+        {options.map((option, index) => (
+          <ShadcnPrimitives.ComboboxOption aria-selected={index === 1 ? 'true' : undefined} key={option}>
+            {option}
+          </ShadcnPrimitives.ComboboxOption>
+        ))}
+      </ShadcnPrimitives.ComboboxContent>
+    </ShadcnPrimitives.Combobox>
+  )
+}
+
+function ChartPreview({ locale }: { locale: Locale }) {
+  const isArabic = locale === 'ar'
+  const values = [
+    { label: isArabic ? 'الأوامر' : 'Command', value: 72 },
+    { label: isArabic ? 'النماذج' : 'Forms', value: 64 },
+    { label: isArabic ? 'البيانات' : 'Data', value: 84 },
+    { label: isArabic ? 'التنقل' : 'Nav', value: 58 },
+  ]
+
+  return (
+    <ShadcnPrimitives.Chart className="chart-detail-preview" title={isArabic ? 'جاهزية المكونات' : 'Component readiness'} dir={isArabic ? 'rtl' : undefined}>
+      <div className="chart-detail-summary">
+        <strong>{isArabic ? '٩٦ مكونا' : '96 components'}</strong>
+        <span>{isArabic ? 'مبنية على shadcn وتوكنات Ceramic' : 'Mapped to shadcn and Ceramic tokens'}</span>
+      </div>
+      <ShadcnPrimitives.ChartBars values={values} />
+    </ShadcnPrimitives.Chart>
+  )
+}
+
+function DataTablePreview({ locale }: { locale: Locale }) {
+  const isArabic = locale === 'ar'
+  const rows = isArabic
+    ? [
+        ['ناجح', 'noura@example.com', '٣١٦٫٠٠ $'],
+        ['ناجح', 'layla@example.com', '٢٤٢٫٠٠ $'],
+        ['قيد المعالجة', 'omar@example.com', '٨٣٧٫٠٠ $'],
+        ['فشل', 'sara@example.com', '٧٢١٫٠٠ $'],
+      ]
+    : [
+        ['Success', 'ken99@example.com', '$316.00'],
+        ['Success', 'abe45@example.com', '$242.00'],
+        ['Processing', 'monserrat44@example.com', '$837.00'],
+        ['Failed', 'carmella@example.com', '$721.00'],
+      ]
+
+  return (
+    <ShadcnPrimitives.DataTableShell className="data-table-detail-preview" dir={isArabic ? 'rtl' : 'ltr'} lang={isArabic ? 'ar' : 'en'}>
+      <ShadcnPrimitives.DataTableToolbar>
+        <TextInput aria-label={isArabic ? 'تصفية البريد' : 'Filter emails'} placeholder={isArabic ? 'تصفية البريد...' : 'Filter emails...'} />
+        <Button size="sm" variant="secondary">
+          {isArabic ? 'الأعمدة' : 'Columns'}
+          <ChevronRight aria-hidden="true" className="data-table-preview-chevron" />
+        </Button>
+      </ShadcnPrimitives.DataTableToolbar>
+      <ShadcnPrimitives.DataTable>
+        <ShadcnPrimitives.DataTableHeader>
+          <ShadcnPrimitives.DataTableRow>
+            <ShadcnPrimitives.DataTableHead data-size="control"><Checkbox aria-label={isArabic ? 'تحديد الكل' : 'Select all'} /></ShadcnPrimitives.DataTableHead>
+            <ShadcnPrimitives.DataTableHead>{isArabic ? 'الحالة' : 'Status'}</ShadcnPrimitives.DataTableHead>
+            <ShadcnPrimitives.DataTableHead>{isArabic ? 'البريد' : 'Email'} <ArrowDown aria-hidden="true" className="data-table-preview-sort" /></ShadcnPrimitives.DataTableHead>
+            <ShadcnPrimitives.DataTableHead data-align="end">{isArabic ? 'المبلغ' : 'Amount'}</ShadcnPrimitives.DataTableHead>
+            <ShadcnPrimitives.DataTableHead data-size="control"><span className="visually-hidden">{isArabic ? 'إجراءات' : 'Actions'}</span></ShadcnPrimitives.DataTableHead>
+          </ShadcnPrimitives.DataTableRow>
+        </ShadcnPrimitives.DataTableHeader>
+        <ShadcnPrimitives.DataTableBody>
+          {rows.map(([status, email, amount], index) => (
+            <ShadcnPrimitives.DataTableRow data-selected={index === 1 ? 'true' : undefined} key={email}>
+              <ShadcnPrimitives.DataTableCell data-size="control"><Checkbox aria-label={isArabic ? `تحديد ${email}` : `Select ${email}`} /></ShadcnPrimitives.DataTableCell>
+              <ShadcnPrimitives.DataTableCell>{status}</ShadcnPrimitives.DataTableCell>
+              <ShadcnPrimitives.DataTableCell>{email}</ShadcnPrimitives.DataTableCell>
+              <ShadcnPrimitives.DataTableCell data-align="end">{amount}</ShadcnPrimitives.DataTableCell>
+              <ShadcnPrimitives.DataTableCell data-size="control">
+                <IconButton label={isArabic ? 'إجراءات الصف' : 'Row actions'} variant="ghost">
+                  <MoreHorizontal aria-hidden="true" />
+                </IconButton>
+              </ShadcnPrimitives.DataTableCell>
+            </ShadcnPrimitives.DataTableRow>
+          ))}
+        </ShadcnPrimitives.DataTableBody>
+      </ShadcnPrimitives.DataTable>
+      <ShadcnPrimitives.DataTableFooter>
+        <span>{isArabic ? 'تم تحديد ٠ من ٤ صفوف.' : '0 of 4 row(s) selected.'}</span>
+        <HStack gap={2}>
+          <Button size="sm" variant="secondary">{isArabic ? 'السابق' : 'Previous'}</Button>
+          <Button size="sm" variant="secondary">{isArabic ? 'التالي' : 'Next'}</Button>
+        </HStack>
+      </ShadcnPrimitives.DataTableFooter>
+    </ShadcnPrimitives.DataTableShell>
   )
 }
 
@@ -4287,7 +4397,7 @@ function renderShadcnMappedPreview(name: string, locale: Locale = 'en') {
     }
   }
 
-  if (['Attachment', 'Bubble', 'Marker', 'Message', 'Message Scroller'].includes(name)) {
+  if (['Attachment', 'Bubble', 'Marker'].includes(name)) {
     if (name === 'Attachment') {
       return <AttachmentDemoPreview locale={locale} />
     }
@@ -4299,25 +4409,6 @@ function renderShadcnMappedPreview(name: string, locale: Locale = 'en') {
     if (name === 'Marker') {
       return <ShadcnPrimitives.Marker tone="accent">AI</ShadcnPrimitives.Marker>
     }
-
-    if (name === 'Message') {
-      return (
-        <ShadcnPrimitives.Message author="Utopia AI" meta="Now">
-          <ShadcnPrimitives.Bubble>Message content supports mixed-script text and RTL smoke checks.</ShadcnPrimitives.Bubble>
-        </ShadcnPrimitives.Message>
-      )
-    }
-
-    return (
-      <ShadcnPrimitives.MessageScroller>
-        <ShadcnPrimitives.Message author="Human" meta="09:30">
-          <ShadcnPrimitives.Bubble>Can you summarize this direction?</ShadcnPrimitives.Bubble>
-        </ShadcnPrimitives.Message>
-        <ShadcnPrimitives.Message author="Utopia AI" meta="09:31">
-          <ShadcnPrimitives.Bubble tone="accent">Yes. Keep AI-readable docs, semantic tokens, and Arabic-friendly checks together.</ShadcnPrimitives.Bubble>
-        </ShadcnPrimitives.Message>
-      </ShadcnPrimitives.MessageScroller>
-    )
   }
 
   if (['Navigation Menu', 'Pagination', 'Menubar'].includes(name)) {
@@ -4357,17 +4448,7 @@ function renderShadcnMappedPreview(name: string, locale: Locale = 'en') {
 
   if (['Combobox', 'Input Group'].includes(name)) {
     if (name === 'Combobox') {
-      return (
-        <ShadcnPrimitives.Combobox>
-          <ShadcnPrimitives.ComboboxTrigger aria-expanded="true">Select component</ShadcnPrimitives.ComboboxTrigger>
-          <ShadcnPrimitives.ComboboxContent>
-            <ShadcnPrimitives.ComboboxInput placeholder="Search components" aria-label="Search components" />
-            <ShadcnPrimitives.ComboboxOption aria-selected="true">Button</ShadcnPrimitives.ComboboxOption>
-            <ShadcnPrimitives.ComboboxOption>Command</ShadcnPrimitives.ComboboxOption>
-            <ShadcnPrimitives.ComboboxOption>Data Table</ShadcnPrimitives.ComboboxOption>
-          </ShadcnPrimitives.ComboboxContent>
-        </ShadcnPrimitives.Combobox>
-      )
+      return <ComboboxPreview locale={locale} />
     }
 
     if (name === 'Input Group') {
@@ -4411,41 +4492,11 @@ function renderShadcnMappedPreview(name: string, locale: Locale = 'en') {
     }
 
     if (name === 'Chart') {
-      return (
-        <ShadcnPrimitives.Chart title={isArabic ? 'تغطية المكوّنات' : 'Component coverage'} dir={isArabic ? 'rtl' : undefined}>
-          <ShadcnPrimitives.ChartBars
-            values={[
-              { label: isArabic ? 'أزرار' : 'Buttons', value: 86 },
-              { label: isArabic ? 'نماذج' : 'Forms', value: 64 },
-              { label: isArabic ? 'تنقّل' : 'Nav', value: 72 },
-              { label: isArabic ? 'بيانات' : 'Data', value: 58 },
-            ]}
-          />
-        </ShadcnPrimitives.Chart>
-      )
+      return <ChartPreview locale={locale} />
     }
 
     if (name === 'Data Table') {
-      return (
-        <ShadcnPrimitives.DataTable>
-          <ShadcnPrimitives.DataTableHeader>
-            <ShadcnPrimitives.DataTableRow>
-              <ShadcnPrimitives.DataTableHead>{isArabic ? 'المكوّن' : 'Component'}</ShadcnPrimitives.DataTableHead>
-              <ShadcnPrimitives.DataTableHead>{isArabic ? 'الحالة' : 'Status'}</ShadcnPrimitives.DataTableHead>
-            </ShadcnPrimitives.DataTableRow>
-          </ShadcnPrimitives.DataTableHeader>
-          <ShadcnPrimitives.DataTableBody>
-            <ShadcnPrimitives.DataTableRow>
-              <ShadcnPrimitives.DataTableCell>{isArabic ? 'الأوامر' : 'Command'}</ShadcnPrimitives.DataTableCell>
-              <ShadcnPrimitives.DataTableCell>{isArabic ? 'متاح' : 'Available'}</ShadcnPrimitives.DataTableCell>
-            </ShadcnPrimitives.DataTableRow>
-            <ShadcnPrimitives.DataTableRow>
-              <ShadcnPrimitives.DataTableCell>{isArabic ? 'جدول البيانات' : 'Data Table'}</ShadcnPrimitives.DataTableCell>
-              <ShadcnPrimitives.DataTableCell>{isArabic ? 'متاح' : 'Available'}</ShadcnPrimitives.DataTableCell>
-            </ShadcnPrimitives.DataTableRow>
-          </ShadcnPrimitives.DataTableBody>
-        </ShadcnPrimitives.DataTable>
-      )
+      return <DataTablePreview locale={locale} />
     }
 
     if (name === 'Item') {
@@ -5277,7 +5328,14 @@ export function Example() {
 export function Example() {
   return (
     <Chart title="Component coverage">
-      <ChartBars values={[42, 68, 86, 74]} />
+      <ChartBars
+        values={[
+          {label: 'Command', value: 72},
+          {label: 'Forms', value: 64},
+          {label: 'Data', value: 84},
+          {label: 'Nav', value: 58},
+        ]}
+      />
     </Chart>
   );
 }`
@@ -5521,8 +5579,15 @@ export function Example() {
   if (name === 'Context Menu') {
     return `import {
   ContextMenu,
+  ContextMenuCheckboxItem,
   ContextMenuContent,
   ContextMenuItem,
+  ContextMenuLabel,
+  ContextMenuSeparator,
+  ContextMenuShortcut,
+  ContextMenuSub,
+  ContextMenuSubContent,
+  ContextMenuSubTrigger,
   ContextMenuTrigger,
 } from '@utopia-studio-design/design-system/Navigation';
 
@@ -5531,8 +5596,19 @@ export function Example() {
     <ContextMenu>
       <ContextMenuTrigger>Context target</ContextMenuTrigger>
       <ContextMenuContent>
-        <ContextMenuItem>Open</ContextMenuItem>
-        <ContextMenuItem>Copy</ContextMenuItem>
+        <ContextMenuItem>Back <ContextMenuShortcut>⌘[</ContextMenuShortcut></ContextMenuItem>
+        <ContextMenuItem disabled>Forward <ContextMenuShortcut>⌘]</ContextMenuShortcut></ContextMenuItem>
+        <ContextMenuItem>Reload <ContextMenuShortcut>⌘R</ContextMenuShortcut></ContextMenuItem>
+        <ContextMenuSub>
+          <ContextMenuSubTrigger>More tools</ContextMenuSubTrigger>
+          <ContextMenuSubContent>
+            <ContextMenuItem>Command palette</ContextMenuItem>
+          </ContextMenuSubContent>
+        </ContextMenuSub>
+        <ContextMenuSeparator />
+        <ContextMenuCheckboxItem checked>Show bookmarks</ContextMenuCheckboxItem>
+        <ContextMenuLabel>People</ContextMenuLabel>
+        <ContextMenuCheckboxItem checked>Product team</ContextMenuCheckboxItem>
       </ContextMenuContent>
     </ContextMenu>
   );
@@ -5556,8 +5632,8 @@ export function Example() {
       <CommandPaletteList>
         <CommandPaletteEmpty>No command found.</CommandPaletteEmpty>
         <CommandPaletteGroup heading="Design System">
-          <CommandPaletteItem>Open components</CommandPaletteItem>
-          <CommandPaletteItem>Search tokens</CommandPaletteItem>
+          <CommandPaletteItem value="components">Open components</CommandPaletteItem>
+          <CommandPaletteItem value="tokens">Search tokens</CommandPaletteItem>
         </CommandPaletteGroup>
       </CommandPaletteList>
     </Command>
@@ -5599,27 +5675,46 @@ export function Example() {
   DataTable,
   DataTableBody,
   DataTableCell,
+  DataTableFooter,
   DataTableHead,
   DataTableHeader,
   DataTableRow,
+  DataTableShell,
+  DataTableToolbar,
 } from '@utopia-studio-design/design-system/ShadcnPrimitives';
+import {Button} from '@utopia-studio-design/design-system/Button';
+import {Checkbox, TextInput} from '@utopia-studio-design/design-system/Forms';
 
 export function Example() {
   return (
-    <DataTable>
-      <DataTableHeader>
-        <DataTableRow>
-          <DataTableHead>Component</DataTableHead>
-          <DataTableHead>Status</DataTableHead>
-        </DataTableRow>
-      </DataTableHeader>
-      <DataTableBody>
-        <DataTableRow>
-          <DataTableCell>Command</DataTableCell>
-          <DataTableCell>Available</DataTableCell>
-        </DataTableRow>
-      </DataTableBody>
-    </DataTable>
+    <DataTableShell>
+      <DataTableToolbar>
+        <TextInput aria-label="Filter emails" placeholder="Filter emails..." />
+        <Button variant="secondary">Columns</Button>
+      </DataTableToolbar>
+      <DataTable>
+        <DataTableHeader>
+          <DataTableRow>
+            <DataTableHead data-size="control"><Checkbox aria-label="Select all" /></DataTableHead>
+            <DataTableHead>Status</DataTableHead>
+            <DataTableHead>Email</DataTableHead>
+            <DataTableHead data-align="end">Amount</DataTableHead>
+          </DataTableRow>
+        </DataTableHeader>
+        <DataTableBody>
+          <DataTableRow>
+            <DataTableCell data-size="control"><Checkbox aria-label="Select row" /></DataTableCell>
+            <DataTableCell>Success</DataTableCell>
+            <DataTableCell>ken99@example.com</DataTableCell>
+            <DataTableCell data-align="end">$316.00</DataTableCell>
+          </DataTableRow>
+        </DataTableBody>
+      </DataTable>
+      <DataTableFooter>
+        <span>0 of 1 row(s) selected.</span>
+        <Button variant="secondary">Next</Button>
+      </DataTableFooter>
+    </DataTableShell>
   );
 }`
   }

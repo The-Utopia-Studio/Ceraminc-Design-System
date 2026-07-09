@@ -391,6 +391,14 @@ export function DataTable({ className, ...props }: React.TableHTMLAttributes<HTM
   return <table className={cn('uds-data-table', className)} {...props} />
 }
 
+export function DataTableToolbar({ className, ...props }: DivProps) {
+  return <div className={cn('uds-data-table-toolbar', className)} {...props} />
+}
+
+export function DataTableShell({ className, ...props }: DivProps) {
+  return <div className={cn('uds-data-table-shell', className)} {...props} />
+}
+
 export function DataTableHeader({ className, ...props }: React.HTMLAttributes<HTMLTableSectionElement>) {
   return <thead className={cn('uds-data-table-header', className)} {...props} />
 }
@@ -409,6 +417,10 @@ export function DataTableHead({ className, ...props }: React.ThHTMLAttributes<HT
 
 export function DataTableCell({ className, ...props }: React.TdHTMLAttributes<HTMLTableCellElement>) {
   return <td className={cn('uds-data-table-cell', className)} {...props} />
+}
+
+export function DataTableFooter({ className, ...props }: DivProps) {
+  return <div className={cn('uds-data-table-footer', className)} {...props} />
 }
 
 export function Collapsible(props: React.ComponentProps<typeof CollapsiblePrimitive.Root>) {
@@ -671,38 +683,7 @@ export function Marker({
   return <span className={cn('uds-marker', `uds-marker--${tone}`, className)} {...props}>{children}</span>
 }
 
-export function Message({
-  author,
-  children,
-  className,
-  meta,
-  variant = 'thread',
-  ...props
-}: DivProps & {
-  author?: React.ReactNode
-  meta?: React.ReactNode
-  variant?: 'thread' | 'bubble'
-}) {
-  return (
-    <article className={cn('uds-message', variant === 'bubble' && 'uds-message--bubble', className)} {...props}>
-      {author || meta ? (
-        <header className="uds-message-header">
-          {author ? <strong>{author}</strong> : null}
-          {meta ? <span>{meta}</span> : null}
-        </header>
-      ) : null}
-      <div className={cn('uds-message-content', variant === 'bubble' && 'uds-message-bubble')}>{children}</div>
-    </article>
-  )
-}
-
-export function MessageScroller({ className, ...props }: DivProps) {
-  return <div className={cn('uds-message-scroller', className)} role="log" {...props} />
-}
-
 export const MarkerNew = Marker
-export const MessageNew = Message
-export const MessageScrollerNew = MessageScroller
 
 export function InputOTP({
   className,

@@ -63,8 +63,6 @@ const expectedComponents = [
   'Label',
   'Marker',
   'Menubar',
-  'Message',
-  'Message Scroller',
   'Mobile Nav',
   'Mobile Nav Toggle',
   'Native Select',

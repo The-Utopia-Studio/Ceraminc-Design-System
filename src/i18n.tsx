@@ -232,8 +232,6 @@ const componentLabels: Record<string, string> = {
   Label: 'تسمية',
   Marker: 'علامة',
   Menubar: 'شريط القوائم',
-  Message: 'رسالة',
-  'Message Scroller': 'تمرير الرسائل',
   'Mobile Nav': 'تنقل الجوال',
   'Mobile Nav Toggle': 'زر تبديل تنقل الجوال',
   'Native Select': 'اختيار أصلي',

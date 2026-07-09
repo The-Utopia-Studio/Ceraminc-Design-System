@@ -11,8 +11,6 @@ import {
   MenubarItem,
   MenubarMenu,
   MenubarTrigger,
-  Message,
-  MessageScroller,
   NavigationMenu,
   NavigationMenuContent,
   NavigationMenuItem,
@@ -94,24 +92,6 @@ export function QueuedComponentPreview({ locale, name }: PreviewProps & { name: 
           <MenubarTrigger>{isArabic ? 'عرض' : 'View'}</MenubarTrigger>
         </MenubarMenu>
       </Menubar>
-    )
-  }
-
-  if (name === 'Message' || name === 'MessageNew') {
-    return (
-      <Message author={isArabic ? 'أميليا' : 'Amelia'} meta="10:24" variant="bubble">
-        {isArabic ? 'أرسلت النماذج الجديدة.' : 'Sent the new mockups your way.'}
-      </Message>
-    )
-  }
-
-  if (name === 'Message Scroller' || name === 'Message ScrollerNew') {
-    return (
-      <MessageScroller>
-        <span className="uds-message-scroller-day">{isArabic ? 'اليوم' : 'Today'}</span>
-        <span className="uds-message-scroller-bubble">{isArabic ? 'هل أنت جاهز؟' : 'Ping when ready.'}</span>
-        <span className="uds-message-scroller-bubble uds-message-scroller-bubble--outgoing">{isArabic ? 'حاضر.' : 'On it.'}</span>
-      </MessageScroller>
     )
   }
 
@@ -304,10 +284,6 @@ export const queuedComponentNames = new Set([
   'Marker',
   'MarkerNew',
   'Menubar',
-  'Message',
-  'MessageNew',
-  'Message Scroller',
-  'Message ScrollerNew',
   'Navigation Menu',
   'Pagination',
   'Progress',
