@@ -14,6 +14,8 @@ export {
   CommandPaletteInput,
   CommandPaletteItem,
   CommandPaletteList,
+  CommandPaletteSeparator,
+  CommandPaletteShortcut,
   ContextMenu,
   ContextMenuCheckboxItem,
   ContextMenuContent,

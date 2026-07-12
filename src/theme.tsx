@@ -1,7 +1,7 @@
 import { createContext, useContext, useEffect, useMemo, useState, type ReactNode } from 'react'
 import { themes } from './data/design-system'
 
-export type ThemeId = 'utopia-default' | 'dextrum'
+export type ThemeId = 'utopia-default' | 'dextrum' | 'barrier-intelligence'
 
 const STORAGE_KEY = 'ceramic-theme'
 
@@ -25,6 +25,12 @@ const themeBrandById: Record<ThemeId, ThemeBrand> = {
     logoAlt: 'Dextrum',
     subtitle: 'Design System',
   },
+  'barrier-intelligence': {
+    label: 'Ceramic',
+    logo: '/brand/the-utopia-studio-wordmark.avif',
+    logoAlt: 'The Utopia Studio',
+    subtitle: 'Design System',
+  },
 }
 
 type ThemeContextValue = {
@@ -37,7 +43,7 @@ type ThemeContextValue = {
 const ThemeContext = createContext<ThemeContextValue | null>(null)
 
 function isThemeId(value: string | null | undefined): value is ThemeId {
-  return value === 'utopia-default' || value === 'dextrum'
+  return value === 'utopia-default' || value === 'dextrum' || value === 'barrier-intelligence'
 }
 
 export function readStoredThemeId(): ThemeId {

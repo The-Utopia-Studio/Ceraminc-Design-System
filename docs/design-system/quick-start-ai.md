@@ -21,3 +21,7 @@ npm run ds -- theme utopia-default --dense
 Core owns shadcn-style component architecture, semantic token roles, accessibility, Arabic-friendly baseline behavior, and the theme extension mechanism.
 
 Themes own brand-specific visual philosophy. Utopia Default owns Brick Red, Special Black, TWK Lausanne, square geometry, border-led elevation, and the dot/bar icon policy. Do not apply those restrictions to other themes unless their manifests declare them.
+
+## Localization Rule
+
+Never rely on component-internal English fallback copy. Supply localized visible text, `aria-label`, status labels, pagination labels, OTP slot formatters, and chat action summaries from the product layer. Use `npm run ds -- component "<Component>" --dense` to inspect the exact contract before generating usage.

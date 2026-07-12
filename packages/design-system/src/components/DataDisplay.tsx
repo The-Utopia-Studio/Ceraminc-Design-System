@@ -131,42 +131,76 @@ export function MetadataList({ className, ...props }: React.HTMLAttributes<HTMLD
   return <dl className={cn('uds-metadata-list', className)} {...props} />
 }
 
+type ProgressStatus = 'default' | 'success' | 'warning' | 'destructive'
+type ProgressSize = 'sm' | 'md' | 'lg'
+
+type ProgressContextValue = {
+  indeterminate: boolean
+  max: number
+  value: number
+}
+
+const ProgressContext = React.createContext<ProgressContextValue>({ indeterminate: false, max: 100, value: 0 })
+
 export function ProgressBar({
+  children,
   className,
+  indeterminate = false,
   label,
+  max = 100,
   showValue = false,
+  size = 'md',
+  status = 'default',
   value = 0,
+  valueText,
   ...props
 }: React.HTMLAttributes<HTMLDivElement> & {
+  indeterminate?: boolean
   label?: React.ReactNode
+  max?: number
   showValue?: boolean
+  size?: ProgressSize
+  status?: ProgressStatus
   value?: number
+  valueText?: React.ReactNode
 }) {
-  const bar = (
-    <div aria-valuemax={100} aria-valuemin={0} aria-valuenow={value} className="uds-progress" role="progressbar" {...props}>
-      <span style={{ inlineSize: `${Math.max(0, Math.min(100, value))}%` }} />
-    </div>
-  )
-
-  if (!label && !showValue) {
-    return (
-      <div aria-valuemax={100} aria-valuemin={0} aria-valuenow={value} className={cn('uds-progress', className)} role="progressbar" {...props}>
-        <span style={{ inlineSize: `${Math.max(0, Math.min(100, value))}%` }} />
-      </div>
-    )
-  }
+  const safeMax = Math.max(1, max)
+  const safeValue = Math.max(0, Math.min(safeMax, value))
+  const context = { indeterminate, max: safeMax, value: safeValue }
 
   return (
-    <div className={cn('uds-progress-root', className)}>
-      <div className="uds-progress-header">
-        {label ? <span className="uds-progress-label">{label}</span> : <span />}
-        {showValue ? <span className="uds-progress-value">{Math.round(value)}%</span> : null}
+    <ProgressContext.Provider value={context}>
+      <div className={cn('uds-progress-root', className)} data-size={size} data-status={status} {...props}>
+        {children ?? (
+          <>
+            {(label || showValue) ? <div className="uds-progress-header">{label ? <ProgressLabel>{label}</ProgressLabel> : <span />}{showValue ? <ProgressValue>{valueText}</ProgressValue> : null}</div> : null}
+            <ProgressTrack><ProgressIndicator /></ProgressTrack>
+          </>
+        )}
       </div>
-      {bar}
-    </div>
+    </ProgressContext.Provider>
   )
 }
 export const Progress = ProgressBar
+
+export function ProgressLabel({ className, ...props }: React.HTMLAttributes<HTMLSpanElement>) {
+  return <span className={cn('uds-progress-label', className)} {...props} />
+}
+
+export function ProgressValue({ className, children, ...props }: React.HTMLAttributes<HTMLSpanElement>) {
+  const { indeterminate, max, value } = React.useContext(ProgressContext)
+  return <span className={cn('uds-progress-value', className)} {...props}>{children ?? (indeterminate ? '—' : `${Math.round((value / max) * 100)}%`)}</span>
+}
+
+export function ProgressTrack({ className, ...props }: React.HTMLAttributes<HTMLDivElement>) {
+  const { indeterminate, max, value } = React.useContext(ProgressContext)
+  return <div aria-valuemax={max} aria-valuemin={0} aria-valuenow={indeterminate ? undefined : value} className={cn('uds-progress', className)} data-state={indeterminate ? 'indeterminate' : value >= max ? 'complete' : 'loading'} role="progressbar" {...props} />
+}
+
+export function ProgressIndicator({ className, style, ...props }: React.HTMLAttributes<HTMLSpanElement>) {
+  const { indeterminate, max, value } = React.useContext(ProgressContext)
+  return <span className={cn('uds-progress-indicator', className)} data-state={indeterminate ? 'indeterminate' : undefined} style={indeterminate ? style : { ...style, inlineSize: `${(value / max) * 100}%` }} {...props} />
+}
 
 export function Skeleton({
   className,
@@ -180,13 +214,17 @@ export function Skeleton({
 
 
 export function Spinner({
+  'aria-label': ariaLabel,
   className,
+  label,
   size = 'sm',
   ...props
 }: React.HTMLAttributes<HTMLSpanElement> & {
+  label?: string
   size?: 'sm' | 'md' | 'lg'
 }) {
-  return <span className={cn('uds-spinner', `uds-spinner--${size}`, className)} {...props} />
+  const resolvedLabel = label ?? ariaLabel
+  return <span aria-label={resolvedLabel} aria-hidden={resolvedLabel ? undefined : true} className={cn('uds-spinner', `uds-spinner--${size}`, className)} role={resolvedLabel ? 'status' : undefined} {...props} />
 }
 
 export function StatusDot({ className, ...props }: React.HTMLAttributes<HTMLSpanElement>) {
@@ -197,12 +235,24 @@ export function Table({ className, ...props }: React.TableHTMLAttributes<HTMLTab
   return <table className={cn('uds-table', className)} {...props} />
 }
 
+export function TableContainer({ className, ...props }: React.HTMLAttributes<HTMLDivElement>) {
+  return <div className={cn('uds-table-container', className)} {...props} />
+}
+
+export function TableCaption({ className, ...props }: React.HTMLAttributes<HTMLTableCaptionElement>) {
+  return <caption className={cn('uds-table-caption', className)} {...props} />
+}
+
 export function TableHeader({ className, ...props }: React.HTMLAttributes<HTMLTableSectionElement>) {
   return <thead className={cn('uds-table-header', className)} {...props} />
 }
 
 export function TableBody({ className, ...props }: React.HTMLAttributes<HTMLTableSectionElement>) {
   return <tbody className={cn('uds-table-body', className)} {...props} />
+}
+
+export function TableFooter({ className, ...props }: React.HTMLAttributes<HTMLTableSectionElement>) {
+  return <tfoot className={cn('uds-table-footer', className)} {...props} />
 }
 
 export function TableRow({ className, ...props }: React.HTMLAttributes<HTMLTableRowElement>) {
@@ -351,10 +401,10 @@ const calendarClassNames = {
 }
 
 export interface DatePickerProps extends Omit<CalendarProps, 'children'> {
-  label?: React.ReactNode
+  label: React.ReactNode
   open?: boolean
   onOpenChange?: (open: boolean) => void
-  placeholder?: React.ReactNode
+  placeholder: React.ReactNode
   triggerClassName?: string
   valueFormatter?: (date: Date, locale: string) => React.ReactNode
 }
@@ -379,8 +429,8 @@ export function DatePicker({
   const activeDate = selectedDate ?? uncontrolledDate
   const activeOpen = open ?? uncontrolledOpen
   const isArabicLocale = locale.toLowerCase().startsWith('ar')
-  const triggerLabel = label ?? (isArabicLocale ? 'اختر التاريخ' : 'Select date')
-  const triggerPlaceholder = placeholder ?? (isArabicLocale ? 'اختر تاريخاً' : 'Pick a date')
+  const triggerLabel = label
+  const triggerPlaceholder = placeholder
   const formattedValue = activeDate
     ? valueFormatter?.(activeDate, locale) ?? new Intl.DateTimeFormat(locale, { dateStyle: 'long' }).format(activeDate)
     : triggerPlaceholder

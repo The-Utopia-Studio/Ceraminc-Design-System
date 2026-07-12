@@ -230,7 +230,6 @@ const componentLabels: Record<string, string> = {
   Item: 'عنصر',
   Kbd: 'مفتاح لوحة',
   Label: 'تسمية',
-  Marker: 'علامة',
   Menubar: 'شريط القوائم',
   'Mobile Nav': 'تنقل الجوال',
   'Mobile Nav Toggle': 'زر تبديل تنقل الجوال',

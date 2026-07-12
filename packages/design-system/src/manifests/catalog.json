@@ -134,6 +134,7 @@
             "Nav Icon",
             "Navigation Menu",
             "Pagination",
+            "Sidebar",
             "Side Nav",
             "Side Nav Collapse Button",
             "Side Nav Heading",
@@ -191,7 +192,6 @@
             "Empty",
             "Item",
             "Kbd",
-            "Marker",
             "Progress",
             "Skeleton",
             "Spinner",
@@ -249,7 +249,8 @@
           "label": "Active",
           "items": [
             "Utopia Default",
-            "Dextrum"
+            "Dextrum",
+            "Barrier Intelligence"
           ]
         },
         {
@@ -329,7 +330,6 @@
       "Item",
       "Kbd",
       "Label",
-      "Marker",
       "Menubar",
       "Native Select",
       "Navigation Menu",
@@ -350,7 +350,6 @@
       "Table",
       "Tabs",
       "Textarea",
-      "Toast",
       "Toggle Button",
       "Toggle Button Group",
       "Tooltip",
@@ -408,7 +407,6 @@
       "Item",
       "Kbd",
       "Label",
-      "Marker",
       "Menubar",
       "Native Select",
       "Navigation Menu",
@@ -429,16 +427,17 @@
       "Table",
       "Tabs",
       "Textarea",
-      "Toast",
       "Toggle Button",
       "Toggle Button Group",
       "Tooltip",
       "Typography"
     ],
+    "legacy": [
+      "Toast"
+    ],
     "shadcnFallback": [
       "attachment",
       "bubble",
-      "marker",
       "message",
       "message-scroller",
       "accordion",

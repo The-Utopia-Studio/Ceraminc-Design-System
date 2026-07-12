@@ -20,10 +20,13 @@ type TopNavigationProps = {
 }
 
 export function TopNavigation({ links, locale, onLocaleChange, showBrand = true }: TopNavigationProps) {
+  const topLevelLabel = locale === 'ar' ? 'التنقل الرئيسي لنظام التصميم' : 'Design system top level'
+  const homeLabel = locale === 'ar' ? 'الصفحة الرئيسية لنظام التصميم' : 'Design system home'
+
   return (
     <header className="topbar" data-has-brand={showBrand ? 'true' : 'false'}>
       {showBrand ? (
-        <a className="topbar-brand" href="#/" aria-label="Utopia Design System home">
+        <a className="topbar-brand" href="#/" aria-label={homeLabel}>
           <TopNavHeading
             icon={<img alt="" src="/brand/the-utopia-studio-wordmark.avif" />}
             label="Ceramic"
@@ -31,7 +34,7 @@ export function TopNavigation({ links, locale, onLocaleChange, showBrand = true 
           />
         </a>
       ) : <span className="topbar-spacer" aria-hidden="true" />}
-      <TopNav className="topbar-nav" aria-label="Design system top level">
+      <TopNav className="topbar-nav" aria-label={topLevelLabel}>
         {links.map((link) => (
           <TopNavItem key={link.href} href={link.href} isCurrent={link.active}>
             {link.label}

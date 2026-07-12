@@ -104,7 +104,7 @@ export interface ChatToolCall {
 export interface ChatToolCallsProps extends React.DetailsHTMLAttributes<HTMLDetailsElement> {
   calls?: ChatToolCall[]
   defaultExpanded?: boolean
-  label?: React.ReactNode
+  label: React.ReactNode
 }
 
 export function ChatToolCalls({
@@ -119,7 +119,7 @@ export function ChatToolCalls({
     <details className={cn('uds-chat-tool-calls', className)} open={defaultExpanded} {...props}>
       <summary className="uds-chat-tool-calls-summary">
         <Wrench aria-hidden="true" className="uds-chat-tool-calls-icon" />
-        <span>{label ?? `${calls.length} tool calls`}</span>
+        <span>{label}</span>
         <ChevronDown aria-hidden="true" className="uds-chat-tool-calls-disclosure" />
       </summary>
       <div className="uds-chat-tool-calls-list">
@@ -183,13 +183,13 @@ export function ChatComposerDrawer({ className, ...props }: React.HTMLAttributes
 
 export interface ChatSendButtonProps extends Omit<ButtonProps, 'children' | 'isIconOnly'> {
   icon?: React.ReactNode
-  label?: string
+  label: string
 }
 
 export function ChatSendButton({
   className,
   icon = <ArrowUp />,
-  label = 'Send message',
+  label,
   variant = 'default',
   ...props
 }: ChatSendButtonProps) {
@@ -202,13 +202,13 @@ export function ChatSendButton({
 
 export interface ChatDictationButtonProps extends Omit<ButtonProps, 'children' | 'isIconOnly'> {
   icon?: React.ReactNode
-  label?: string
+  label: string
 }
 
 export function ChatDictationButton({
   className,
   icon = <Mic />,
-  label = 'Start dictation',
+  label,
   variant = 'ghost',
   ...props
 }: ChatDictationButtonProps) {
@@ -220,11 +220,13 @@ export function ChatDictationButton({
 }
 
 export interface ChatLayoutScrollButtonProps extends Omit<ButtonProps, 'children' | 'isIconOnly'> {
+  accessibilityLabel: string
   icon?: React.ReactNode
   label?: React.ReactNode
 }
 
 export function ChatLayoutScrollButton({
+  accessibilityLabel,
   className,
   icon = '⌄',
   label,
@@ -232,7 +234,7 @@ export function ChatLayoutScrollButton({
   ...props
 }: ChatLayoutScrollButtonProps) {
   return (
-    <Button className={cn('uds-chat-layout-scroll-button', className)} isIconOnly={!label} type="button" variant={variant} {...props}>
+    <Button aria-label={accessibilityLabel} className={cn('uds-chat-layout-scroll-button', className)} isIconOnly={!label} type="button" variant={variant} {...props}>
       <span aria-hidden="true">{icon}</span>
       {label ? <span className="uds-chat-layout-scroll-button-label">{label}</span> : null}
     </Button>

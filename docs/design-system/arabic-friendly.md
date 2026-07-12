@@ -8,6 +8,7 @@ Arabic-friendly support is a first-class design-system goal. It is broader than 
 - Mirror or replace directional icons in RTL contexts.
 - Validate mixed English/Arabic labels.
 - Do not invent Arabic copy.
+- Require localized props for visible labels, `aria-label`, live-region status, empty-state copy, pagination controls, and formatter-generated accessibility text. Reusable components must not fall back to embedded English UI strings.
 
 ## Side Navigation Requirements
 
@@ -50,6 +51,13 @@ Directional UI must mirror intentionally.
 - Do not mirror direction-neutral icons by default: settings, add, home, camera, download, panel, and document icons.
 - Progress indicators and steppers should reverse visual flow only when the product sequence follows reading direction.
 - Motion should enter from inline start/end instead of physical left/right.
+
+## Accessibility Localization Contract
+
+- Icon-only actions require a localized accessible label from the consumer.
+- Composite widgets require localized landmark and slot labels, including Breadcrumb, Pagination, Input OTP, Chat actions, Spinner, and tool-call summaries.
+- Numeric values remain machine-readable while visible and spoken formatting comes from product locale data.
+- Direction-neutral icons such as loading spinners do not mirror; directional actions mirror through component direction.
 
 ## Required Arabic Mockups
 

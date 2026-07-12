@@ -6,13 +6,14 @@ import * as NavigationMenuPrimitive from '@radix-ui/react-navigation-menu'
 import * as TabsPrimitive from '@radix-ui/react-tabs'
 import { Command as CommandPrimitive } from 'cmdk'
 import { motion, useReducedMotion } from 'framer-motion'
+import { Search } from 'lucide-react'
 import { Button, type ButtonProps } from './Button'
 import { cn } from '../lib/utils'
 
 type AnchorProps = React.AnchorHTMLAttributes<HTMLAnchorElement>
 
-export function Breadcrumb({ className, ...props }: React.HTMLAttributes<HTMLElement>) {
-  return <nav aria-label="Breadcrumb" className={cn('uds-breadcrumb', className)} {...props} />
+export function Breadcrumb({ className, ...props }: React.HTMLAttributes<HTMLElement> & { 'aria-label': string }) {
+  return <nav className={cn('uds-breadcrumb', className)} {...props} />
 }
 
 export function BreadcrumbList({ className, ...props }: React.OlHTMLAttributes<HTMLOListElement>) {
@@ -38,10 +39,11 @@ export function BreadcrumbSeparator({ className, children = '/', ...props }: Rea
 export function BreadcrumbEllipsis({
   className,
   children = '...',
+  label,
   ...props
-}: React.ButtonHTMLAttributes<HTMLButtonElement>) {
+}: React.ButtonHTMLAttributes<HTMLButtonElement> & { label: string }) {
   return (
-    <button className={cn('uds-breadcrumb-ellipsis', className)} type="button" {...props}>
+    <button aria-label={label} className={cn('uds-breadcrumb-ellipsis', className)} type="button" {...props}>
       {children}
     </button>
   )
@@ -191,6 +193,7 @@ export function TopNavMenuItem({ className, ...props }: AnchorProps) {
 }
 
 export interface NavIconProps extends Omit<ButtonProps, 'isIconOnly' | 'size'> {
+  'aria-label': string
   active?: boolean
 }
 
@@ -251,7 +254,7 @@ export interface SideNavSearchProps extends Omit<React.InputHTMLAttributes<HTMLI
 export function SideNavSearch({
   className,
   inputClassName,
-  label = 'Search navigation',
+  label,
   type = 'search',
   ...props
 }: SideNavSearchProps) {
@@ -284,7 +287,7 @@ export interface SideNavSectionProps extends React.HTMLAttributes<HTMLDivElement
 export function SideNavSection({
   children,
   className,
-  collapsedLabel = 'Toggle section',
+  collapsedLabel,
   collapsible = false,
   defaultExpanded = true,
   expanded,
@@ -488,7 +491,7 @@ export function SideNavItem({
   )
 }
 
-export interface SideNavCollapseButtonProps extends Omit<ButtonProps, 'isIconOnly' | 'size' | 'variant'> {}
+export interface SideNavCollapseButtonProps extends Omit<ButtonProps, 'isIconOnly' | 'size' | 'variant'> { 'aria-label': string }
 
 export function PanelIcon({ className, ...props }: React.SVGProps<SVGSVGElement>) {
   return (
@@ -532,6 +535,7 @@ export function MobileNavTrigger(props: React.ComponentProps<typeof DialogPrimit
 }
 
 export interface MobileNavToggleProps extends Omit<ButtonProps, 'isIconOnly' | 'size' | 'variant'> {
+  'aria-label': string
   open?: boolean
 }
 
@@ -756,7 +760,12 @@ export function CommandPalette({ className, ...props }: React.ComponentProps<typ
 }
 
 export function CommandPaletteInput({ className, ...props }: React.ComponentProps<typeof CommandPrimitive.Input>) {
-  return <CommandPrimitive.Input className={cn('uds-command-palette-input', className)} {...props} />
+  return (
+    <div className="uds-command-palette-input-wrap" cmdk-input-wrapper="">
+      <Search aria-hidden="true" className="uds-command-palette-search-icon" />
+      <CommandPrimitive.Input className={cn('uds-command-palette-input', className)} {...props} />
+    </div>
+  )
 }
 
 export function CommandPaletteList({ className, ...props }: React.ComponentProps<typeof CommandPrimitive.List>) {
@@ -773,4 +782,12 @@ export function CommandPaletteEmpty({ className, ...props }: React.ComponentProp
 
 export function CommandPaletteItem({ className, ...props }: React.ComponentProps<typeof CommandPrimitive.Item>) {
   return <CommandPrimitive.Item className={cn('uds-command-palette-item', className)} {...props} />
+}
+
+export function CommandPaletteSeparator({ className, ...props }: React.ComponentProps<typeof CommandPrimitive.Separator>) {
+  return <CommandPrimitive.Separator className={cn('uds-command-palette-separator', className)} {...props} />
+}
+
+export function CommandPaletteShortcut({ className, ...props }: React.HTMLAttributes<HTMLSpanElement>) {
+  return <span className={cn('uds-command-palette-shortcut', className)} {...props} />
 }

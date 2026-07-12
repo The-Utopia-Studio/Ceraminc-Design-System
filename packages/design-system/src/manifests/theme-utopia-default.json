@@ -66,6 +66,12 @@
     "--line-height-arabic-display": "1.16",
     "--tracking-arabic": "0",
     "--tracking-arabic-display": "0",
+    "--sidebar-width": "17rem",
+    "--shadow-control": "none",
+    "--control-height-sm": "32px",
+    "--sidebar-width-collapsed": "4rem",
+    "--sidebar-min-block-size": "30rem",
+    "--sidebar-rail-size": "8px",
     "--overlay": "Special Black at modal dim opacity",
     "--modal-surface": "Special Black solid",
     "--popover-surface": "Special Black solid"

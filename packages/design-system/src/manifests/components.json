@@ -502,6 +502,7 @@
       ],
       "ai": {
         "props": {
+          "aria-label": "Required localized label for the breadcrumb navigation landmark.",
           "Breadcrumb": "Root nav landmark. Keep aria-label descriptive and localized when needed.",
           "BreadcrumbList": "Ordered list wrapper for breadcrumb items and separators.",
           "BreadcrumbItem": "List item wrapper for link, current page, or collapsed menu trigger.",
@@ -617,9 +618,14 @@
         "--background",
         "--foreground",
         "--surface",
+        "--surface-strong",
         "--border",
         "--radius-surface",
-        "--focus-ring-width"
+        "--radius-control",
+        "--muted-foreground",
+        "--focus-ring",
+        "--focus-ring-width",
+        "--focus-ring-offset"
       ],
       "useWhen": [
         "Use when the shadcn/ui bubble pattern is required",
@@ -846,7 +852,7 @@
         "--badge-padding-inline",
         "--focus-ring-width",
         "--duration-fast",
-        "--duration-normal",
+        "--duration-medium",
         "--ease-standard"
       ],
       "useWhen": [
@@ -904,17 +910,20 @@
       "requiredTokens": [
         "--surface",
         "--foreground",
+        "--foreground-muted",
         "--border",
         "--radius-surface",
         "--radius-control",
         "--secondary",
         "--secondary-foreground",
-        "--focus-ring-width"
+        "--focus-ring-width",
+        "--primary"
       ],
       "useWhen": [
-        "Small sets of related featured items",
-        "Horizontal browsing where order matters",
-        "AI-generated previews that need explicit slide labels"
+        "Small sets of related items where order matters",
+        "Horizontal browsing that should support wheel, trackpad, touch, and keyboard-friendly focus targets",
+        "DIY item collections where the product team supplies its own media, copy, and item layout",
+        "AI-generated previews that need explicit item labels and replaceable data"
       ],
       "avoidWhen": [
         "Large data sets",
@@ -925,7 +934,10 @@
         "Raw shadcn theme colors",
         "Left/right-only layout rules",
         "Utopia brand primitives inside reusable component logic"
-      ]
+      ],
+      "arabicFriendly": "CarouselContent converts vertical wheel input to inline scrolling, mirrors movement under dir='rtl', hides scrollbars without changing layout width, and requires logical start/end naming for directional controls.",
+      "shadcnConversion": "Keep the shadcn/ui carousel composition shape: Carousel wraps behavior, CarouselContent owns horizontal scroll, CarouselItem owns each replaceable item, and controls remain optional.",
+      "cli": "npm run ds -- component Carousel --dense"
     },
     {
       "name": "Chart",
@@ -1025,7 +1037,8 @@
           "dir": "Use inherited dir by default. Set dir=\"rtl\" only for isolated smoke tests.",
           "role": "Use user, assistant, or system where the component exposes message role.",
           "metadata": "Pass localized timestamp/read/tool metadata from the app layer.",
-          "children": "Use product-owned copy. The design system supplies layout and tokens only."
+          "children": "Use product-owned copy. The design system supplies layout and tokens only.",
+          "accessibilityText": "Supply every visible label, aria-label, status summary, and action name from product localization. ChatSendButton and ChatDictationButton require label; ChatLayoutScrollButton requires accessibilityLabel; ChatToolCalls requires label."
         },
         "arabicFriendly": "Chat components use logical spacing, role-based alignment, mixed-script safe typography, and mirrored message flow in dir=\"rtl\". Do not invent Arabic copy in reusable components."
       }
@@ -1265,7 +1278,8 @@
           "dir": "Use inherited dir by default. Set dir=\"rtl\" only for isolated smoke tests.",
           "role": "Use user, assistant, or system where the component exposes message role.",
           "metadata": "Pass localized timestamp/read/tool metadata from the app layer.",
-          "children": "Use product-owned copy. The design system supplies layout and tokens only."
+          "children": "Use product-owned copy. The design system supplies layout and tokens only.",
+          "accessibilityText": "The required label prop is localized product copy for the dictation action and current state."
         },
         "arabicFriendly": "Chat components use logical spacing, role-based alignment, mixed-script safe typography, and mirrored message flow in dir=\"rtl\". Do not invent Arabic copy in reusable components."
       }
@@ -1385,7 +1399,8 @@
           "dir": "Use inherited dir by default. Set dir=\"rtl\" only for isolated smoke tests.",
           "role": "Use user, assistant, or system where the component exposes message role.",
           "metadata": "Pass localized timestamp/read/tool metadata from the app layer.",
-          "children": "Use product-owned copy. The design system supplies layout and tokens only."
+          "children": "Use product-owned copy. The design system supplies layout and tokens only.",
+          "accessibilityText": "The required accessibilityLabel prop names the scroll action; the optional label prop is localized visible status copy."
         },
         "arabicFriendly": "Chat components use logical spacing, role-based alignment, mixed-script safe typography, and mirrored message flow in dir=\"rtl\". Do not invent Arabic copy in reusable components."
       }
@@ -1685,7 +1700,8 @@
           "dir": "Use inherited dir by default. Set dir=\"rtl\" only for isolated smoke tests.",
           "role": "Use user, assistant, or system where the component exposes message role.",
           "metadata": "Pass localized timestamp/read/tool metadata from the app layer.",
-          "children": "Use product-owned copy. The design system supplies layout and tokens only."
+          "children": "Use product-owned copy. The design system supplies layout and tokens only.",
+          "accessibilityText": "The required label prop is localized product copy for the send action and current state."
         },
         "arabicFriendly": "Chat components use logical spacing, role-based alignment, mixed-script safe typography, and mirrored message flow in dir=\"rtl\". Do not invent Arabic copy in reusable components."
       }
@@ -1865,7 +1881,8 @@
           "dir": "Use inherited dir by default. Set dir=\"rtl\" only for isolated smoke tests.",
           "role": "Use user, assistant, or system where the component exposes message role.",
           "metadata": "Pass localized timestamp/read/tool metadata from the app layer.",
-          "children": "Use product-owned copy. The design system supplies layout and tokens only."
+          "children": "Use product-owned copy. The design system supplies layout and tokens only.",
+          "accessibilityText": "The required label prop is a localized summary of the tool-call group; call labels, descriptions, durations, and states come from product data."
         },
         "arabicFriendly": "Chat components use logical spacing, role-based alignment, mixed-script safe typography, and mirrored message flow in dir=\"rtl\". Do not invent Arabic copy in reusable components."
       }
@@ -2405,7 +2422,7 @@
       "name": "Field",
       "category": "Forms",
       "status": "available",
-      "packageImport": "import { Field, FieldLabel } from '@utopia-studio-design/design-system/Forms';",
+      "packageImport": "import { Field, FieldContent, FieldDescription, FieldError, FieldGroup, FieldLabel, FieldLegend, FieldSeparator, FieldSet, FieldTitle } from '@utopia-studio-design/design-system/Forms';",
       "sourcePath": "packages/design-system/src/components/Forms.tsx",
       "shadcnFoundation": [
         "field",
@@ -2414,18 +2431,27 @@
       ],
       "fallbackToShadcn": "field",
       "requiredTokens": [
+        "--space-1",
         "--space-2",
+        "--space-4",
         "--foreground",
-        "--muted-foreground"
+        "--muted-foreground",
+        "--destructive",
+        "--border"
       ],
       "useWhen": [
-        "Form field composition"
+        "Form field composition",
+        "Related controls need a semantic fieldset",
+        "Labels, descriptions, and errors need a shared layout contract"
       ],
       "avoidWhen": [
-        "Inline metadata"
+        "Inline metadata",
+        "Standalone text without a form control"
       ],
       "neverInvent": [
         "Placeholder-only labels",
+        "Unconnected validation messages",
+        "Left/right orientation names",
         "Left/right-only layout rules",
         "Utopia brand primitives inside reusable component logic"
       ]
@@ -2446,19 +2472,26 @@
         "--border",
         "--shadow-popover",
         "--radius-surface",
-        "--popover-surface"
+        "--popover-surface",
+        "--floating-content-width",
+        "--duration-fast",
+        "--ease-standard"
       ],
       "useWhen": [
         "Supplemental previews",
-        "Nonessential hover detail"
+        "Nonessential hover detail",
+        "A link or compact trigger benefits from a sighted preview"
       ],
       "avoidWhen": [
         "Critical instructions",
-        "Touch-only flows"
+        "Touch-only flows",
+        "Content must be keyboard or screen-reader discoverable without the trigger context"
       ],
       "neverInvent": [
         "Required content hidden on hover",
         "Unbounded popover widths",
+        "Physical left/right names for logical alignment",
+        "Hover-only product actions",
         "Left/right-only layout rules",
         "Utopia brand primitives inside reusable component logic"
       ]
@@ -2631,7 +2664,14 @@
         "Raw shadcn theme colors",
         "Left/right-only layout rules",
         "Utopia brand primitives inside reusable component logic"
-      ]
+      ],
+      "ai": {
+        "props": {
+          "aria-label": "Required localized label for the complete one-time-code group.",
+          "getSlotLabel": "Required localization formatter that names each visual slot for assistive technology."
+        },
+        "arabicFriendly": "Supply Arabic slot labels and localized numerals from the product layer. Slot order follows inherited direction without hardcoded left/right spacing."
+      }
     },
     {
       "name": "Item",
@@ -2720,55 +2760,23 @@
       "requiredTokens": [
         "--foreground",
         "--muted-foreground",
+        "--destructive",
         "--space-2"
       ],
       "useWhen": [
-        "Visible form labels",
-        "Accessible control association",
+        "Visible labels for checkboxes, switches, inputs, and other controls",
+        "Accessible control association through matching htmlFor and id values",
         "AI-generated forms where placeholder-only labels are forbidden"
       ],
       "avoidWhen": [
         "Decorative text",
-        "Field status or help text",
-        "Placeholder-only labeling"
+        "Complex fields that need descriptions, validation, or grouped layout; use Field instead",
+        "Field status or help text"
       ],
       "neverInvent": [
-        "Raw shadcn theme colors",
-        "Left/right-only layout rules",
-        "Utopia brand primitives inside reusable component logic"
-      ]
-    },
-    {
-      "name": "Marker",
-      "category": "Data Display",
-      "status": "available",
-      "packageImport": "import { Marker } from '@utopia-studio-design/design-system/ShadcnPrimitives';",
-      "sourcePath": "packages/design-system/src/components/ShadcnPrimitives.tsx",
-      "shadcnFoundation": [
-        "marker",
-        "shadcn/ui registry",
-        "semantic Utopia wrapper"
-      ],
-      "fallbackToShadcn": "marker",
-      "requiredTokens": [
-        "--background",
-        "--foreground",
-        "--surface",
-        "--border",
-        "--radius-surface",
-        "--focus-ring-width"
-      ],
-      "useWhen": [
-        "Use when the shadcn/ui marker pattern is required",
-        "Use as the Utopia semantic-token wrapper before deeper specialization",
-        "Use when AI needs a safe conversion target from shadcn source code"
-      ],
-      "avoidWhen": [
-        "A more specific Utopia primitive already exists",
-        "The behavior requires product-specific copy or data rules"
-      ],
-      "neverInvent": [
-        "Raw shadcn theme colors",
+        "A label whose htmlFor does not match the associated control id",
+        "Placeholder-only labeling",
+        "Production Arabic copy that was not supplied by localization",
         "Left/right-only layout rules",
         "Utopia brand primitives inside reusable component logic"
       ]
@@ -2777,7 +2785,7 @@
       "name": "Menubar",
       "category": "Navigation",
       "status": "available",
-      "packageImport": "import { Menubar, MenubarContent, MenubarItem, MenubarMenu, MenubarTrigger } from '@utopia-studio-design/design-system/ShadcnPrimitives';",
+      "packageImport": "import { Menubar, MenubarCheckboxItem, MenubarContent, MenubarGroup, MenubarItem, MenubarLabel, MenubarMenu, MenubarRadioGroup, MenubarRadioItem, MenubarSeparator, MenubarShortcut, MenubarSub, MenubarSubContent, MenubarSubTrigger, MenubarTrigger } from '@utopia-studio-design/design-system/ShadcnPrimitives';",
       "sourcePath": "packages/design-system/src/components/ShadcnPrimitives.tsx",
       "shadcnFoundation": [
         "menubar",
@@ -2786,9 +2794,10 @@
       ],
       "fallbackToShadcn": "menubar",
       "requiredTokens": [
-        "--background",
         "--foreground",
         "--surface",
+        "--surface-hover",
+        "--muted-foreground",
         "--border",
         "--radius-surface",
         "--radius-control",
@@ -2801,15 +2810,18 @@
       "useWhen": [
         "Application-level command menus",
         "Desktop-style grouped navigation actions",
-        "AI-generated navigation surfaces that need explicit menu, trigger, content, and item parts"
+        "Persistent File, Edit, View, or Profiles command families",
+        "AI-generated command surfaces that need groups, checkbox items, radio items, shortcuts, or submenus"
       ],
       "avoidWhen": [
         "Simple page navigation where Top Nav or Navigation Menu is clearer",
         "Mobile-first primary navigation",
-        "Menu labels without accessible text"
+        "A single contextual action menu where Dropdown Menu is clearer"
       ],
       "neverInvent": [
-        "Raw shadcn theme colors",
+        "Keyboard shortcuts that the application has not registered",
+        "Checkbox or radio state without application-owned state",
+        "Production Arabic command labels not supplied by localization",
         "Left/right-only layout rules",
         "Utopia brand primitives inside reusable component logic"
       ]
@@ -2916,7 +2928,7 @@
       "name": "Native Select",
       "category": "Forms",
       "status": "available",
-      "packageImport": "import { NativeSelect } from '@utopia-studio-design/design-system/ShadcnPrimitives';",
+      "packageImport": "import { NativeSelect, NativeSelectOptGroup, NativeSelectOption } from '@utopia-studio-design/design-system/ShadcnPrimitives';",
       "sourcePath": "packages/design-system/src/components/ShadcnPrimitives.tsx",
       "shadcnFoundation": [
         "native-select",
@@ -2927,15 +2939,19 @@
       "requiredTokens": [
         "--background",
         "--foreground",
+        "--muted-foreground",
+        "--surface-hover",
+        "--destructive",
         "--input",
         "--radius-control",
         "--focus-ring-width",
         "--popover-surface"
       ],
       "useWhen": [
-        "Simple native selection",
-        "Forms where browser-native behavior is preferred",
-        "Arabic-friendly forms that need platform select behavior before custom Select is necessary"
+        "Simple or grouped option selection using native browser behavior",
+        "Performance-sensitive forms and mobile-optimized platform pickers",
+        "Disabled or invalid form states that must retain native semantics",
+        "Arabic-friendly forms that need platform behavior before custom Select is necessary"
       ],
       "avoidWhen": [
         "Searchable or async option sets",
@@ -2943,7 +2959,8 @@
         "Product localization rules inside reusable component logic"
       ],
       "neverInvent": [
-        "Raw shadcn theme colors",
+        "Product-owned option values or selection rules",
+        "Production Arabic option labels not supplied by localization",
         "Left/right-only layout rules",
         "Utopia brand primitives inside reusable component logic"
       ]
@@ -3042,7 +3059,7 @@
       "name": "Navigation Menu",
       "category": "Navigation",
       "status": "available",
-      "packageImport": "import { NavigationMenu, NavigationMenuContent, NavigationMenuItem, NavigationMenuLink, NavigationMenuList, NavigationMenuTrigger, NavigationMenuViewport } from '@utopia-studio-design/design-system/ShadcnPrimitives';",
+      "packageImport": "import { NavigationMenu, NavigationMenuContent, NavigationMenuIndicator, NavigationMenuItem, NavigationMenuLink, NavigationMenuList, NavigationMenuTrigger, NavigationMenuViewport } from '@utopia-studio-design/design-system/ShadcnPrimitives';",
       "sourcePath": "packages/design-system/src/components/ShadcnPrimitives.tsx",
       "shadcnFoundation": [
         "navigation-menu",
@@ -3059,8 +3076,13 @@
         "--radius-control",
         "--secondary",
         "--secondary-foreground",
+        "--surface-hover",
+        "--muted-foreground",
         "--z-popover",
-        "--focus-ring-width"
+        "--focus-ring-width",
+        "--duration-fast",
+        "--duration-medium",
+        "--ease-standard"
       ],
       "useWhen": [
         "Top-level navigation with nested content",
@@ -3069,12 +3091,14 @@
       ],
       "avoidWhen": [
         "Simple inline links are enough",
-        "Mobile-only navigation that should use Side Nav or Sheet",
+        "Mobile primary navigation that should use Mobile Nav or Sheet",
+        "Action commands that should use Menubar or Command",
         "Navigation labels without product-owned copy"
       ],
       "neverInvent": [
         "Raw shadcn theme colors",
-        "Left/right-only layout rules",
+        "Left/right-only layout rules; use logical start/end and dir instead",
+        "Product routes or Arabic production copy that were not supplied",
         "Utopia brand primitives inside reusable component logic"
       ]
     },
@@ -3082,7 +3106,7 @@
       "name": "Pagination",
       "category": "Navigation",
       "status": "available",
-      "packageImport": "import { Pagination, PaginationContent, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious } from '@utopia-studio-design/design-system/ShadcnPrimitives';",
+      "packageImport": "import { Pagination, PaginationContent, PaginationEllipsis, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious } from '@utopia-studio-design/design-system/ShadcnPrimitives';",
       "sourcePath": "packages/design-system/src/components/ShadcnPrimitives.tsx",
       "shadcnFoundation": [
         "pagination",
@@ -3097,7 +3121,9 @@
         "--radius-control",
         "--secondary",
         "--secondary-foreground",
-        "--focus-ring-width"
+        "--muted-foreground",
+        "--focus-ring-width",
+        "--focus-ring-offset"
       ],
       "useWhen": [
         "Paged result sets",
@@ -3107,19 +3133,30 @@
       "avoidWhen": [
         "Infinite scrolling is the product pattern",
         "Small result sets",
-        "Left/right icon-only previous/next controls without mirrored RTL handling"
+        "Unknown or continuously loaded result sets where pagination would misrepresent progress",
+        "Action controls that only resemble page navigation"
       ],
       "neverInvent": [
         "Raw shadcn theme colors",
-        "Left/right-only layout rules",
+        "Left/right-only layout rules or unmirrored directional icons",
+        "Page totals, localized numerals, or Arabic labels not supplied by product data",
         "Utopia brand primitives inside reusable component logic"
-      ]
+      ],
+      "ai": {
+        "props": {
+          "aria-label": "Required localized label for the pagination navigation landmark.",
+          "PaginationPrevious.text": "Required localized visible previous-page label.",
+          "PaginationNext.text": "Required localized visible next-page label.",
+          "PaginationEllipsis.label": "Required localized screen-reader label for omitted pages."
+        },
+        "arabicFriendly": "Pass localized labels and numerals from product code. Previous and next icons mirror through dir=\"rtl\" while the component uses logical spacing."
+      }
     },
     {
       "name": "Popover",
       "category": "Surface",
       "status": "available",
-      "packageImport": "import { Popover, PopoverContent, PopoverTrigger } from '@utopia-studio-design/design-system/Surface';",
+      "packageImport": "import { Popover, PopoverAnchor, PopoverClose, PopoverContent, PopoverDescription, PopoverHeader, PopoverTitle, PopoverTrigger } from '@utopia-studio-design/design-system/Surface';",
       "sourcePath": "packages/design-system/src/components/Surface.tsx",
       "shadcnFoundation": [
         "popover",
@@ -3133,6 +3170,11 @@
         "--radius-surface",
         "--z-popover",
         "--focus-ring-width",
+        "--focus-ring-offset",
+        "--surface-hover",
+        "--muted-foreground",
+        "--duration-fast",
+        "--ease-standard",
         "--popover-surface"
       ],
       "useWhen": [
@@ -3147,7 +3189,8 @@
       ],
       "neverInvent": [
         "Modal behavior",
-        "Left/right-only placement",
+        "Left/right-only alignment rules instead of logical start/end alignment",
+        "Product form values, Arabic production copy, or persistence behavior",
         "Utopia brand primitives inside reusable component logic"
       ]
     },
@@ -3155,7 +3198,7 @@
       "name": "Progress",
       "category": "Data Display",
       "status": "available",
-      "packageImport": "import { Progress } from '@utopia-studio-design/design-system/DataDisplay';",
+      "packageImport": "import { Progress, ProgressIndicator, ProgressLabel, ProgressTrack, ProgressValue } from '@utopia-studio-design/design-system/DataDisplay';",
       "sourcePath": "packages/design-system/src/components/DataDisplay.tsx",
       "shadcnFoundation": [
         "progress",
@@ -3165,27 +3208,44 @@
       "requiredTokens": [
         "--primary",
         "--secondary",
-        "--radius-control"
+        "--success",
+        "--warning",
+        "--destructive",
+        "--muted-foreground",
+        "--radius-control",
+        "--duration-medium",
+        "--duration-slow",
+        "--ease-standard"
       ],
       "useWhen": [
         "Known progress values",
         "Uploads, setup steps, or task completion where aria-valuenow is meaningful"
       ],
       "avoidWhen": [
-        "Unknown loading states",
+        "Unknown loading states unless indeterminate is explicitly selected",
         "Decorative completion bars"
       ],
       "neverInvent": [
-        "No aria-valuenow",
+        "Missing aria-valuenow for determinate progress",
+        "Invented percentages or completion states not supplied by product data",
         "Left/right-only layout rules",
         "Utopia brand primitives inside reusable component logic"
-      ]
+      ],
+      "ai": {
+        "props": {
+          "value": "Known numeric completion supplied by product state.",
+          "indeterminate": "Use only when completion cannot be quantified.",
+          "valueText": "Localized visible value such as Arabic numerals; keep numeric aria-valuenow on the track.",
+          "status": "Semantic task status, never a raw color choice."
+        },
+        "arabicFriendly": "Progress grows from inline-start, indeterminate motion follows logical direction, and localized valueText is separate from numeric aria-valuenow."
+      }
     },
     {
       "name": "Radio Group",
       "category": "Forms",
       "status": "available",
-      "packageImport": "import { RadioGroup, RadioGroupItem } from '@utopia-studio-design/design-system/Forms';",
+      "packageImport": "import { RadioGroup, RadioGroupItem, RadioGroupOption } from '@utopia-studio-design/design-system/Forms';",
       "sourcePath": "packages/design-system/src/components/Forms.tsx",
       "shadcnFoundation": [
         "radio-group",
@@ -3194,9 +3254,18 @@
       "fallbackToShadcn": "radio-group",
       "requiredTokens": [
         "--primary",
+        "--primary-foreground",
         "--input",
         "--background",
-        "--focus-ring-width"
+        "--surface",
+        "--surface-hover",
+        "--border",
+        "--muted-foreground",
+        "--destructive",
+        "--radius-surface",
+        "--focus-ring",
+        "--focus-ring-width",
+        "--focus-ring-offset"
       ],
       "useWhen": [
         "Single choice from visible options",
@@ -3210,9 +3279,23 @@
       ],
       "neverInvent": [
         "Checkbox behavior",
+        "A card option without the same keyboard and selection contract as a standard option",
+        "Product labels, descriptions, or selected values not supplied by the consumer",
         "Left/right-only layout rules",
         "Utopia brand primitives inside reusable component logic"
-      ]
+      ],
+      "ai": {
+        "props": {
+          "value": "Controlled selected value for a mutually exclusive option set.",
+          "defaultValue": "Initial value for an uncontrolled option set.",
+          "onValueChange": "Receives the selected option value.",
+          "orientation": "Keyboard navigation orientation: vertical or horizontal.",
+          "variant": "RadioGroupOption presentation: default for dense forms or card for descriptive choices.",
+          "label": "Visible option label supplied by product or localization.",
+          "description": "Optional supporting text; do not repeat the label."
+        },
+        "arabicFriendly": "The control and copy follow logical inline order under dir='rtl'; labels align to inline-start, and card selection does not depend on a left/right position."
+      }
     },
     {
       "name": "Resizable",
@@ -3246,15 +3329,26 @@
       ],
       "neverInvent": [
         "Raw shadcn theme colors",
+        "A decorative divider that cannot be focused or resized with the keyboard",
+        "A visible grip without the ResizableHandle separator behavior",
         "Left/right-only layout rules",
         "Utopia brand primitives inside reusable component logic"
-      ]
+      ],
+      "ai": {
+        "props": {
+          "orientation": "Use horizontal for inline panels and vertical for stacked panels.",
+          "defaultSize": "Initial panel percentage or size supplied by the product layout.",
+          "withHandle": "Adds a visible grip without changing separator behavior.",
+          "onLayoutChange": "Optional consumer-owned persistence hook; storage stays outside the component."
+        },
+        "arabicFriendly": "Horizontal panels follow DOM and logical inline order under dir='rtl'; do not encode left/right ownership in component props. Vertical resizing is direction-neutral."
+      }
     },
     {
       "name": "Scroll Area",
       "category": "Layout",
       "status": "available",
-      "packageImport": "import { ScrollArea, ScrollAreaViewport, ScrollBar } from '@utopia-studio-design/design-system/ShadcnPrimitives';",
+      "packageImport": "import { ScrollArea, ScrollAreaCorner, ScrollAreaViewport, ScrollBar } from '@utopia-studio-design/design-system/ShadcnPrimitives';",
       "sourcePath": "packages/design-system/src/components/ShadcnPrimitives.tsx",
       "shadcnFoundation": [
         "scroll-area",
@@ -3266,8 +3360,13 @@
         "--background",
         "--foreground",
         "--surface",
+        "--surface-strong",
         "--border",
+        "--muted-foreground",
         "--radius-surface",
+        "--radius-control",
+        "--duration-fast",
+        "--ease-standard",
         "--focus-ring-width"
       ],
       "useWhen": [
@@ -3282,9 +3381,20 @@
       ],
       "neverInvent": [
         "Raw shadcn theme colors",
+        "A fixed component width or height instead of a consumer-owned layout constraint",
+        "Always-visible scrollbars when hover or auto behavior is sufficient",
+        "Horizontal content that assumes the physical left edge is the start",
         "Left/right-only layout rules",
         "Utopia brand primitives inside reusable component logic"
-      ]
+      ],
+      "ai": {
+        "props": {
+          "type": "Scrollbar visibility behavior; hover is the default, with auto, scroll, and always available when explicitly required.",
+          "orientation": "Set each ScrollBar to vertical or horizontal; render both plus ScrollAreaCorner for two-axis content.",
+          "dir": "Inherit or set ltr/rtl so horizontal scrolling follows the locale direction."
+        },
+        "arabicFriendly": "Horizontal galleries begin at logical inline-start under dir='rtl'; content alignment uses start/end and scrollbar behavior must not assume a physical left origin."
+      }
     },
     {
       "name": "Select",
@@ -3738,6 +3848,20 @@
       ]
     },
     {
+      "name": "Sidebar",
+      "category": "Navigation",
+      "status": "available",
+      "packageImport": "import { Sidebar, SidebarContent, SidebarFooter, SidebarGroup, SidebarGroupAction, SidebarGroupLabel, SidebarHeader, SidebarInset, SidebarMenu, SidebarMenuAction, SidebarMenuBadge, SidebarMenuButton, SidebarMenuItem, SidebarMenuSub, SidebarMenuSubButton, SidebarMenuSubItem, SidebarOverlay, SidebarProvider, SidebarRail, SidebarTrigger, useSidebar } from '@utopia-studio-design/design-system/Sidebar';",
+      "sourcePath": "packages/design-system/src/components/Sidebar.tsx",
+      "shadcnFoundation": ["sidebar", "composable app shell", "semantic Utopia wrapper"],
+      "fallbackToShadcn": "sidebar",
+      "requiredTokens": ["--background", "--foreground", "--border", "--surface-hover", "--popover-surface", "--radius-control", "--radius-surface", "--sidebar-width", "--sidebar-width-collapsed", "--sidebar-min-block-size", "--sidebar-rail-size", "--duration-medium", "--ease-standard"],
+      "useWhen": ["Building a controlled or uncontrolled application shell with collapsible navigation", "Composing header, content, footer, groups, menu items, actions, badges, submenus, rail, and inset content", "A responsive off-canvas or icon-collapse application sidebar is required independently from documentation Side Nav"],
+      "avoidWhen": ["Rendering the design-system documentation tree; use Side Nav", "A temporary overlay should use Sheet", "Hardcoding product destinations inside the reusable primitive"],
+      "neverInvent": ["Left/right-only collapse rules", "Product-specific menu data", "Utopia brand primitives inside reusable component logic"],
+      "ai": {"parts": ["SidebarProvider", "Sidebar", "SidebarHeader", "SidebarContent", "SidebarFooter", "SidebarGroup", "SidebarGroupAction", "SidebarGroupLabel", "SidebarInset", "SidebarMenu", "SidebarMenuItem", "SidebarMenuButton", "SidebarMenuAction", "SidebarMenuBadge", "SidebarMenuSub", "SidebarMenuSubItem", "SidebarMenuSubButton", "SidebarOverlay", "SidebarRail", "SidebarTrigger", "useSidebar"], "arabicFriendly": "Use dir=rtl at the shell boundary and provide localized collapseLabel, expandLabel, overlay labels, rail labels, and tooltip strings. Logical borders, alignment, off-canvas motion, submenus, and badges mirror without changing the component API."}
+    },
+    {
       "name": "Slider",
       "category": "Forms",
       "status": "available",
@@ -3752,6 +3876,7 @@
         "--primary",
         "--secondary",
         "--background",
+        "--shadow-control",
         "--focus-ring-width"
       ],
       "useWhen": [
@@ -3774,7 +3899,7 @@
       "name": "Sonner",
       "category": "Feedback",
       "status": "available",
-      "packageImport": "import { Sonner, SonnerDescription, SonnerTitle, SonnerToast } from '@utopia-studio-design/design-system/ShadcnPrimitives';",
+      "packageImport": "import { Toaster, toast } from '@utopia-studio-design/design-system/ShadcnPrimitives';",
       "sourcePath": "packages/design-system/src/components/ShadcnPrimitives.tsx",
       "shadcnFoundation": [
         "sonner",
@@ -3795,7 +3920,7 @@
       "useWhen": [
         "Nonblocking toast feedback",
         "Status messages that should be announced politely",
-        "AI-generated examples that need explicit toast, title, and description parts"
+        "AI-generated examples that need success, error, promise, description, and position behavior"
       ],
       "avoidWhen": [
         "Blocking errors",
@@ -3834,7 +3959,14 @@
         "Unannounced loading state",
         "Left/right-only layout rules",
         "Utopia brand primitives inside reusable component logic"
-      ]
+      ],
+      "ai": {
+        "props": {
+          "label": "Localized loading text. Supplying it exposes role=status and a live region.",
+          "aria-label": "Localized accessible name when no visible label is rendered. Without either label, Spinner is decorative and aria-hidden."
+        },
+        "arabicFriendly": "Loading labels come from product localization. The spinner is direction-neutral and must not be mirrored."
+      }
     },
     {
       "name": "Switch",
@@ -3852,6 +3984,7 @@
         "--secondary",
         "--background",
         "--border",
+        "--shadow-control",
         "--focus-ring-width"
       ],
       "useWhen": [
@@ -3874,7 +4007,7 @@
       "name": "Table",
       "category": "Data Display",
       "status": "available",
-      "packageImport": "import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@utopia-studio-design/design-system/DataDisplay';",
+      "packageImport": "import { Table, TableBody, TableCaption, TableCell, TableContainer, TableFooter, TableHead, TableHeader, TableRow } from '@utopia-studio-design/design-system/DataDisplay';",
       "sourcePath": "packages/design-system/src/components/DataDisplay.tsx",
       "shadcnFoundation": [
         "table"
@@ -3967,7 +4100,7 @@
     {
       "name": "Toast",
       "category": "Data Display",
-      "status": "available",
+      "status": "legacy",
       "packageImport": "import { Toast, ToastDescription, ToastTitle } from '@utopia-studio-design/design-system/DataDisplay';",
       "sourcePath": "packages/design-system/src/components/DataDisplay.tsx",
       "shadcnFoundation": [
@@ -3988,8 +4121,10 @@
       ],
       "avoidWhen": [
         "Critical blocking errors",
-        "Long messages or workflows"
+        "Long messages or workflows",
+        "Any new implementation; import Toaster and toast from the Sonner contract instead"
       ],
+      "replacement": "Sonner",
       "neverInvent": [
         "Toast-only error handling",
         "Left/right-only layout rules",

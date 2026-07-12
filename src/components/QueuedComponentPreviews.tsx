@@ -5,7 +5,6 @@ import { HStack, VStack } from '../../packages/design-system/src/Layout'
 import {
   Kbd,
   Label,
-  Marker,
   Menubar,
   MenubarContent,
   MenubarItem,
@@ -66,15 +65,6 @@ export function QueuedComponentPreview({ locale, name }: PreviewProps & { name: 
     )
   }
 
-  if (name === 'Marker' || name === 'MarkerNew') {
-    return (
-      <VStack gap={2}>
-        <Marker data-checked="true" variant="check">{isArabic ? 'تمت المراجعة' : 'Reviewed by editor'}</Marker>
-        <Marker variant="check">{isArabic ? 'بانتظار الموافقة' : 'Approved by legal'}</Marker>
-      </VStack>
-    )
-  }
-
   if (name === 'Menubar') {
     return (
       <Menubar>
@@ -116,13 +106,13 @@ export function QueuedComponentPreview({ locale, name }: PreviewProps & { name: 
 
   if (name === 'Pagination') {
     return (
-      <Pagination>
+      <Pagination aria-label={isArabic ? 'ترقيم الصفحات' : 'Pagination'}>
         <PaginationContent>
-          <PaginationItem><PaginationPrevious href="#" /></PaginationItem>
+          <PaginationItem><PaginationPrevious href="#" text={isArabic ? 'السابق' : 'Previous'} /></PaginationItem>
           <PaginationItem><PaginationLink href="#" isCurrent>1</PaginationLink></PaginationItem>
           <PaginationItem><PaginationLink href="#">2</PaginationLink></PaginationItem>
           <PaginationItem><PaginationLink href="#">3</PaginationLink></PaginationItem>
-          <PaginationItem><PaginationNext href="#" /></PaginationItem>
+          <PaginationItem><PaginationNext href="#" text={isArabic ? 'التالي' : 'Next'} /></PaginationItem>
         </PaginationContent>
       </Pagination>
     )
@@ -281,8 +271,6 @@ export function QueuedComponentPreview({ locale, name }: PreviewProps & { name: 
 export const queuedComponentNames = new Set([
   'Kbd',
   'Label',
-  'Marker',
-  'MarkerNew',
   'Menubar',
   'Navigation Menu',
   'Pagination',

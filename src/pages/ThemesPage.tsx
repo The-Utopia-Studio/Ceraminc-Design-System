@@ -1,9 +1,10 @@
-import { dextrumTheme, getArea, themes, utopiaDefaultTheme } from '../data/design-system'
+import { barrierIntelligenceTheme, dextrumTheme, getArea, themes, utopiaDefaultTheme } from '../data/design-system'
 import { useTheme, type ThemeId } from '../theme'
 
 const themePolicyById = {
   'utopia-default': utopiaDefaultTheme,
   dextrum: dextrumTheme,
+  'barrier-intelligence': barrierIntelligenceTheme,
 } as const
 
 export function ThemesPage() {

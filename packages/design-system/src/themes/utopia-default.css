@@ -186,11 +186,18 @@
 
   --shadow-surface: none;
   --shadow-popover: none;
+  --shadow-control: none;
 
   --duration-fast: 120ms;
   --duration-medium: 220ms;
   --duration-slow: 420ms;
   --ease-standard: cubic-bezier(0.2, 0, 0, 1);
+  --border-width-hairline: 0.0625rem;
+  --control-height-sm: var(--button-height-sm);
+  --sidebar-width: 17rem;
+  --sidebar-width-collapsed: 4rem;
+  --sidebar-min-block-size: 30rem;
+  --sidebar-rail-size: var(--space-2);
 
   --focus-ring-width: 2px;
   --focus-ring-offset: 2px;

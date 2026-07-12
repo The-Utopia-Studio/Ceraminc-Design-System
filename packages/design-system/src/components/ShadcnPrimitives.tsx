@@ -6,7 +6,10 @@ import * as DialogPrimitive from '@radix-ui/react-dialog'
 import * as MenubarPrimitive from '@radix-ui/react-menubar'
 import * as NavigationMenuPrimitive from '@radix-ui/react-navigation-menu'
 import * as ScrollAreaPrimitive from '@radix-ui/react-scroll-area'
-import { AlertTriangle, CheckCircle2, ChevronDown, Info, XCircle } from 'lucide-react'
+import { motion } from 'framer-motion'
+import { AlertTriangle, Check, CheckCircle2, ChevronDown, ChevronLeft, ChevronRight, Circle, GripVertical, Info, MoreHorizontal, X, XCircle } from 'lucide-react'
+import { Toaster as SonnerPrimitive, toast } from 'sonner'
+import { Legend as RechartsLegend, ResponsiveContainer, Tooltip as RechartsTooltip } from 'recharts'
 import { Group as ResizableGroupPrimitive, Panel as ResizablePanelPrimitive, Separator as ResizableHandlePrimitive } from 'react-resizable-panels'
 import { cn } from '../lib/utils'
 import { Button, type ButtonProps } from './Button'
@@ -27,7 +30,14 @@ function PrimitiveItem({ className, ...props }: DivProps) {
   return <div className={cn('uds-primitive-item', className)} {...props} />
 }
 
-export const Separator = ({ className, ...props }: React.HTMLAttributes<HTMLHRElement>) => <hr className={cn('uds-separator', className)} {...props} />
+export type SeparatorProps = React.HTMLAttributes<HTMLDivElement> & {
+  decorative?: boolean
+  orientation?: 'horizontal' | 'vertical'
+}
+
+export function Separator({ className, decorative = true, orientation = 'horizontal', ...props }: SeparatorProps) {
+  return <div aria-orientation={orientation} className={cn('uds-separator', className)} data-orientation={orientation} role={decorative ? 'none' : 'separator'} {...props} />
+}
 
 export function SeparatorLabel({ className, ...props }: DivProps) {
   return <div className={cn('uds-separator-label', className)} role="separator" {...props} />
@@ -41,11 +51,14 @@ export function SheetTrigger(props: React.ComponentProps<typeof DialogPrimitive.
   return <DialogPrimitive.Trigger {...props} />
 }
 
-export function SheetContent({ className, side = 'end', ...props }: React.ComponentProps<typeof DialogPrimitive.Content> & { side?: 'start' | 'end' | 'top' | 'bottom' }) {
+export function SheetContent({ children, className, closeLabel, showCloseButton = true, side = 'end', ...props }: React.ComponentProps<typeof DialogPrimitive.Content> & { closeLabel?: string; showCloseButton?: boolean; side?: 'start' | 'end' | 'top' | 'bottom' }) {
   return (
     <DialogPrimitive.Portal>
       <DialogPrimitive.Overlay className="uds-dialog-overlay" />
-      <DialogPrimitive.Content className={cn('uds-sheet-content', `uds-sheet-content--${side}`, className)} {...props} />
+      <DialogPrimitive.Content className={cn('uds-sheet-content', `uds-sheet-content--${side}`, className)} {...props}>
+        {children}
+        {showCloseButton && closeLabel ? <DialogPrimitive.Close aria-label={closeLabel} className="uds-sheet-close"><X aria-hidden="true" /></DialogPrimitive.Close> : null}
+      </DialogPrimitive.Content>
     </DialogPrimitive.Portal>
   )
 }
@@ -73,6 +86,12 @@ export function SheetClose({ className, ...props }: React.ComponentProps<typeof 
 export function Sonner({ className, ...props }: DivProps) {
   return <div aria-live="polite" className={cn('uds-sonner', className)} role="status" {...props} />
 }
+
+export function Toaster(props: React.ComponentProps<typeof SonnerPrimitive>) {
+  return <SonnerPrimitive className="uds-toaster" richColors={false} theme="system" {...props} />
+}
+
+export { toast }
 
 export function SonnerToast({
   className,
@@ -148,6 +167,65 @@ export function MenubarItem({ className, ...props }: React.ComponentProps<typeof
   return <MenubarPrimitive.Item className={cn('uds-menubar-item', className)} {...props} />
 }
 
+export function MenubarGroup(props: React.ComponentProps<typeof MenubarPrimitive.Group>) {
+  return <MenubarPrimitive.Group {...props} />
+}
+
+export function MenubarLabel({ className, inset, ...props }: React.ComponentProps<typeof MenubarPrimitive.Label> & { inset?: boolean }) {
+  return <MenubarPrimitive.Label className={cn('uds-menubar-label', inset && 'uds-menubar-inset', className)} {...props} />
+}
+
+export function MenubarSeparator({ className, ...props }: React.ComponentProps<typeof MenubarPrimitive.Separator>) {
+  return <MenubarPrimitive.Separator className={cn('uds-menubar-separator', className)} {...props} />
+}
+
+export function MenubarShortcut({ className, ...props }: SpanProps) {
+  return <span className={cn('uds-menubar-shortcut', className)} {...props} />
+}
+
+export function MenubarCheckboxItem({ children, className, checked, ...props }: React.ComponentProps<typeof MenubarPrimitive.CheckboxItem>) {
+  return (
+    <MenubarPrimitive.CheckboxItem checked={checked} className={cn('uds-menubar-item uds-menubar-choice-item', className)} {...props}>
+      <span className="uds-menubar-item-indicator">
+        <MenubarPrimitive.ItemIndicator><Check aria-hidden="true" /></MenubarPrimitive.ItemIndicator>
+      </span>
+      {children}
+    </MenubarPrimitive.CheckboxItem>
+  )
+}
+
+export function MenubarRadioGroup(props: React.ComponentProps<typeof MenubarPrimitive.RadioGroup>) {
+  return <MenubarPrimitive.RadioGroup {...props} />
+}
+
+export function MenubarRadioItem({ children, className, ...props }: React.ComponentProps<typeof MenubarPrimitive.RadioItem>) {
+  return (
+    <MenubarPrimitive.RadioItem className={cn('uds-menubar-item uds-menubar-choice-item', className)} {...props}>
+      <span className="uds-menubar-item-indicator">
+        <MenubarPrimitive.ItemIndicator><Circle aria-hidden="true" /></MenubarPrimitive.ItemIndicator>
+      </span>
+      {children}
+    </MenubarPrimitive.RadioItem>
+  )
+}
+
+export function MenubarSub(props: React.ComponentProps<typeof MenubarPrimitive.Sub>) {
+  return <MenubarPrimitive.Sub {...props} />
+}
+
+export function MenubarSubTrigger({ children, className, inset, ...props }: React.ComponentProps<typeof MenubarPrimitive.SubTrigger> & { inset?: boolean }) {
+  return (
+    <MenubarPrimitive.SubTrigger className={cn('uds-menubar-item uds-menubar-sub-trigger', inset && 'uds-menubar-inset', className)} {...props}>
+      {children}
+      <ChevronRight aria-hidden="true" className="uds-menubar-sub-indicator" />
+    </MenubarPrimitive.SubTrigger>
+  )
+}
+
+export function MenubarSubContent({ className, ...props }: React.ComponentProps<typeof MenubarPrimitive.SubContent>) {
+  return <MenubarPrimitive.SubContent className={cn('uds-menubar-content', className)} {...props} />
+}
+
 export function NavigationMenu({ className, ...props }: React.ComponentProps<typeof NavigationMenuPrimitive.Root>) {
   return <NavigationMenuPrimitive.Root className={cn('uds-navigation-menu', className)} {...props} />
 }
@@ -160,8 +238,13 @@ export function NavigationMenuItem(props: React.ComponentProps<typeof Navigation
   return <NavigationMenuPrimitive.Item {...props} />
 }
 
-export function NavigationMenuTrigger({ className, ...props }: React.ComponentProps<typeof NavigationMenuPrimitive.Trigger>) {
-  return <NavigationMenuPrimitive.Trigger className={cn('uds-navigation-menu-trigger', className)} {...props} />
+export function NavigationMenuTrigger({ className, children, ...props }: React.ComponentProps<typeof NavigationMenuPrimitive.Trigger>) {
+  return (
+    <NavigationMenuPrimitive.Trigger className={cn('uds-navigation-menu-trigger', className)} {...props}>
+      {children}
+      <ChevronDown aria-hidden="true" className="uds-navigation-menu-trigger-indicator" />
+    </NavigationMenuPrimitive.Trigger>
+  )
 }
 
 export function NavigationMenuContent({ className, ...props }: React.ComponentProps<typeof NavigationMenuPrimitive.Content>) {
@@ -176,8 +259,16 @@ export function NavigationMenuViewport({ className, ...props }: React.ComponentP
   return <NavigationMenuPrimitive.Viewport className={cn('uds-navigation-menu-viewport', className)} {...props} />
 }
 
-export function Pagination({ className, ...props }: React.HTMLAttributes<HTMLElement>) {
-  return <nav aria-label="Pagination" className={cn('uds-pagination', className)} {...props} />
+export function NavigationMenuIndicator({ className, ...props }: React.ComponentProps<typeof NavigationMenuPrimitive.Indicator>) {
+  return (
+    <NavigationMenuPrimitive.Indicator className={cn('uds-navigation-menu-indicator', className)} {...props}>
+      <span aria-hidden="true" />
+    </NavigationMenuPrimitive.Indicator>
+  )
+}
+
+export function Pagination({ className, ...props }: React.HTMLAttributes<HTMLElement> & { 'aria-label': string }) {
+  return <nav className={cn('uds-pagination', className)} {...props} />
 }
 
 export function PaginationContent({ className, ...props }: React.HTMLAttributes<HTMLUListElement>) {
@@ -188,17 +279,36 @@ export function PaginationItem({ className, ...props }: React.LiHTMLAttributes<H
   return <li className={cn('uds-pagination-item', className)} {...props} />
 }
 
-export function PaginationLink({ className, ...props }: React.AnchorHTMLAttributes<HTMLAnchorElement> & { isCurrent?: boolean }) {
-  const { isCurrent, ...linkProps } = props
-  return <a aria-current={isCurrent ? 'page' : undefined} className={cn('uds-pagination-link', className)} {...linkProps} />
+export function PaginationLink({ className, isActive, isCurrent, size = 'icon', ...props }: React.AnchorHTMLAttributes<HTMLAnchorElement> & { isActive?: boolean; isCurrent?: boolean; size?: 'icon' | 'default' }) {
+  const current = isActive ?? isCurrent
+  return <a aria-current={current ? 'page' : undefined} className={cn('uds-pagination-link', size === 'default' && 'uds-pagination-link--default', className)} {...props} />
 }
 
-export function PaginationPrevious({ className, ...props }: React.AnchorHTMLAttributes<HTMLAnchorElement>) {
-  return <PaginationLink className={className} rel="prev" {...props} />
+export function PaginationPrevious({ className, children, text, ...props }: React.AnchorHTMLAttributes<HTMLAnchorElement> & { text: string }) {
+  return (
+    <PaginationLink aria-label={props['aria-label'] ?? text} className={cn('uds-pagination-previous', className)} rel="prev" size="default" {...props}>
+      <ChevronLeft aria-hidden="true" className="uds-pagination-direction-icon" />
+      <span>{children ?? text}</span>
+    </PaginationLink>
+  )
 }
 
-export function PaginationNext({ className, ...props }: React.AnchorHTMLAttributes<HTMLAnchorElement>) {
-  return <PaginationLink className={className} rel="next" {...props} />
+export function PaginationNext({ className, children, text, ...props }: React.AnchorHTMLAttributes<HTMLAnchorElement> & { text: string }) {
+  return (
+    <PaginationLink aria-label={props['aria-label'] ?? text} className={cn('uds-pagination-next', className)} rel="next" size="default" {...props}>
+      <span>{children ?? text}</span>
+      <ChevronRight aria-hidden="true" className="uds-pagination-direction-icon" />
+    </PaginationLink>
+  )
+}
+
+export function PaginationEllipsis({ className, label, ...props }: React.HTMLAttributes<HTMLSpanElement> & { label: string }) {
+  return (
+    <span aria-hidden="true" className={cn('uds-pagination-ellipsis', className)} {...props}>
+      <MoreHorizontal />
+      <span className="uds-visually-hidden">{label}</span>
+    </span>
+  )
 }
 
 export function Resizable({
@@ -216,12 +326,20 @@ export function ResizablePanel({ className, ...props }: React.ComponentProps<typ
   return <ResizablePanelPrimitive className={cn('uds-resizable-panel', className)} {...props} />
 }
 
-export function ResizableHandle({ className, ...props }: React.ComponentProps<typeof ResizableHandlePrimitive>) {
-  return <ResizableHandlePrimitive className={cn('uds-resizable-handle', className)} {...props} />
+export function ResizableHandle({
+  className,
+  withHandle = false,
+  ...props
+}: React.ComponentProps<typeof ResizableHandlePrimitive> & { withHandle?: boolean }) {
+  return (
+    <ResizableHandlePrimitive className={cn('uds-resizable-handle', className)} {...props}>
+      {withHandle ? <span className="uds-resizable-handle-grip"><GripVertical aria-hidden="true" /></span> : null}
+    </ResizableHandlePrimitive>
+  )
 }
 
-export function ScrollArea({ className, ...props }: React.ComponentProps<typeof ScrollAreaPrimitive.Root>) {
-  return <ScrollAreaPrimitive.Root className={cn('uds-scroll-area', className)} {...props} />
+export function ScrollArea({ className, type = 'hover', ...props }: React.ComponentProps<typeof ScrollAreaPrimitive.Root>) {
+  return <ScrollAreaPrimitive.Root className={cn('uds-scroll-area', className)} type={type} {...props} />
 }
 
 export function ScrollAreaViewport({ className, ...props }: React.ComponentProps<typeof ScrollAreaPrimitive.Viewport>) {
@@ -234,6 +352,10 @@ export function ScrollBar({ className, orientation = 'vertical', ...props }: Rea
       <ScrollAreaPrimitive.Thumb className="uds-scroll-thumb" />
     </ScrollAreaPrimitive.Scrollbar>
   )
+}
+
+export function ScrollAreaCorner({ className, ...props }: React.ComponentProps<typeof ScrollAreaPrimitive.Corner>) {
+  return <ScrollAreaPrimitive.Corner className={cn('uds-scroll-area-corner', className)} {...props} />
 }
 
 export function Direction({ className, dir = 'rtl', ...props }: DivProps & { dir?: 'ltr' | 'rtl' | 'auto' }) {
@@ -298,18 +420,50 @@ export function DrawerContent({ className, side = 'end', ...props }: React.Compo
   )
 }
 
-export const DrawerHeader = DialogHeader
-export const DrawerFooter = DialogFooter
-export const DrawerTitle = DialogTitle
-export const DrawerDescription = DialogDescription
-export const DrawerClose = DialogClose
+export function DrawerHeader({ className, ...props }: DivProps) {
+  return <div className={cn('uds-drawer-header', className)} {...props} />
+}
+
+export function DrawerFooter({ className, ...props }: DivProps) {
+  return <div className={cn('uds-drawer-footer', className)} {...props} />
+}
+
+export function DrawerTitle({ className, ...props }: React.ComponentProps<typeof DialogPrimitive.Title>) {
+  return <DialogPrimitive.Title className={cn('uds-drawer-title', className)} {...props} />
+}
+
+export function DrawerDescription({ className, ...props }: React.ComponentProps<typeof DialogPrimitive.Description>) {
+  return <DialogPrimitive.Description className={cn('uds-drawer-description', className)} {...props} />
+}
+
+export function DrawerClose({ className, ...props }: React.ComponentProps<typeof DialogPrimitive.Close>) {
+  return <DialogPrimitive.Close className={cn('uds-drawer-close', className)} {...props} />
+}
 
 export function Carousel({ className, ...props }: DivProps) {
   return <div className={cn('uds-carousel', className)} aria-roledescription="carousel" {...props} />
 }
 
-export function CarouselContent({ className, ...props }: DivProps) {
-  return <div className={cn('uds-carousel-content', className)} {...props} />
+export function CarouselContent({ className, onWheel, ...props }: DivProps) {
+  const contentRef = React.useRef<HTMLDivElement>(null)
+
+  React.useEffect(() => {
+    const target = contentRef.current
+    if (!target) return
+    const scrollElement = target
+
+    function handleWheel(event: WheelEvent) {
+      if (Math.abs(event.deltaY) <= Math.abs(event.deltaX)) return
+      const direction = scrollElement.closest('[dir="rtl"]') ? -1 : 1
+      scrollElement.scrollLeft += event.deltaY * direction
+      event.preventDefault()
+    }
+
+    scrollElement.addEventListener('wheel', handleWheel, { passive: false })
+    return () => scrollElement.removeEventListener('wheel', handleWheel)
+  }, [])
+
+  return <div ref={contentRef} className={cn('uds-carousel-content', className)} onWheel={onWheel} {...props} />
 }
 
 export function CarouselItem({ className, ...props }: DivProps) {
@@ -339,12 +493,111 @@ export function Chart({
   )
 }
 
+export type ChartConfig = Record<string, {
+  color?: string
+  label?: React.ReactNode
+}>
+
+export function ChartContainer({
+  children,
+  className,
+  config = {},
+  ...props
+}: DivProps & {
+  config?: ChartConfig
+  children: React.ReactNode
+}) {
+  const chartStyle = Object.fromEntries(
+    Object.entries(config)
+      .filter(([, value]) => value.color)
+      .map(([key, value]) => [`--color-${key}`, value.color])
+  ) as React.CSSProperties
+
+  return (
+    <div className={cn('uds-chart-container', className)} data-chart="" style={chartStyle} {...props}>
+      <ResponsiveContainer width="100%" height="100%">
+        {children as React.ReactElement}
+      </ResponsiveContainer>
+    </div>
+  )
+}
+
+export const ChartTooltip = RechartsTooltip
+export const ChartLegend = RechartsLegend
+
+type ChartPayloadItem = {
+  color?: string
+  dataKey?: string | number
+  name?: string | number
+  value?: string | number
+}
+
+export function ChartTooltipContent({
+  active,
+  className,
+  hideLabel = false,
+  label,
+  payload,
+}: {
+  active?: boolean
+  label?: React.ReactNode
+  payload?: ChartPayloadItem[]
+  hideLabel?: boolean
+  className?: string
+}) {
+  if (!active || !payload?.length) return null
+
+  return (
+    <div className={cn('uds-chart-tooltip', className)}>
+      {!hideLabel && label ? <div className="uds-chart-tooltip-label">{label}</div> : null}
+      <div className="uds-chart-tooltip-list">
+        {payload.map((item) => (
+          <div className="uds-chart-tooltip-item" key={`${item.dataKey}-${item.name}`}>
+            <span className="uds-chart-tooltip-indicator" style={{ background: item.color }} />
+            <span>{item.name}</span>
+            <strong>{item.value}</strong>
+          </div>
+        ))}
+      </div>
+    </div>
+  )
+}
+
+export function ChartLegendContent({
+  className,
+  payload,
+}: {
+  payload?: ChartPayloadItem[]
+  className?: string
+}) {
+  if (!payload?.length) return null
+
+  return (
+    <div className={cn('uds-chart-legend', className)}>
+      {payload.map((item) => (
+        <div className="uds-chart-legend-item" key={`${item.dataKey}-${item.value}`}>
+          <span className="uds-chart-legend-indicator" style={{ background: item.color }} />
+          <span>{item.value}</span>
+        </div>
+      ))}
+    </div>
+  )
+}
+
 export type ChartBarValue = number | {
   label?: React.ReactNode
   value: number
 }
 
-export function ChartBars({ className, values = [42, 68, 54], ...props }: DivProps & { values?: ChartBarValue[] }) {
+export function ChartBars({
+  className,
+  getValueLabel,
+  values = [42, 68, 54],
+  ...props
+}: DivProps & {
+  getValueLabel?: (value: number, label: React.ReactNode, index: number) => string
+  values?: ChartBarValue[]
+}) {
   return (
     <div className={cn('uds-chart-bars', className)} {...props}>
       {values.map((entry, index) => {
@@ -355,7 +608,8 @@ export function ChartBars({ className, values = [42, 68, 54], ...props }: DivPro
         return (
           <span
             key={`${value}-${index}`}
-            aria-label={label ? `${label}: ${value}%` : `${value}%`}
+            aria-hidden={getValueLabel ? undefined : true}
+            aria-label={getValueLabel?.(value, label, index)}
             className="uds-chart-bar"
             style={{ '--chart-bar-value': `${clampedValue}%` } as React.CSSProperties}
           >
@@ -423,8 +677,28 @@ export function DataTableFooter({ className, ...props }: DivProps) {
   return <div className={cn('uds-data-table-footer', className)} {...props} />
 }
 
-export function Collapsible(props: React.ComponentProps<typeof CollapsiblePrimitive.Root>) {
-  return <CollapsiblePrimitive.Root {...props} />
+const CollapsibleMotionContext = React.createContext({ open: false })
+
+export function Collapsible({
+  defaultOpen = false,
+  onOpenChange,
+  open,
+  ...props
+}: React.ComponentProps<typeof CollapsiblePrimitive.Root>) {
+  const [uncontrolledOpen, setUncontrolledOpen] = React.useState(defaultOpen)
+  const isControlled = open !== undefined
+  const currentOpen = isControlled ? open : uncontrolledOpen
+
+  function handleOpenChange(nextOpen: boolean) {
+    if (!isControlled) setUncontrolledOpen(nextOpen)
+    onOpenChange?.(nextOpen)
+  }
+
+  return (
+    <CollapsibleMotionContext.Provider value={{ open: currentOpen }}>
+      <CollapsiblePrimitive.Root open={currentOpen} onOpenChange={handleOpenChange} {...props} />
+    </CollapsibleMotionContext.Provider>
+  )
 }
 
 export function CollapsibleTrigger({ className, ...props }: React.ComponentProps<typeof CollapsiblePrimitive.Trigger>) {
@@ -432,9 +706,18 @@ export function CollapsibleTrigger({ className, ...props }: React.ComponentProps
 }
 
 export function CollapsibleContent({ children, className, ...props }: React.ComponentProps<typeof CollapsiblePrimitive.Content>) {
+  const { open } = React.useContext(CollapsibleMotionContext)
+
   return (
-    <CollapsiblePrimitive.Content className={cn('uds-collapsible-content', className)} {...props}>
-      <div className="uds-collapsible-content-inner">{children}</div>
+    <CollapsiblePrimitive.Content className={cn('uds-collapsible-content', className)} forceMount {...props}>
+      <motion.div
+        animate={open ? { height: 'auto', opacity: 1 } : { height: 0, opacity: 0 }}
+        className="uds-collapsible-motion"
+        initial={false}
+        transition={{ duration: 0.22, ease: [0.2, 0, 0, 1] }}
+      >
+        <div className="uds-collapsible-content-inner">{children}</div>
+      </motion.div>
     </CollapsiblePrimitive.Content>
   )
 }
@@ -602,7 +885,7 @@ export function Attachment({
         <>
           <AttachmentMedia />
           <AttachmentContent>
-            <AttachmentTitle>{name ?? 'Attachment'}</AttachmentTitle>
+            {name ? <AttachmentTitle>{name}</AttachmentTitle> : null}
             {meta ? <AttachmentDescription>{meta}</AttachmentDescription> : null}
           </AttachmentContent>
         </>
@@ -635,7 +918,7 @@ export function AttachmentActions({ className, ...props }: DivProps) {
   return <div className={cn('uds-attachment-actions', className)} {...props} />
 }
 
-export type AttachmentActionProps = ButtonProps
+export type AttachmentActionProps = ButtonProps & { 'aria-label': string }
 
 export function AttachmentAction({ className, size = 'icon', variant = 'ghost', ...props }: AttachmentActionProps) {
   return <Button className={cn('uds-attachment-action', className)} isIconOnly size={size} variant={variant} {...props} />
@@ -661,36 +944,14 @@ export function Bubble({
   return <div className={cn('uds-bubble', `uds-bubble--${tone}`, className)} {...props} />
 }
 
-export function Marker({
-  children,
-  className,
-  tone = 'default',
-  variant = 'pill',
-  ...props
-}: SpanProps & {
-  tone?: 'default' | 'accent' | 'muted'
-  variant?: 'pill' | 'check'
-}) {
-  if (variant === 'check') {
-    return (
-      <span className={cn('uds-marker-check', className)} {...props}>
-        <span aria-hidden="true" className="uds-marker-check-box" />
-        {children ? <span className="uds-marker-check-label">{children}</span> : null}
-      </span>
-    )
-  }
-
-  return <span className={cn('uds-marker', `uds-marker--${tone}`, className)} {...props}>{children}</span>
-}
-
-export const MarkerNew = Marker
-
 export function InputOTP({
   className,
+  getSlotLabel,
   length = 4,
   value = '',
   ...props
 }: React.HTMLAttributes<HTMLDivElement> & {
+  getSlotLabel: (index: number) => string
   length?: number
   value?: string
 }) {
@@ -699,7 +960,7 @@ export function InputOTP({
   return (
     <div className={cn('uds-input-otp', className)} role="group" {...props}>
       {characters.map((character, index) => (
-        <span key={index} aria-label={`Digit ${index + 1}`}>
+        <span key={index} aria-label={getSlotLabel(index)}>
           {character || ' '}
         </span>
       ))}
@@ -712,11 +973,28 @@ export function Kbd({ className, ...props }: React.HTMLAttributes<HTMLElement>) 
 }
 
 export function Label({ className, ...props }: React.LabelHTMLAttributes<HTMLLabelElement>) {
-  return <label className={cn('uds-field-label', className)} {...props} />
+  return <label className={cn('uds-label', className)} {...props} />
 }
 
-export function NativeSelect({ className, ...props }: React.SelectHTMLAttributes<HTMLSelectElement>) {
-  return <select className={cn('uds-input uds-selector', className)} {...props} />
+export type NativeSelectProps = Omit<React.SelectHTMLAttributes<HTMLSelectElement>, 'size'> & {
+  size?: 'sm' | 'default'
+}
+
+export function NativeSelect({ className, size = 'default', ...props }: NativeSelectProps) {
+  return (
+    <div className="uds-native-select" data-disabled={props.disabled ? 'true' : undefined} data-size={size}>
+      <select className={cn('uds-native-select-control', className)} {...props} />
+      <ChevronDown aria-hidden="true" className="uds-native-select-indicator" />
+    </div>
+  )
+}
+
+export function NativeSelectOption(props: React.OptionHTMLAttributes<HTMLOptionElement>) {
+  return <option {...props} />
+}
+
+export function NativeSelectOptGroup(props: React.OptgroupHTMLAttributes<HTMLOptGroupElement>) {
+  return <optgroup {...props} />
 }
 
 export { PrimitiveHeader, PrimitiveItem }

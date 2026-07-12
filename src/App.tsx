@@ -6,6 +6,7 @@ import { TopNavigation } from './components/TopNavigation'
 import { ArabicFriendlyPage } from './pages/ArabicFriendlyPage'
 import { ComponentDetailPage } from './pages/ComponentDetailPage'
 import { ComponentsPage } from './pages/ComponentsPage'
+import { CommunityPage } from './pages/CommunityPage'
 import { DocsPage } from './pages/DocsPage'
 import { TemplatesPage } from './pages/TemplatesPage'
 import { ThemesPage } from './pages/ThemesPage'
@@ -264,6 +265,7 @@ function AppShell() {
   const [pendingLocale, setPendingLocale] = useState<Locale | null>(null)
   const transitionTimers = useRef<number[]>([])
   const dir = locale === 'ar' ? 'rtl' : 'ltr'
+  const isCommunitySite = path === '/' || path === '/community'
 
   function clearLocaleTransitionTimers() {
     transitionTimers.current.forEach((timer) => window.clearTimeout(timer))
@@ -295,7 +297,10 @@ function AppShell() {
   }, [])
 
   useEffect(() => {
-    if (!section) return
+    if (!section) {
+      window.requestAnimationFrame(() => window.scrollTo({ top: 0, behavior: 'auto' }))
+      return
+    }
     const scrollToSection = () => document.getElementById(section)?.scrollIntoView({ block: 'start' })
     window.requestAnimationFrame(scrollToSection)
     const timeout = window.setTimeout(scrollToSection, 100)
@@ -303,10 +308,10 @@ function AppShell() {
   }, [path, section])
 
   useEffect(() => {
-    document.documentElement.lang = locale === 'ar' ? 'ar' : 'en'
-    document.documentElement.dir = dir
+    document.documentElement.lang = isCommunitySite ? 'en' : locale === 'ar' ? 'ar' : 'en'
+    document.documentElement.dir = isCommunitySite ? 'ltr' : dir
     window.localStorage.setItem('utopia-ds-locale', locale)
-  }, [dir, locale])
+  }, [dir, isCommunitySite, locale])
 
   useEffect(() => () => clearLocaleTransitionTimers(), [])
 
@@ -369,7 +374,16 @@ function AppShell() {
     if (isDocsArea) return `#/docs#${slug}`
     if (isThemesArea && item === 'Utopia Default') return '#/themes#utopia-default'
     if (isThemesArea && item === 'Dextrum') return '#/themes#dextrum'
+    if (isThemesArea && item === 'Barrier Intelligence') return '#/themes#barrier-intelligence'
     return `#/${sidebarArea.id}`
+  }
+
+  if (isCommunitySite) {
+    return (
+      <I18nProvider locale={locale} setLocale={transitionLocale}>
+        <CommunityPage />
+      </I18nProvider>
+    )
   }
 
   return (
@@ -390,7 +404,7 @@ function AppShell() {
       />
 
       <SideNav
-        aria-label={`${sideNavLabel(locale, sidebarArea.label)} navigation`}
+        aria-label={locale === 'ar' ? `تنقل ${sideNavLabel(locale, sidebarArea.label)}` : `${sideNavLabel(locale, sidebarArea.label)} navigation`}
         className="app-sidebar side-nav"
         collapsed={sidebarCollapsed}
         density="compact"
@@ -399,7 +413,9 @@ function AppShell() {
             className="app-sidebar-heading"
             endContent={(
               <SideNavCollapseButton
-                aria-label={sidebarCollapsed ? 'Open sidebar' : 'Close sidebar'}
+                aria-label={sidebarCollapsed
+                  ? (locale === 'ar' ? 'فتح الشريط الجانبي' : 'Open sidebar')
+                  : (locale === 'ar' ? 'إغلاق الشريط الجانبي' : 'Close sidebar')}
                 aria-expanded={!sidebarCollapsed}
                 onClick={() => setSidebarCollapsed((value) => !value)}
               >

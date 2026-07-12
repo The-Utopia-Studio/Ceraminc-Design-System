@@ -5,8 +5,9 @@ import templates from '../../packages/design-system/src/manifests/templates.json
 import themes from '../../packages/design-system/src/manifests/themes.json'
 import utopiaDefaultTheme from '../../packages/design-system/src/manifests/theme-utopia-default.json'
 import dextrumTheme from '../../packages/design-system/src/manifests/theme-dextrum.json'
+import barrierIntelligenceTheme from '../../packages/design-system/src/manifests/theme-barrier-intelligence.json'
 
-export { catalog, components, patterns, templates, themes, utopiaDefaultTheme, dextrumTheme }
+export { catalog, components, patterns, templates, themes, utopiaDefaultTheme, dextrumTheme, barrierIntelligenceTheme }
 
 export const routeMap = [
   { id: 'home', label: 'Overview', path: '/', description: 'System map and first decisions.' },
@@ -27,10 +28,12 @@ export function normalizeName(name: string) {
 
 export function statusForComponent(name: string) {
   const normalized = normalizeName(name)
+  const manifestEntry = components.components.find((component) => normalizeName(component.name) === normalized)
   const available = catalog.componentStatus.available.map(normalizeName)
   const wrapped = catalog.componentStatus.utopiaWrapped.map(normalizeName)
   const fallback = catalog.componentStatus.shadcnFallback.map(normalizeName)
 
+  if (manifestEntry?.status === 'legacy') return 'legacy'
   if (wrapped.includes(normalized)) return 'Utopia wrapped'
   if (available.includes(normalized)) return 'available'
   if (fallback.includes(normalized)) return 'shadcn fallback'

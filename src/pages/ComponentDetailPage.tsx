@@ -1,24 +1,26 @@
-import { useState, type ElementType, type ReactNode } from 'react'
+import { useState, type ElementType, type MouseEvent, type ReactNode } from 'react'
 import { motion } from 'framer-motion'
-import { Archive, ArrowDown, ArrowUp, BarChart3, Bell, Box, Calculator, CalendarDays, CalendarPlus, Check, ChevronRight, Clock, Component, CreditCard, FileCode, FileText, ListFilter, LoaderCircle, MailOpen, Menu, Mic, MoreHorizontal, Search, Settings, Smile, Tag, Trash2, User, UserCircle, X } from 'lucide-react'
+import { Archive, ArrowDown, ArrowUp, ArrowUpRight, BarChart3, Bell, Box, Calculator, CalendarDays, CalendarPlus, Check, ChevronRight, Clock, Cloud, Component, CreditCard, FileCode, FileText, FolderPlus, ListFilter, LoaderCircle, MailOpen, Menu, Mic, MoreHorizontal, RefreshCcw, Search, Settings, Smile, Tag, Trash2, UploadCloud, User, UserCircle, X } from 'lucide-react'
+import { Bar, BarChart, CartesianGrid, XAxis, YAxis } from 'recharts'
 import { components, slugify } from '../data/design-system'
 import { Badge } from '../../packages/design-system/src/Badge'
 import { Button } from '../../packages/design-system/src/Button'
 import { ButtonGroup, ButtonGroupSeparator, ButtonGroupText } from '../../packages/design-system/src/ButtonGroup'
 import { IconButton } from '../../packages/design-system/src/IconButton'
 import { Card, CardAction, CardContent, CardDescription, CardFooter, CardHeader, CardStatus, CardTitle } from '../../packages/design-system/src/Card'
-import { Field, FieldLabel, TextInput, TextArea, Checkbox, RadioGroup, RadioGroupItem, Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectScrollDownButton, SelectScrollUpButton, SelectSeparator, SelectTrigger, SelectValue, Slider, Switch } from '../../packages/design-system/src/Forms'
+import { Field, FieldContent, FieldDescription, FieldError, FieldGroup, FieldLabel, FieldLegend, FieldSeparator, FieldSet, FieldTitle, TextInput, TextArea, Checkbox, RadioGroup, RadioGroupItem, RadioGroupOption, Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectScrollDownButton, SelectScrollUpButton, SelectSeparator, SelectTrigger, SelectValue, Slider, Switch } from '../../packages/design-system/src/Forms'
 import { AspectRatio, Center, Grid, HStack, VStack } from '../../packages/design-system/src/Layout'
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '../../packages/design-system/src/Accordion'
 import { Alert, AlertDescription, AlertTitle } from '../../packages/design-system/src/Alert'
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from '../../packages/design-system/src/AlertDialog'
 import { Attachment, AttachmentAction, AttachmentActions, AttachmentContent, AttachmentDescription, AttachmentGroup, AttachmentMedia, AttachmentTitle, AttachmentTrigger } from '../../packages/design-system/src/Attachment'
 import { ChatComposer, ChatComposerInput, ChatComposerTokenElement, ChatDictationButton, ChatLayout, ChatLayoutScrollButton, ChatMessage, ChatMessageBubble, ChatMessageList, ChatMessageMetadata, ChatSendButton, ChatSystemMessage, ChatTokenizedText, ChatToolCalls } from '../../packages/design-system/src/Chat'
-import { Breadcrumb, BreadcrumbEllipsis, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator, Breadcrumbs, CommandPalette, CommandPaletteEmpty, CommandPaletteGroup, CommandPaletteInput, CommandPaletteItem, CommandPaletteList, ContextMenu, ContextMenuCheckboxItem, ContextMenuContent, ContextMenuItem, ContextMenuLabel, ContextMenuSeparator, ContextMenuShortcut, ContextMenuSub, ContextMenuSubContent, ContextMenuSubTrigger, ContextMenuTrigger, DropdownMenu, DropdownMenuCheckboxItem, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuLabel, DropdownMenuRadioGroup, DropdownMenuRadioItem, DropdownMenuSeparator, DropdownMenuShortcut, DropdownMenuSub, DropdownMenuSubContent, DropdownMenuSubTrigger, DropdownMenuTrigger, MobileNav, MobileNavContent, MobileNavToggle, MobileNavTrigger, NavHeadingMenu, NavHeadingMenuContent, NavHeadingMenuTrigger, NavIcon, PanelIcon, SideNav, SideNavCollapseButton, SideNavContent, SideNavHeading, SideNavItem, SideNavSection, Tab, TabList, TabPanel, Tabs, TopNav, TopNavHeading, TopNavItem, TopNavMegaMenu, TopNavMegaMenuFeaturedCard, TopNavMegaMenuItem, TopNavMenu, TopNavMenuItem } from '../../packages/design-system/src/Navigation'
-import { HoverCard, HoverCardContent, HoverCardTrigger, Popover, PopoverContent, PopoverTrigger, Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '../../packages/design-system/src/Surface'
+import { Breadcrumb, BreadcrumbEllipsis, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator, Breadcrumbs, CommandPalette, CommandPaletteEmpty, CommandPaletteGroup, CommandPaletteInput, CommandPaletteItem, CommandPaletteList, CommandPaletteSeparator, CommandPaletteShortcut, ContextMenu, ContextMenuCheckboxItem, ContextMenuContent, ContextMenuItem, ContextMenuLabel, ContextMenuSeparator, ContextMenuShortcut, ContextMenuSub, ContextMenuSubContent, ContextMenuSubTrigger, ContextMenuTrigger, DropdownMenu, DropdownMenuCheckboxItem, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuLabel, DropdownMenuRadioGroup, DropdownMenuRadioItem, DropdownMenuSeparator, DropdownMenuShortcut, DropdownMenuSub, DropdownMenuSubContent, DropdownMenuSubTrigger, DropdownMenuTrigger, MobileNav, MobileNavContent, MobileNavToggle, MobileNavTrigger, NavHeadingMenu, NavHeadingMenuContent, NavHeadingMenuTrigger, NavIcon, PanelIcon, SideNav, SideNavCollapseButton, SideNavContent, SideNavHeading, SideNavItem, SideNavSection, Tab, TabList, TabPanel, Tabs, TopNav, TopNavHeading, TopNavItem, TopNavMegaMenu, TopNavMegaMenuFeaturedCard, TopNavMegaMenuItem, TopNavMenu, TopNavMenuItem } from '../../packages/design-system/src/Navigation'
+import { HoverCard, HoverCardContent, HoverCardTrigger, Popover, PopoverClose, PopoverContent, PopoverDescription, PopoverHeader, PopoverTitle, PopoverTrigger, Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '../../packages/design-system/src/Surface'
 import { ToggleButton } from '../../packages/design-system/src/ToggleButton'
 import { ToggleButtonGroup, ToggleButtonGroupItem } from '../../packages/design-system/src/ToggleButtonGroup'
-import { AccountStatus, Avatar, AvatarGroup, AvatarOverflow, Calendar, DatePicker, EmptyState, ProgressBar, Skeleton, Spinner, Table, TableBody, TableCell, TableHead, TableHeader, TableRow, Toast, ToastDescription, ToastTitle } from '../../packages/design-system/src/DataDisplay'
+import { AccountStatus, Avatar, AvatarGroup, AvatarOverflow, Calendar, DatePicker, EmptyState, ProgressBar, ProgressIndicator, ProgressLabel, ProgressTrack, ProgressValue, Skeleton, Spinner, Table, TableBody, TableCaption, TableCell, TableContainer, TableFooter, TableHead, TableHeader, TableRow, Toast, ToastDescription, ToastTitle } from '../../packages/design-system/src/DataDisplay'
+import { Sidebar, SidebarContent, SidebarFooter, SidebarGroup, SidebarGroupLabel, SidebarHeader, SidebarMenu, SidebarMenuBadge, SidebarMenuButton, SidebarMenuItem, SidebarProvider, SidebarTrigger } from '../../packages/design-system/src/Sidebar'
 import * as ShadcnPrimitives from '../../packages/design-system/src/ShadcnPrimitives'
 import { ArabicText, Heading, Prose, Text } from '../../packages/design-system/src/Typography'
 import { componentIntro, componentLabel, t, useI18n, type Locale } from '../i18n'
@@ -49,9 +51,7 @@ const CHAT_COMPONENTS = [
 export function ComponentDetailPage({ componentId, tab = 'overview' }: ComponentDetailPageProps) {
   const { locale } = useI18n()
   const aliases: Record<string, string> = {
-    markernew: 'marker',
     progressbar: 'progress',
-    sidebar: 'side-nav',
     'text-area': 'textarea',
     toggle: 'toggle-button',
     'toggle-group': 'toggle-button-group',
@@ -2498,7 +2498,7 @@ function genericExamples(name: string, locale: Locale): Array<[string, ReactNode
 
   if (name === 'Side Nav') {
     return [
-      ['Side Nav Type 1', <SideNavTypeOne />],
+      ['Side Nav Type 1', <SideNavTypeOne isArabic={isArabic} />],
       ['Section grouping', (
         <SideNav aria-label="Section grouping preview">
           <SideNavSection collapsible label="Overview">
@@ -2700,9 +2700,11 @@ function MobileNavRtlExample() {
   )
 }
 
-function SideNavTypeOne() {
+function SideNavTypeOne({ isArabic = false }: { isArabic?: boolean }) {
   const [collapsed, setCollapsed] = useState(false)
-  const collapseLabel = collapsed ? 'Open sidebar' : 'Close sidebar'
+  const collapseLabel = collapsed
+    ? (isArabic ? 'فتح الشريط الجانبي' : 'Open sidebar')
+    : (isArabic ? 'إغلاق الشريط الجانبي' : 'Close sidebar')
 
   return (
     <div className="side-nav-type-one-preview" data-collapsed={collapsed ? 'true' : undefined}>
@@ -2780,6 +2782,49 @@ function genericProps(name: string, interactive = false) {
 
 function genericArabicProps(name: string, interactive = false) {
   const extraRows = (() => {
+    if (name === 'Label') {
+      return [
+        { name: 'htmlFor', type: 'string', description: 'معرّف عنصر التحكم المرتبط. يجب أن يتطابق مع id حتى يعمل النقر والتقنيات المساعدة.', control: <input aria-label="label htmlFor value" placeholder="control-id" /> },
+        { name: 'data-disabled', type: 'boolean', description: 'حالة العرض المعطلة. يجب تعطيل عنصر التحكم المرتبط أيضا.', control: <input aria-label="label disabled value" type="checkbox" /> },
+        { name: 'data-invalid', type: 'boolean', description: 'تأكيد دلالي للحالة غير الصالحة باستخدام توكن destructive.', control: <input aria-label="label invalid value" type="checkbox" /> },
+      ]
+    }
+    if (name === 'Menubar') {
+      return [
+        { name: 'MenubarCheckboxItem', type: 'component', description: 'خيار أمر قابل للتبديل بحالة checked مملوكة للتطبيق.', control: <input aria-label="menubar checkbox item value" placeholder="checked" /> },
+        { name: 'MenubarRadioGroup / MenubarRadioItem', type: 'component', description: 'خيارات اختيار مفرد تشترك في عقد value واحد.', control: <input aria-label="menubar radio group value" placeholder="value" /> },
+        { name: 'MenubarSub / MenubarSubTrigger / MenubarSubContent', type: 'component', description: 'أوامر متداخلة بموضع يتجنب التصادم ومؤشر اتجاهي ينعكس تلقائيا.', control: <input aria-label="menubar submenu value" placeholder="submenu" /> },
+        { name: 'MenubarGroup / MenubarLabel / MenubarSeparator', type: 'component', description: 'تجميع دلالي وبنية مرئية للقوائم الطويلة.', control: <input aria-label="menubar group value" placeholder="group" /> },
+        { name: 'MenubarShortcut', type: 'component', description: 'تلميح مرئي فقط. يبقى تسجيل اختصار لوحة المفاتيح مسؤولية التطبيق.', control: <input aria-label="menubar shortcut value" placeholder="⌘S" /> },
+      ]
+    }
+    if (name === 'Native Select') {
+      return [
+        { name: 'value / defaultValue', type: 'string', description: 'قيمة الاختيار المضبوطة أو الابتدائية. تبقى حالة المنتج خارج المكوّن.', control: <input aria-label="native select value" placeholder="todo" /> },
+        { name: 'size', type: "'sm' | 'default'", description: 'حجم تحكم دلالي يستخدم توكنات الارتفاع والطباعة.', control: <select aria-label="native select size"><option>default</option><option>sm</option></select> },
+        { name: 'disabled', type: 'boolean', description: 'يعطّل سلوك المتصفح ويطبق حالة muted الدلالية.', control: <input aria-label="native select disabled" type="checkbox" /> },
+        { name: 'aria-invalid', type: 'boolean', description: 'يكشف حالة الخطأ للتقنيات المساعدة وتنسيق destructive.', control: <input aria-label="native select invalid" type="checkbox" /> },
+        { name: 'NativeSelectOption / NativeSelectOptGroup', type: 'component', description: 'خيارات أصلية ومجموعات ذات labels مترجمة. لا تثبت قواعد المنتج داخل المكوّن.', control: <input aria-label="native select options" placeholder="options" /> },
+      ]
+    }
+    if (name === 'Hover Card') {
+      return [
+        { name: 'delay / closeDelay', type: 'number', description: 'زمن فتح وإغلاق المعاينة بالميلي ثانية. لا تجعل المحتوى الأساسي معتمدا على التحويم.', control: <input aria-label="hover delay value" placeholder="200" /> },
+        { name: 'side', type: "'top' | 'right' | 'bottom' | 'left'", description: 'الجهة الفيزيائية التي تظهر فيها البطاقة حول المشغّل.', control: <select aria-label="hover side value"><option>bottom</option><option>top</option><option>right</option><option>left</option></select> },
+        { name: 'align', type: "'start' | 'center' | 'end'", description: 'محاذاة منطقية تنعكس فيها البداية والنهاية تلقائيا داخل RTL.', control: <select aria-label="hover align value"><option>start</option><option>center</option><option>end</option></select> },
+        { name: 'sideOffset / alignOffset', type: 'number', description: 'مسافة موضعية مرتبطة بنظام المسافات الدلالي.', control: <input aria-label="hover offset value" placeholder="8" /> },
+      ]
+    }
+    if (name === 'Field') {
+      return [
+        { name: 'orientation', type: "'vertical' | 'horizontal' | 'responsive'", description: 'ترتيب الحقل باستخدام اتجاه منطقي. responsive يتحول إلى صف عندما تتسع الشاشة.', control: <select aria-label="orientation value"><option>vertical</option><option>horizontal</option><option>responsive</option></select> },
+        { name: 'data-invalid', type: 'boolean', description: 'يربط حالة الخطأ بالتسمية والوصف دون تثبيت لون داخل المكوّن.', control: <input aria-label="invalid value" type="checkbox" /> },
+        { name: 'FieldSet / FieldLegend', type: 'component', description: 'تجميع دلالي للحقول المرتبطة مع عنوان ووصف للمجموعة.', control: <input aria-label="fieldset value" placeholder="مجموعة" /> },
+        { name: 'FieldGroup / FieldContent', type: 'component', description: 'وحدات تركيب لتنظيم الحقول ومحتوى التسمية والوصف في LTR وRTL.', control: <input aria-label="field group value" placeholder="محتوى" /> },
+        { name: 'FieldDescription / FieldError', type: 'component', description: 'نص مساند ورسالة خطأ متصلة بالحقل. يدعم FieldError مصفوفات الأخطاء.', control: <input aria-label="field feedback value" placeholder="حالة" /> },
+        { name: 'FieldSeparator', type: 'component', description: 'فاصل دلالي بين مجموعات الخيارات ويستخدم خصائص CSS منطقية.', control: <input aria-label="field separator value" placeholder="خيارات" /> },
+      ]
+    }
     if (name === 'Table' || name === 'Data Table') {
       return [
         { name: 'TableHeader / TableBody', type: 'component', description: 'تقسم الجدول إلى رأس وجسم مثل shadcn/ui وتحافظ على ترتيب DOM في RTL.', control: <input aria-label="table sections value" placeholder="sections" /> },
@@ -2808,7 +2853,7 @@ function genericArabicProps(name: string, interactive = false) {
         { name: 'AlertDescription', type: 'ReactNode', description: 'تفاصيل مساندة للتنبيه. حافظ على التفاف النص المختلط داخل RTL.', control: <PropTextControl label="AlertDescription value" placeholder="تمت معالجة العملية." /> },
       ]
     }
-    if (['Marker', 'Sonner', 'Spinner'].includes(name)) {
+    if (['Sonner', 'Spinner'].includes(name)) {
       return [
         { name: 'aria-label', type: 'string', description: 'تسمية قابلة للوصول عندما لا يكفي النص المرئي.', control: <input aria-label="aria-label value" placeholder="تسمية" /> },
         { name: 'role', type: 'string', description: 'الدور الدلالي للحالة أو الرسالة أو الإشعار عند الحاجة.', control: <input aria-label="role value" placeholder="status" /> },
@@ -2842,6 +2887,65 @@ function genericPropRows(name: string) {
     { name: 'lang', type: 'string', description: 'Language hint for mixed-script typography and Arabic-friendly rendering.', control: <input aria-label="lang value" placeholder="ar" /> },
   ]
 
+  if (name === 'Field') {
+    return [
+      { name: 'orientation', type: "'vertical' | 'horizontal' | 'responsive'", description: 'Logical label/control layout. Responsive becomes horizontal when space allows.', control: <select aria-label="orientation value"><option>vertical</option><option>horizontal</option><option>responsive</option></select> },
+      { name: 'data-invalid', type: 'boolean', description: 'Exposes invalid state to labels and feedback without hardcoded component colors.', control: <input aria-label="invalid value" type="checkbox" /> },
+      { name: 'FieldSet / FieldLegend', type: 'component', description: 'Semantic fieldset composition for related controls with a group title.', control: <input aria-label="fieldset value" placeholder="group" /> },
+      { name: 'FieldGroup / FieldContent', type: 'component', description: 'Composition primitives for field collections and label-description content.', control: <input aria-label="field group value" placeholder="content" /> },
+      { name: 'FieldLabel / FieldTitle', type: 'component', description: 'Accessible control label or non-label title for switch and choice rows.', control: <input aria-label="field label value" placeholder="label" /> },
+      { name: 'FieldDescription / FieldError', type: 'component', description: 'Supporting and validation feedback. FieldError also accepts errors or issues arrays.', control: <input aria-label="field feedback value" placeholder="feedback" /> },
+      { name: 'FieldSeparator', type: 'component', description: 'Token-driven separator for sections inside a FieldGroup.', control: <input aria-label="field separator value" placeholder="Options" /> },
+      ...common,
+    ]
+  }
+
+  if (name === 'Label') {
+    return [
+      { name: 'htmlFor', type: 'string', description: 'ID of the associated control. It must match the control id for click and assistive behavior.', control: <input aria-label="label htmlFor value" placeholder="control-id" /> },
+      { name: 'data-disabled', type: 'boolean', description: 'Visual disabled state. Disable the associated control as well.', control: <input aria-label="label disabled value" type="checkbox" /> },
+      { name: 'data-invalid', type: 'boolean', description: 'Semantic invalid emphasis using the destructive role token.', control: <input aria-label="label invalid value" type="checkbox" /> },
+      { name: 'children', type: 'ReactNode', description: 'Concise visible label text sourced from product localization.', control: <input aria-label="label children value" placeholder="Label" /> },
+      ...common.filter((row) => row.name !== 'children'),
+    ]
+  }
+
+  if (name === 'Menubar') {
+    return [
+      { name: 'dir', type: "'ltr' | 'rtl'", description: 'Reading direction passed to the Radix menubar root. Arrow-key movement mirrors in RTL.', control: <select aria-label="menubar direction value"><option>ltr</option><option>rtl</option></select> },
+      { name: 'MenubarCheckboxItem', type: 'component', description: 'Toggleable command option with controlled or uncontrolled checked state.', control: <input aria-label="menubar checkbox item value" placeholder="checked" /> },
+      { name: 'MenubarRadioGroup / MenubarRadioItem', type: 'component', description: 'Single-select command options with a shared value contract.', control: <input aria-label="menubar radio group value" placeholder="value" /> },
+      { name: 'MenubarSub / MenubarSubTrigger / MenubarSubContent', type: 'component', description: 'Nested commands with collision-aware placement and a mirrored directional indicator.', control: <input aria-label="menubar submenu value" placeholder="submenu" /> },
+      { name: 'MenubarGroup / MenubarLabel / MenubarSeparator', type: 'component', description: 'Semantic grouping and visual structure for longer command menus.', control: <input aria-label="menubar group value" placeholder="group" /> },
+      { name: 'MenubarShortcut', type: 'component', description: 'Visual keyboard hint only. The application remains responsible for registering the shortcut.', control: <input aria-label="menubar shortcut value" placeholder="⌘S" /> },
+      ...common.filter((row) => row.name !== 'dir'),
+    ]
+  }
+
+  if (name === 'Native Select') {
+    return [
+      { name: 'value / defaultValue', type: 'string', description: 'Controlled or initial selected value. Product state remains outside the primitive.', control: <input aria-label="native select value" placeholder="todo" /> },
+      { name: 'onChange', type: 'ChangeEventHandler<HTMLSelectElement>', description: 'Native change handler for application-owned selection state.', control: <input aria-label="native select change handler" placeholder="setValue" /> },
+      { name: 'size', type: "'sm' | 'default'", description: 'Semantic control size using shared height and typography tokens.', control: <select aria-label="native select size"><option>default</option><option>sm</option></select> },
+      { name: 'disabled', type: 'boolean', description: 'Disables native browser interaction and applies the semantic muted state.', control: <input aria-label="native select disabled" type="checkbox" /> },
+      { name: 'aria-invalid', type: 'boolean', description: 'Exposes validation failure to assistive technology and destructive state styling.', control: <input aria-label="native select invalid" type="checkbox" /> },
+      { name: 'NativeSelectOption / NativeSelectOptGroup', type: 'component', description: 'Native options and labeled groups. Keep product rules and localized copy outside the primitive.', control: <input aria-label="native select options" placeholder="options" /> },
+      ...common,
+    ]
+  }
+
+  if (name === 'Hover Card') {
+    return [
+      { name: 'delay / closeDelay', type: 'number', description: 'Open and close timing in milliseconds. delay maps to the Radix openDelay contract.', control: <input aria-label="hover delay value" placeholder="200" /> },
+      { name: 'side', type: "'top' | 'right' | 'bottom' | 'left'", description: 'Physical placement side around the trigger.', control: <select aria-label="hover side value"><option>bottom</option><option>top</option><option>right</option><option>left</option></select> },
+      { name: 'align', type: "'start' | 'center' | 'end'", description: 'Logical alignment. Start and end mirror automatically in RTL.', control: <select aria-label="hover align value"><option>start</option><option>center</option><option>end</option></select> },
+      { name: 'sideOffset / alignOffset', type: 'number', description: 'Collision-aware placement offsets. Keep spacing aligned with semantic space tokens.', control: <input aria-label="hover offset value" placeholder="8" /> },
+      { name: 'avoidCollisions', type: 'boolean', description: 'Repositions content to remain inside the viewport when space is constrained.', control: <input aria-label="avoid collisions value" type="checkbox" /> },
+      { name: 'asChild', type: 'boolean', description: 'HoverCardTrigger composition hook for links and design-system buttons.', control: <input aria-label="asChild value" type="checkbox" /> },
+      ...common,
+    ]
+  }
+
   if (name === 'Account Status') {
     return [
       { name: 'label', type: 'ReactNode', description: 'Required account, user, workspace, or organization label.', control: <input aria-label="label value" placeholder="ykkkk12314" /> },
@@ -2855,7 +2959,19 @@ function genericPropRows(name: string) {
     ]
   }
 
-  if (['Breadcrumb', 'Breadcrumb Item', 'Breadcrumbs', 'Dropdown Menu', 'Context Menu', 'Navigation Menu', 'Pagination', 'Side Nav', 'Side Nav Section', 'Side Nav Heading', 'Side Nav Item', 'Side Nav Collapse Button', 'Top Nav', 'Top Nav Heading', 'Top Nav Item', 'Top Nav Menu', 'Top Nav Mega Menu', 'Top Nav Mega Menu Featured Card', 'Top Nav Mega Menu Item', 'Mobile Nav', 'Mobile Nav Toggle', 'Nav Heading Menu', 'Nav Icon', 'Menubar'].includes(name)) {
+  if (name === 'Pagination') {
+    return [
+      { name: 'isActive / isCurrent', type: 'boolean', description: 'Marks the current page with aria-current=page and semantic selected styling.', control: <input aria-label="current page value" type="checkbox" /> },
+      { name: 'size', type: "'icon' | 'default'", description: 'Compact square page link or text-and-icon directional control.', control: <select aria-label="pagination size value"><option>icon</option><option>default</option></select> },
+      { name: 'text', type: 'string', description: 'Localized Previous or Next label. Directional icons mirror automatically in RTL.', control: <input aria-label="pagination text value" placeholder="Previous" /> },
+      { name: 'aria-disabled', type: 'boolean', description: 'Disables unavailable previous or next navigation without removing its spatial position.', control: <input aria-label="pagination disabled value" type="checkbox" /> },
+      { name: 'href', type: 'string', description: 'Page URL. Product routing and query-state ownership remain outside the primitive.', control: <input aria-label="pagination href value" placeholder="?page=2" /> },
+      { name: 'PaginationEllipsis', type: 'ReactNode', description: 'Non-interactive gap marker with visually hidden More pages semantics.', control: <input aria-label="pagination ellipsis value" placeholder="More pages" /> },
+      ...common,
+    ]
+  }
+
+  if (['Breadcrumb', 'Breadcrumb Item', 'Breadcrumbs', 'Dropdown Menu', 'Context Menu', 'Navigation Menu', 'Side Nav', 'Side Nav Section', 'Side Nav Heading', 'Side Nav Item', 'Side Nav Collapse Button', 'Top Nav', 'Top Nav Heading', 'Top Nav Item', 'Top Nav Menu', 'Top Nav Mega Menu', 'Top Nav Mega Menu Featured Card', 'Top Nav Mega Menu Item', 'Mobile Nav', 'Mobile Nav Toggle', 'Nav Heading Menu', 'Nav Icon', 'Menubar'].includes(name)) {
     if (name === 'Breadcrumb' || name === 'Breadcrumbs' || name === 'Breadcrumb Item') {
       return [
         { name: 'aria-label', type: 'string', description: 'Localized nav landmark label for the Breadcrumb root.', control: <input aria-label="aria-label value" placeholder="Breadcrumb" /> },
@@ -3036,13 +3152,20 @@ function genericPropRows(name: string) {
   }
 
   if (['Input', 'Input Group', 'Input OTP', 'Native Select', 'Select', 'Textarea', 'Combobox', 'Date Picker', 'Checkbox', 'Radio Group', 'Switch', 'Slider', 'Field', 'Label'].includes(name)) {
-    return [
+    const formRows = [
       { name: 'name', type: 'string', description: 'Form submission name. Keep product data rules outside the reusable component.', control: <input aria-label="name value" placeholder="fieldName" /> },
       { name: 'value', type: 'string | number | boolean', description: 'Controlled value where applicable.', control: <input aria-label="value value" placeholder="value" /> },
       { name: 'disabled', type: 'boolean', description: 'Disabled state. Preserve focus and accessibility behavior from the source primitive.', control: <input aria-label="disabled value" type="checkbox" /> },
       { name: 'required', type: 'boolean', description: 'Required field signal. Pair with Field status text in product forms.', control: <input aria-label="required value" type="checkbox" /> },
       ...common,
     ]
+    if (name === 'Checkbox') {
+      return [
+        { name: 'variant', type: "'normal' | 'fancy'", description: 'Visual style. Use normal for tables, forms, and dense product UI; reserve fancy for expressive checklist moments.', control: <PropSelectControl label="variant value" options={['normal', 'fancy']} /> },
+        ...formRows,
+      ]
+    }
+    return formRows
   }
 
   if (CHAT_COMPONENTS.includes(name)) {
@@ -3077,7 +3200,21 @@ function genericPropRows(name: string) {
     ]
   }
 
-  if (['Hover Card', 'Popover', 'Tooltip', 'Command', 'Tabs'].includes(name)) {
+  if (name === 'Popover') {
+    return [
+      { name: 'open / defaultOpen', type: 'boolean', description: 'Controlled or initial visibility. Pair open with onOpenChange.', control: <input aria-label="popover open value" type="checkbox" /> },
+      { name: 'onOpenChange', type: '(open: boolean) => void', description: 'Called for trigger, escape, outside click, and close-button state changes.', control: <input aria-label="popover change value" placeholder="setOpen" /> },
+      { name: 'side', type: "'top' | 'right' | 'bottom' | 'left'", description: 'Collision-aware physical placement around the anchor.', control: <select aria-label="popover side value"><option>bottom</option><option>top</option><option>right</option><option>left</option></select> },
+      { name: 'align', type: "'start' | 'center' | 'end'", description: 'Logical alignment that mirrors start and end in RTL.', control: <select aria-label="popover align value"><option>center</option><option>start</option><option>end</option></select> },
+      { name: 'sideOffset / alignOffset', type: 'number', description: 'Placement offsets. Keep defaults aligned with semantic spacing.', control: <input aria-label="popover offset value" placeholder="8" type="number" /> },
+      { name: 'modal', type: 'boolean', description: 'Optional modal interaction mode. Keep false for ordinary supplemental controls.', control: <input aria-label="popover modal value" type="checkbox" /> },
+      { name: 'PopoverHeader / Title / Description', type: 'ReactNode', description: 'Semantic content anatomy for a readable heading and supporting description.', control: <input aria-label="popover header value" placeholder="content" /> },
+      { name: 'PopoverClose', type: 'ReactNode', description: 'Explicit close affordance; Escape and outside click remain available.', control: <input aria-label="popover close value" placeholder="Close" /> },
+      ...common,
+    ]
+  }
+
+  if (['Hover Card', 'Tooltip', 'Command', 'Tabs'].includes(name)) {
     return [
       { name: 'open', type: 'boolean', description: 'Controlled open or selected state where the Radix-backed implementation supports it.', control: <input aria-label="open value" type="checkbox" /> },
       { name: 'onOpenChange', type: '(open: boolean) => void', description: 'State change callback for controlled surfaces.', control: <input aria-label="onOpenChange value" placeholder="setOpen" /> },
@@ -3108,7 +3245,20 @@ function genericPropRows(name: string) {
     ]
   }
 
-  if (['Avatar', 'Badge', 'Calendar', 'Carousel', 'Chart', 'Data Table', 'Empty', 'Item', 'Kbd', 'Progress', 'Skeleton', 'Spinner', 'Table', 'Attachment', 'Bubble', 'Marker'].includes(name)) {
+  if (name === 'Progress') {
+    return [
+      { name: 'value / max', type: 'number', description: 'Known completion value and upper bound. Value is clamped into the valid range.', control: <input aria-label="progress value" min="0" max="100" type="number" placeholder="56" /> },
+      { name: 'indeterminate', type: 'boolean', description: 'Unknown-duration state. Omits aria-valuenow and uses tokenized motion.', control: <input aria-label="progress indeterminate value" type="checkbox" /> },
+      { name: 'status', type: "'default' | 'success' | 'warning' | 'destructive'", description: 'Semantic task status mapped through theme roles, not raw colors.', control: <select aria-label="progress status value"><option>default</option><option>success</option><option>warning</option><option>destructive</option></select> },
+      { name: 'size', type: "'sm' | 'md' | 'lg'", description: 'Track density for compact, default, and prominent progress.', control: <select aria-label="progress size value"><option>sm</option><option>md</option><option>lg</option></select> },
+      { name: 'label / showValue / valueText', type: 'ReactNode / boolean / ReactNode', description: 'Convenience API for visible task name and product-localized percentage text.', control: <input aria-label="progress label value" placeholder="Upload progress" /> },
+      { name: 'ProgressLabel / ProgressValue', type: 'ReactNode', description: 'Composable header parts sharing the root value context.', control: <input aria-label="progress header value" placeholder="label and value" /> },
+      { name: 'ProgressTrack / ProgressIndicator', type: 'ReactNode', description: 'Accessible track and semantic indicator composition.', control: <input aria-label="progress track value" placeholder="track" /> },
+      ...common,
+    ]
+  }
+
+  if (['Avatar', 'Badge', 'Calendar', 'Carousel', 'Chart', 'Data Table', 'Empty', 'Item', 'Kbd', 'Skeleton', 'Spinner', 'Table', 'Attachment', 'Bubble'].includes(name)) {
     return [
       { name: 'aria-label', type: 'string', description: 'Accessible label when visible text is insufficient.', control: <input aria-label="aria-label value" placeholder={`${name} label`} /> },
       { name: 'data-state', type: 'string', description: 'Optional state attribute for token-safe styling and AI-readable examples.', control: <input aria-label="data-state value" placeholder="active" /> },
@@ -3193,7 +3343,7 @@ function ChatPreview({ locale, name }: { locale: Locale; name: string }) {
     return <div className="chat-preview chat-preview--composer">{drawerComposer}</div>
   }
   if (name === 'Chat Composer Input') {
-    return <div className="chat-preview chat-preview--composer"><ChatComposer input={<ChatComposerInput aria-label="Composer input" placeholder={isArabic ? 'اسأل عن Ceramic...' : 'Ask me anything about Ceramic...'} />} actions={<ChatSendButton icon={sendIcon} />} /></div>
+    return <div className="chat-preview chat-preview--composer"><ChatComposer input={<ChatComposerInput aria-label={isArabic ? 'حقل كتابة الرسالة' : 'Composer input'} placeholder={isArabic ? 'اسأل عن Ceramic...' : 'Ask me anything about Ceramic...'} />} actions={<ChatSendButton icon={sendIcon} label={isArabic ? 'إرسال الرسالة' : 'Send message'} />} /></div>
   }
   if (name === 'Chat Composer Token Element') {
     return (
@@ -3213,7 +3363,7 @@ function ChatPreview({ locale, name }: { locale: Locale; name: string }) {
       <div className="chat-preview chat-preview--composer">
         <p className="chat-preview-note">{copy.dictation}</p>
         <ChatComposer
-          actions={<><ChatDictationButton icon={<Mic size={18} />} /><ChatSendButton icon={sendIcon} /></>}
+          actions={<><ChatDictationButton icon={<Mic size={18} />} label={isArabic ? 'ابدأ الإملاء' : 'Start dictation'} /><ChatSendButton icon={sendIcon} label={isArabic ? 'إرسال الرسالة' : 'Send message'} /></>}
           input={<ChatComposerInput aria-label="Dictation composer" placeholder={copy.placeholder} />}
         />
       </div>
@@ -3233,7 +3383,7 @@ function ChatPreview({ locale, name }: { locale: Locale; name: string }) {
       <div className="chat-preview chat-preview--stack">
         <span>{isArabic ? 'مخفي عند أسفل المحادثة' : 'Hidden (user is at bottom)'}</span>
         <span>{isArabic ? 'ظاهر بعد التمرير للأعلى' : 'Visible (user scrolled up)'}</span>
-        <ChatLayoutScrollButton icon={<ArrowDown size={18} />} label={copy.newMessages} />
+        <ChatLayoutScrollButton accessibilityLabel={copy.newMessages} icon={<ArrowDown size={18} />} label={copy.newMessages} />
       </div>
     )
   }
@@ -3262,9 +3412,9 @@ function ChatPreview({ locale, name }: { locale: Locale; name: string }) {
   if (name === 'Chat Send Button') {
     return (
       <div className="chat-preview chat-preview--row">
-        <ChatSendButton icon={<ArrowUp size={18} />} />
+        <ChatSendButton icon={<ArrowUp size={18} />} label={isArabic ? 'إرسال الرسالة' : 'Send message'} />
         <ChatSendButton icon={<ArrowUp size={18} />} label={isArabic ? 'إرسال ثانوي' : 'Secondary send'} variant="secondary" />
-        <ChatSendButton disabled icon={<ArrowUp size={18} />} label="Send disabled" variant="secondary" />
+        <ChatSendButton disabled icon={<ArrowUp size={18} />} label={isArabic ? 'الإرسال معطل' : 'Send disabled'} variant="secondary" />
       </div>
     )
   }
@@ -3363,7 +3513,7 @@ function BreadcrumbPreview({ locale, openMenu = true, variant = 'root' }: { loca
         <BreadcrumbItem>
           <DropdownMenu defaultOpen={openMenu}>
             <DropdownMenuTrigger asChild>
-              <BreadcrumbEllipsis aria-label={labels.more} />
+              <BreadcrumbEllipsis label={labels.more} />
             </DropdownMenuTrigger>
             <DropdownMenuContent align="start">
               <DropdownMenuItem>{labels.docs}</DropdownMenuItem>
@@ -3410,7 +3560,6 @@ function renderGenericPreview(name: string, locale: Locale = 'en') {
   if (name === 'Table') return <TablePreview locale={locale} />
   if (name === 'Spinner') return <SpinnerPreview locale={locale} />
   if (name === 'Sonner') return <SonnerPreview locale={locale} />
-  if (name === 'Marker') return <MarkerPreview locale={locale} />
   if (CHAT_COMPONENTS.includes(name)) return <ChatPreview name={name} locale={locale} />
 
   if (name === 'Typography') {
@@ -3435,10 +3584,10 @@ function renderGenericPreview(name: string, locale: Locale = 'en') {
     )
   }
   if (name === 'Hover Card') {
-    return <HoverCard><HoverCardTrigger asChild><Button variant="secondary">Hover target</Button></HoverCardTrigger><HoverCardContent>Preview details</HoverCardContent></HoverCard>
+    return <HoverCardPreview locale={locale} />
   }
   if (name === 'Popover') {
-    return <Popover><PopoverTrigger asChild><Button variant="secondary">Open popover</Button></PopoverTrigger><PopoverContent>Popover content</PopoverContent></Popover>
+    return <PopoverPreview locale={locale} />
   }
   if (name === 'Tooltip') {
     return <TooltipProvider><Tooltip open><TooltipTrigger asChild><Button variant="secondary">Target</Button></TooltipTrigger><TooltipContent>Helpful label</TooltipContent></Tooltip></TooltipProvider>
@@ -3525,7 +3674,7 @@ function renderGenericPreview(name: string, locale: Locale = 'en') {
     )
   }
   if (name === 'Side Nav') {
-    return <SideNavTypeOne />
+    return <SideNavTypeOne isArabic={isArabic} />
   }
   if (name === 'Top Nav') return <TopNavExample />
   if (name === 'Top Nav Heading') return <TopNavHeading icon={<Box aria-hidden="true" />} label="My App" subtitle="Design System" />
@@ -3562,24 +3711,26 @@ function renderGenericPreview(name: string, locale: Locale = 'en') {
     )
   }
   if (name === 'Dropdown Menu') return <MenuAnatomyPreview kind="dropdown" locale={locale} />
-  if (name === 'Context Menu') return <MenuAnatomyPreview kind="context" locale={locale} />
+  if (name === 'Context Menu') return <ContextMenuInteractionPreview locale={locale} />
   if (name === 'Command') return <CommandPreview locale={locale} />
-  if (name === 'Field') return <Field><FieldLabel>{isArabic ? 'التسمية' : 'Label'}</FieldLabel><TextInput placeholder={isArabic ? 'القيمة' : 'Value'} /></Field>
+  if (name === 'Field') return <FieldPreview locale={locale} />
   if (name === 'Input') return <Field><FieldLabel>{isArabic ? 'بحث' : 'Search'}</FieldLabel><TextInput placeholder={isArabic ? 'ابحث في المكونات' : 'Search components'} /></Field>
-  if (name === 'Textarea') return <Field><FieldLabel>{isArabic ? 'ملاحظة المشروع' : 'Project note'}</FieldLabel><TextArea placeholder={isArabic ? 'اكتب ملاحظة' : 'Write a note'} /></Field>
+  if (name === 'Textarea') return <TextareaPreview locale={locale} />
   if (name === 'Checkbox') {
     return (
       <VStack className="checkbox-detail-preview" gap={3}>
-        <label className="form-preview-row"><Checkbox defaultChecked /> {isArabic ? 'تذكرني' : 'Remember me'}</label>
-        <label className="form-preview-row"><Checkbox /> {isArabic ? 'إرسال الملخص الأسبوعي' : 'Send weekly summary'}</label>
+        <label className="form-preview-row"><Checkbox defaultChecked /> {isArabic ? 'أساسي للجدول والنماذج' : 'Normal for tables and forms'}</label>
+        <label className="form-preview-row"><Checkbox /> {isArabic ? 'خيار أساسي غير محدد' : 'Unchecked normal option'}</label>
+        <label className="form-preview-row"><Checkbox defaultChecked variant="fancy" /> {isArabic ? 'نمط بارز للحالات التعبيرية' : 'Fancy for expressive checklists'}</label>
         <label className="form-preview-row is-disabled"><Checkbox disabled /> {isArabic ? 'خيار غير متاح' : 'Unavailable option'}</label>
       </VStack>
     )
   }
   if (name === 'Radio Group') return <RadioGroupPreview locale={locale} />
   if (name === 'Select') return <SelectPreview locale={locale} />
-  if (name === 'Slider') return <SliderPreview />
+  if (name === 'Slider') return <SliderPreview locale={locale} />
   if (name === 'Switch') return <SwitchPreview locale={locale} />
+  if (name === 'Sidebar') return <SidebarPreview locale={locale} />
   if (name === 'Account Status') return <AccountStatus avatarAlt={isArabic ? 'مستخدم تجريبي' : 'Y K'} avatarFallback={isArabic ? 'م' : 'YK'} description={isArabic ? 'محترف' : 'Pro'} label={isArabic ? 'مستخدم تجريبي' : 'ykkkk12314'} />
   if (name === 'Avatar') return <AvatarPreview locale={locale} />
   if (name === 'Calendar') return <CalendarPreview locale={locale} />
@@ -3588,17 +3739,19 @@ function renderGenericPreview(name: string, locale: Locale = 'en') {
       <div className="date-picker-detail-preview" dir={isArabic ? 'rtl' : 'ltr'} lang={isArabic ? 'ar' : 'en'}>
         <DatePicker
           defaultSelectedDate={new Date(2026, 6, 6)}
+          label={isArabic ? 'اختر التاريخ' : 'Select date'}
           locale={isArabic ? 'ar' : 'en-US'}
+          placeholder={isArabic ? 'اختر تاريخا' : 'Pick a date'}
           weekStartsOn={isArabic ? 6 : 0}
           yearRange={8}
         />
       </div>
     )
   }
-  if (name === 'Empty') return <EmptyState>{isArabic ? 'لا توجد عناصر بعد.' : 'No items yet.'}</EmptyState>
-  if (name === 'Progress') return <Field><FieldLabel>{isArabic ? 'تقدم الرفع ٦٢٪' : 'Upload progress 62%'}</FieldLabel><ProgressBar value={62} /></Field>
+  if (name === 'Empty') return <EmptyPreview locale={locale} />
+  if (name === 'Progress') return <ProgressPreview locale={locale} />
   if (name === 'Skeleton') return <Field><FieldLabel>{isArabic ? 'تحميل الملف الشخصي' : 'Loading profile'}</FieldLabel><Skeleton /></Field>
-  if (name === 'Toast') return <Toast><ToastTitle>{isArabic ? 'تم الحفظ' : 'Saved'}</ToastTitle><ToastDescription>{isArabic ? 'التغييرات جاهزة للمراجعة.' : 'Changes are ready for review.'}</ToastDescription></Toast>
+  if (name === 'Toast') return <ToastPreview locale={locale} />
   if (name === 'Badge') return <Badge>{isArabic ? 'افتراضي' : 'Default'}</Badge>
   if (isShadcnMappedPrimitive(name)) {
     return renderShadcnMappedPreview(name, locale)
@@ -3617,14 +3770,310 @@ function isShadcnMappedPrimitive(name: string) {
   return components.components.some((component) => component.name === name && component.sourcePath.includes('ShadcnPrimitives'))
 }
 
-function SliderPreview() {
+function HoverCardPreview({ locale }: { locale: Locale }) {
+  const isArabic = locale === 'ar'
+  const sides = [
+    { side: 'left' as const, label: isArabic ? 'يسار' : 'Left' },
+    { side: 'top' as const, label: isArabic ? 'أعلى' : 'Top' },
+    { side: 'bottom' as const, label: isArabic ? 'أسفل' : 'Bottom' },
+    { side: 'right' as const, label: isArabic ? 'يمين' : 'Right' },
+  ]
+
+  return (
+    <div className="hover-card-detail-preview" dir={isArabic ? 'rtl' : 'ltr'} lang={isArabic ? 'ar' : 'en'}>
+      <section className="hover-card-preview-section">
+        <div>
+          <p className="hover-card-preview-eyebrow">{isArabic ? 'أساسي' : 'Basic'}</p>
+          <p className="hover-card-preview-copy">
+            {isArabic ? 'مرّر المؤشر لمعاينة معلومات إضافية غير أساسية.' : 'Hover to preview supplemental, nonessential information.'}
+          </p>
+        </div>
+        <HoverCard delay={120} closeDelay={220}>
+          <HoverCardTrigger asChild>
+            <Button variant="secondary">{isArabic ? 'استوديو الخزف' : 'Ceramic studio'}</Button>
+          </HoverCardTrigger>
+          <HoverCardContent align="start" className="hover-card-profile-content">
+            <div className="hover-card-profile-row">
+              <Avatar alt={isArabic ? 'استوديو الخزف' : 'Ceramic studio'} size="sm">CS</Avatar>
+              <div>
+                <strong>{isArabic ? 'استوديو الخزف' : 'Ceramic studio'}</strong>
+                <span>{isArabic ? 'مساحة عمل التصميم' : 'Design workspace'}</span>
+              </div>
+            </div>
+            <p>{isArabic ? 'نظام واجهات مبني على توكنات دلالية ودعم RTL.' : 'Interface system built on semantic tokens with RTL support.'}</p>
+          </HoverCardContent>
+        </HoverCard>
+      </section>
+
+      <FieldSeparator>{isArabic ? 'الاتجاهات' : 'Sides'}</FieldSeparator>
+
+      <section className="hover-card-preview-section hover-card-sides-section">
+        <div className="hover-card-trigger-grid">
+          {sides.map(({ label, side }) => (
+            <HoverCard key={side} delay={80} closeDelay={180}>
+              <HoverCardTrigger asChild>
+                <Button variant="outline">{label}</Button>
+              </HoverCardTrigger>
+              <HoverCardContent align="center" side={side}>
+                <strong>{isArabic ? 'موضع البطاقة' : 'Card placement'}</strong>
+                <p>{isArabic ? `تظهر البطاقة في جهة ${label} من المشغّل.` : `This card opens on the ${label.toLowerCase()} side of its trigger.`}</p>
+              </HoverCardContent>
+            </HoverCard>
+          ))}
+        </div>
+      </section>
+
+      <FieldSeparator>{isArabic ? 'المحاذاة المنطقية' : 'Logical alignment'}</FieldSeparator>
+
+      <section className="hover-card-preview-section hover-card-align-section">
+        {(['start', 'center', 'end'] as const).map((align) => (
+          <HoverCard key={align} delay={80} closeDelay={180}>
+            <HoverCardTrigger asChild>
+              <Button variant="ghost">
+                {isArabic
+                  ? align === 'start' ? 'بداية السطر' : align === 'end' ? 'نهاية السطر' : 'الوسط'
+                  : align === 'start' ? 'Inline start' : align === 'end' ? 'Inline end' : 'Center'}
+              </Button>
+            </HoverCardTrigger>
+            <HoverCardContent align={align} side="bottom">
+              <strong>{isArabic ? 'محاذاة منطقية' : 'Logical alignment'}</strong>
+              <p>{isArabic ? 'تنعكس البداية والنهاية تلقائيا داخل RTL.' : 'Start and end mirror automatically inside RTL.'}</p>
+            </HoverCardContent>
+          </HoverCard>
+        ))}
+      </section>
+    </div>
+  )
+}
+
+function LabelPreview({ locale }: { locale: Locale }) {
+  const isArabic = locale === 'ar'
+  const suffix = isArabic ? 'ar' : 'en'
+
+  return (
+    <div className="label-detail-preview" dir={isArabic ? 'rtl' : 'ltr'} lang={isArabic ? 'ar' : 'en'}>
+      <section className="label-preview-section">
+        <div>
+          <p className="label-preview-title">{isArabic ? 'مع عنصر اختيار' : 'With a selection control'}</p>
+          <p className="label-preview-description">
+            {isArabic ? 'النقر على النص يغيّر حالة عنصر الاختيار المرتبط.' : 'Clicking the text toggles its associated control.'}
+          </p>
+        </div>
+        <div className="label-preview-stack">
+          <div className="label-control-row">
+            <Checkbox id={`label-terms-${suffix}`} />
+            <ShadcnPrimitives.Label htmlFor={`label-terms-${suffix}`}>
+              {isArabic ? 'قبول الشروط والأحكام' : 'Accept terms and conditions'}
+            </ShadcnPrimitives.Label>
+          </div>
+          <div className="label-control-row">
+            <Checkbox id={`label-updates-${suffix}`} defaultChecked />
+            <ShadcnPrimitives.Label htmlFor={`label-updates-${suffix}`}>
+              {isArabic ? 'إرسال تحديثات المشروع' : 'Send project updates'}
+            </ShadcnPrimitives.Label>
+          </div>
+          <div className="label-control-row">
+            <Checkbox id={`label-disabled-${suffix}`} disabled />
+            <ShadcnPrimitives.Label data-disabled htmlFor={`label-disabled-${suffix}`}>
+              {isArabic ? 'خيار غير متاح' : 'Unavailable option'}
+            </ShadcnPrimitives.Label>
+          </div>
+        </div>
+      </section>
+
+      <FieldSeparator>{isArabic ? 'داخل حقل' : 'Inside a field'}</FieldSeparator>
+
+      <section className="label-preview-section">
+        <Field className="label-field-example">
+          <FieldLabel htmlFor={`label-email-${suffix}`}>{isArabic ? 'البريد الإلكتروني' : 'Email address'}</FieldLabel>
+          <TextInput id={`label-email-${suffix}`} inputMode="email" placeholder={isArabic ? 'name@example.com' : 'name@example.com'} />
+          <FieldDescription>
+            {isArabic ? 'استخدم Field عندما يحتاج العنصر إلى وصف أو رسالة خطأ.' : 'Use Field when the control also needs description or error handling.'}
+          </FieldDescription>
+        </Field>
+      </section>
+
+      <FieldSeparator>{isArabic ? 'حالة غير صالحة' : 'Invalid state'}</FieldSeparator>
+
+      <section className="label-preview-section">
+        <div className="label-control-row">
+          <Checkbox id={`label-invalid-${suffix}`} aria-invalid="true" />
+          <ShadcnPrimitives.Label data-invalid htmlFor={`label-invalid-${suffix}`}>
+            {isArabic ? 'يلزم تأكيد الموافقة' : 'Confirmation is required'}
+          </ShadcnPrimitives.Label>
+        </div>
+      </section>
+    </div>
+  )
+}
+
+function NativeSelectPreview({ locale }: { locale: Locale }) {
+  const isArabic = locale === 'ar'
+  const [status, setStatus] = useState('todo')
+  const copy = {
+    title: isArabic ? 'حالات الاختيار الأصلي' : 'Native select states',
+    intro: isArabic ? 'سلوك المتصفح الأصلي مع حالات دلالية وتخطيط RTL.' : 'Native browser behavior with semantic states and RTL-aware layout.',
+    status: isArabic ? 'الحالة' : 'Status',
+    selectStatus: isArabic ? 'اختر الحالة' : 'Select status',
+    todo: isArabic ? 'مهام' : 'Todo',
+    progress: isArabic ? 'قيد التنفيذ' : 'In progress',
+    done: isArabic ? 'منجز' : 'Done',
+    cancelled: isArabic ? 'ملغي' : 'Cancelled',
+    department: isArabic ? 'القسم' : 'Department',
+    selectDepartment: isArabic ? 'اختر القسم' : 'Select department',
+    product: isArabic ? 'المنتج' : 'Product',
+    design: isArabic ? 'التصميم' : 'Design',
+    engineering: isArabic ? 'الهندسة' : 'Engineering',
+    frontend: isArabic ? 'الواجهة الأمامية' : 'Frontend',
+    backend: isArabic ? 'الخلفية' : 'Backend',
+    disabled: isArabic ? 'حالة معطلة' : 'Disabled state',
+    unavailable: isArabic ? 'غير متاح' : 'Unavailable',
+    error: isArabic ? 'حالة غير صالحة' : 'Invalid state',
+    errorMessage: isArabic ? 'اختر منطقة صالحة للمتابعة.' : 'Choose a valid region to continue.',
+    selectRegion: isArabic ? 'اختر المنطقة' : 'Select region',
+    compact: isArabic ? 'حجم صغير' : 'Small size',
+  }
+
+  return (
+    <div className="native-select-detail-preview" dir={isArabic ? 'rtl' : 'ltr'} lang={isArabic ? 'ar' : 'en'}>
+      <header>
+        <strong>{copy.title}</strong>
+        <p>{copy.intro}</p>
+      </header>
+      <div className="native-select-preview-grid">
+        <Field>
+          <FieldLabel htmlFor="native-status">{copy.status}</FieldLabel>
+          <ShadcnPrimitives.NativeSelect id="native-status" onChange={(event) => setStatus(event.target.value)} value={status}>
+            <ShadcnPrimitives.NativeSelectOption value="">{copy.selectStatus}</ShadcnPrimitives.NativeSelectOption>
+            <ShadcnPrimitives.NativeSelectOption value="todo">{copy.todo}</ShadcnPrimitives.NativeSelectOption>
+            <ShadcnPrimitives.NativeSelectOption value="progress">{copy.progress}</ShadcnPrimitives.NativeSelectOption>
+            <ShadcnPrimitives.NativeSelectOption value="done">{copy.done}</ShadcnPrimitives.NativeSelectOption>
+            <ShadcnPrimitives.NativeSelectOption value="cancelled">{copy.cancelled}</ShadcnPrimitives.NativeSelectOption>
+          </ShadcnPrimitives.NativeSelect>
+        </Field>
+        <Field>
+          <FieldLabel htmlFor="native-department">{copy.department}</FieldLabel>
+          <ShadcnPrimitives.NativeSelect defaultValue="" id="native-department">
+            <ShadcnPrimitives.NativeSelectOption value="">{copy.selectDepartment}</ShadcnPrimitives.NativeSelectOption>
+            <ShadcnPrimitives.NativeSelectOptGroup label={copy.product}>
+              <ShadcnPrimitives.NativeSelectOption value="design">{copy.design}</ShadcnPrimitives.NativeSelectOption>
+            </ShadcnPrimitives.NativeSelectOptGroup>
+            <ShadcnPrimitives.NativeSelectOptGroup label={copy.engineering}>
+              <ShadcnPrimitives.NativeSelectOption value="frontend">{copy.frontend}</ShadcnPrimitives.NativeSelectOption>
+              <ShadcnPrimitives.NativeSelectOption value="backend">{copy.backend}</ShadcnPrimitives.NativeSelectOption>
+            </ShadcnPrimitives.NativeSelectOptGroup>
+          </ShadcnPrimitives.NativeSelect>
+        </Field>
+        <Field>
+          <FieldLabel htmlFor="native-disabled">{copy.disabled}</FieldLabel>
+          <ShadcnPrimitives.NativeSelect disabled id="native-disabled">
+            <ShadcnPrimitives.NativeSelectOption>{copy.unavailable}</ShadcnPrimitives.NativeSelectOption>
+          </ShadcnPrimitives.NativeSelect>
+        </Field>
+        <Field data-invalid>
+          <FieldLabel htmlFor="native-invalid">{copy.error}</FieldLabel>
+          <ShadcnPrimitives.NativeSelect aria-invalid="true" defaultValue="" id="native-invalid">
+            <ShadcnPrimitives.NativeSelectOption value="">{copy.selectRegion}</ShadcnPrimitives.NativeSelectOption>
+          </ShadcnPrimitives.NativeSelect>
+          <FieldError>{copy.errorMessage}</FieldError>
+        </Field>
+        <Field>
+          <FieldLabel htmlFor="native-small">{copy.compact}</FieldLabel>
+          <ShadcnPrimitives.NativeSelect defaultValue="done" id="native-small" size="sm">
+            <ShadcnPrimitives.NativeSelectOption value="done">{copy.done}</ShadcnPrimitives.NativeSelectOption>
+            <ShadcnPrimitives.NativeSelectOption value="progress">{copy.progress}</ShadcnPrimitives.NativeSelectOption>
+          </ShadcnPrimitives.NativeSelect>
+        </Field>
+      </div>
+    </div>
+  )
+}
+
+function FieldPreview({ locale }: { locale: Locale }) {
+  const isArabic = locale === 'ar'
+  const suffix = isArabic ? 'ar' : 'en'
+
+  return (
+    <div className="field-detail-preview" dir={isArabic ? 'rtl' : 'ltr'} lang={isArabic ? 'ar' : 'en'}>
+      <FieldSet>
+        <FieldLegend>{isArabic ? 'بيانات المشروع' : 'Project details'}</FieldLegend>
+        <FieldDescription>
+          {isArabic ? 'اجمع الحقول ذات الصلة مع تسميات واضحة ورسائل حالة مرتبطة.' : 'Group related controls with explicit labels and connected status messages.'}
+        </FieldDescription>
+        <FieldGroup>
+          <Field>
+            <FieldLabel htmlFor={`field-name-${suffix}`}>{isArabic ? 'اسم المشروع' : 'Project name'}</FieldLabel>
+            <TextInput id={`field-name-${suffix}`} defaultValue={isArabic ? 'منصة المتحف' : 'Museum platform'} />
+            <FieldDescription>{isArabic ? 'يظهر هذا الاسم لأعضاء مساحة العمل.' : 'This name is visible to workspace members.'}</FieldDescription>
+          </Field>
+
+          <Field data-invalid>
+            <FieldLabel htmlFor={`field-url-${suffix}`}>{isArabic ? 'رابط المشروع' : 'Project URL'}</FieldLabel>
+            <TextInput id={`field-url-${suffix}`} aria-invalid="true" defaultValue="utopia studio" />
+            <FieldError>{isArabic ? 'استخدم أحرفا صغيرة وشرطات فقط.' : 'Use lowercase letters and hyphens only.'}</FieldError>
+          </Field>
+
+          <div className="field-preview-grid">
+            <Field>
+              <FieldLabel htmlFor={`field-region-${suffix}`}>{isArabic ? 'المنطقة' : 'Region'}</FieldLabel>
+              <Select defaultValue="doha">
+                <SelectTrigger id={`field-region-${suffix}`} aria-label={isArabic ? 'المنطقة' : 'Region'}>
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="doha">{isArabic ? 'الدوحة' : 'Doha'}</SelectItem>
+                  <SelectItem value="riyadh">{isArabic ? 'الرياض' : 'Riyadh'}</SelectItem>
+                  <SelectItem value="dubai">{isArabic ? 'دبي' : 'Dubai'}</SelectItem>
+                </SelectContent>
+              </Select>
+            </Field>
+            <Field>
+              <FieldLabel htmlFor={`field-owner-${suffix}`}>{isArabic ? 'المالك' : 'Owner'}</FieldLabel>
+              <TextInput id={`field-owner-${suffix}`} defaultValue={isArabic ? 'فريق المنتج' : 'Product team'} />
+            </Field>
+          </div>
+
+          <FieldSeparator>{isArabic ? 'خيارات' : 'Options'}</FieldSeparator>
+
+          <Field className="field-preview-choice" orientation="horizontal">
+            <Checkbox id={`field-private-${suffix}`} defaultChecked />
+            <FieldContent>
+              <FieldLabel htmlFor={`field-private-${suffix}`}>{isArabic ? 'مشروع خاص' : 'Private project'}</FieldLabel>
+              <FieldDescription>{isArabic ? 'يمكن للأعضاء المدعوين فقط الوصول إليه.' : 'Only invited members can access it.'}</FieldDescription>
+            </FieldContent>
+          </Field>
+
+          <Field className="field-preview-choice" orientation="horizontal">
+            <Switch id={`field-updates-${suffix}`} defaultChecked />
+            <FieldContent>
+              <FieldTitle>{isArabic ? 'تحديثات أسبوعية' : 'Weekly updates'}</FieldTitle>
+              <FieldDescription>{isArabic ? 'أرسل ملخصا إلى أعضاء المشروع.' : 'Send a summary to project members.'}</FieldDescription>
+            </FieldContent>
+          </Field>
+
+          <Field orientation="responsive">
+            <FieldContent>
+              <FieldLabel htmlFor={`field-note-${suffix}`}>{isArabic ? 'ملاحظة داخلية' : 'Internal note'}</FieldLabel>
+              <FieldDescription>{isArabic ? 'لا تظهر هذه الملاحظة للعملاء.' : 'This note is not shown to clients.'}</FieldDescription>
+            </FieldContent>
+            <TextArea id={`field-note-${suffix}`} placeholder={isArabic ? 'أضف سياق المشروع' : 'Add project context'} />
+          </Field>
+        </FieldGroup>
+      </FieldSet>
+    </div>
+  )
+}
+
+function SliderPreview({ locale = 'en' }: { locale?: Locale } = {}) {
+  const isArabic = locale === 'ar'
   const [value, setValue] = useState([40])
+  const [range, setRange] = useState([25, 75])
   const currentValue = value[0] ?? 0
 
   return (
     <div className="form-control-preview">
-      <Field className="form-preview-field">
-        <FieldLabel>Volume {currentValue}%</FieldLabel>
+      <Field className="form-preview-field" dir={isArabic ? 'rtl' : 'ltr'}>
+        <FieldLabel>{isArabic ? `مستوى الصوت ${currentValue}٪` : `Volume ${currentValue}%`}</FieldLabel>
         <Slider
           aria-label="Volume"
           max={100}
@@ -3632,6 +4081,14 @@ function SliderPreview() {
           step={1}
           value={value}
         />
+      </Field>
+      <Field className="form-preview-field" dir={isArabic ? 'rtl' : 'ltr'}>
+        <FieldLabel>{isArabic ? `النطاق ${range[0]}–${range[1]}` : `Range ${range[0]}–${range[1]}`}</FieldLabel>
+        <Slider aria-label={isArabic ? 'نطاق السعر' : 'Price range'} max={100} min={0} onValueChange={setRange} value={range} />
+      </Field>
+      <Field className="form-preview-field">
+        <FieldLabel>{isArabic ? 'حجم صغير' : 'Small size'}</FieldLabel>
+        <Slider aria-label={isArabic ? 'مستوى صغير' : 'Small level'} defaultValue={[55]} size="sm" />
       </Field>
       <Field className="form-preview-field is-muted">
         <FieldLabel>Disabled 70%</FieldLabel>
@@ -3643,30 +4100,145 @@ function SliderPreview() {
 
 function RadioGroupPreview({ locale = 'en' }: { locale?: Locale } = {}) {
   const isArabic = locale === 'ar'
-  const [value, setValue] = useState('docs')
+  const [value, setValue] = useState('team')
 
   return (
-    <RadioGroup
-      aria-label={isArabic ? 'طريقة العرض' : 'View'}
-      className="form-control-preview"
-      dir={isArabic ? 'rtl' : 'ltr'}
-      lang={isArabic ? 'ar' : 'en'}
-      onValueChange={setValue}
-      value={value}
-    >
-      <div className="form-preview-row">
-        <RadioGroupItem id="radio-preview-docs" value="docs" />
-        <label htmlFor="radio-preview-docs">{isArabic ? 'المستندات' : 'Docs'}</label>
-      </div>
-      <div className="form-preview-row">
-        <RadioGroupItem id="radio-preview-components" value="components" />
-        <label htmlFor="radio-preview-components">{isArabic ? 'المكونات' : 'Components'}</label>
-      </div>
-      <div className="form-preview-row is-disabled">
-        <RadioGroupItem disabled id="radio-preview-disabled" value="disabled" />
-        <label htmlFor="radio-preview-disabled">{isArabic ? 'غير متاح' : 'Disabled option'}</label>
-      </div>
-    </RadioGroup>
+    <div className="radio-group-detail-preview" dir={isArabic ? 'rtl' : 'ltr'} lang={isArabic ? 'ar' : 'en'}>
+      <section className="radio-group-preview-section">
+        <h3>{isArabic ? 'خيارات أساسية' : 'Basic options'}</h3>
+        <RadioGroup aria-label={isArabic ? 'نطاق المشروع' : 'Project scope'} onValueChange={setValue} value={value}>
+          <RadioGroupOption label={isArabic ? 'فردي' : 'Individual'} value="individual" />
+          <RadioGroupOption label={isArabic ? 'فريق' : 'Team'} value="team" />
+          <RadioGroupOption disabled label={isArabic ? 'المؤسسة - غير متاح' : 'Enterprise - unavailable'} value="enterprise" />
+        </RadioGroup>
+      </section>
+
+      <section className="radio-group-preview-section">
+        <h3>{isArabic ? 'بطاقات مع وصف' : 'Cards with descriptions'}</h3>
+        <RadioGroup aria-label={isArabic ? 'خطة مساحة العمل' : 'Workspace plan'} defaultValue="standard">
+          <RadioGroupOption
+            description={isArabic ? 'للمشاريع الصغيرة والتعاون اليومي.' : 'For small projects and everyday collaboration.'}
+            label={isArabic ? 'قياسي' : 'Standard'}
+            value="standard"
+            variant="card"
+          />
+          <RadioGroupOption
+            description={isArabic ? 'صلاحيات متقدمة ومساحات عمل متعددة.' : 'Advanced permissions and multiple workspaces.'}
+            label={isArabic ? 'احترافي' : 'Professional'}
+            value="professional"
+            variant="card"
+          />
+        </RadioGroup>
+      </section>
+
+      <section className="radio-group-preview-section">
+        <h3>{isArabic ? 'حالة غير صالحة' : 'Invalid state'}</h3>
+        <RadioGroup aria-invalid="true" aria-label={isArabic ? 'منطقة البيانات' : 'Data region'}>
+          <RadioGroupOption label={isArabic ? 'الدوحة' : 'Doha'} value="doha" />
+          <RadioGroupOption label={isArabic ? 'دبي' : 'Dubai'} value="dubai" />
+        </RadioGroup>
+        <p className="radio-group-preview-error" role="alert">{isArabic ? 'اختر منطقة للمتابعة.' : 'Select a region to continue.'}</p>
+      </section>
+    </div>
+  )
+}
+
+function ResizablePreview({ locale = 'en' }: { locale?: Locale } = {}) {
+  const isArabic = locale === 'ar'
+
+  return (
+    <div className="resizable-detail-preview" dir={isArabic ? 'rtl' : 'ltr'} lang={isArabic ? 'ar' : 'en'}>
+      <section className="resizable-preview-example">
+        <h3>{isArabic ? 'تقسيم أفقي' : 'Horizontal split'}</h3>
+        <ShadcnPrimitives.Resizable orientation="horizontal">
+          <ShadcnPrimitives.ResizablePanel defaultSize="36%">
+            <strong>{isArabic ? 'التنقل' : 'Navigation'}</strong>
+            <span>{isArabic ? 'لوحة البداية' : 'Start panel'}</span>
+          </ShadcnPrimitives.ResizablePanel>
+          <ShadcnPrimitives.ResizableHandle aria-label={isArabic ? 'تغيير عرض اللوحات' : 'Resize horizontal panels'} withHandle />
+          <ShadcnPrimitives.ResizablePanel defaultSize="64%">
+            <strong>{isArabic ? 'المحتوى' : 'Content'}</strong>
+            <span>{isArabic ? 'مساحة العمل المرنة' : 'Flexible workspace'}</span>
+          </ShadcnPrimitives.ResizablePanel>
+        </ShadcnPrimitives.Resizable>
+      </section>
+
+      <section className="resizable-preview-example">
+        <h3>{isArabic ? 'تقسيم عمودي' : 'Vertical split'}</h3>
+        <ShadcnPrimitives.Resizable orientation="vertical">
+          <ShadcnPrimitives.ResizablePanel defaultSize="42%">
+            <strong>{isArabic ? 'الرأس' : 'Header'}</strong>
+          </ShadcnPrimitives.ResizablePanel>
+          <ShadcnPrimitives.ResizableHandle aria-label={isArabic ? 'تغيير ارتفاع اللوحات' : 'Resize vertical panels'} withHandle />
+          <ShadcnPrimitives.ResizablePanel defaultSize="58%">
+            <strong>{isArabic ? 'التفاصيل' : 'Details'}</strong>
+          </ShadcnPrimitives.ResizablePanel>
+        </ShadcnPrimitives.Resizable>
+      </section>
+
+      <section className="resizable-preview-example is-compact">
+        <h3>{isArabic ? 'مقبض بسيط' : 'Minimal handle'}</h3>
+        <ShadcnPrimitives.Resizable orientation="horizontal">
+          <ShadcnPrimitives.ResizablePanel defaultSize="50%">{isArabic ? 'واحد' : 'One'}</ShadcnPrimitives.ResizablePanel>
+          <ShadcnPrimitives.ResizableHandle aria-label={isArabic ? 'تغيير حجم اللوحتين' : 'Resize two panels'} />
+          <ShadcnPrimitives.ResizablePanel defaultSize="50%">{isArabic ? 'اثنان' : 'Two'}</ShadcnPrimitives.ResizablePanel>
+        </ShadcnPrimitives.Resizable>
+      </section>
+    </div>
+  )
+}
+
+function ScrollAreaPreview({ locale = 'en' }: { locale?: Locale } = {}) {
+  const isArabic = locale === 'ar'
+  const tags = isArabic
+    ? ['التأسيس', 'الألوان', 'الطباعة', 'المسافات', 'الحركة', 'المكونات', 'القوالب', 'الثيمات', 'إرشادات الذكاء الاصطناعي']
+    : ['Foundations', 'Color', 'Typography', 'Spacing', 'Motion', 'Components', 'Templates', 'Themes', 'AI guidance']
+  const gallery = [
+    { src: '/examples/doha-shadow.png', label: isArabic ? 'ظلال الدوحة' : 'Doha shadows' },
+    { src: '/examples/doha-museum-courtyard.png', label: isArabic ? 'فناء المتحف' : 'Museum courtyard' },
+    { src: '/examples/doha-majlis-workspace.png', label: isArabic ? 'مساحة عمل المجلس' : 'Majlis workspace' },
+  ]
+
+  return (
+    <div className="scroll-area-detail-preview" dir={isArabic ? 'rtl' : 'ltr'} lang={isArabic ? 'ar' : 'en'}>
+      <section className="scroll-area-preview-example is-vertical">
+        <h3>{isArabic ? 'قائمة عمودية' : 'Vertical list'}</h3>
+        <ShadcnPrimitives.ScrollArea aria-label={isArabic ? 'موضوعات نظام التصميم' : 'Design system topics'}>
+          <ShadcnPrimitives.ScrollAreaViewport>
+            <div className="scroll-area-list">
+              {tags.map((tag, index) => <div className="scroll-area-list-item" key={tag}><span>{String(index + 1).padStart(2, '0')}</span>{tag}</div>)}
+            </div>
+          </ShadcnPrimitives.ScrollAreaViewport>
+          <ShadcnPrimitives.ScrollBar orientation="vertical" />
+        </ShadcnPrimitives.ScrollArea>
+      </section>
+
+      <section className="scroll-area-preview-example is-horizontal">
+        <h3>{isArabic ? 'معرض أفقي' : 'Horizontal gallery'}</h3>
+        <ShadcnPrimitives.ScrollArea aria-label={isArabic ? 'معرض صور الدوحة' : 'Doha image gallery'}>
+          <ShadcnPrimitives.ScrollAreaViewport>
+            <div className="scroll-area-gallery">
+              {gallery.map((item) => <figure key={item.src}><img alt={item.label} src={item.src} /><figcaption>{item.label}</figcaption></figure>)}
+            </div>
+          </ShadcnPrimitives.ScrollAreaViewport>
+          <ShadcnPrimitives.ScrollBar orientation="horizontal" />
+        </ShadcnPrimitives.ScrollArea>
+      </section>
+
+      <section className="scroll-area-preview-example is-both">
+        <h3>{isArabic ? 'المحوران' : 'Both axes'}</h3>
+        <ShadcnPrimitives.ScrollArea aria-label={isArabic ? 'لوحة بيانات قابلة للتمرير' : 'Scrollable data canvas'}>
+          <ShadcnPrimitives.ScrollAreaViewport>
+            <div className="scroll-area-canvas" role="table" aria-label={isArabic ? 'مصفوفة التوكنات' : 'Token matrix'}>
+              {Array.from({ length: 36 }, (_, index) => <span key={index} role="cell">{isArabic ? `توكن ${index + 1}` : `Token ${index + 1}`}</span>)}
+            </div>
+          </ShadcnPrimitives.ScrollAreaViewport>
+          <ShadcnPrimitives.ScrollBar orientation="vertical" />
+          <ShadcnPrimitives.ScrollBar orientation="horizontal" />
+          <ShadcnPrimitives.ScrollAreaCorner />
+        </ShadcnPrimitives.ScrollArea>
+      </section>
+    </div>
   )
 }
 
@@ -3694,9 +4266,11 @@ function SwitchPreview({ locale }: { locale: Locale }) {
 
   return (
     <div className="form-control-preview" dir={isArabic ? 'rtl' : 'ltr'} lang={isArabic ? 'ar' : 'en'}>
-      <label className="form-preview-row"><Switch defaultChecked /> {isArabic ? 'تفعيل الإشعارات' : 'Enable notifications'}</label>
-      <label className="form-preview-row"><Switch /> {isArabic ? 'وضع هادئ' : 'Quiet mode'}</label>
+      <Field orientation="horizontal"><Switch defaultChecked id="switch-notifications" /><FieldContent><FieldLabel htmlFor="switch-notifications">{isArabic ? 'تفعيل الإشعارات' : 'Enable notifications'}</FieldLabel><FieldDescription>{isArabic ? 'أرسل تحديثات مهمة فورا.' : 'Send important updates immediately.'}</FieldDescription></FieldContent></Field>
+      <Field className="switch-choice-card" orientation="horizontal"><Switch id="switch-quiet" /><FieldContent><FieldTitle>{isArabic ? 'وضع هادئ' : 'Quiet mode'}</FieldTitle><FieldDescription>{isArabic ? 'اكتم التنبيهات غير العاجلة.' : 'Mute non-urgent notifications.'}</FieldDescription></FieldContent></Field>
+      <label className="form-preview-row"><Switch defaultChecked size="sm" /> {isArabic ? 'حجم صغير' : 'Small size'}</label>
       <label className="form-preview-row is-disabled"><Switch disabled /> {isArabic ? 'غير متاح' : 'Disabled'}</label>
+      <FieldError>{isArabic ? 'مثال حالة غير صالحة' : 'Invalid state example'}</FieldError>
     </div>
   )
 }
@@ -3771,6 +4345,50 @@ function AttachmentDemoPreview({ locale }: { locale: Locale }) {
   )
 }
 
+function CarouselBehaviorPreview({ locale }: { locale: Locale }) {
+  const isArabic = locale === 'ar'
+  const items = isArabic
+    ? [
+        { eyebrow: 'وحدة 01', title: 'خريطة الإشارات', body: 'محتوى قابل للاستبدال داخل عنصر CarouselItem.', image: '/examples/doha-shadow.png' },
+        { eyebrow: 'وحدة 02', title: 'مسار التحقق', body: 'التمرير بالفأرة أو لوحة اللمس يتحول إلى حركة أفقية.', image: '/examples/doha-majlis-workspace.png' },
+        { eyebrow: 'وحدة 03', title: 'واجهة ثنائية اللغة', body: 'الاتجاه والنسخ يتبعان dir و lang بدون قواعد left/right.', image: '/examples/doha-museum-courtyard.png' },
+        { eyebrow: 'وحدة 04', title: 'عقد الذكاء الاصطناعي', body: 'يقرأ الوكيل البنية ثم يستبدل البيانات بالمحتوى المناسب.', image: '/examples/avatar-doha-shadow.png' },
+      ]
+    : [
+        { eyebrow: 'Module 01', title: 'Signal map', body: 'Replace this slide content with product, template, media, or case-study data.', image: '/examples/doha-shadow.png' },
+        { eyebrow: 'Module 02', title: 'Verification path', body: 'Mouse wheel and trackpad input move through the inline axis.', image: '/examples/doha-majlis-workspace.png' },
+        { eyebrow: 'Module 03', title: 'Bilingual surface', body: 'Direction and spacing follow dir and lang without left/right assumptions.', image: '/examples/doha-museum-courtyard.png' },
+        { eyebrow: 'Module 04', title: 'AI contract', body: 'Agents can preserve the behavior and swap the item data safely.', image: '/examples/avatar-doha-shadow.png' },
+      ]
+
+  return (
+    <section className="carousel-behavior-preview" dir={isArabic ? 'rtl' : 'ltr'} lang={isArabic ? 'ar' : 'en'}>
+      <div className="carousel-behavior-intro">
+        <span>{isArabic ? '/سلوك التمرير' : '/SCROLL BEHAVIOR'}</span>
+        <p>
+          {isArabic
+            ? 'Carousel هو بنية حركة وترتيب، وليس قالب بطاقة ثابت. استبدل العناصر فقط واحتفظ بالسلوك.'
+            : 'Carousel is a motion and ordering primitive, not a fixed card pattern. Swap the items while keeping the behavior.'}
+        </p>
+      </div>
+      <ShadcnPrimitives.Carousel aria-label={isArabic ? 'مثال سلوك Carousel' : 'Carousel behavior example'}>
+        <ShadcnPrimitives.CarouselContent className="carousel-behavior-strip">
+          {items.map((item) => (
+            <ShadcnPrimitives.CarouselItem className="carousel-behavior-item" key={item.title}>
+              <img src={item.image} alt="" aria-hidden="true" />
+              <div className="carousel-behavior-copy">
+                <span>{item.eyebrow}</span>
+                <strong>{item.title}</strong>
+                <p>{item.body}</p>
+              </div>
+            </ShadcnPrimitives.CarouselItem>
+          ))}
+        </ShadcnPrimitives.CarouselContent>
+      </ShadcnPrimitives.Carousel>
+    </section>
+  )
+}
+
 function AvatarPreview({ locale }: { locale: Locale }) {
   const isArabic = locale === 'ar'
   const copy = {
@@ -3798,6 +4416,135 @@ function AvatarPreview({ locale }: { locale: Locale }) {
   )
 }
 
+function EmptyPreview({ locale }: { locale: Locale }) {
+  const isArabic = locale === 'ar'
+  const copy = isArabic
+    ? {
+        avatarBody: 'هذا العضو غير متصل حاليا. يمكنك ترك رسالة أو المحاولة لاحقا.',
+        avatarTitle: 'المستخدم غير متصل',
+        cloudBody: 'ارفع الملفات إلى مساحة المشروع حتى يتمكن الفريق من الوصول إليها.',
+        cloudTitle: 'مساحة الملفات فارغة',
+        create: 'إنشاء مشروع',
+        emptyBody: 'لم تقم بإنشاء أي مشاريع بعد. ابدأ بإنشاء مشروعك الأول.',
+        emptyTitle: 'لا توجد مشاريع بعد',
+        groupBody: 'ادع أعضاء الفريق للتعاون على هذا المشروع.',
+        groupTitle: 'لا يوجد أعضاء فريق',
+        import: 'استيراد مشروع',
+        learn: 'تعرف على المزيد',
+        missingBody: 'الصفحة التي تبحث عنها غير موجودة. جرّب البحث عن ما تحتاجه.',
+        missingTitle: '404 - الصفحة غير موجودة',
+        refresh: 'تحديث',
+        search: 'ابحث في الصفحات...',
+        upload: 'رفع ملفات',
+      }
+    : {
+        avatarBody: 'This user is currently offline. You can leave a message or try again later.',
+        avatarTitle: 'User offline',
+        cloudBody: 'Upload files to the project space so the team can access them.',
+        cloudTitle: 'Cloud storage empty',
+        create: 'Create project',
+        emptyBody: "You haven't created any projects yet. Get started by creating your first project.",
+        emptyTitle: 'No projects yet',
+        groupBody: 'Invite your team to collaborate on this project.',
+        groupTitle: 'No team members',
+        import: 'Import project',
+        learn: 'Learn more',
+        missingBody: "The page you're looking for doesn't exist. Try searching for what you need below.",
+        missingTitle: '404 - Not Found',
+        refresh: 'Refresh',
+        search: 'Try searching for pages...',
+        upload: 'Upload files',
+      }
+
+  return (
+    <div className="empty-demo-grid" dir={isArabic ? 'rtl' : 'ltr'} lang={isArabic ? 'ar' : 'en'}>
+      <section className="empty-demo-panel empty-demo-panel--hero" aria-label={copy.emptyTitle}>
+        <EmptyState className="empty-demo-content">
+          <span className="empty-demo-media" aria-hidden="true"><FolderPlus size={24} /></span>
+          <strong className="empty-demo-title">{copy.emptyTitle}</strong>
+          <span className="empty-demo-description">{copy.emptyBody}</span>
+          <span className="empty-demo-actions">
+            <Button>{copy.create}</Button>
+            <Button variant="secondary">{copy.import}</Button>
+          </span>
+          <a className="empty-demo-link" href="#/docs/foundations/arabic-friendly">
+            {copy.learn}
+            <ArrowUpRight size={16} aria-hidden="true" />
+          </a>
+        </EmptyState>
+      </section>
+
+      <div className="empty-demo-row">
+        <section className="empty-demo-panel empty-demo-panel--dropzone" aria-label={copy.cloudTitle}>
+          <EmptyState className="empty-demo-content">
+            <span className="empty-demo-media" aria-hidden="true"><Cloud size={24} /></span>
+            <strong className="empty-demo-title">{copy.cloudTitle}</strong>
+            <span className="empty-demo-description">{copy.cloudBody}</span>
+            <Button variant="secondary">
+              <UploadCloud size={16} aria-hidden="true" />
+              {copy.upload}
+            </Button>
+          </EmptyState>
+        </section>
+
+        <section className="empty-demo-panel empty-demo-panel--background" aria-label={isArabic ? 'لا توجد إشعارات' : 'No notifications'}>
+          <EmptyState className="empty-demo-content">
+            <span className="empty-demo-media" aria-hidden="true"><Bell size={24} /></span>
+            <strong className="empty-demo-title">{isArabic ? 'لا توجد إشعارات' : 'No notifications'}</strong>
+            <span className="empty-demo-description">
+              {isArabic ? 'كل شيء محدث. ستظهر الإشعارات الجديدة هنا.' : "You're all caught up. New notifications will appear here."}
+            </span>
+            <Button variant="secondary">
+              <RefreshCcw size={16} aria-hidden="true" />
+              {copy.refresh}
+            </Button>
+          </EmptyState>
+        </section>
+      </div>
+
+      <div className="empty-demo-row">
+        <section className="empty-demo-panel" aria-label={copy.avatarTitle}>
+          <EmptyState className="empty-demo-content">
+            <Avatar alt={isArabic ? 'مستخدم غير متصل' : 'Offline user'} size="lg" src="/examples/avatar-doha-shadow.png" status="offline" />
+            <strong className="empty-demo-title">{copy.avatarTitle}</strong>
+            <span className="empty-demo-description">{copy.avatarBody}</span>
+            <Button>{isArabic ? 'ترك رسالة' : 'Leave message'}</Button>
+          </EmptyState>
+        </section>
+
+        <section className="empty-demo-panel" aria-label={copy.groupTitle}>
+          <EmptyState className="empty-demo-content">
+            <AvatarGroup aria-label={isArabic ? 'فريق فارغ' : 'Empty team preview'}>
+              <Avatar alt={isArabic ? 'مصمم' : 'Designer'} size="sm">US</Avatar>
+              <Avatar alt={isArabic ? 'مراجع' : 'Reviewer'} size="sm">NK</Avatar>
+              <Avatar alt={isArabic ? 'قائد المنتج' : 'Product lead'} size="sm">AR</Avatar>
+              <AvatarOverflow size="sm">{isArabic ? '+٣' : '+3'}</AvatarOverflow>
+            </AvatarGroup>
+            <strong className="empty-demo-title">{copy.groupTitle}</strong>
+            <span className="empty-demo-description">{copy.groupBody}</span>
+            <Button>
+              <User size={16} aria-hidden="true" />
+              {isArabic ? 'دعوة أعضاء' : 'Invite members'}
+            </Button>
+          </EmptyState>
+        </section>
+      </div>
+
+      <section className="empty-demo-panel empty-demo-panel--wide" aria-label={copy.missingTitle}>
+        <EmptyState className="empty-demo-content">
+          <strong className="empty-demo-title">{copy.missingTitle}</strong>
+          <span className="empty-demo-description">{copy.missingBody}</span>
+          <label className="empty-demo-search">
+            <Search size={18} aria-hidden="true" />
+            <TextInput aria-label={copy.search} placeholder={copy.search} />
+            <kbd className="empty-demo-kbd">/</kbd>
+          </label>
+        </EmptyState>
+      </section>
+    </div>
+  )
+}
+
 function OverlayAnatomyPreview({ kind, locale }: { kind: 'alert-dialog' | 'dialog' | 'sheet'; locale: Locale }) {
   const isArabic = locale === 'ar'
   const copy = {
@@ -3817,23 +4564,19 @@ function OverlayAnatomyPreview({ kind, locale }: { kind: 'alert-dialog' | 'dialo
   }
 
   if (kind === 'sheet') {
+    const sides = [
+      { side: 'start' as const, label: isArabic ? 'بداية' : 'Start' },
+      { side: 'end' as const, label: isArabic ? 'نهاية' : 'End' },
+      { side: 'top' as const, label: isArabic ? 'أعلى' : 'Top' },
+      { side: 'bottom' as const, label: isArabic ? 'أسفل' : 'Bottom' },
+    ]
     return (
-      <div className="overlay-anatomy-preview overlay-anatomy-preview--sheet" dir={isArabic ? 'rtl' : 'ltr'} lang={isArabic ? 'ar' : 'en'}>
-        <div className="overlay-anatomy-scrim" />
-        <section aria-label={copy.sheet} className="overlay-anatomy-sheet">
-          <div className="overlay-anatomy-header">
-            <h3>{copy.sheetTitle}</h3>
-            <p>{copy.sheetBody}</p>
-          </div>
-          <div className="overlay-anatomy-body">
-            <span />
-            <span />
-            <span />
-          </div>
-          <div className="overlay-anatomy-footer">
-            <Button size="sm" variant="secondary">{copy.close}</Button>
-          </div>
-        </section>
+      <div className="sheet-detail-preview" dir={isArabic ? 'rtl' : 'ltr'} lang={isArabic ? 'ar' : 'en'}>
+        <p>{copy.sheetBody}</p>
+        <HStack className="sheet-trigger-row" gap={2}>
+          {sides.map(({ label, side }) => <ShadcnPrimitives.Sheet key={side}><ShadcnPrimitives.SheetTrigger asChild><Button variant="secondary">{label}</Button></ShadcnPrimitives.SheetTrigger><ShadcnPrimitives.SheetContent closeLabel={copy.close} side={side}><ShadcnPrimitives.SheetHeader><ShadcnPrimitives.SheetTitle>{copy.sheetTitle}</ShadcnPrimitives.SheetTitle><ShadcnPrimitives.SheetDescription>{copy.sheetBody}</ShadcnPrimitives.SheetDescription></ShadcnPrimitives.SheetHeader><ShadcnPrimitives.SheetFooter><ShadcnPrimitives.SheetClose asChild><Button variant="secondary">{copy.close}</Button></ShadcnPrimitives.SheetClose><Button>{copy.save}</Button></ShadcnPrimitives.SheetFooter></ShadcnPrimitives.SheetContent></ShadcnPrimitives.Sheet>)}
+        </HStack>
+        <ShadcnPrimitives.Sheet><ShadcnPrimitives.SheetTrigger asChild><Button variant="outline">{isArabic ? 'بدون زر إغلاق' : 'Without close button'}</Button></ShadcnPrimitives.SheetTrigger><ShadcnPrimitives.SheetContent showCloseButton={false}><ShadcnPrimitives.SheetHeader><ShadcnPrimitives.SheetTitle>{copy.sheetTitle}</ShadcnPrimitives.SheetTitle><ShadcnPrimitives.SheetDescription>{copy.sheetBody}</ShadcnPrimitives.SheetDescription></ShadcnPrimitives.SheetHeader></ShadcnPrimitives.SheetContent></ShadcnPrimitives.Sheet>
       </div>
     )
   }
@@ -3853,6 +4596,96 @@ function OverlayAnatomyPreview({ kind, locale }: { kind: 'alert-dialog' | 'dialo
           <Button size="sm" variant={isAlert ? 'destructive' : 'default'}>{isAlert ? copy.continue : copy.save}</Button>
         </div>
       </section>
+    </div>
+  )
+}
+
+function ContextMenuInteractionPreview({ locale }: { locale: Locale }) {
+  const isArabic = locale === 'ar'
+  const [showReferences, setShowReferences] = useState(true)
+  const [showFullUrls, setShowFullUrls] = useState(false)
+  const copy = {
+    aria: isArabic ? 'معاينة قائمة السياق' : 'Context menu preview',
+    target: isArabic ? 'انقر بزر الفأرة الأيمن داخل هذه المساحة' : 'Right click inside this surface',
+    hint: isArabic ? 'أو استخدم Shift + F10 من لوحة المفاتيح' : 'or use Shift + F10 from the keyboard',
+    back: isArabic ? 'رجوع' : 'Back',
+    forward: isArabic ? 'تقدم' : 'Forward',
+    reload: isArabic ? 'تحديث' : 'Reload',
+    moreTools: isArabic ? 'أدوات إضافية' : 'More tools',
+    command: isArabic ? 'لوحة الأوامر' : 'Command palette',
+    inspect: isArabic ? 'فحص البنية' : 'Inspect structure',
+    showReferences: isArabic ? 'إظهار المراجع' : 'Show references',
+    showFullUrls: isArabic ? 'إظهار الروابط كاملة' : 'Show full URLs',
+    team: isArabic ? 'الفريق' : 'Team',
+    ceramic: isArabic ? 'فريق Ceramic' : 'Ceramic team',
+    product: isArabic ? 'فريق المنتج' : 'Product team',
+    delete: isArabic ? 'حذف العنصر' : 'Delete item',
+  }
+
+  return (
+    <div className="context-menu-detail-preview" dir={isArabic ? 'rtl' : 'ltr'} lang={isArabic ? 'ar' : 'en'}>
+      <ContextMenu dir={isArabic ? 'rtl' : 'ltr'}>
+        <ContextMenuTrigger asChild>
+          <div aria-label={copy.aria} className="context-menu-detail-target" tabIndex={0}>
+            <span>{copy.target}</span>
+            <small>{copy.hint}</small>
+          </div>
+        </ContextMenuTrigger>
+        <ContextMenuContent className="context-menu-detail-content">
+          <ContextMenuItem>
+            <ArrowUp aria-hidden="true" />
+            {copy.back}
+            <ContextMenuShortcut>⌘[</ContextMenuShortcut>
+          </ContextMenuItem>
+          <ContextMenuItem disabled>
+            <ArrowDown aria-hidden="true" />
+            {copy.forward}
+            <ContextMenuShortcut>⌘]</ContextMenuShortcut>
+          </ContextMenuItem>
+          <ContextMenuItem>
+            <LoaderCircle aria-hidden="true" />
+            {copy.reload}
+            <ContextMenuShortcut>⌘R</ContextMenuShortcut>
+          </ContextMenuItem>
+          <ContextMenuSub>
+            <ContextMenuSubTrigger>
+              <Settings aria-hidden="true" />
+              {copy.moreTools}
+            </ContextMenuSubTrigger>
+            <ContextMenuSubContent>
+              <ContextMenuItem>
+                <Search aria-hidden="true" />
+                {copy.command}
+              </ContextMenuItem>
+              <ContextMenuItem>
+                <ListFilter aria-hidden="true" />
+                {copy.inspect}
+              </ContextMenuItem>
+            </ContextMenuSubContent>
+          </ContextMenuSub>
+          <ContextMenuSeparator />
+          <ContextMenuCheckboxItem checked={showReferences} onCheckedChange={(checked) => setShowReferences(checked === true)}>
+            {copy.showReferences}
+          </ContextMenuCheckboxItem>
+          <ContextMenuCheckboxItem checked={showFullUrls} onCheckedChange={(checked) => setShowFullUrls(checked === true)}>
+            {copy.showFullUrls}
+          </ContextMenuCheckboxItem>
+          <ContextMenuSeparator />
+          <ContextMenuLabel>{copy.team}</ContextMenuLabel>
+          <ContextMenuCheckboxItem checked>
+            {copy.ceramic}
+          </ContextMenuCheckboxItem>
+          <ContextMenuCheckboxItem>
+            {copy.product}
+          </ContextMenuCheckboxItem>
+          <ContextMenuSeparator />
+          <ContextMenuItem data-variant="destructive">
+            <Trash2 aria-hidden="true" />
+            {copy.delete}
+            <ContextMenuShortcut>⌘⌫</ContextMenuShortcut>
+          </ContextMenuItem>
+        </ContextMenuContent>
+      </ContextMenu>
     </div>
   )
 }
@@ -3888,50 +4721,168 @@ function MenuAnatomyPreview({ kind, locale }: { kind: 'context' | 'dropdown' | '
   }
 
   if (kind === 'menubar') {
-    return (
-      <div className="menu-anatomy-preview" dir={isArabic ? 'rtl' : 'ltr'} lang={isArabic ? 'ar' : 'en'}>
-        <div className="menu-anatomy-menubar" role="menubar" aria-label={isArabic ? 'شريط القوائم' : 'Menu bar'}>
-          <button className="menu-anatomy-menubar-trigger" type="button">{copy.docs}</button>
-          <button className="menu-anatomy-menubar-trigger" data-state="open" type="button">{copy.components}</button>
-          <button className="menu-anatomy-menubar-trigger" type="button">{copy.more}</button>
-        </div>
-        <MenuAnatomySurface destructiveLabel={copy.delete} label={copy.menu} rows={[
-          { icon: <Box aria-hidden="true" />, label: 'Button' },
-          { icon: <ListFilter aria-hidden="true" />, label: 'Input' },
-          { icon: <Tag aria-hidden="true" />, label: 'Select', highlighted: true },
-        ]} />
-      </div>
-    )
+    return <MenubarPreview locale={locale} />
   }
 
   if (kind === 'navigation') {
-    return (
-      <div className="menu-anatomy-preview" dir={isArabic ? 'rtl' : 'ltr'} lang={isArabic ? 'ar' : 'en'}>
-        <div className="menu-anatomy-nav-row" aria-label={isArabic ? 'قائمة التنقل' : 'Navigation menu'}>
-          <button className="menu-anatomy-nav-trigger" data-state="open" type="button">{copy.docs}</button>
-          <button className="menu-anatomy-nav-trigger" type="button">{copy.components}</button>
-          <button className="menu-anatomy-nav-trigger" type="button">{copy.theme}</button>
-        </div>
-        <div className="menu-anatomy-mega-surface">
-          <a href="#/docs" className="menu-anatomy-featured">
-            <span className="menu-anatomy-featured-icon"><FileText aria-hidden="true" /></span>
-            <span>{copy.guide}</span>
-            <small>{isArabic ? 'قواعد الاستخدام للإنسان والذكاء الاصطناعي.' : 'Usage rules for humans and AI agents.'}</small>
-          </a>
-          <div className="menu-anatomy-mega-list">
-            <a href="#/docs/foundations">{copy.foundations}</a>
-            <a href="#/components">{copy.components}</a>
-            <a href="#/themes">{copy.theme}</a>
-          </div>
-        </div>
-      </div>
-    )
+    return <NavigationMenuPreview locale={locale} />
   }
 
   return (
     <div className="menu-anatomy-preview" dir={isArabic ? 'rtl' : 'ltr'} lang={isArabic ? 'ar' : 'en'}>
       <Button size="sm" variant="secondary">{copy.openMenu}</Button>
       <MenuAnatomySurface destructiveLabel={copy.delete} label={copy.menu} rows={rows} />
+    </div>
+  )
+}
+
+function NavigationMenuPreview({ locale }: { locale: Locale }) {
+  const isArabic = locale === 'ar'
+  const items = isArabic
+    ? [
+        { href: '#/docs', title: 'البدء', body: 'ثبّت النظام وتعرّف على عقد الاستخدام.' },
+        { href: '#/docs/foundations', title: 'الأسس', body: 'الألوان والكتابة والمسافات والحركة.' },
+        { href: '#/docs#arabic-friendly', title: 'دعم العربية', body: 'قواعد RTL والكتابة المختلطة والتوطين.' },
+      ]
+    : [
+        { href: '#/docs', title: 'Getting started', body: 'Install the system and learn its usage contract.' },
+        { href: '#/docs/foundations', title: 'Foundations', body: 'Color, typography, spacing, and motion.' },
+        { href: '#/docs#arabic-friendly', title: 'Arabic friendly', body: 'RTL, mixed-script, and localization rules.' },
+      ]
+  const componentItems = isArabic
+    ? [
+        { href: '#/components/button', title: 'الزر', body: 'إجراءات دلالية وحالات واضحة.' },
+        { href: '#/components/field', title: 'الحقل', body: 'مدخلات موصوفة وقابلة للتحقق.' },
+        { href: '#/components/chat', title: 'المحادثة', body: 'تركيب رسائل وواجهة إدخال.' },
+        { href: '#/components/navigation-menu', title: 'التنقل', body: 'هذا المثال التفاعلي نفسه.' },
+      ]
+    : [
+        { href: '#/components/button', title: 'Button', body: 'Semantic actions and complete states.' },
+        { href: '#/components/field', title: 'Field', body: 'Labeled, validated form composition.' },
+        { href: '#/components/chat', title: 'Chat', body: 'Message and composer primitives.' },
+        { href: '#/components/navigation-menu', title: 'Navigation', body: 'This interactive pattern itself.' },
+      ]
+
+  return (
+    <div className="navigation-menu-preview" dir={isArabic ? 'rtl' : 'ltr'} lang={isArabic ? 'ar' : 'en'}>
+      <ShadcnPrimitives.NavigationMenu dir={isArabic ? 'rtl' : 'ltr'}>
+        <ShadcnPrimitives.NavigationMenuList>
+          <ShadcnPrimitives.NavigationMenuItem>
+            <ShadcnPrimitives.NavigationMenuTrigger>{isArabic ? 'الدليل' : 'Learn'}</ShadcnPrimitives.NavigationMenuTrigger>
+            <ShadcnPrimitives.NavigationMenuContent className="navigation-menu-preview-panel navigation-menu-preview-panel--featured">
+              <ShadcnPrimitives.NavigationMenuLink asChild>
+                <a className="navigation-menu-preview-feature" href="#/docs">
+                  <FileText aria-hidden="true" />
+                  <strong>{isArabic ? 'نظام Ceramic' : 'Ceramic Design System'}</strong>
+                  <span>{isArabic ? 'مصدر واحد للبشر ووكلاء الذكاء الاصطناعي.' : 'One source for people and AI agents.'}</span>
+                </a>
+              </ShadcnPrimitives.NavigationMenuLink>
+              <div className="navigation-menu-preview-links">
+                {items.map((item) => (
+                  <ShadcnPrimitives.NavigationMenuLink asChild key={item.href}>
+                    <a href={item.href}><strong>{item.title}</strong><span>{item.body}</span></a>
+                  </ShadcnPrimitives.NavigationMenuLink>
+                ))}
+              </div>
+            </ShadcnPrimitives.NavigationMenuContent>
+          </ShadcnPrimitives.NavigationMenuItem>
+          <ShadcnPrimitives.NavigationMenuItem>
+            <ShadcnPrimitives.NavigationMenuTrigger>{isArabic ? 'المكونات' : 'Components'}</ShadcnPrimitives.NavigationMenuTrigger>
+            <ShadcnPrimitives.NavigationMenuContent className="navigation-menu-preview-panel navigation-menu-preview-panel--grid">
+              {componentItems.map((item) => (
+                <ShadcnPrimitives.NavigationMenuLink asChild key={item.href}>
+                  <a href={item.href}><strong>{item.title}</strong><span>{item.body}</span></a>
+                </ShadcnPrimitives.NavigationMenuLink>
+              ))}
+            </ShadcnPrimitives.NavigationMenuContent>
+          </ShadcnPrimitives.NavigationMenuItem>
+          <ShadcnPrimitives.NavigationMenuItem>
+            <ShadcnPrimitives.NavigationMenuLink asChild>
+              <a href="#/themes">{isArabic ? 'الثيمات' : 'Themes'}</a>
+            </ShadcnPrimitives.NavigationMenuLink>
+          </ShadcnPrimitives.NavigationMenuItem>
+          <ShadcnPrimitives.NavigationMenuIndicator />
+        </ShadcnPrimitives.NavigationMenuList>
+        <ShadcnPrimitives.NavigationMenuViewport />
+      </ShadcnPrimitives.NavigationMenu>
+    </div>
+  )
+}
+
+function MenubarPreview({ locale }: { locale: Locale }) {
+  const isArabic = locale === 'ar'
+  const [showStatusBar, setShowStatusBar] = useState(true)
+  const [showActivityBar, setShowActivityBar] = useState(false)
+  const [profile, setProfile] = useState('ceramic')
+  const copy = {
+    file: isArabic ? 'ملف' : 'File',
+    edit: isArabic ? 'تحرير' : 'Edit',
+    view: isArabic ? 'عرض' : 'View',
+    profiles: isArabic ? 'الملفات الشخصية' : 'Profiles',
+    newFile: isArabic ? 'ملف جديد' : 'New file',
+    open: isArabic ? 'فتح المشروع' : 'Open project',
+    save: isArabic ? 'حفظ' : 'Save',
+    export: isArabic ? 'تصدير' : 'Export',
+    pdf: isArabic ? 'مستند PDF' : 'PDF document',
+    image: isArabic ? 'صورة' : 'Image',
+    undo: isArabic ? 'تراجع' : 'Undo',
+    redo: isArabic ? 'إعادة' : 'Redo',
+    status: isArabic ? 'شريط الحالة' : 'Status bar',
+    activity: isArabic ? 'شريط النشاط' : 'Activity bar',
+    ceramic: isArabic ? 'مساحة Ceramic' : 'Ceramic workspace',
+    studio: isArabic ? 'مساحة الاستوديو' : 'Studio workspace',
+    disabled: isArabic ? 'غير متاح حاليا' : 'Currently unavailable',
+  }
+
+  return (
+    <div className="menubar-detail-preview" dir={isArabic ? 'rtl' : 'ltr'} lang={isArabic ? 'ar' : 'en'}>
+      <ShadcnPrimitives.Menubar dir={isArabic ? 'rtl' : 'ltr'}>
+        <ShadcnPrimitives.MenubarMenu>
+          <ShadcnPrimitives.MenubarTrigger>{copy.file}</ShadcnPrimitives.MenubarTrigger>
+          <ShadcnPrimitives.MenubarContent>
+            <ShadcnPrimitives.MenubarGroup>
+              <ShadcnPrimitives.MenubarItem><FileText aria-hidden="true" />{copy.newFile}<ShadcnPrimitives.MenubarShortcut>⌘N</ShadcnPrimitives.MenubarShortcut></ShadcnPrimitives.MenubarItem>
+              <ShadcnPrimitives.MenubarItem><FolderPlus aria-hidden="true" />{copy.open}<ShadcnPrimitives.MenubarShortcut>⌘O</ShadcnPrimitives.MenubarShortcut></ShadcnPrimitives.MenubarItem>
+              <ShadcnPrimitives.MenubarItem>{copy.save}<ShadcnPrimitives.MenubarShortcut>⌘S</ShadcnPrimitives.MenubarShortcut></ShadcnPrimitives.MenubarItem>
+            </ShadcnPrimitives.MenubarGroup>
+            <ShadcnPrimitives.MenubarSeparator />
+            <ShadcnPrimitives.MenubarSub>
+              <ShadcnPrimitives.MenubarSubTrigger>{copy.export}</ShadcnPrimitives.MenubarSubTrigger>
+              <ShadcnPrimitives.MenubarSubContent>
+                <ShadcnPrimitives.MenubarItem>{copy.pdf}</ShadcnPrimitives.MenubarItem>
+                <ShadcnPrimitives.MenubarItem>{copy.image}</ShadcnPrimitives.MenubarItem>
+              </ShadcnPrimitives.MenubarSubContent>
+            </ShadcnPrimitives.MenubarSub>
+            <ShadcnPrimitives.MenubarSeparator />
+            <ShadcnPrimitives.MenubarItem disabled>{copy.disabled}</ShadcnPrimitives.MenubarItem>
+          </ShadcnPrimitives.MenubarContent>
+        </ShadcnPrimitives.MenubarMenu>
+        <ShadcnPrimitives.MenubarMenu>
+          <ShadcnPrimitives.MenubarTrigger>{copy.edit}</ShadcnPrimitives.MenubarTrigger>
+          <ShadcnPrimitives.MenubarContent>
+            <ShadcnPrimitives.MenubarItem>{copy.undo}<ShadcnPrimitives.MenubarShortcut>⌘Z</ShadcnPrimitives.MenubarShortcut></ShadcnPrimitives.MenubarItem>
+            <ShadcnPrimitives.MenubarItem>{copy.redo}<ShadcnPrimitives.MenubarShortcut>⇧⌘Z</ShadcnPrimitives.MenubarShortcut></ShadcnPrimitives.MenubarItem>
+          </ShadcnPrimitives.MenubarContent>
+        </ShadcnPrimitives.MenubarMenu>
+        <ShadcnPrimitives.MenubarMenu>
+          <ShadcnPrimitives.MenubarTrigger>{copy.view}</ShadcnPrimitives.MenubarTrigger>
+          <ShadcnPrimitives.MenubarContent>
+            <ShadcnPrimitives.MenubarCheckboxItem checked={showStatusBar} onCheckedChange={(checked) => setShowStatusBar(checked === true)}>{copy.status}</ShadcnPrimitives.MenubarCheckboxItem>
+            <ShadcnPrimitives.MenubarCheckboxItem checked={showActivityBar} onCheckedChange={(checked) => setShowActivityBar(checked === true)}>{copy.activity}</ShadcnPrimitives.MenubarCheckboxItem>
+          </ShadcnPrimitives.MenubarContent>
+        </ShadcnPrimitives.MenubarMenu>
+        <ShadcnPrimitives.MenubarMenu>
+          <ShadcnPrimitives.MenubarTrigger>{copy.profiles}</ShadcnPrimitives.MenubarTrigger>
+          <ShadcnPrimitives.MenubarContent>
+            <ShadcnPrimitives.MenubarLabel>{copy.profiles}</ShadcnPrimitives.MenubarLabel>
+            <ShadcnPrimitives.MenubarRadioGroup onValueChange={setProfile} value={profile}>
+              <ShadcnPrimitives.MenubarRadioItem value="ceramic">{copy.ceramic}</ShadcnPrimitives.MenubarRadioItem>
+              <ShadcnPrimitives.MenubarRadioItem value="studio">{copy.studio}</ShadcnPrimitives.MenubarRadioItem>
+            </ShadcnPrimitives.MenubarRadioGroup>
+          </ShadcnPrimitives.MenubarContent>
+        </ShadcnPrimitives.MenubarMenu>
+      </ShadcnPrimitives.Menubar>
+      <p>{isArabic ? 'استخدم مفاتيح الأسهم للتنقل بين القوائم والأوامر.' : 'Use arrow keys to move between menus and commands.'}</p>
     </div>
   )
 }
@@ -3972,8 +4923,51 @@ function TypographyPreview({ locale }: { locale: Locale }) {
           ? 'العربية تستخدم IBM Plex Sans Arabic وارتفاع سطر مخصصا من الثيم.'
           : 'Arabic uses IBM Plex Sans Arabic with theme-owned line-height.'}
       </Text>
+      <Heading level={3}>{isArabic ? 'عنوان قسم' : 'Section heading'}</Heading>
+      <blockquote>{isArabic ? 'الكتابة الدلالية تحفظ التسلسل الهرمي عبر الثيمات.' : 'Semantic typography preserves hierarchy across themes.'}</blockquote>
+      <ul><li>{isArabic ? 'نص أساسي' : 'Body text'}</li><li>{isArabic ? 'نص مساعد' : 'Supporting text'}</li></ul>
+      <p><code>--font-sans</code> · <code>--font-arabic</code></p>
     </Prose>
   )
+}
+
+function SidebarPreview({ locale }: { locale: Locale }) {
+  const isArabic = locale === 'ar'
+  return (
+    <SidebarProvider>
+      <div className="sidebar-detail-preview" dir={isArabic ? 'rtl' : 'ltr'}>
+        <Sidebar variant="inset">
+          <SidebarHeader><SidebarTrigger collapseLabel={isArabic ? 'طي الشريط الجانبي' : 'Collapse sidebar'} expandLabel={isArabic ? 'توسيع الشريط الجانبي' : 'Expand sidebar'} /><strong>{isArabic ? 'سيراميك' : 'Ceramic'}</strong></SidebarHeader>
+          <SidebarContent>
+            <SidebarGroup><SidebarGroupLabel>{isArabic ? 'مساحة العمل' : 'Workspace'}</SidebarGroupLabel><SidebarMenu>
+              <SidebarMenuItem><SidebarMenuButton isActive><Box aria-hidden="true" /><span>{isArabic ? 'نظرة عامة' : 'Overview'}</span></SidebarMenuButton></SidebarMenuItem>
+              <SidebarMenuItem><SidebarMenuButton><BarChart3 aria-hidden="true" /><span>{isArabic ? 'التحليلات' : 'Analytics'}</span><SidebarMenuBadge>12</SidebarMenuBadge></SidebarMenuButton></SidebarMenuItem>
+              <SidebarMenuItem><SidebarMenuButton><Settings aria-hidden="true" /><span>{isArabic ? 'الإعدادات' : 'Settings'}</span></SidebarMenuButton></SidebarMenuItem>
+            </SidebarMenu></SidebarGroup>
+          </SidebarContent>
+          <SidebarFooter><span>{isArabic ? 'ثيم يوتوبيا' : 'Utopia theme'}</span></SidebarFooter>
+        </Sidebar>
+      </div>
+    </SidebarProvider>
+  )
+}
+
+function TextareaPreview({ locale }: { locale: Locale }) {
+  const isArabic = locale === 'ar'
+  return <div className="textarea-detail-preview" dir={isArabic ? 'rtl' : 'ltr'}>
+    <Field><FieldLabel htmlFor="textarea-default">{isArabic ? 'ملاحظة المشروع' : 'Project note'}</FieldLabel><TextArea id="textarea-default" placeholder={isArabic ? 'اكتب ملاحظة' : 'Write a note'} /></Field>
+    <Field aria-invalid="true"><FieldLabel htmlFor="textarea-invalid">{isArabic ? 'ملخص مطلوب' : 'Required summary'}</FieldLabel><TextArea aria-invalid="true" id="textarea-invalid" resize="none" /><FieldError>{isArabic ? 'أدخل ملخصا قبل المتابعة.' : 'Enter a summary before continuing.'}</FieldError></Field>
+    <Field><FieldLabel htmlFor="textarea-disabled">{isArabic ? 'ملاحظة مقفلة' : 'Locked note'}</FieldLabel><TextArea disabled id="textarea-disabled" value={isArabic ? 'غير قابل للتعديل' : 'Not editable'} readOnly /></Field>
+    <HStack justify="end"><Button>{isArabic ? 'حفظ الملاحظة' : 'Save note'}</Button></HStack>
+  </div>
+}
+
+function ToastPreview({ locale }: { locale: Locale }) {
+  const isArabic = locale === 'ar'
+  return <div className="toast-compat-preview" dir={isArabic ? 'rtl' : 'ltr'}>
+    <Toast><ToastTitle>{isArabic ? 'واجهة توافقية' : 'Compatibility API'}</ToastTitle><ToastDescription>{isArabic ? 'استخدم Sonner للتطبيقات الجديدة.' : 'Use Sonner for new applications.'}</ToastDescription></Toast>
+    <Text tone="muted">{isArabic ? 'Toast محفوظ لترحيل المشاريع القديمة فقط.' : 'Toast remains for legacy migration only.'}</Text>
+  </div>
 }
 
 function TabsPreview({ locale }: { locale: Locale }) {
@@ -4015,7 +5009,8 @@ function TablePreview({ locale }: { locale: Locale }) {
       ]
 
   return (
-    <Table dir={isArabic ? 'rtl' : 'ltr'}>
+    <TableContainer><Table dir={isArabic ? 'rtl' : 'ltr'}>
+      <TableCaption>{isArabic ? 'حالة مكتبة المكونات الحالية.' : 'Current component library status.'}</TableCaption>
       <TableHeader>
         <TableRow>
           <TableHead>{isArabic ? 'المكوّن' : 'Component'}</TableHead>
@@ -4032,7 +5027,8 @@ function TablePreview({ locale }: { locale: Locale }) {
           </TableRow>
         ))}
       </TableBody>
-    </Table>
+      <TableFooter><TableRow><TableCell colSpan={2}>{isArabic ? 'الإجمالي' : 'Total'}</TableCell><TableCell>{rows.length}</TableCell></TableRow></TableFooter>
+    </Table></TableContainer>
   )
 }
 
@@ -4042,9 +5038,12 @@ function SpinnerPreview({ locale }: { locale: Locale }) {
     <Field className="form-preview-field" dir={isArabic ? 'rtl' : 'ltr'} lang={isArabic ? 'ar' : 'en'}>
       <FieldLabel>{isArabic ? 'جار تحميل البيانات' : 'Loading data'}</FieldLabel>
       <HStack align="center" gap={3}>
-        <Spinner role="status" aria-label={isArabic ? 'جار التحميل' : 'Loading'} />
+        <Spinner size="sm" aria-label={isArabic ? 'جار التحميل' : 'Loading'} />
+        <Spinner size="md" aria-label={isArabic ? 'جار التحميل' : 'Loading'} />
+        <Spinner size="lg" aria-label={isArabic ? 'جار التحميل' : 'Loading'} />
         <Text tone="muted">{isArabic ? 'يرجى الانتظار' : 'Please wait'}</Text>
       </HStack>
+      <Button disabled startContent={<Spinner size="sm" />}>{isArabic ? 'جار الحفظ' : 'Saving'}</Button>
     </Field>
   )
 }
@@ -4052,20 +5051,16 @@ function SpinnerPreview({ locale }: { locale: Locale }) {
 function SonnerPreview({ locale }: { locale: Locale }) {
   const isArabic = locale === 'ar'
 
-  return (
-    <ShadcnPrimitives.Sonner dir={isArabic ? 'rtl' : 'ltr'} lang={isArabic ? 'ar' : 'en'}>
-      <ShadcnPrimitives.SonnerToast>
-        <ShadcnPrimitives.SonnerTitle>{isArabic ? 'تم الحفظ' : 'Saved'}</ShadcnPrimitives.SonnerTitle>
-        <ShadcnPrimitives.SonnerDescription>
-          {isArabic ? 'التغييرات جاهزة للمراجعة.' : 'Changes are ready for review.'}
-        </ShadcnPrimitives.SonnerDescription>
-      </ShadcnPrimitives.SonnerToast>
-    </ShadcnPrimitives.Sonner>
-  )
-}
-
-function MarkerPreview({ locale }: { locale: Locale }) {
-  return <ShadcnPrimitives.Marker tone="accent">{locale === 'ar' ? 'ذكي' : 'AI'}</ShadcnPrimitives.Marker>
+  const message = isArabic ? 'التغييرات جاهزة للمراجعة.' : 'Changes are ready for review.'
+  return <div className="sonner-detail-preview" dir={isArabic ? 'rtl' : 'ltr'}>
+    <ShadcnPrimitives.Toaster dir={isArabic ? 'rtl' : 'ltr'} position={isArabic ? 'top-left' : 'top-right'} />
+    <HStack className="sonner-actions" gap={2}>
+      <Button onClick={() => ShadcnPrimitives.toast(isArabic ? 'تم الحفظ' : 'Saved', { description: message })}>{isArabic ? 'افتراضي' : 'Default'}</Button>
+      <Button onClick={() => ShadcnPrimitives.toast.success(isArabic ? 'نجحت العملية' : 'Success', { description: message })} variant="secondary">{isArabic ? 'نجاح' : 'Success'}</Button>
+      <Button onClick={() => ShadcnPrimitives.toast.error(isArabic ? 'تعذر الحفظ' : 'Error', { description: message })} variant="destructive">{isArabic ? 'خطأ' : 'Error'}</Button>
+      <Button onClick={() => ShadcnPrimitives.toast.promise(new Promise((resolve) => setTimeout(resolve, 900)), { loading: isArabic ? 'جار الحفظ' : 'Saving', success: isArabic ? 'تم الحفظ' : 'Saved', error: isArabic ? 'فشل' : 'Failed' })} variant="outline">Promise</Button>
+    </HStack>
+  </div>
 }
 
 function CommandPreview({ locale }: { locale: Locale }) {
@@ -4102,21 +5097,22 @@ function CommandPreview({ locale }: { locale: Locale }) {
             <span>{copy.calculator}</span>
           </CommandPaletteItem>
         </CommandPaletteGroup>
+        <CommandPaletteSeparator />
         <CommandPaletteGroup heading={copy.settingsGroup}>
           <CommandPaletteItem value="profile">
             <User aria-hidden="true" />
             <span>{copy.profile}</span>
-            <kbd>⌘ P</kbd>
+            <CommandPaletteShortcut>⌘ P</CommandPaletteShortcut>
           </CommandPaletteItem>
           <CommandPaletteItem value="billing">
             <CreditCard aria-hidden="true" />
             <span>{copy.billing}</span>
-            <kbd>⌘ B</kbd>
+            <CommandPaletteShortcut>⌘ B</CommandPaletteShortcut>
           </CommandPaletteItem>
           <CommandPaletteItem value="settings">
             <Settings aria-hidden="true" />
             <span>{copy.settings}</span>
-            <kbd>⌘ S</kbd>
+            <CommandPaletteShortcut>⌘ S</CommandPaletteShortcut>
           </CommandPaletteItem>
         </CommandPaletteGroup>
       </CommandPaletteList>
@@ -4126,106 +5122,291 @@ function CommandPreview({ locale }: { locale: Locale }) {
 
 function ComboboxPreview({ locale }: { locale: Locale }) {
   const isArabic = locale === 'ar'
+  const [isOpen, setIsOpen] = useState(false)
+  const [query, setQuery] = useState('')
+  const [selectedValue, setSelectedValue] = useState('command')
   const options = isArabic
-    ? ['زر', 'الأوامر', 'جدول البيانات']
-    : ['Button', 'Command', 'Data Table']
+    ? [
+        { label: 'زر', value: 'button' },
+        { label: 'الأوامر', value: 'command' },
+        { label: 'جدول البيانات', value: 'data-table' },
+        { label: 'التقويم', value: 'calendar' },
+        { label: 'الدردشة', value: 'chat' },
+      ]
+    : [
+        { label: 'Button', value: 'button' },
+        { label: 'Command', value: 'command' },
+        { label: 'Data Table', value: 'data-table' },
+        { label: 'Calendar', value: 'calendar' },
+        { label: 'Chat', value: 'chat' },
+      ]
+  const filteredOptions = options.filter((option) => option.label.toLocaleLowerCase().includes(query.toLocaleLowerCase()))
+  const selectedLabel = options.find((option) => option.value === selectedValue)?.label
+  const listId = `combobox-${isArabic ? 'ar' : 'en'}-options`
+  const selectOption = (value: string) => {
+    setSelectedValue(value)
+    setQuery('')
+    setIsOpen(false)
+  }
 
   return (
-    <ShadcnPrimitives.Combobox className="combobox-detail-preview" dir={isArabic ? 'rtl' : 'ltr'} lang={isArabic ? 'ar' : 'en'}>
-      <ShadcnPrimitives.ComboboxTrigger aria-expanded="true">
-        {isArabic ? 'اختر مكونا' : 'Select component'}
+    <ShadcnPrimitives.Combobox
+      className="combobox-detail-preview"
+      dir={isArabic ? 'rtl' : 'ltr'}
+      lang={isArabic ? 'ar' : 'en'}
+      onKeyDown={(event) => {
+        if (event.key === 'Escape') setIsOpen(false)
+      }}
+    >
+      <ShadcnPrimitives.ComboboxTrigger
+        aria-controls={listId}
+        aria-expanded={isOpen}
+        aria-haspopup="listbox"
+        role="combobox"
+        onClick={() => setIsOpen((open) => !open)}
+      >
+        <span>{selectedLabel || (isArabic ? 'اختر مكونا' : 'Select component')}</span>
       </ShadcnPrimitives.ComboboxTrigger>
-      <ShadcnPrimitives.ComboboxContent>
-        <ShadcnPrimitives.ComboboxInput
-          aria-label={isArabic ? 'البحث في المكونات' : 'Search components'}
-          placeholder={isArabic ? 'ابحث في المكونات' : 'Search components'}
-        />
-        {options.map((option, index) => (
-          <ShadcnPrimitives.ComboboxOption aria-selected={index === 1 ? 'true' : undefined} key={option}>
-            {option}
-          </ShadcnPrimitives.ComboboxOption>
-        ))}
-      </ShadcnPrimitives.ComboboxContent>
+      {isOpen ? (
+        <ShadcnPrimitives.ComboboxContent data-state="open" id={listId}>
+          <ShadcnPrimitives.ComboboxInput
+            aria-label={isArabic ? 'البحث في المكونات' : 'Search components'}
+            autoFocus
+            onChange={(event) => setQuery(event.currentTarget.value)}
+            placeholder={isArabic ? 'ابحث في المكونات' : 'Search components'}
+            value={query}
+          />
+          <div className="uds-combobox-options">
+            {filteredOptions.length > 0 ? filteredOptions.map((option) => (
+              <ShadcnPrimitives.ComboboxOption
+                aria-selected={selectedValue === option.value ? 'true' : undefined}
+                data-value={option.value}
+                key={option.value}
+                onClick={() => selectOption(option.value)}
+                onKeyDown={(event) => {
+                  if (event.key === 'Enter' || event.key === ' ') {
+                    event.preventDefault()
+                    selectOption(option.value)
+                  }
+                }}
+                tabIndex={0}
+              >
+                {option.label}
+              </ShadcnPrimitives.ComboboxOption>
+            )) : (
+              <div className="uds-combobox-empty" role="status">
+                {isArabic ? 'لا توجد نتائج.' : 'No results found.'}
+              </div>
+            )}
+          </div>
+        </ShadcnPrimitives.ComboboxContent>
+      ) : null}
     </ShadcnPrimitives.Combobox>
   )
 }
 
 function ChartPreview({ locale }: { locale: Locale }) {
   const isArabic = locale === 'ar'
-  const values = [
-    { label: isArabic ? 'الأوامر' : 'Command', value: 72 },
-    { label: isArabic ? 'النماذج' : 'Forms', value: 64 },
-    { label: isArabic ? 'البيانات' : 'Data', value: 84 },
-    { label: isArabic ? 'التنقل' : 'Nav', value: 58 },
+  const chartData = [
+    { month: isArabic ? 'يناير' : 'Jan', desktop: 186, mobile: 80 },
+    { month: isArabic ? 'فبراير' : 'Feb', desktop: 305, mobile: 200 },
+    { month: isArabic ? 'مارس' : 'Mar', desktop: 237, mobile: 120 },
+    { month: isArabic ? 'أبريل' : 'Apr', desktop: 73, mobile: 190 },
+    { month: isArabic ? 'مايو' : 'May', desktop: 209, mobile: 130 },
+    { month: isArabic ? 'يونيو' : 'Jun', desktop: 214, mobile: 140 },
   ]
+  const chartConfig = {
+    desktop: {
+      label: isArabic ? 'سطح المكتب' : 'Desktop',
+      color: 'var(--primary)',
+    },
+    mobile: {
+      label: isArabic ? 'الهاتف' : 'Mobile',
+      color: 'color-mix(in srgb, var(--primary) 52%, var(--foreground) 48%)',
+    },
+  } satisfies ShadcnPrimitives.ChartConfig
 
   return (
-    <ShadcnPrimitives.Chart className="chart-detail-preview" title={isArabic ? 'جاهزية المكونات' : 'Component readiness'} dir={isArabic ? 'rtl' : undefined}>
+    <ShadcnPrimitives.Chart className="chart-detail-preview" title={isArabic ? 'نظرة عامة على الزيارات' : 'Visitors overview'} dir={isArabic ? 'rtl' : undefined}>
       <div className="chart-detail-summary">
-        <strong>{isArabic ? '٩٦ مكونا' : '96 components'}</strong>
-        <span>{isArabic ? 'مبنية على shadcn وتوكنات Ceramic' : 'Mapped to shadcn and Ceramic tokens'}</span>
+        <strong>{isArabic ? '١٬٢٥٠ زيارة' : '1,250 visitors'}</strong>
+        <span>{isArabic ? 'مخطط shadcn/Recharts مع توكنات Ceramic' : 'shadcn/Recharts composition mapped to Ceramic tokens'}</span>
       </div>
-      <ShadcnPrimitives.ChartBars values={values} />
+      <ShadcnPrimitives.ChartContainer config={chartConfig}>
+        <BarChart accessibilityLayer data={chartData} margin={{ left: 0, right: 0, top: 12 }}>
+          <CartesianGrid vertical={false} />
+          <XAxis
+            axisLine={false}
+            dataKey="month"
+            tickLine={false}
+            tickMargin={10}
+          />
+          <YAxis axisLine={false} tickLine={false} tickMargin={10} width={36} />
+          <ShadcnPrimitives.ChartTooltip content={<ShadcnPrimitives.ChartTooltipContent />} cursor={false} />
+          <ShadcnPrimitives.ChartLegend content={<ShadcnPrimitives.ChartLegendContent />} />
+          <Bar dataKey="desktop" fill="var(--color-desktop)" radius={0} />
+          <Bar dataKey="mobile" fill="var(--color-mobile)" radius={0} />
+        </BarChart>
+      </ShadcnPrimitives.ChartContainer>
     </ShadcnPrimitives.Chart>
   )
 }
 
 function DataTablePreview({ locale }: { locale: Locale }) {
   const isArabic = locale === 'ar'
+  const [query, setQuery] = useState('')
+  const [selectedIds, setSelectedIds] = useState<string[]>([])
+  const [page, setPage] = useState(0)
+  const [visibleColumns, setVisibleColumns] = useState({
+    status: true,
+    email: true,
+    amount: true,
+  })
   const rows = isArabic
     ? [
-        ['ناجح', 'noura@example.com', '٣١٦٫٠٠ $'],
-        ['ناجح', 'layla@example.com', '٢٤٢٫٠٠ $'],
-        ['قيد المعالجة', 'omar@example.com', '٨٣٧٫٠٠ $'],
-        ['فشل', 'sara@example.com', '٧٢١٫٠٠ $'],
+        { id: 'noura', status: 'ناجح', email: 'noura@example.com', amount: '٣١٦٫٠٠ $' },
+        { id: 'layla', status: 'ناجح', email: 'layla@example.com', amount: '٢٤٢٫٠٠ $' },
+        { id: 'omar', status: 'قيد المعالجة', email: 'omar@example.com', amount: '٨٣٧٫٠٠ $' },
+        { id: 'sara', status: 'فشل', email: 'sara@example.com', amount: '٧٢١٫٠٠ $' },
+        { id: 'maha', status: 'ناجح', email: 'maha@example.com', amount: '٤٥٨٫٠٠ $' },
       ]
     : [
-        ['Success', 'ken99@example.com', '$316.00'],
-        ['Success', 'abe45@example.com', '$242.00'],
-        ['Processing', 'monserrat44@example.com', '$837.00'],
-        ['Failed', 'carmella@example.com', '$721.00'],
+        { id: 'ken99', status: 'Success', email: 'ken99@example.com', amount: '$316.00' },
+        { id: 'abe45', status: 'Success', email: 'abe45@example.com', amount: '$242.00' },
+        { id: 'monserrat44', status: 'Processing', email: 'monserrat44@example.com', amount: '$837.00' },
+        { id: 'carmella', status: 'Failed', email: 'carmella@example.com', amount: '$721.00' },
+        { id: 'silas22', status: 'Success', email: 'silas22@example.com', amount: '$874.00' },
       ]
+  const normalizedQuery = query.trim().toLowerCase()
+  const filteredRows = rows.filter((row) =>
+    [row.status, row.email, row.amount].some((value) => value.toLowerCase().includes(normalizedQuery)),
+  )
+  const pageSize = 4
+  const maxPage = Math.max(0, Math.ceil(filteredRows.length / pageSize) - 1)
+  const currentPage = Math.min(page, maxPage)
+  const pagedRows = filteredRows.slice(currentPage * pageSize, currentPage * pageSize + pageSize)
+  const pagedIds = pagedRows.map((row) => row.id)
+  const selectedVisibleCount = pagedIds.filter((id) => selectedIds.includes(id)).length
+  const allVisibleSelected = pagedRows.length > 0 && selectedVisibleCount === pagedRows.length
+  const selectAllState = allVisibleSelected ? true : selectedVisibleCount > 0 ? 'indeterminate' : false
+  const toggleRow = (id: string, checked: boolean) => {
+    setSelectedIds((current) => checked ? Array.from(new Set([...current, id])) : current.filter((rowId) => rowId !== id))
+  }
+  const toggleVisibleRows = (checked: boolean) => {
+    setSelectedIds((current) => {
+      if (!checked) return current.filter((id) => !pagedIds.includes(id))
+      return Array.from(new Set([...current, ...pagedIds]))
+    })
+  }
+  const toggleColumn = (column: keyof typeof visibleColumns, checked: boolean) => {
+    setVisibleColumns((current) => ({ ...current, [column]: checked }))
+  }
+  const emptyCopy = isArabic ? 'لا توجد نتائج مطابقة.' : 'No matching rows.'
 
   return (
     <ShadcnPrimitives.DataTableShell className="data-table-detail-preview" dir={isArabic ? 'rtl' : 'ltr'} lang={isArabic ? 'ar' : 'en'}>
       <ShadcnPrimitives.DataTableToolbar>
-        <TextInput aria-label={isArabic ? 'تصفية البريد' : 'Filter emails'} placeholder={isArabic ? 'تصفية البريد...' : 'Filter emails...'} />
-        <Button size="sm" variant="secondary">
-          {isArabic ? 'الأعمدة' : 'Columns'}
-          <ChevronRight aria-hidden="true" className="data-table-preview-chevron" />
-        </Button>
+        <TextInput
+          aria-label={isArabic ? 'تصفية الصفوف' : 'Filter rows'}
+          onChange={(event) => {
+            setQuery(event.target.value)
+            setPage(0)
+          }}
+          placeholder={isArabic ? 'تصفية الصفوف...' : 'Filter rows...'}
+          value={query}
+        />
+        <DropdownMenu dir={isArabic ? 'rtl' : 'ltr'}>
+          <DropdownMenuTrigger asChild>
+            <Button className="data-table-columns-trigger" size="sm" variant="secondary">
+              {isArabic ? 'الأعمدة' : 'Columns'}
+              <ChevronRight aria-hidden="true" className="data-table-preview-chevron" />
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align={isArabic ? 'start' : 'end'}>
+            <DropdownMenuLabel>{isArabic ? 'إظهار الأعمدة' : 'Toggle columns'}</DropdownMenuLabel>
+            <DropdownMenuSeparator />
+            <DropdownMenuCheckboxItem checked={visibleColumns.status} onCheckedChange={(checked) => toggleColumn('status', checked === true)}>
+              {isArabic ? 'الحالة' : 'Status'}
+            </DropdownMenuCheckboxItem>
+            <DropdownMenuCheckboxItem checked={visibleColumns.email} onCheckedChange={(checked) => toggleColumn('email', checked === true)}>
+              {isArabic ? 'البريد' : 'Email'}
+            </DropdownMenuCheckboxItem>
+            <DropdownMenuCheckboxItem checked={visibleColumns.amount} onCheckedChange={(checked) => toggleColumn('amount', checked === true)}>
+              {isArabic ? 'المبلغ' : 'Amount'}
+            </DropdownMenuCheckboxItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
       </ShadcnPrimitives.DataTableToolbar>
       <ShadcnPrimitives.DataTable>
         <ShadcnPrimitives.DataTableHeader>
           <ShadcnPrimitives.DataTableRow>
-            <ShadcnPrimitives.DataTableHead data-size="control"><Checkbox aria-label={isArabic ? 'تحديد الكل' : 'Select all'} /></ShadcnPrimitives.DataTableHead>
-            <ShadcnPrimitives.DataTableHead>{isArabic ? 'الحالة' : 'Status'}</ShadcnPrimitives.DataTableHead>
-            <ShadcnPrimitives.DataTableHead>{isArabic ? 'البريد' : 'Email'} <ArrowDown aria-hidden="true" className="data-table-preview-sort" /></ShadcnPrimitives.DataTableHead>
-            <ShadcnPrimitives.DataTableHead data-align="end">{isArabic ? 'المبلغ' : 'Amount'}</ShadcnPrimitives.DataTableHead>
-            <ShadcnPrimitives.DataTableHead data-size="control"><span className="visually-hidden">{isArabic ? 'إجراءات' : 'Actions'}</span></ShadcnPrimitives.DataTableHead>
+            <ShadcnPrimitives.DataTableHead data-size="control">
+              <Checkbox
+                aria-label={isArabic ? 'تحديد الصفوف المعروضة' : 'Select visible rows'}
+                checked={selectAllState}
+                onCheckedChange={(checked) => toggleVisibleRows(checked === true)}
+              />
+            </ShadcnPrimitives.DataTableHead>
+            {visibleColumns.status ? <ShadcnPrimitives.DataTableHead>{isArabic ? 'الحالة' : 'Status'}</ShadcnPrimitives.DataTableHead> : null}
+            {visibleColumns.email ? (
+              <ShadcnPrimitives.DataTableHead>
+                <button className="data-table-sort-button" type="button">
+                  {isArabic ? 'البريد' : 'Email'} <ArrowDown aria-hidden="true" className="data-table-preview-sort" />
+                </button>
+              </ShadcnPrimitives.DataTableHead>
+            ) : null}
+            {visibleColumns.amount ? <ShadcnPrimitives.DataTableHead data-align="end">{isArabic ? 'المبلغ' : 'Amount'}</ShadcnPrimitives.DataTableHead> : null}
+            <ShadcnPrimitives.DataTableHead data-size="control">{isArabic ? 'إجراءات' : 'Actions'}</ShadcnPrimitives.DataTableHead>
           </ShadcnPrimitives.DataTableRow>
         </ShadcnPrimitives.DataTableHeader>
         <ShadcnPrimitives.DataTableBody>
-          {rows.map(([status, email, amount], index) => (
-            <ShadcnPrimitives.DataTableRow data-selected={index === 1 ? 'true' : undefined} key={email}>
-              <ShadcnPrimitives.DataTableCell data-size="control"><Checkbox aria-label={isArabic ? `تحديد ${email}` : `Select ${email}`} /></ShadcnPrimitives.DataTableCell>
-              <ShadcnPrimitives.DataTableCell>{status}</ShadcnPrimitives.DataTableCell>
-              <ShadcnPrimitives.DataTableCell>{email}</ShadcnPrimitives.DataTableCell>
-              <ShadcnPrimitives.DataTableCell data-align="end">{amount}</ShadcnPrimitives.DataTableCell>
+          {pagedRows.map((row) => (
+            <ShadcnPrimitives.DataTableRow data-selected={selectedIds.includes(row.id) ? 'true' : undefined} key={row.id}>
               <ShadcnPrimitives.DataTableCell data-size="control">
-                <IconButton label={isArabic ? 'إجراءات الصف' : 'Row actions'} variant="ghost">
-                  <MoreHorizontal aria-hidden="true" />
-                </IconButton>
+                <Checkbox
+                  aria-label={isArabic ? `تحديد ${row.email}` : `Select ${row.email}`}
+                  checked={selectedIds.includes(row.id)}
+                  onCheckedChange={(checked) => toggleRow(row.id, checked === true)}
+                />
+              </ShadcnPrimitives.DataTableCell>
+              {visibleColumns.status ? <ShadcnPrimitives.DataTableCell>{row.status}</ShadcnPrimitives.DataTableCell> : null}
+              {visibleColumns.email ? <ShadcnPrimitives.DataTableCell>{row.email}</ShadcnPrimitives.DataTableCell> : null}
+              {visibleColumns.amount ? <ShadcnPrimitives.DataTableCell data-align="end">{row.amount}</ShadcnPrimitives.DataTableCell> : null}
+              <ShadcnPrimitives.DataTableCell data-size="control">
+                <DropdownMenu dir={isArabic ? 'rtl' : 'ltr'}>
+                  <DropdownMenuTrigger asChild>
+                    <IconButton label={isArabic ? 'إجراءات الصف' : 'Row actions'} variant="ghost">
+                      <MoreHorizontal aria-hidden="true" />
+                    </IconButton>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent align={isArabic ? 'start' : 'end'}>
+                    <DropdownMenuItem>{isArabic ? 'نسخ البريد' : 'Copy email'}</DropdownMenuItem>
+                    <DropdownMenuItem>{isArabic ? 'عرض تفاصيل الدفع' : 'View payment details'}</DropdownMenuItem>
+                    <DropdownMenuSeparator />
+                    <DropdownMenuItem>{isArabic ? 'أرشفة الصف' : 'Archive row'}</DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
               </ShadcnPrimitives.DataTableCell>
             </ShadcnPrimitives.DataTableRow>
           ))}
+          {pagedRows.length === 0 ? (
+            <ShadcnPrimitives.DataTableRow>
+              <ShadcnPrimitives.DataTableCell colSpan={5}>
+                <div className="data-table-empty">{emptyCopy}</div>
+              </ShadcnPrimitives.DataTableCell>
+            </ShadcnPrimitives.DataTableRow>
+          ) : null}
         </ShadcnPrimitives.DataTableBody>
       </ShadcnPrimitives.DataTable>
       <ShadcnPrimitives.DataTableFooter>
-        <span>{isArabic ? 'تم تحديد ٠ من ٤ صفوف.' : '0 of 4 row(s) selected.'}</span>
+        <span>
+          {isArabic
+            ? `تم تحديد ${selectedIds.length} من ${filteredRows.length} صفوف.`
+            : `${selectedIds.length} of ${filteredRows.length} row(s) selected.`}
+        </span>
         <HStack gap={2}>
-          <Button size="sm" variant="secondary">{isArabic ? 'السابق' : 'Previous'}</Button>
-          <Button size="sm" variant="secondary">{isArabic ? 'التالي' : 'Next'}</Button>
+          <Button disabled={currentPage === 0} onClick={() => setPage((value) => Math.max(0, value - 1))} size="sm" variant="secondary">{isArabic ? 'السابق' : 'Previous'}</Button>
+          <Button disabled={currentPage >= maxPage} onClick={() => setPage((value) => Math.min(maxPage, value + 1))} size="sm" variant="secondary">{isArabic ? 'التالي' : 'Next'}</Button>
         </HStack>
       </ShadcnPrimitives.DataTableFooter>
     </ShadcnPrimitives.DataTableShell>
@@ -4237,38 +5418,38 @@ function renderShadcnMappedPreview(name: string, locale: Locale = 'en') {
 
   if (name === 'Separator') {
     return (
-      <VStack>
-        <span>{isArabic ? 'بداية القسم' : 'Section start'}</span>
-        <ShadcnPrimitives.Separator aria-label="Section separator" />
-        <span>{isArabic ? 'نهاية القسم' : 'Section end'}</span>
-      </VStack>
+      <div className="separator-detail-preview" dir={isArabic ? 'rtl' : 'ltr'}>
+        <VStack><span>{isArabic ? 'بداية القسم' : 'Section start'}</span><ShadcnPrimitives.Separator decorative={false} /><span>{isArabic ? 'نهاية القسم' : 'Section end'}</span></VStack>
+        <HStack className="separator-menu-example" gap={3}><span>{isArabic ? 'الرئيسية' : 'Home'}</span><ShadcnPrimitives.Separator orientation="vertical" /><span>{isArabic ? 'المكونات' : 'Components'}</span><ShadcnPrimitives.Separator orientation="vertical" /><span>{isArabic ? 'الثيمات' : 'Themes'}</span></HStack>
+        <ShadcnPrimitives.SeparatorLabel>{isArabic ? 'اليوم' : 'Today'}</ShadcnPrimitives.SeparatorLabel>
+      </div>
     )
   }
   if (name === 'Input OTP') {
+    const otpLabel = isArabic ? 'رمز التحقق لمرة واحدة' : 'One-time code'
     return (
       <Field>
-        <FieldLabel>One-time code</FieldLabel>
-        <ShadcnPrimitives.InputOTP aria-label="One-time code" value="2607" />
+        <FieldLabel>{otpLabel}</FieldLabel>
+        <ShadcnPrimitives.InputOTP
+          aria-label={otpLabel}
+          getSlotLabel={(index) => isArabic ? `الخانة ${index + 1}` : `Digit ${index + 1}`}
+          value="2607"
+        />
       </Field>
     )
   }
   if (name === 'Kbd') return <ShadcnPrimitives.Kbd>⌘ K</ShadcnPrimitives.Kbd>
-  if (name === 'Label') return <ShadcnPrimitives.Label>Field label</ShadcnPrimitives.Label>
-  if (name === 'Native Select') {
-    return (
-      <ShadcnPrimitives.NativeSelect defaultValue="default" aria-label="Theme">
-        <option value="default">Utopia Default</option>
-        <option value="future">Future theme</option>
-      </ShadcnPrimitives.NativeSelect>
-    )
-  }
+  if (name === 'Label') return <LabelPreview locale={locale} />
+  if (name === 'Native Select') return <NativeSelectPreview locale={locale} />
 
   if (name === 'Date Picker') {
     return (
       <div className="date-picker-detail-preview" dir={isArabic ? 'rtl' : 'ltr'} lang={isArabic ? 'ar' : 'en'}>
         <DatePicker
           defaultSelectedDate={new Date(2026, 6, 6)}
+          label={isArabic ? 'اختر التاريخ' : 'Select date'}
           locale={isArabic ? 'ar' : 'en-US'}
+          placeholder={isArabic ? 'اختر تاريخا' : 'Pick a date'}
           weekStartsOn={isArabic ? 6 : 0}
           yearRange={8}
         />
@@ -4349,25 +5530,82 @@ function renderShadcnMappedPreview(name: string, locale: Locale = 'en') {
     }
 
     if (name === 'Drawer') {
+      const drawerOptions = isArabic
+        ? [
+            { title: 'تسليم قياسي', badge: 'الأسرع', description: '25-35 دقيقة · تم تعيين السائق الآن', selected: true },
+            { title: '5:00 م - 5:15 م', description: 'يبدأ التحضير في 4:45 م' },
+            { title: '5:30 م - 5:45 م', description: 'مناسب إذا كنت في طريقك إلى المنزل' },
+            { title: '6:00 م - 6:15 م', description: 'الأكثر طلبا · ازدحام مرتفع' },
+          ]
+        : [
+            { title: 'Standard delivery', badge: 'Fastest', description: '25-35 min · Driver assigned now', selected: true },
+            { title: '5:00 PM - 5:15 PM', description: 'Prep starts at 4:45 PM' },
+            { title: '5:30 PM - 5:45 PM', description: "Good if you're heading home" },
+            { title: '6:00 PM - 6:15 PM', description: 'Most popular · High demand' },
+          ]
+      const drawerPlacements = [
+        { side: 'end' as const, label: isArabic ? 'نهاية منطقية' : 'Logical end' },
+        { side: 'start' as const, label: isArabic ? 'بداية منطقية' : 'Logical start' },
+        { side: 'bottom' as const, label: isArabic ? 'أسفل' : 'Bottom' },
+      ]
+
       return (
-        <ShadcnPrimitives.Drawer>
-          <ShadcnPrimitives.DrawerTrigger asChild>
-            <Button variant="secondary">{isArabic ? 'افتح الدرج' : 'Open drawer'}</Button>
-          </ShadcnPrimitives.DrawerTrigger>
-          <ShadcnPrimitives.DrawerContent dir={isArabic ? 'rtl' : undefined} side="end">
-            <ShadcnPrimitives.DrawerHeader>
-              <ShadcnPrimitives.DrawerTitle>{isArabic ? 'عنوان الدرج' : 'Drawer title'}</ShadcnPrimitives.DrawerTitle>
-              <ShadcnPrimitives.DrawerDescription>
-                {isArabic
-                  ? 'يستخدم الدرج مواضع البداية والنهاية المنطقية حتى ينعكس في واجهات RTL.'
-                  : 'Drawer uses logical start/end placement so RTL themes can mirror it.'}
-              </ShadcnPrimitives.DrawerDescription>
-            </ShadcnPrimitives.DrawerHeader>
-            <ShadcnPrimitives.DrawerFooter>
-              <ShadcnPrimitives.DrawerClose>{isArabic ? 'إغلاق' : 'Close'}</ShadcnPrimitives.DrawerClose>
-            </ShadcnPrimitives.DrawerFooter>
-          </ShadcnPrimitives.DrawerContent>
-        </ShadcnPrimitives.Drawer>
+        <div className="drawer-demo" dir={isArabic ? 'rtl' : 'ltr'} lang={isArabic ? 'ar' : 'en'}>
+          <p className="drawer-demo-note">
+            {isArabic
+              ? 'استخدم start و end كمواضع منطقية: في RTL ينعكس الاتجاه تلقائيا، بينما يبقى bottom موضعا عموديا.'
+              : 'Use start and end as logical placements: they mirror automatically in RTL, while bottom stays vertical.'}
+          </p>
+          <div className="drawer-demo-trigger-row">
+            {drawerPlacements.map((placement) => (
+              <ShadcnPrimitives.Drawer key={placement.side}>
+                <ShadcnPrimitives.DrawerTrigger asChild>
+                  <Button variant="secondary">{placement.label}</Button>
+                </ShadcnPrimitives.DrawerTrigger>
+                <ShadcnPrimitives.DrawerContent data-placement={placement.side} dir={isArabic ? 'rtl' : undefined} lang={isArabic ? 'ar' : 'en'} side={placement.side}>
+                  {placement.side === 'bottom' ? <div className="drawer-demo-handle" aria-hidden="true" /> : null}
+                  <ShadcnPrimitives.DrawerHeader>
+                    <ShadcnPrimitives.DrawerTitle>
+                      {isArabic ? `اختر وقت التسليم - ${placement.label}` : `Pick a delivery time - ${placement.label}`}
+                    </ShadcnPrimitives.DrawerTitle>
+                    <ShadcnPrimitives.DrawerDescription>
+                      {isArabic
+                        ? 'سنجهز طلبك في أقرب وقت ممكن. يستخدم الدرج مواضع البداية والنهاية المنطقية حتى ينعكس في واجهات RTL.'
+                        : "We'll prepare your order as soon as possible. Drawer supports logical start, logical end, and bottom placement."}
+                    </ShadcnPrimitives.DrawerDescription>
+                  </ShadcnPrimitives.DrawerHeader>
+                  <div className="drawer-demo-options" role="radiogroup" aria-label={isArabic ? 'أوقات التسليم' : 'Delivery times'}>
+                    {drawerOptions.map((option) => (
+                      <button
+                        aria-checked={option.selected ? true : false}
+                        className="drawer-demo-option"
+                        data-selected={option.selected ? true : undefined}
+                        key={option.title}
+                        role="radio"
+                        type="button"
+                      >
+                        <span className="drawer-demo-option-copy">
+                          <span className="drawer-demo-option-title">
+                            {option.title}
+                            {option.badge ? <span>{option.badge}</span> : null}
+                          </span>
+                          <span className="drawer-demo-option-description">{option.description}</span>
+                        </span>
+                        <span aria-hidden="true" className="drawer-demo-radio" />
+                      </button>
+                    ))}
+                  </div>
+                  <ShadcnPrimitives.DrawerFooter>
+                    <Button>{isArabic ? 'تأكيد وقت التسليم' : 'Confirm delivery time'}</Button>
+                    <ShadcnPrimitives.DrawerClose asChild>
+                      <Button variant="secondary">{isArabic ? 'إلغاء' : 'Cancel'}</Button>
+                    </ShadcnPrimitives.DrawerClose>
+                  </ShadcnPrimitives.DrawerFooter>
+                </ShadcnPrimitives.DrawerContent>
+              </ShadcnPrimitives.Drawer>
+            ))}
+          </div>
+        </div>
       )
     }
 
@@ -4377,12 +5615,10 @@ function renderShadcnMappedPreview(name: string, locale: Locale = 'en') {
 
     if (name === 'Sonner') {
       return (
-        <ShadcnPrimitives.Sonner>
-          <ShadcnPrimitives.SonnerToast>
-            <ShadcnPrimitives.SonnerTitle>{isArabic ? 'تم الحفظ' : 'Saved'}</ShadcnPrimitives.SonnerTitle>
-            <ShadcnPrimitives.SonnerDescription>{isArabic ? 'التغييرات جاهزة للمراجعة.' : 'Changes are ready for review.'}</ShadcnPrimitives.SonnerDescription>
-          </ShadcnPrimitives.SonnerToast>
-        </ShadcnPrimitives.Sonner>
+        <div className="sonner-contract-anatomy">
+          <code>{'<Toaster />'}</code>
+          <code>{"toast.success('Saved')"}</code>
+        </div>
       )
     }
 
@@ -4397,7 +5633,7 @@ function renderShadcnMappedPreview(name: string, locale: Locale = 'en') {
     }
   }
 
-  if (['Attachment', 'Bubble', 'Marker'].includes(name)) {
+  if (['Attachment', 'Bubble'].includes(name)) {
     if (name === 'Attachment') {
       return <AttachmentDemoPreview locale={locale} />
     }
@@ -4406,9 +5642,6 @@ function renderShadcnMappedPreview(name: string, locale: Locale = 'en') {
       return <ShadcnPrimitives.Bubble>Use Bubble for compact conversational content that still follows semantic surface tokens.</ShadcnPrimitives.Bubble>
     }
 
-    if (name === 'Marker') {
-      return <ShadcnPrimitives.Marker tone="accent">AI</ShadcnPrimitives.Marker>
-    }
   }
 
   if (['Navigation Menu', 'Pagination', 'Menubar'].includes(name)) {
@@ -4417,16 +5650,7 @@ function renderShadcnMappedPreview(name: string, locale: Locale = 'en') {
     }
 
     if (name === 'Pagination') {
-      return (
-        <ShadcnPrimitives.Pagination>
-          <ShadcnPrimitives.PaginationContent>
-            <ShadcnPrimitives.PaginationItem><ShadcnPrimitives.PaginationPrevious href="#prev">Previous</ShadcnPrimitives.PaginationPrevious></ShadcnPrimitives.PaginationItem>
-            <ShadcnPrimitives.PaginationItem><ShadcnPrimitives.PaginationLink href="#1">1</ShadcnPrimitives.PaginationLink></ShadcnPrimitives.PaginationItem>
-            <ShadcnPrimitives.PaginationItem><ShadcnPrimitives.PaginationLink href="#2" isCurrent>2</ShadcnPrimitives.PaginationLink></ShadcnPrimitives.PaginationItem>
-            <ShadcnPrimitives.PaginationItem><ShadcnPrimitives.PaginationNext href="#next">Next</ShadcnPrimitives.PaginationNext></ShadcnPrimitives.PaginationItem>
-          </ShadcnPrimitives.PaginationContent>
-        </ShadcnPrimitives.Pagination>
-      )
+      return <PaginationPreview locale={locale} />
     }
 
     if (name === 'Menubar') {
@@ -4476,19 +5700,7 @@ function renderShadcnMappedPreview(name: string, locale: Locale = 'en') {
 
   if (['Carousel', 'Chart', 'Data Table', 'Item'].includes(name)) {
     if (name === 'Carousel') {
-      return (
-        <ShadcnPrimitives.Carousel aria-label="Featured components">
-          <ShadcnPrimitives.CarouselContent>
-            <ShadcnPrimitives.CarouselItem><strong>Tokens</strong><span>Semantic roles first</span></ShadcnPrimitives.CarouselItem>
-            <ShadcnPrimitives.CarouselItem><strong>AI-readable</strong><span>Imports and rules included</span></ShadcnPrimitives.CarouselItem>
-            <ShadcnPrimitives.CarouselItem><strong>RTL</strong><span>Logical scrolling direction</span></ShadcnPrimitives.CarouselItem>
-          </ShadcnPrimitives.CarouselContent>
-          <ShadcnPrimitives.CarouselControls>
-            <ShadcnPrimitives.CarouselButton aria-label="Previous slide">Prev</ShadcnPrimitives.CarouselButton>
-            <ShadcnPrimitives.CarouselButton aria-label="Next slide">Next</ShadcnPrimitives.CarouselButton>
-          </ShadcnPrimitives.CarouselControls>
-        </ShadcnPrimitives.Carousel>
-      )
+      return <CarouselBehaviorPreview locale={locale} />
     }
 
     if (name === 'Chart') {
@@ -4537,32 +5749,11 @@ function renderShadcnMappedPreview(name: string, locale: Locale = 'en') {
     }
 
     if (name === 'Resizable') {
-      return (
-        <ShadcnPrimitives.Resizable>
-          <ShadcnPrimitives.ResizablePanel defaultSize={55}>Preview</ShadcnPrimitives.ResizablePanel>
-          <ShadcnPrimitives.ResizableHandle />
-          <ShadcnPrimitives.ResizablePanel defaultSize={45}>Inspector</ShadcnPrimitives.ResizablePanel>
-        </ShadcnPrimitives.Resizable>
-      )
+      return <ResizablePreview locale={locale} />
     }
 
     if (name === 'Scroll Area') {
-      return (
-        <ShadcnPrimitives.ScrollArea>
-          <ShadcnPrimitives.ScrollAreaViewport>
-            <VStack>
-              {['Tokens', 'Components', 'Templates', 'Themes', 'Arabic-friendly', 'AI rules'].map((item) => (
-                <ShadcnPrimitives.Item key={item}>
-                  <ShadcnPrimitives.ItemContent>
-                    <ShadcnPrimitives.ItemTitle>{item}</ShadcnPrimitives.ItemTitle>
-                  </ShadcnPrimitives.ItemContent>
-                </ShadcnPrimitives.Item>
-              ))}
-            </VStack>
-          </ShadcnPrimitives.ScrollAreaViewport>
-          <ShadcnPrimitives.ScrollBar />
-        </ShadcnPrimitives.ScrollArea>
-      )
+      return <ScrollAreaPreview locale={locale} />
     }
 
     const Component = shadcnPrimitiveComponent(name)
@@ -4593,6 +5784,180 @@ function renderShadcnMappedPreview(name: string, locale: Locale = 'en') {
         <CardDescription>{shadcnPrimitiveDescription(name)}</CardDescription>
       </CardHeader>
     </Card>
+  )
+}
+
+function PaginationPreview({ locale }: { locale: Locale }) {
+  const isArabic = locale === 'ar'
+  const [page, setPage] = useState(2)
+  const total = 8
+  const goTo = (nextPage: number) => (event: MouseEvent<HTMLAnchorElement>) => {
+    event.preventDefault()
+    setPage(Math.min(total, Math.max(1, nextPage)))
+  }
+  const numerals = (value: number) => isArabic ? new Intl.NumberFormat('ar-EG-u-nu-arab', { useGrouping: false }).format(value) : String(value)
+  const labels = {
+    full: isArabic ? 'ترقيم كامل' : 'Full navigation',
+    simple: isArabic ? 'صفحات فقط' : 'Page numbers only',
+    compact: isArabic ? 'تنقل مضغوط للجدول' : 'Compact table navigation',
+    previous: isArabic ? 'السابق' : 'Previous',
+    next: isArabic ? 'التالي' : 'Next',
+    page: isArabic ? 'الصفحة' : 'Page',
+    of: isArabic ? 'من' : 'of',
+    rows: isArabic ? 'صفوف لكل صفحة' : 'Rows per page',
+  }
+  const pageLink = (value: number) => (
+    <ShadcnPrimitives.PaginationItem key={value}>
+      <ShadcnPrimitives.PaginationLink
+        aria-label={`${labels.page} ${numerals(value)}`}
+        href={`?page=${value}`}
+        isActive={page === value}
+        onClick={goTo(value)}
+      >
+        {numerals(value)}
+      </ShadcnPrimitives.PaginationLink>
+    </ShadcnPrimitives.PaginationItem>
+  )
+
+  return (
+    <div className="pagination-preview" dir={isArabic ? 'rtl' : 'ltr'} lang={isArabic ? 'ar' : 'en'}>
+      <section>
+        <span className="pagination-preview-label">{labels.full}</span>
+        <ShadcnPrimitives.Pagination aria-label={labels.full}>
+          <ShadcnPrimitives.PaginationContent>
+            <ShadcnPrimitives.PaginationItem>
+              <ShadcnPrimitives.PaginationPrevious aria-disabled={page === 1} href={`?page=${page - 1}`} onClick={goTo(page - 1)} text={labels.previous} />
+            </ShadcnPrimitives.PaginationItem>
+            {pageLink(1)}
+            {page > 3 && <ShadcnPrimitives.PaginationItem><ShadcnPrimitives.PaginationEllipsis label={isArabic ? 'صفحات إضافية' : 'More pages'} /></ShadcnPrimitives.PaginationItem>}
+            {page > 2 && page < total && pageLink(page)}
+            {page <= 2 && pageLink(2)}
+            {page < total - 1 && <ShadcnPrimitives.PaginationItem><ShadcnPrimitives.PaginationEllipsis label={isArabic ? 'صفحات إضافية' : 'More pages'} /></ShadcnPrimitives.PaginationItem>}
+            {pageLink(total)}
+            <ShadcnPrimitives.PaginationItem>
+              <ShadcnPrimitives.PaginationNext aria-disabled={page === total} href={`?page=${page + 1}`} onClick={goTo(page + 1)} text={labels.next} />
+            </ShadcnPrimitives.PaginationItem>
+          </ShadcnPrimitives.PaginationContent>
+        </ShadcnPrimitives.Pagination>
+      </section>
+      <section>
+        <span className="pagination-preview-label">{labels.simple}</span>
+        <ShadcnPrimitives.Pagination aria-label={labels.simple}>
+          <ShadcnPrimitives.PaginationContent>{[1, 2, 3, 4, 5].map(pageLink)}</ShadcnPrimitives.PaginationContent>
+        </ShadcnPrimitives.Pagination>
+      </section>
+      <section className="pagination-preview-compact">
+        <label>{labels.rows}<ShadcnPrimitives.NativeSelect defaultValue="25" size="sm" aria-label={labels.rows}><ShadcnPrimitives.NativeSelectOption value="10">10</ShadcnPrimitives.NativeSelectOption><ShadcnPrimitives.NativeSelectOption value="25">25</ShadcnPrimitives.NativeSelectOption><ShadcnPrimitives.NativeSelectOption value="50">50</ShadcnPrimitives.NativeSelectOption></ShadcnPrimitives.NativeSelect></label>
+        <span>{labels.page} {numerals(page)} {labels.of} {numerals(total)}</span>
+        <ShadcnPrimitives.Pagination aria-label={labels.page}>
+          <ShadcnPrimitives.PaginationContent>
+            <ShadcnPrimitives.PaginationItem><ShadcnPrimitives.PaginationPrevious aria-disabled={page === 1} href={`?page=${page - 1}`} onClick={goTo(page - 1)} text={labels.previous} /></ShadcnPrimitives.PaginationItem>
+            <ShadcnPrimitives.PaginationItem><ShadcnPrimitives.PaginationNext aria-disabled={page === total} href={`?page=${page + 1}`} onClick={goTo(page + 1)} text={labels.next} /></ShadcnPrimitives.PaginationItem>
+          </ShadcnPrimitives.PaginationContent>
+        </ShadcnPrimitives.Pagination>
+      </section>
+    </div>
+  )
+}
+
+function PopoverPreview({ locale }: { locale: Locale }) {
+  const isArabic = locale === 'ar'
+  const [controlledOpen, setControlledOpen] = useState(false)
+  const [width, setWidth] = useState('320')
+  const [height, setHeight] = useState('180')
+  const copy = {
+    basic: isArabic ? 'أساسي' : 'Basic',
+    open: isArabic ? 'فتح النافذة' : 'Open popover',
+    title: isArabic ? 'حول هذا النمط' : 'About this pattern',
+    description: isArabic ? 'محتوى إضافي غير حرج يظهر قرب عنصر التشغيل.' : 'Supplemental, non-critical content placed near its trigger.',
+    align: isArabic ? 'المحاذاة المنطقية' : 'Logical alignment',
+    start: isArabic ? 'البداية' : 'Start',
+    center: isArabic ? 'الوسط' : 'Center',
+    end: isArabic ? 'النهاية' : 'End',
+    form: isArabic ? 'نموذج داخل النافذة' : 'Form composition',
+    dimensions: isArabic ? 'الأبعاد' : 'Dimensions',
+    dimensionsDescription: isArabic ? 'غيّر أبعاد مساحة العمل.' : 'Set the dimensions for the workspace.',
+    width: isArabic ? 'العرض' : 'Width',
+    height: isArabic ? 'الارتفاع' : 'Height',
+    save: isArabic ? 'حفظ' : 'Save',
+  }
+
+  return (
+    <div className="popover-preview" dir={isArabic ? 'rtl' : 'ltr'} lang={isArabic ? 'ar' : 'en'}>
+      <section>
+        <span className="popover-preview-label">{copy.basic}</span>
+        <Popover open={controlledOpen} onOpenChange={setControlledOpen}>
+          <PopoverTrigger asChild><Button variant="secondary">{copy.open}</Button></PopoverTrigger>
+          <PopoverContent align="start">
+            <PopoverHeader><PopoverTitle>{copy.title}</PopoverTitle><PopoverDescription>{copy.description}</PopoverDescription></PopoverHeader>
+            <PopoverClose aria-label={isArabic ? 'إغلاق' : 'Close'} />
+          </PopoverContent>
+        </Popover>
+      </section>
+      <section>
+        <span className="popover-preview-label">{copy.align}</span>
+        <ButtonGroup aria-label={copy.align}>
+          {(['start', 'center', 'end'] as const).map((align) => (
+            <Popover key={align}>
+              <PopoverTrigger asChild><Button variant="outline">{copy[align]}</Button></PopoverTrigger>
+              <PopoverContent align={align}><PopoverHeader><PopoverTitle>{copy[align]}</PopoverTitle><PopoverDescription>{copy.description}</PopoverDescription></PopoverHeader></PopoverContent>
+            </Popover>
+          ))}
+        </ButtonGroup>
+      </section>
+      <section>
+        <span className="popover-preview-label">{copy.form}</span>
+        <Popover>
+          <PopoverTrigger asChild><Button variant="outline">{copy.dimensions}</Button></PopoverTrigger>
+          <PopoverContent align="end" className="popover-preview-form">
+            <PopoverHeader><PopoverTitle>{copy.dimensions}</PopoverTitle><PopoverDescription>{copy.dimensionsDescription}</PopoverDescription></PopoverHeader>
+            <FieldGroup>
+              <Field orientation="horizontal"><FieldLabel htmlFor="popover-width">{copy.width}</FieldLabel><TextInput id="popover-width" inputMode="numeric" value={width} onChange={(event) => setWidth(event.target.value)} /></Field>
+              <Field orientation="horizontal"><FieldLabel htmlFor="popover-height">{copy.height}</FieldLabel><TextInput id="popover-height" inputMode="numeric" value={height} onChange={(event) => setHeight(event.target.value)} /></Field>
+            </FieldGroup>
+            <PopoverClose asChild><Button size="sm">{copy.save}</Button></PopoverClose>
+          </PopoverContent>
+        </Popover>
+      </section>
+    </div>
+  )
+}
+
+function ProgressPreview({ locale }: { locale: Locale }) {
+  const isArabic = locale === 'ar'
+  const [value, setValue] = useState(56)
+  const percent = isArabic ? new Intl.NumberFormat('ar-EG-u-nu-arab').format(value) : value
+  const copy = {
+    controlled: isArabic ? 'تقدم متحكم به' : 'Controlled progress',
+    upload: isArabic ? 'تقدم الرفع' : 'Upload progress',
+    statuses: isArabic ? 'الحالات الدلالية' : 'Semantic statuses',
+    preparing: isArabic ? 'جار التحضير' : 'Preparing',
+    complete: isArabic ? 'مكتمل' : 'Complete',
+    warning: isArabic ? 'يحتاج إلى مراجعة' : 'Needs review',
+    failed: isArabic ? 'فشل الرفع' : 'Upload failed',
+    unknown: isArabic ? 'مدة غير معروفة' : 'Unknown duration',
+  }
+  return (
+    <div className="progress-preview" dir={isArabic ? 'rtl' : 'ltr'} lang={isArabic ? 'ar' : 'en'}>
+      <section>
+        <ProgressBar value={value}>
+          <div className="uds-progress-header"><ProgressLabel>{copy.upload}</ProgressLabel><ProgressValue>{percent}%</ProgressValue></div>
+          <ProgressTrack><ProgressIndicator /></ProgressTrack>
+        </ProgressBar>
+        <Slider aria-label={copy.controlled} max={100} value={[value]} onValueChange={(next) => setValue(next[0] ?? 0)} />
+      </section>
+      <section>
+        <span className="progress-preview-label">{copy.statuses}</span>
+        <ProgressBar label={copy.preparing} showValue status="default" value={32} valueText={isArabic ? '٣٢٪' : '32%'} />
+        <ProgressBar label={copy.complete} showValue status="success" value={100} valueText={isArabic ? '١٠٠٪' : '100%'} />
+        <ProgressBar label={copy.warning} showValue status="warning" value={72} valueText={isArabic ? '٧٢٪' : '72%'} />
+        <ProgressBar label={copy.failed} showValue status="destructive" value={44} valueText={isArabic ? '٤٤٪' : '44%'} />
+      </section>
+      <section>
+        <span className="progress-preview-label">{copy.unknown}</span>
+        <ProgressBar aria-label={copy.unknown} indeterminate />
+      </section>
+    </div>
   )
 }
 
@@ -5299,24 +6664,27 @@ export function Example() {
   if (name === 'Carousel') {
     return `import {
   Carousel,
-  CarouselButton,
   CarouselContent,
-  CarouselControls,
   CarouselItem,
 } from '@utopia-studio-design/design-system/ShadcnPrimitives';
 
+const items = [
+  { eyebrow: 'Module 01', title: 'Signal map' },
+  { eyebrow: 'Module 02', title: 'Verification path' },
+  { eyebrow: 'Module 03', title: 'Bilingual surface' },
+];
+
 export function Example() {
   return (
-    <Carousel aria-label="Featured components">
+    <Carousel aria-label="Featured modules">
       <CarouselContent>
-        <CarouselItem>Tokens</CarouselItem>
-        <CarouselItem>AI-readable</CarouselItem>
-        <CarouselItem>Arabic-friendly</CarouselItem>
+        {items.map((item) => (
+          <CarouselItem key={item.title}>
+            <span>{item.eyebrow}</span>
+            <strong>{item.title}</strong>
+          </CarouselItem>
+        ))}
       </CarouselContent>
-      <CarouselControls>
-        <CarouselButton aria-label="Previous slide">Prev</CarouselButton>
-        <CarouselButton aria-label="Next slide">Next</CarouselButton>
-      </CarouselControls>
     </Carousel>
   );
 }`
@@ -5416,11 +6784,13 @@ import { Button } from '@utopia-studio-design/design-system/Button';
 
 export function Example() {
   return (
-    <HoverCard>
+    <HoverCard delay={120} closeDelay={220}>
       <HoverCardTrigger asChild>
         <Button variant="secondary">Preview</Button>
       </HoverCardTrigger>
-      <HoverCardContent>Supplemental preview content.</HoverCardContent>
+      <HoverCardContent side="top" align="start">
+        Supplemental preview content.
+      </HoverCardContent>
     </HoverCard>
   );
 }`
@@ -5429,7 +6799,11 @@ export function Example() {
   if (name === 'Popover') {
     return `import {
   Popover,
+  PopoverClose,
   PopoverContent,
+  PopoverDescription,
+  PopoverHeader,
+  PopoverTitle,
   PopoverTrigger,
 } from '@utopia-studio-design/design-system/Surface';
 import { Button } from '@utopia-studio-design/design-system/Button';
@@ -5440,7 +6814,13 @@ export function Example() {
       <PopoverTrigger asChild>
         <Button variant="secondary">Open</Button>
       </PopoverTrigger>
-      <PopoverContent>Small contextual panel.</PopoverContent>
+      <PopoverContent align="start">
+        <PopoverHeader>
+          <PopoverTitle>Dimensions</PopoverTitle>
+          <PopoverDescription>Set the workspace dimensions.</PopoverDescription>
+        </PopoverHeader>
+        <PopoverClose aria-label="Close" />
+      </PopoverContent>
     </Popover>
   );
 }`
@@ -5726,7 +7106,9 @@ export function Example() {
   return (
     <DatePicker
       defaultSelectedDate={new Date(2026, 6, 6)}
+      label="Select date"
       locale="en-US"
+      placeholder="Pick a date"
     />
   );
 }`
@@ -5824,23 +7206,65 @@ export function Example() {
 import { Button } from '@utopia-studio-design/design-system/Button';
 
 export function Example() {
+  const side: 'start' | 'end' | 'bottom' = 'end';
+
   return (
     <Drawer>
       <DrawerTrigger asChild>
         <Button variant="secondary">Open drawer</Button>
       </DrawerTrigger>
-      <DrawerContent side="end">
+      <DrawerContent side={side} dir="ltr">
         <DrawerHeader>
-          <DrawerTitle>Drawer title</DrawerTitle>
+          <DrawerTitle>Pick a delivery time</DrawerTitle>
           <DrawerDescription>
-            Use logical side placement for RTL-ready layouts.
+            Use logical start/end placement. In RTL, end opens from the left.
           </DrawerDescription>
         </DrawerHeader>
+        <div role="radiogroup" aria-label="Delivery times">
+          {/* Map your own option rows here. Keep layout on start/end tokens. */}
+        </div>
         <DrawerFooter>
-          <DrawerClose>Close</DrawerClose>
+          <Button>Confirm delivery time</Button>
+          <DrawerClose asChild>
+            <Button variant="secondary">Cancel</Button>
+          </DrawerClose>
         </DrawerFooter>
       </DrawerContent>
     </Drawer>
+  );
+}`
+  }
+
+  if (name === 'Field') {
+    return `import {
+  Field,
+  FieldDescription,
+  FieldError,
+  FieldGroup,
+  FieldLabel,
+  FieldLegend,
+  FieldSet,
+  TextInput,
+} from '@utopia-studio-design/design-system/Forms';
+
+export function ProjectFields() {
+  return (
+    <FieldSet>
+      <FieldLegend>Project details</FieldLegend>
+      <FieldDescription>Fields that identify this project.</FieldDescription>
+      <FieldGroup>
+        <Field>
+          <FieldLabel htmlFor="project-name">Project name</FieldLabel>
+          <TextInput id="project-name" />
+          <FieldDescription>Visible to workspace members.</FieldDescription>
+        </Field>
+        <Field data-invalid>
+          <FieldLabel htmlFor="project-url">Project URL</FieldLabel>
+          <TextInput id="project-url" aria-invalid="true" />
+          <FieldError>Use lowercase letters and hyphens only.</FieldError>
+        </Field>
+      </FieldGroup>
+    </FieldSet>
   );
 }`
   }
@@ -5877,7 +7301,7 @@ export function Example() {
   return (
     <Field>
       <FieldLabel>One-time code</FieldLabel>
-      <InputOTP aria-label="One-time code" value="2607" />
+      <InputOTP aria-label="One-time code" getSlotLabel={(index) => 'Digit ' + (index + 1)} value="2607" />
     </Field>
   );
 }`
@@ -5919,14 +7343,14 @@ export function Example() {
   }
 
   if (name === 'Label') {
-    return `import { Label } from '@utopia-studio-design/design-system/ShadcnPrimitives';
-import { TextInput } from '@utopia-studio-design/design-system/Forms';
+    return `import { Checkbox } from '@utopia-studio-design/design-system/Forms';
+import { Label } from '@utopia-studio-design/design-system/ShadcnPrimitives';
 
 export function Example() {
   return (
-    <div>
-      <Label htmlFor="project-name">Project name</Label>
-      <TextInput id="project-name" />
+    <div className="control-row">
+      <Checkbox id="terms" />
+      <Label htmlFor="terms">Accept terms and conditions</Label>
     </div>
   );
 }`
@@ -5935,9 +7359,13 @@ export function Example() {
   if (name === 'Menubar') {
     return `import {
   Menubar,
+  MenubarCheckboxItem,
   MenubarContent,
+  MenubarGroup,
   MenubarItem,
   MenubarMenu,
+  MenubarSeparator,
+  MenubarShortcut,
   MenubarTrigger,
 } from '@utopia-studio-design/design-system/ShadcnPrimitives';
 
@@ -5945,10 +7373,14 @@ export function Example() {
   return (
     <Menubar>
       <MenubarMenu>
-        <MenubarTrigger>Docs</MenubarTrigger>
+        <MenubarTrigger>File</MenubarTrigger>
         <MenubarContent>
-          <MenubarItem>Getting started</MenubarItem>
-          <MenubarItem>Arabic-friendly guide</MenubarItem>
+          <MenubarGroup>
+            <MenubarItem>New file <MenubarShortcut>⌘N</MenubarShortcut></MenubarItem>
+            <MenubarItem>Save <MenubarShortcut>⌘S</MenubarShortcut></MenubarItem>
+          </MenubarGroup>
+          <MenubarSeparator />
+          <MenubarCheckboxItem checked>Show status bar</MenubarCheckboxItem>
         </MenubarContent>
       </MenubarMenu>
     </Menubar>
@@ -5957,7 +7389,11 @@ export function Example() {
   }
 
   if (name === 'Native Select') {
-    return `import { NativeSelect } from '@utopia-studio-design/design-system/ShadcnPrimitives';
+    return `import {
+  NativeSelect,
+  NativeSelectOptGroup,
+  NativeSelectOption,
+} from '@utopia-studio-design/design-system/ShadcnPrimitives';
 import { Field, FieldLabel } from '@utopia-studio-design/design-system/Forms';
 
 export function Example() {
@@ -5965,8 +7401,10 @@ export function Example() {
     <Field>
       <FieldLabel>Theme</FieldLabel>
       <NativeSelect defaultValue="default">
-        <option value="default">Utopia Default</option>
-        <option value="future">Future theme</option>
+        <NativeSelectOption value="default">Utopia Default</NativeSelectOption>
+        <NativeSelectOptGroup label="Future themes">
+          <NativeSelectOption value="future">Future theme</NativeSelectOption>
+        </NativeSelectOptGroup>
       </NativeSelect>
     </Field>
   );
@@ -5977,6 +7415,7 @@ export function Example() {
     return `import {
   NavigationMenu,
   NavigationMenuContent,
+  NavigationMenuIndicator,
   NavigationMenuItem,
   NavigationMenuLink,
   NavigationMenuList,
@@ -5999,6 +7438,7 @@ export function Example() {
           <NavigationMenuLink href="/components">Components</NavigationMenuLink>
         </NavigationMenuItem>
       </NavigationMenuList>
+      <NavigationMenuIndicator />
       <NavigationMenuViewport />
     </NavigationMenu>
   );
@@ -6009,6 +7449,7 @@ export function Example() {
     return `import {
   Pagination,
   PaginationContent,
+  PaginationEllipsis,
   PaginationItem,
   PaginationLink,
   PaginationNext,
@@ -6029,6 +7470,9 @@ export function Example() {
           <PaginationLink href="?page=2" isCurrent>2</PaginationLink>
         </PaginationItem>
         <PaginationItem>
+          <PaginationEllipsis />
+        </PaginationItem>
+        <PaginationItem>
           <PaginationNext href="?page=3">Next</PaginationNext>
         </PaginationItem>
       </PaginationContent>
@@ -6038,19 +7482,18 @@ export function Example() {
   }
 
   if (name === 'Radio Group') {
-    return `import { RadioGroup, RadioGroupItem } from '@utopia-studio-design/design-system/Forms';
+    return `import { RadioGroup, RadioGroupOption } from '@utopia-studio-design/design-system/Forms';
 
 export function Example() {
   return (
-    <RadioGroup defaultValue="docs" aria-label="View">
-      <label>
-        <RadioGroupItem value="docs" />
-        Docs
-      </label>
-      <label>
-        <RadioGroupItem value="components" />
-        Components
-      </label>
+    <RadioGroup defaultValue="team" aria-label="Project scope">
+      <RadioGroupOption value="individual" label="Individual" />
+      <RadioGroupOption
+        value="team"
+        label="Team"
+        description="For shared projects and everyday collaboration."
+        variant="card"
+      />
     </RadioGroup>
   );
 }`
@@ -6065,10 +7508,10 @@ export function Example() {
 
 export function Example() {
   return (
-    <Resizable>
-      <ResizablePanel defaultSize={55}>Preview</ResizablePanel>
-      <ResizableHandle />
-      <ResizablePanel defaultSize={45}>Inspector</ResizablePanel>
+    <Resizable orientation="horizontal">
+      <ResizablePanel defaultSize="36%">Navigation</ResizablePanel>
+      <ResizableHandle aria-label="Resize panels" withHandle />
+      <ResizablePanel defaultSize="64%">Content</ResizablePanel>
     </Resizable>
   );
 }`
@@ -6077,6 +7520,7 @@ export function Example() {
   if (name === 'Scroll Area') {
     return `import {
   ScrollArea,
+  ScrollAreaCorner,
   ScrollAreaViewport,
   ScrollBar,
 } from '@utopia-studio-design/design-system/ShadcnPrimitives';
@@ -6087,7 +7531,9 @@ export function Example() {
       <ScrollAreaViewport>
         Long scrollable content
       </ScrollAreaViewport>
-      <ScrollBar />
+      <ScrollBar orientation="vertical" />
+      <ScrollBar orientation="horizontal" />
+      <ScrollAreaCorner />
     </ScrollArea>
   );
 }`
@@ -6136,7 +7582,7 @@ export function Example() {
       <SheetTrigger asChild>
         <Button variant="secondary">Open sheet</Button>
       </SheetTrigger>
-      <SheetContent side="end">
+      <SheetContent closeLabel="Close sheet" side="end">
         <SheetHeader>
           <SheetTitle>Sheet title</SheetTitle>
           <SheetDescription>
@@ -6161,37 +7607,23 @@ export function Example() {
   }
 
   if (name === 'Sonner') {
-    return isArabic ? `import {
-  Sonner,
-  SonnerDescription,
-  SonnerTitle,
-  SonnerToast,
-} from '@utopia-studio-design/design-system/ShadcnPrimitives';
+    return isArabic ? `import { Toaster, toast } from '@utopia-studio-design/design-system/ShadcnPrimitives';
 
 export function Example() {
   return (
-    <Sonner>
-      <SonnerToast>
-        <SonnerTitle>تم الحفظ</SonnerTitle>
-        <SonnerDescription>التغييرات جاهزة للمراجعة.</SonnerDescription>
-      </SonnerToast>
-    </Sonner>
+    <>
+      <Toaster dir="rtl" position="top-left" />
+      <button onClick={() => toast.success('تم الحفظ')}>عرض التنبيه</button>
+    </>
   );
-}` : `import {
-  Sonner,
-  SonnerDescription,
-  SonnerTitle,
-  SonnerToast,
-} from '@utopia-studio-design/design-system/ShadcnPrimitives';
+}` : `import { Toaster, toast } from '@utopia-studio-design/design-system/ShadcnPrimitives';
 
 export function Example() {
   return (
-    <Sonner>
-      <SonnerToast>
-        <SonnerTitle>Saved</SonnerTitle>
-        <SonnerDescription>Changes are ready for review.</SonnerDescription>
-      </SonnerToast>
-    </Sonner>
+    <>
+      <Toaster position="top-right" />
+      <button onClick={() => toast.success('Saved')}>Show toast</button>
+    </>
   );
 }`
   }
@@ -6270,6 +7702,50 @@ export function Example() {
         </TableRow>
       </TableBody>
     </Table>
+  );
+}`
+  }
+
+  if (name === 'Progress') {
+    return isArabic ? `import {
+  Progress,
+  ProgressIndicator,
+  ProgressLabel,
+  ProgressTrack,
+  ProgressValue,
+} from '@utopia-studio-design/design-system/DataDisplay';
+
+export function Example() {
+  return (
+    <Progress value={56} dir="rtl">
+      <div className="progress-header">
+        <ProgressLabel>تقدم الرفع</ProgressLabel>
+        <ProgressValue />
+      </div>
+      <ProgressTrack>
+        <ProgressIndicator />
+      </ProgressTrack>
+    </Progress>
+  );
+}` : `import {
+  Progress,
+  ProgressIndicator,
+  ProgressLabel,
+  ProgressTrack,
+  ProgressValue,
+} from '@utopia-studio-design/design-system/DataDisplay';
+
+export function Example() {
+  return (
+    <Progress value={56}>
+      <div className="progress-header">
+        <ProgressLabel>Upload progress</ProgressLabel>
+        <ProgressValue />
+      </div>
+      <ProgressTrack>
+        <ProgressIndicator />
+      </ProgressTrack>
+    </Progress>
   );
 }`
   }

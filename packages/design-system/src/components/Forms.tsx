@@ -4,34 +4,136 @@ import * as RadioGroupPrimitive from '@radix-ui/react-radio-group'
 import * as SelectPrimitive from '@radix-ui/react-select'
 import * as SliderPrimitive from '@radix-ui/react-slider'
 import * as SwitchPrimitive from '@radix-ui/react-switch'
-import { Check } from 'lucide-react'
+import { AnimatePresence, motion, useReducedMotion } from 'framer-motion'
+import { Check, Minus } from 'lucide-react'
 import { cn } from '../lib/utils'
 
-export function Field({ className, ...props }: React.HTMLAttributes<HTMLDivElement>) {
-  return <div className={cn('uds-field', className)} {...props} />
+type FieldProps = React.HTMLAttributes<HTMLDivElement> & {
+  orientation?: 'vertical' | 'horizontal' | 'responsive'
+}
+
+export function Field({ className, orientation = 'vertical', role = 'group', ...props }: FieldProps) {
+  return <div className={cn('uds-field', className)} data-orientation={orientation} role={role} {...props} />
+}
+
+export function FieldSet({ className, ...props }: React.FieldsetHTMLAttributes<HTMLFieldSetElement>) {
+  return <fieldset className={cn('uds-field-set', className)} {...props} />
+}
+
+type FieldLegendProps = React.HTMLAttributes<HTMLLegendElement> & {
+  variant?: 'legend' | 'label'
+}
+
+export function FieldLegend({ className, variant = 'legend', ...props }: FieldLegendProps) {
+  return <legend className={cn('uds-field-legend', className)} data-variant={variant} {...props} />
+}
+
+export function FieldGroup({ className, ...props }: React.HTMLAttributes<HTMLDivElement>) {
+  return <div className={cn('uds-field-group', className)} {...props} />
+}
+
+export function FieldContent({ className, ...props }: React.HTMLAttributes<HTMLDivElement>) {
+  return <div className={cn('uds-field-content', className)} {...props} />
 }
 
 export function FieldLabel({ className, ...props }: React.LabelHTMLAttributes<HTMLLabelElement>) {
   return <label className={cn('uds-field-label', className)} {...props} />
 }
 
+export function FieldTitle({ className, ...props }: React.HTMLAttributes<HTMLDivElement>) {
+  return <div className={cn('uds-field-title', className)} {...props} />
+}
+
+export function FieldDescription({ className, ...props }: React.HTMLAttributes<HTMLParagraphElement>) {
+  return <p className={cn('uds-field-description', className)} {...props} />
+}
+
+type FieldErrorItem = { message?: string } | undefined
+
+type FieldErrorProps = React.HTMLAttributes<HTMLDivElement> & {
+  errors?: FieldErrorItem[]
+  issues?: FieldErrorItem[]
+}
+
+export function FieldError({ className, children, errors, issues, ...props }: FieldErrorProps) {
+  const messages = [...(errors ?? []), ...(issues ?? [])]
+    .map((item) => item?.message)
+    .filter((message): message is string => Boolean(message))
+
+  if (!children && messages.length === 0) return null
+
+  return (
+    <div className={cn('uds-field-error', className)} aria-live="polite" {...props}>
+      {children ?? (messages.length > 1 ? <ul>{messages.map((message) => <li key={message}>{message}</li>)}</ul> : messages[0])}
+    </div>
+  )
+}
+
+export function FieldSeparator({ className, children, ...props }: React.HTMLAttributes<HTMLDivElement>) {
+  return <div className={cn('uds-field-separator', className)} role="separator" {...props}>{children}</div>
+}
+
 export function TextInput({ className, ...props }: React.InputHTMLAttributes<HTMLInputElement>) {
   return <input className={cn('uds-input', className)} type="text" {...props} />
 }
 
-export function TextArea({ className, ...props }: React.TextareaHTMLAttributes<HTMLTextAreaElement>) {
-  return <textarea className={cn('uds-input uds-textarea', className)} {...props} />
+export function TextArea({ className, resize = 'vertical', ...props }: React.TextareaHTMLAttributes<HTMLTextAreaElement> & { resize?: 'none' | 'vertical' | 'both' }) {
+  return <textarea className={cn('uds-input uds-textarea', className)} data-resize={resize} {...props} />
 }
 export const Textarea = TextArea
 
+type CheckboxProps = React.ComponentProps<typeof CheckboxPrimitive.Root> & {
+  variant?: 'normal' | 'fancy'
+}
+
+type CheckboxState = boolean | 'indeterminate'
+
 export function Checkbox({
   className,
+  variant = 'normal',
+  checked,
+  defaultChecked,
+  onCheckedChange,
   ...props
-}: React.ComponentProps<typeof CheckboxPrimitive.Root>) {
+}: CheckboxProps) {
+  const reduceMotion = useReducedMotion()
+  const isControlled = checked !== undefined
+  const [uncontrolledChecked, setUncontrolledChecked] = React.useState<CheckboxState>(defaultChecked ?? false)
+  const currentChecked = (isControlled ? checked : uncontrolledChecked) as CheckboxState
+  const showMark = currentChecked === true || currentChecked === 'indeterminate'
+
+  function handleCheckedChange(nextChecked: CheckboxState) {
+    if (!isControlled) {
+      setUncontrolledChecked(nextChecked)
+    }
+
+    onCheckedChange?.(nextChecked)
+  }
+
   return (
-    <CheckboxPrimitive.Root className={cn('uds-checkbox', className)} {...props}>
-      <CheckboxPrimitive.Indicator className="uds-checkbox-indicator">
-        <Check aria-hidden="true" />
+    <CheckboxPrimitive.Root
+      className={cn('uds-checkbox', className)}
+      data-variant={variant}
+      checked={currentChecked}
+      onCheckedChange={handleCheckedChange}
+      {...props}
+    >
+      <CheckboxPrimitive.Indicator className="uds-checkbox-indicator" forceMount>
+        <AnimatePresence initial={false}>
+          {showMark ? (
+            <motion.span
+              key={currentChecked === 'indeterminate' ? 'indeterminate' : 'checked'}
+              className="uds-checkbox-motion-mark"
+              initial={reduceMotion ? { opacity: 1 } : { opacity: 0, scale: 0.72 }}
+              animate={reduceMotion ? { opacity: 1 } : { opacity: 1, scale: 1 }}
+              exit={reduceMotion ? { opacity: 0 } : { opacity: 0, scale: 0.72 }}
+              transition={reduceMotion ? { duration: 0 } : { duration: 0.16, ease: [0.16, 1, 0.3, 1] }}
+              aria-hidden="true"
+            >
+              {currentChecked === 'indeterminate' ? <Minus aria-hidden="true" /> : <Check aria-hidden="true" />}
+            </motion.span>
+          ) : null}
+        </AnimatePresence>
       </CheckboxPrimitive.Indicator>
     </CheckboxPrimitive.Root>
   )
@@ -53,9 +155,45 @@ export function RadioGroupItem({ className, ...props }: React.ComponentProps<typ
   )
 }
 
-export function Switch({ className, ...props }: React.ComponentProps<typeof SwitchPrimitive.Root>) {
+type RadioGroupOptionProps = Omit<React.LabelHTMLAttributes<HTMLLabelElement>, 'children'> & {
+  value: string
+  label: React.ReactNode
+  description?: React.ReactNode
+  disabled?: boolean
+  variant?: 'default' | 'card'
+}
+
+export function RadioGroupOption({
+  className,
+  value,
+  label,
+  description,
+  disabled = false,
+  variant = 'default',
+  ...props
+}: RadioGroupOptionProps) {
+  const generatedId = React.useId()
+
   return (
-    <SwitchPrimitive.Root className={cn('uds-switch', className)} {...props}>
+    <label
+      className={cn('uds-radio-group-option', className)}
+      data-disabled={disabled ? '' : undefined}
+      data-variant={variant}
+      htmlFor={generatedId}
+      {...props}
+    >
+      <RadioGroupItem disabled={disabled} id={generatedId} value={value} />
+      <span className="uds-radio-group-option-content">
+        <span className="uds-radio-group-option-label">{label}</span>
+        {description ? <span className="uds-radio-group-option-description">{description}</span> : null}
+      </span>
+    </label>
+  )
+}
+
+export function Switch({ className, size = 'md', ...props }: React.ComponentProps<typeof SwitchPrimitive.Root> & { size?: 'sm' | 'md' }) {
+  return (
+    <SwitchPrimitive.Root className={cn('uds-switch', className)} data-size={size} {...props}>
       <SwitchPrimitive.Thumb className="uds-switch-thumb" />
     </SwitchPrimitive.Root>
   )
@@ -64,9 +202,10 @@ export function Switch({ className, ...props }: React.ComponentProps<typeof Swit
 export function Slider({
   className,
   defaultValue,
+  size = 'md',
   value,
   ...props
-}: React.ComponentProps<typeof SliderPrimitive.Root>) {
+}: React.ComponentProps<typeof SliderPrimitive.Root> & { size?: 'sm' | 'md' }) {
   const currentValue = Array.isArray(value)
     ? value
     : Array.isArray(defaultValue)
@@ -74,7 +213,7 @@ export function Slider({
       : [typeof defaultValue === 'number' ? defaultValue : 0]
 
   return (
-    <SliderPrimitive.Root className={cn('uds-slider', className)} defaultValue={defaultValue} value={value} {...props}>
+    <SliderPrimitive.Root className={cn('uds-slider', className)} data-size={size} defaultValue={defaultValue} value={value} {...props}>
       <SliderPrimitive.Track className="uds-slider-track">
         <SliderPrimitive.Range className="uds-slider-range" />
       </SliderPrimitive.Track>
