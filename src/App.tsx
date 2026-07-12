@@ -310,6 +310,7 @@ function AppShell() {
   useEffect(() => {
     document.documentElement.lang = isCommunitySite ? 'en' : locale === 'ar' ? 'ar' : 'en'
     document.documentElement.dir = isCommunitySite ? 'ltr' : dir
+    document.title = isCommunitySite ? 'Utopia Design Club' : 'Ceramic Design System'
     window.localStorage.setItem('utopia-ds-locale', locale)
   }, [dir, isCommunitySite, locale])
 
