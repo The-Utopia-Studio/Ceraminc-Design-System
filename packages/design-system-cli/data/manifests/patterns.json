@@ -1,0 +1,12 @@
+{
+  "intent": "AI-first, shadcn-founded, theme-extensible, Arabic-friendly, architectural, precise, and commercially credible.",
+  "principles": [
+    "Design System is the parent system; production sites are consumers.",
+    "Use shadcn/ui as the component architecture foundation.",
+    "Use semantic tokens before raw primitives.",
+    "Core owns semantic contracts and component architecture, not brand-specific visual philosophy.",
+    "Themes are token-contract and visual-policy implementations, not decorative skins.",
+    "Arabic-friendly support is a baseline requirement."
+  ],
+  "antiPatterns": ["Invented tokens", "Generic SaaS gradients", "Rounded marketing cards", "Glassmorphism", "Raw left/right APIs", "Unreviewed Arabic copy"]
+}

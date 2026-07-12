@@ -1,15 +1,8 @@
-import { useEffect, useMemo, useRef, useState } from 'react'
+import { lazy, Suspense, useEffect, useMemo, useRef, useState } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
 import { catalog, dextrumTypographyHref, getComponentAreaGroups, getComponentFamilies, getDocFamilies, routeMap } from './data/design-system'
 import { LocaleTransitionOverlay } from './components/LocaleTransitionOverlay'
 import { TopNavigation } from './components/TopNavigation'
-import { ArabicFriendlyPage } from './pages/ArabicFriendlyPage'
-import { ComponentDetailPage } from './pages/ComponentDetailPage'
-import { ComponentsPage } from './pages/ComponentsPage'
-import { CommunityPage } from './pages/CommunityPage'
-import { DocsPage } from './pages/DocsPage'
-import { TemplatesPage } from './pages/TemplatesPage'
-import { ThemesPage } from './pages/ThemesPage'
 import { I18nProvider, categoryLabel, docsLabel, routeLabel, sideNavLabel, t, type Locale } from './i18n'
 import { ThemeProvider, useTheme } from './theme'
 import {
@@ -22,6 +15,18 @@ import {
   SideNavSearch,
   PanelIcon,
 } from '../packages/design-system/src/Navigation'
+
+const ArabicFriendlyPage = lazy(() => import('./pages/ArabicFriendlyPage').then((module) => ({ default: module.ArabicFriendlyPage })))
+const ComponentDetailPage = lazy(() => import('./pages/ComponentDetailPage').then((module) => ({ default: module.ComponentDetailPage })))
+const ComponentsPage = lazy(() => import('./pages/ComponentsPage').then((module) => ({ default: module.ComponentsPage })))
+const CommunityPage = lazy(() => import('./pages/CommunityPage').then((module) => ({ default: module.CommunityPage })))
+const DocsPage = lazy(() => import('./pages/DocsPage').then((module) => ({ default: module.DocsPage })))
+const TemplatesPage = lazy(() => import('./pages/TemplatesPage').then((module) => ({ default: module.TemplatesPage })))
+const ThemesPage = lazy(() => import('./pages/ThemesPage').then((module) => ({ default: module.ThemesPage })))
+
+function RouteFallback({ locale }: { locale: Locale }) {
+  return <div aria-label={locale === 'ar' ? 'جار تحميل الصفحة' : 'Loading page'} className="route-loading" role="status" />
+}
 
 const pageMap = {
   '/': DocsPage,
@@ -382,7 +387,7 @@ function AppShell() {
   if (isCommunitySite) {
     return (
       <I18nProvider locale={locale} setLocale={transitionLocale}>
-        <CommunityPage />
+        <Suspense fallback={<RouteFallback locale={locale} />}><CommunityPage /></Suspense>
       </I18nProvider>
     )
   }
@@ -572,7 +577,9 @@ function AppShell() {
             initial={{ opacity: 0, y: 10, filter: 'blur(2px)' }}
             transition={{ duration: 0.28, ease: [0.22, 1, 0.36, 1] }}
           >
-            {componentId ? <ComponentDetailPage componentId={componentId} tab={tab} /> : <Page path={path} />}
+            <Suspense fallback={<RouteFallback locale={locale} />}>
+              {componentId ? <ComponentDetailPage componentId={componentId} tab={tab} /> : <Page path={path} />}
+            </Suspense>
           </motion.div>
         </AnimatePresence>
       </main>

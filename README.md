@@ -13,7 +13,17 @@ This workspace is the parent system. Production websites are consumers and refer
 - `packages/design-system-cli/`: local CLI for AI discovery.
 - `docs/design-system/`: human and AI docs.
 
-## Commands
+## Install In A Product
+
+```sh
+npm install @utopia-studio-design/design-system
+npm install -D @utopia-studio-design/design-system-cli
+npx utopia-ds init --theme utopia-default
+```
+
+`init` adds agent instructions for Codex/Claude, Cursor, and GitHub Copilot plus a project-local MCP configuration. All clients query the same manifests through CLI text, typed JSON, the programmatic API, or MCP.
+
+## Workspace Commands
 
 ```sh
 npm install
@@ -22,8 +32,20 @@ npm run build
 npm run ds -- component --list --dense
 npm run ds -- template --list --dense
 npm run ds -- docs arabic-friendly --dense
+npm run ds -- manifest --json
+npm run ds -- search "Arabic data table" --json
+npm run ds:mcp
 npm run ds -- doctor
 ```
+
+## Agent Interfaces
+
+- CLI: `npx utopia-ds component Button --json`
+- Programmatic API: `@utopia-studio-design/design-system-cli/api`
+- MCP: `npx utopia-ds mcp`
+- Capability discovery: `npx utopia-ds manifest --json`
+- Static crawler entrypoint: `/llms.txt`
+- Platform roadmap and release gates: `docs/design-system/ai-platform-plan.md`
 
 ## Principles
 

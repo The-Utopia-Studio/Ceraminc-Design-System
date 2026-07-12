@@ -47,9 +47,11 @@ export function HomePage() {
           <article className="card accent">
             <h3>Quick Start with AI</h3>
             <p>Read the generated docs first, then use dense CLI output before creating UI.</p>
-            <pre>{`utopia-ds template --list
-utopia-ds component Button --dense
-utopia-ds docs arabic-friendly --dense`}</pre>
+            <pre>{`npx utopia-ds manifest --json
+npx utopia-ds search "app shell" --json
+npx utopia-ds component Button --json
+npx utopia-ds docs arabic-friendly --dense
+npx utopia-ds mcp`}</pre>
           </article>
           {routeMap.slice(1).map((route) => (
             <a key={route.id} className="card link-card" href={`#${route.path}`}>

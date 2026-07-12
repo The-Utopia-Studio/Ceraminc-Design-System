@@ -4,7 +4,18 @@ import path from 'node:path'
 const root = process.cwd()
 const manifestPath = path.join(root, 'packages/design-system/src/manifests/components.json')
 const catalogPath = path.join(root, 'packages/design-system/src/manifests/catalog.json')
+const templatesPath = path.join(root, 'packages/design-system/src/manifests/templates.json')
+const themesPath = path.join(root, 'packages/design-system/src/manifests/themes.json')
+const themePolicyPaths = [
+  path.join(root, 'packages/design-system/src/manifests/theme-utopia-default.json'),
+  path.join(root, 'packages/design-system/src/manifests/theme-dextrum.json'),
+  path.join(root, 'packages/design-system/src/manifests/theme-barrier-intelligence.json'),
+]
 const detailPagePath = path.join(root, 'src/pages/ComponentDetailPage.tsx')
+const docsPagePath = path.join(root, 'src/pages/DocsPage.tsx')
+const arabicFriendlyPagePath = path.join(root, 'src/pages/ArabicFriendlyPage.tsx')
+const templatesPagePath = path.join(root, 'src/pages/TemplatesPage.tsx')
+const themesPagePath = path.join(root, 'src/pages/ThemesPage.tsx')
 const coreCssPath = path.join(root, 'packages/design-system/src/core.css')
 const defaultThemePath = path.join(root, 'packages/design-system/src/themes/utopia-default.css')
 
@@ -137,7 +148,14 @@ function sameSet(actual, expected, label) {
 const failures = []
 const componentsManifest = readJson(manifestPath)
 const catalog = readJson(catalogPath)
+const templatesManifest = readJson(templatesPath)
+const themesManifest = readJson(themesPath)
+const themePolicies = themePolicyPaths.map(readJson)
 const detailPage = fs.readFileSync(detailPagePath, 'utf8')
+const docsPage = fs.readFileSync(docsPagePath, 'utf8')
+const arabicFriendlyPage = fs.readFileSync(arabicFriendlyPagePath, 'utf8')
+const templatesPage = fs.readFileSync(templatesPagePath, 'utf8')
+const themesPage = fs.readFileSync(themesPagePath, 'utf8')
 const componentSourcePaths = [...new Set(componentsManifest.components.map((component) => path.join(root, component.sourcePath)))]
 const missingSourcePaths = componentSourcePaths.filter((filePath) => !fs.existsSync(filePath))
 for (const filePath of missingSourcePaths) fail(`missing component source: ${path.relative(root, filePath)}`)
@@ -253,6 +271,75 @@ if (toastComponent?.status !== 'legacy' || toastComponent?.replacement !== 'Sonn
 
 if (!detailPage.includes("import { Toaster, toast }")) {
   fail('Sonner copy-paste usage must use Toaster + toast')
+}
+
+if (templatesManifest.templates.length < 10) {
+  fail('templates manifest must expose a useful starter library, not placeholder cards')
+}
+
+for (const template of templatesManifest.templates) {
+  if (!template.purpose || !template.starterFor?.length || !template.sections?.length) {
+    fail(`${template.id}: template must define purpose, starterFor, and sections`)
+  }
+  if (!template.requiredComponents?.length || !template.useWhen?.length || !template.avoidWhen?.length) {
+    fail(`${template.id}: template must define component and usage contracts`)
+  }
+  if (!template.translations?.ar?.title || !template.translations?.ar?.purpose || !template.translations?.ar?.sections?.length) {
+    fail(`${template.id}: template must include an Arabic title, purpose, and section map`)
+  }
+  if (template.rtlReady !== true) fail(`${template.id}: template must declare rtlReady`)
+}
+
+const defaultTheme = themesManifest.themes.find((theme) => theme.id === 'utopia-default')
+if (defaultTheme?.name !== 'The Utopia Studio Default' || defaultTheme?.locked !== true) {
+  fail('The Utopia Studio Default must be the named, locked default theme')
+}
+if (!defaultTheme?.brandAsset?.src || !defaultTheme?.translations?.ar?.description) {
+  fail('The Utopia Studio Default must expose its optional brand asset and Arabic description')
+}
+if (!defaultTheme?.translations?.ar?.principles?.length || !defaultTheme?.translations?.ar?.brandAssetUsage) {
+  fail('The Utopia Studio Default must localize its principles and brand asset policy')
+}
+if (!themesManifest.translations?.ar?.coreBoundary?.doesNotOwn?.length) {
+  fail('The theme contract boundary must be available in Arabic')
+}
+
+if (themesManifest.plannedThemeSlots.length < 3) {
+  fail('theme roadmap must contain populated future slots')
+}
+for (const slot of themesManifest.plannedThemeSlots) {
+  if (!slot.purpose || !slot.audience?.length || !slot.visualDirection || !slot.requiredValidation?.length) {
+    fail(`${slot.id}: planned theme slot must define purpose, audience, direction, and validation`)
+  }
+  if (!slot.translations?.ar?.name || !slot.translations?.ar?.purpose) {
+    fail(`${slot.id}: planned theme slot must include Arabic metadata`)
+  }
+  if (!slot.translations?.ar?.audience?.length || !slot.translations?.ar?.requiredValidation?.length) {
+    fail(`${slot.id}: planned theme slot must localize audience and validation metadata`)
+  }
+}
+
+for (const policy of themePolicies) {
+  if (!policy.translations?.ar?.summary || !policy.translations?.ar?.iconPolicy?.description || !policy.translations?.ar?.iconPolicy?.allow?.length) {
+    fail(`${policy.id}: theme policy summary and icon contract must be available in Arabic`)
+  }
+}
+
+for (const [label, source] of [
+  ['DocsPage', docsPage],
+  ['ArabicFriendlyPage', arabicFriendlyPage],
+  ['TemplatesPage', templatesPage],
+  ['ThemesPage', themesPage],
+]) {
+  if (!source.includes('useI18n')) fail(`${label} must render from the shared locale contract`)
+}
+
+const docsSources = `${docsPage}\n${arabicFriendlyPage}\n${templatesPage}\n${themesPage}\n${detailPage}`
+if (docsSources.includes('#/docs/foundations/arabic-friendly')) {
+  fail('Arabic Friendly links must use the canonical guide route')
+}
+if (detailPage.includes("style={{ cursor: 'pointer', padding: '0 4px' }}")) {
+  fail('Breadcrumb docs must use BreadcrumbEllipsis instead of a local styled mock')
 }
 
 for (const requiredText of [

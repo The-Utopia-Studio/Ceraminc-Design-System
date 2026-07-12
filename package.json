@@ -3,12 +3,21 @@
   "version": "0.1.0",
   "private": true,
   "type": "module",
+  "workspaces": [
+    "packages/design-system",
+    "packages/design-system-cli"
+  ],
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
     "lint": "tsc -b --pretty false",
     "audit:components": "node scripts/audit-design-system-components.mjs",
-    "ds": "node packages/design-system-cli/bin/utopia-ds.mjs"
+    "ds": "node packages/design-system-cli/bin/utopia-ds.mjs",
+    "ds:mcp": "node packages/design-system-cli/bin/utopia-ds-mcp.mjs",
+    "check:design-system": "npm run audit:components && npm run ds -- doctor --json",
+    "check:design-system-cli": "npm run ds -- manifest --json && npm run ds -- search button --json",
+    "pack:design-system": "npm pack --workspace @utopia-studio-design/design-system --dry-run",
+    "pack:design-system-cli": "npm pack --workspace @utopia-studio-design/design-system-cli --dry-run"
   },
   "dependencies": {
     "@radix-ui/react-accordion": "^1.2.15",
@@ -39,7 +48,6 @@
     "clsx": "^2.1.1",
     "cmdk": "^1.1.1",
     "framer-motion": "^12.42.2",
-    "lottie-react": "^2.4.1",
     "lucide-react": "^1.23.0",
     "react": "^19.0.0",
     "react-day-picker": "^10.0.1",

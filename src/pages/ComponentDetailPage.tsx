@@ -4467,7 +4467,7 @@ function EmptyPreview({ locale }: { locale: Locale }) {
             <Button>{copy.create}</Button>
             <Button variant="secondary">{copy.import}</Button>
           </span>
-          <a className="empty-demo-link" href="#/docs/foundations/arabic-friendly">
+          <a className="empty-demo-link" href="#/docs/guide/arabic-friendly">
             {copy.learn}
             <ArrowUpRight size={16} aria-hidden="true" />
           </a>
@@ -6887,6 +6887,7 @@ export function Example() {
     return `import {
   Breadcrumb,
   BreadcrumbItem,
+  BreadcrumbEllipsis,
   BreadcrumbLink,
   BreadcrumbList,
   BreadcrumbPage,
@@ -6903,7 +6904,7 @@ export function Example() {
         </BreadcrumbItem>
         <BreadcrumbSeparator />
         <BreadcrumbItem>
-          <span style={{ cursor: 'pointer', padding: '0 4px' }}>...</span>
+          <BreadcrumbEllipsis label="More pages" />
         </BreadcrumbItem>
         <BreadcrumbSeparator />
         <BreadcrumbItem>

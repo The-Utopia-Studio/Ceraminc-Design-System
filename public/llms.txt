@@ -1,41 +1,40 @@
-# Utopia Design System
+# Ceramic Design System
 
-This project is the standalone Utopia Design System workspace.
+Ceramic is the standalone Utopia Studio design system. It is shadcn-founded, theme-extensible, Arabic-friendly, and exposed through one shared contract for humans and AI agents.
 
-Primary AI entrypoints:
+## Install
 
-- Read `docs/design-system/quick-start-ai.md`.
-- Read `docs/design-system/guide.md`.
-- Read `docs/design-system/foundations.md`.
-- Read `docs/design-system/arabic-friendly.md`.
-- Read `docs/design-system/shadcn-conversion.md`.
-- Inspect `packages/design-system/src/manifests/catalog.json`.
-- Inspect `packages/design-system/src/manifests/components.json`.
-- Inspect `packages/design-system/src/manifests/themes.json`.
-- Inspect `packages/design-system/src/manifests/theme-utopia-default.json`.
+- `npm install @utopia-studio-design/design-system`
+- `npm install -D @utopia-studio-design/design-system-cli`
+- `npx utopia-ds init --theme utopia-default`
 
-CLI discovery:
+## Machine Interfaces
 
-- `npm run ds -- docs quick-start-ai --dense`
-- `npm run ds -- docs foundations --dense`
-- `npm run ds -- docs arabic-friendly --dense`
-- `npm run ds -- component --list --dense`
-- `npm run ds -- theme utopia-default --dense`
+- Capability manifest: `npx utopia-ds manifest --json`
+- Cross-domain search: `npx utopia-ds search "<intent>" --json`
+- Component contract: `npx utopia-ds component "<name>" --json`
+- Template contract: `npx utopia-ds template "<id>" --json`
+- Theme policy: `npx utopia-ds theme "<id>" --json`
+- Dense docs: `npx utopia-ds docs arabic-friendly --dense`
+- Validation: `npx utopia-ds doctor --json`
+- MCP stdio server: `npx utopia-ds mcp`
+- Programmatic API: `@utopia-studio-design/design-system-cli/api`
 
-Arabic-friendly rules:
+## Canonical Source Files
 
-- Arabic-friendly means RTL-first layout, mixed-script tolerance, Arabic typography, localization readiness, and directional mirroring.
-- Use IBM Plex Sans Arabic in Utopia Default for Arabic body and display text.
-- Arabic display size follows the Latin display scale at about 95%.
-- Keep Arabic line-height readable for connected letterforms and diacritics.
-- Do not map Latin uppercase styling to Arabic.
-- Use logical CSS properties such as `padding-inline`, `margin-inline`, `border-inline`, `inset-inline`, `inline-size`, and `block-size`.
-- Use start/end, leading/trailing, inline/block naming. Avoid left/right-only APIs.
-- Mirror directional arrows, chevrons, navigation, carousel, progress, and sidebar affordances intentionally.
-- Do not invent Arabic production copy.
+- `packages/design-system/src/manifests/catalog.json`
+- `packages/design-system/src/manifests/components.json`
+- `packages/design-system/src/manifests/templates.json`
+- `packages/design-system/src/manifests/themes.json`
+- `docs/design-system/quick-start-ai.md`
+- `docs/design-system/ai-platform-plan.md`
+- `docs/design-system/arabic-friendly.md`
+- `docs/design-system/theme-authoring.md`
 
-shadcn/ui rule:
+## Non-Negotiable Rules
 
-- Utopia uses shadcn/ui as the component architecture foundation, not as the visual theme.
-- Use Utopia design-system exports before raw shadcn primitives.
-- Reusable components consume semantic tokens only.
+- Use Ceramic exports before raw shadcn primitives.
+- Components consume semantic tokens; themes map those roles to primitives.
+- Do not invent props, imports, tokens, Arabic product copy, or component availability.
+- Use logical CSS and start/end naming. Verify `dir="rtl"`, mixed scripts, focus, keyboard behavior, and directional mirroring.
+- Production websites consume the system; they do not define reusable component logic.
