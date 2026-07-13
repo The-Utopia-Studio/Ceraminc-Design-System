@@ -9,6 +9,7 @@ import { ComponentsPage } from './pages/ComponentsPage'
 import { DocsPage } from './pages/DocsPage'
 import { TemplatesPage } from './pages/TemplatesPage'
 import { ThemesPage } from './pages/ThemesPage'
+import { DextrumWebsite } from './pages/DextrumWebsite'
 import { I18nProvider, categoryLabel, docsLabel, routeLabel, sideNavLabel, t, type Locale } from './i18n'
 import { CERAMIC_SHELL_BRAND, ThemeProvider } from './theme'
 import {
@@ -247,9 +248,20 @@ function getInitialLocale(): Locale {
 }
 
 export function App() {
+  const [path, setPath] = useState(getCurrentPath)
+
+  useEffect(() => {
+    const handleHashChange = () => setPath(getCurrentPath())
+    window.addEventListener('hashchange', handleHashChange)
+    return () => window.removeEventListener('hashchange', handleHashChange)
+  }, [])
+
+  // Dedicated marketing route: design-system shell remains default for `/` and `#/docs`.
+  const isDextrumWebsite = path === '/website'
+
   return (
     <ThemeProvider>
-      <AppShell />
+      {isDextrumWebsite ? <DextrumWebsite /> : <AppShell />}
     </ThemeProvider>
   )
 }
