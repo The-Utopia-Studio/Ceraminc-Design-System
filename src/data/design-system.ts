@@ -15,7 +15,6 @@ export const routeMap = [
   { id: 'components', label: 'Components', path: '/components', description: 'Component catalog and status contract.' },
   { id: 'templates', label: 'Templates', path: '/templates', description: 'Website, SaaS, and production reference templates.' },
   { id: 'themes', label: 'Themes', path: '/themes', description: 'Theme contract implementations.' },
-  { id: 'arabic-friendly', label: 'Arabic Friendly', path: '/arabic-friendly', description: 'RTL and mixed-script readiness.' },
 ] as const
 
 export function getArea(id: string) {

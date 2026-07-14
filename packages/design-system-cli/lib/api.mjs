@@ -110,7 +110,7 @@ export function capabilityManifest() {
       { name: 'init', args: ['[directory]'], flags: ['--yes', '--theme <id>'], responseType: 'init-result' },
       { name: 'search', args: ['<query>'], flags: [], responseType: 'search-results' },
       { name: 'component', args: ['<name>|--list'], flags: [], responseType: 'component|component-list' },
-      { name: 'template', args: ['<id>|--list'], flags: ['--skeleton'], responseType: 'template|template-list' },
+      { name: 'template', args: ['<id>|--list'], flags: ['--skeleton', '--copy <directory>', '--force'], responseType: 'template|template-list|template-copy-result' },
       { name: 'theme', args: ['<id>|--list'], flags: [], responseType: 'theme|theme-list' },
       { name: 'docs', args: ['<topic>|--list'], flags: [], responseType: 'docs|docs-list' },
       { name: 'manifest', args: [], flags: [], responseType: 'manifest' },

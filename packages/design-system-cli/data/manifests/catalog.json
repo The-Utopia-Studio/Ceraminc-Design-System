@@ -206,32 +206,8 @@
         {
           "id": "website-pages",
           "label": "Website Pages",
-        "items": [
-          "Linear-style Product Homepage",
-          "Studio / Agency Homepage",
-          "Product Launch Page",
-          "Case Study / Portfolio Page",
-          "Resource / Documentation Article"
-        ]
-        },
-        {
-          "id": "product-saas",
-          "label": "Product / SaaS",
           "items": [
-          "SaaS Dashboard",
-          "Product App Shell",
-          "AI Chat Workspace",
-          "Settings Workspace",
-          "Data Table Workspace",
-          "Onboarding / Application Flow"
-          ]
-        },
-        {
-          "id": "production-examples",
-          "label": "Production Examples",
-          "items": [
-          "The Utopia Studio Website Reference",
-          "Ceramic Docs Shell Reference"
+            "SaaS Solution Website"
           ]
         }
       ]
@@ -248,26 +224,6 @@
           "The Utopia Studio Default",
             "Dextrum",
             "Barrier Intelligence"
-          ]
-        },
-        {
-          "id": "planned",
-          "label": "Planned Theme Slots",
-          "items": [
-            "Venture Proof",
-            "Operator Console",
-            "Editorial Resource",
-            "Application Flow"
-          ]
-        },
-        {
-          "id": "arabic-friendly",
-          "label": "Arabic Friendly",
-          "items": [
-            "RTL Layout",
-            "Mixed Script",
-            "Localized Typography",
-            "Directional Icons"
           ]
         }
       ]

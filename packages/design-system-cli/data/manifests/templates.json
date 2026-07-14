@@ -1,321 +1,94 @@
 {
   "version": "1.0.0",
-  "intent": "Reusable page blueprints for quickly starting product, SaaS, website, and reference surfaces. Templates define information architecture and component composition without hard-coding a theme.",
+  "intent": "Runnable, production-ready Ceramic templates with source files, routes, manifests, and deterministic demo data.",
   "statusModel": {
-    "available": "Discoverable through the CLI and ready to generate as a section skeleton.",
-    "reference": "A composition reference to inspect, not a page to copy verbatim."
+    "available": "A runnable template bundled with source files and available through the CLI copy command."
   },
   "templates": [
     {
-      "id": "template-linear-product-homepage",
-      "title": "Linear-style Product Homepage",
-      "category": "website-page",
-      "status": "available",
-      "purpose": "A restrained product homepage with a clear narrative, progressive product proof, and compact calls to action.",
-      "referenceNote": "Use the structural qualities of a focused product narrative. Do not copy Linear branding, assets, layouts, or product copy.",
-      "starterFor": ["B2B SaaS", "developer tools", "AI products"],
-      "sections": ["Top navigation", "Product statement", "Interactive product proof", "Capability sequence", "Customer evidence", "Final action"],
-      "requiredComponents": ["Top Nav", "Button", "Tabs", "Carousel", "Card", "Separator"],
-      "useWhen": ["The product needs one clear story before feature depth", "Visual product proof is available"],
-      "avoidWhen": ["The page is primarily editorial", "The product requires a dense operational dashboard as the first screen"],
-      "rtlReady": true,
-      "preview": { "kind": "product-homepage", "density": "spacious" },
-      "translations": {
-        "ar": {
-          "title": "صفحة منتج رئيسية بأسلوب Linear",
-          "purpose": "صفحة منتج هادئة بسرد واضح، وإثبات متدرج للمنتج، ودعوات إجراء مختصرة.",
-          "starterFor": ["منتجات SaaS للأعمال", "أدوات المطورين", "منتجات الذكاء الاصطناعي"],
-          "sections": ["التنقل العلوي", "رسالة المنتج", "إثبات تفاعلي للمنتج", "تسلسل القدرات", "أدلة العملاء", "الإجراء الختامي"]
-        }
-      }
-    },
-    {
       "id": "template-saas-solution-homepage",
-      "title": "SaaS Solution Homepage",
+      "title": "SaaS Solution Website",
       "category": "website-page",
       "status": "available",
-      "purpose": "A complete product-led SaaS homepage with early interface proof, workflow depth, automation, integrations, reliability, team evidence, and a focused adoption path.",
+      "purpose": "A complete product-led SaaS website with marketing, product, automation, integrations, customer proof, pricing, changelog, and sales-contact pages.",
       "referenceNote": "Uses Linear only as a reference for information density, section rhythm, and product-led storytelling. Do not copy Linear branding, assets, layouts, or product copy.",
-      "starterFor": ["B2B SaaS", "operations platforms", "AI automation products"],
-      "sections": ["Top navigation", "Hero and value", "Product interface preview", "Core workflow", "Agents and automation", "Integrations", "Security and reliability", "Team proof", "Adoption CTA", "Footer"],
-      "requiredComponents": ["Top Nav", "Button", "Badge", "Card"],
+      "starterFor": [
+        "B2B SaaS",
+        "operations platforms",
+        "AI automation products"
+      ],
+      "sections": [
+        "Top navigation",
+        "Hero and value",
+        "Product interface preview",
+        "Core workflow",
+        "Agents and automation",
+        "Integrations",
+        "Security and reliability",
+        "Team proof",
+        "Adoption CTA",
+        "Footer"
+      ],
+      "requiredComponents": [
+        "Top Nav",
+        "Button",
+        "Badge",
+        "Card",
+        "Input",
+        "Select",
+        "Textarea"
+      ],
       "sourcePath": "templates/saas-solution-homepage/main.tsx",
       "entryPath": "templates/saas-solution-homepage/index.html",
       "manifestPath": "templates/saas-solution-homepage/template.manifest.json",
-      "useWhen": ["A SaaS product needs a complete product-led marketing narrative", "Workflow, automation, integrations, and reliability are material buying criteria"],
-      "avoidWhen": ["The page is a single-feature launch", "There is no reviewed product model behind the interface claims"],
+      "bundlePath": "templates/saas-solution-homepage",
+      "pageCount": 10,
+      "pages": [
+        "Home",
+        "Product",
+        "Agents",
+        "Integrations",
+        "Integration Detail",
+        "Customers",
+        "Customer Story",
+        "Pricing",
+        "Changelog",
+        "Contact Sales"
+      ],
+      "useWhen": [
+        "A SaaS product needs a complete product-led marketing narrative",
+        "Workflow, automation, integrations, and reliability are material buying criteria"
+      ],
+      "avoidWhen": [
+        "The page is a single-feature launch",
+        "There is no reviewed product model behind the interface claims"
+      ],
       "rtlReady": true,
-      "preview": { "kind": "saas-solution-homepage", "density": "balanced" },
+      "preview": {
+        "kind": "saas-solution-homepage",
+        "density": "balanced"
+      },
       "translations": {
         "ar": {
-          "title": "صفحة رئيسية لحل SaaS",
-          "purpose": "صفحة SaaS متكاملة تبدأ بإثبات المنتج ثم توضح سير العمل والأتمتة والتكاملات والموثوقية ودليل الفريق ومسار الاعتماد.",
-          "starterFor": ["منتجات SaaS للأعمال", "منصات العمليات", "منتجات أتمتة الذكاء الاصطناعي"],
-          "sections": ["التنقل العلوي", "القيمة الرئيسية", "معاينة واجهة المنتج", "سير العمل الأساسي", "الوكلاء والأتمتة", "التكاملات", "الأمان والموثوقية", "دليل الفريق", "دعوة الاعتماد", "التذييل"]
-        }
-      }
-    },
-    {
-      "id": "template-studio-homepage",
-      "title": "Studio / Agency Homepage",
-      "category": "website-page",
-      "status": "available",
-      "purpose": "A studio homepage that moves from thesis to selected work, operating model, people, and contact.",
-      "starterFor": ["design studios", "consultancies", "venture builders"],
-      "sections": ["Top navigation", "Studio thesis", "Selected work", "Operating model", "People", "Contact"],
-      "requiredComponents": ["Top Nav", "Carousel", "Card", "Avatar", "Button"],
-      "useWhen": ["Credibility comes from work and people", "The offer needs a strong point of view"],
-      "avoidWhen": ["The page is a single product launch", "No reviewed work or proof is available"],
-      "rtlReady": true,
-      "preview": { "kind": "studio-homepage", "density": "editorial" },
-      "translations": {
-        "ar": {
-          "title": "الصفحة الرئيسية لاستوديو أو وكالة",
-          "purpose": "صفحة تنتقل من رؤية الاستوديو إلى الأعمال المختارة، وطريقة العمل، والفريق، والتواصل.",
-          "starterFor": ["استوديوهات التصميم", "الاستشارات", "بناء المشاريع"],
-          "sections": ["التنقل العلوي", "رؤية الاستوديو", "أعمال مختارة", "طريقة العمل", "الفريق", "التواصل"]
-        }
-      }
-    },
-    {
-      "id": "template-product-launch",
-      "title": "Product Launch Page",
-      "category": "website-page",
-      "status": "available",
-      "purpose": "A focused launch page for one offer, one audience, and one measurable conversion action.",
-      "starterFor": ["new products", "feature launches", "waitlists"],
-      "sections": ["Launch statement", "Product media", "Benefits", "How it works", "Proof", "Conversion action"],
-      "requiredComponents": ["Top Nav", "Button", "Aspect Ratio", "Accordion", "Badge"],
-      "useWhen": ["One launch action is more important than broad site navigation"],
-      "avoidWhen": ["The product needs comparison across many modules"],
-      "rtlReady": true,
-      "preview": { "kind": "launch-page", "density": "spacious" },
-      "translations": {
-        "ar": {
-          "title": "صفحة إطلاق منتج",
-          "purpose": "صفحة مركزة لعرض واحد وجمهور واحد وإجراء تحويل قابل للقياس.",
-          "starterFor": ["منتجات جديدة", "إطلاق مزايا", "قوائم الانتظار"],
-          "sections": ["رسالة الإطلاق", "وسائط المنتج", "الفوائد", "طريقة العمل", "الدليل", "إجراء التحويل"]
-        }
-      }
-    },
-    {
-      "id": "template-case-study",
-      "title": "Case Study / Portfolio Page",
-      "category": "website-page",
-      "status": "available",
-      "purpose": "A case study that connects context, intervention, evidence, and outcome without turning the page into a gallery alone.",
-      "starterFor": ["portfolio work", "client case studies", "research outcomes"],
-      "sections": ["Project summary", "Context", "Challenge", "Approach", "Evidence", "Outcome", "Related work"],
-      "requiredComponents": ["Breadcrumb", "Badge", "Aspect Ratio", "Table", "Carousel"],
-      "useWhen": ["The work has a documented before-and-after story"],
-      "avoidWhen": ["Only unreviewed visual assets are available"],
-      "rtlReady": true,
-      "preview": { "kind": "case-study", "density": "editorial" },
-      "translations": {
-        "ar": {
-          "title": "دراسة حالة أو صفحة أعمال",
-          "purpose": "دراسة تربط السياق والتدخل والأدلة والنتيجة من دون اختزال الصفحة في معرض صور.",
-          "starterFor": ["أعمال المحفظة", "دراسات حالات العملاء", "نتائج الأبحاث"],
-          "sections": ["ملخص المشروع", "السياق", "التحدي", "المنهج", "الأدلة", "النتيجة", "أعمال ذات صلة"]
-        }
-      }
-    },
-    {
-      "id": "template-resource-article",
-      "title": "Resource / Documentation Article",
-      "category": "website-page",
-      "status": "available",
-      "purpose": "A readable long-form article with breadcrumbs, local navigation, examples, and a next-step path.",
-      "starterFor": ["guides", "documentation", "research notes"],
-      "sections": ["Breadcrumb", "Article header", "On-page navigation", "Body sections", "Code or media examples", "Related resources"],
-      "requiredComponents": ["Breadcrumb", "Side Nav", "Typography", "Code Block", "Separator"],
-      "useWhen": ["Readers need scanning and deep reading in the same page"],
-      "avoidWhen": ["The primary task is repeated operational action"],
-      "rtlReady": true,
-      "preview": { "kind": "resource-article", "density": "editorial" },
-      "translations": {
-        "ar": {
-          "title": "مقال موارد أو توثيق",
-          "purpose": "مقال طويل سهل القراءة مع مسار تنقل، وتنقل محلي، وأمثلة، وخطوة تالية.",
-          "starterFor": ["الأدلة", "التوثيق", "ملاحظات الأبحاث"],
-          "sections": ["مسار التنقل", "رأس المقال", "التنقل داخل الصفحة", "أقسام المحتوى", "أمثلة الكود أو الوسائط", "موارد ذات صلة"]
-        }
-      }
-    },
-    {
-      "id": "template-saas-dashboard",
-      "title": "SaaS Dashboard",
-      "category": "product-saas",
-      "status": "available",
-      "purpose": "A dense but readable operating dashboard for metrics, trends, exceptions, and repeated actions.",
-      "starterFor": ["operations", "analytics", "finance", "customer success"],
-      "sections": ["App shell", "Page toolbar", "Metric strip", "Primary chart", "Exception list", "Activity table", "Quick actions"],
-      "requiredComponents": ["Sidebar", "Top Nav", "Card", "Chart", "Data Table", "Dropdown Menu", "Date Picker"],
-      "useWhen": ["Users return frequently to compare and act", "The data model has reviewed metrics and states"],
-      "avoidWhen": ["The page is a marketing summary", "Metrics are decorative or undefined"],
-      "rtlReady": true,
-      "preview": { "kind": "saas-dashboard", "density": "dense" },
-      "translations": {
-        "ar": {
-          "title": "لوحة SaaS",
-          "purpose": "لوحة تشغيل كثيفة وواضحة للمؤشرات والاتجاهات والاستثناءات والإجراءات المتكررة.",
-          "starterFor": ["العمليات", "التحليلات", "المالية", "نجاح العملاء"],
-          "sections": ["هيكل التطبيق", "شريط أدوات الصفحة", "شريط المؤشرات", "المخطط الرئيسي", "قائمة الاستثناءات", "جدول النشاط", "إجراءات سريعة"]
-        }
-      }
-    },
-    {
-      "id": "template-app-shell",
-      "title": "Product App Shell",
-      "category": "product-saas",
-      "status": "available",
-      "purpose": "A themeable product shell with navigation, a local toolbar, and a responsive content region.",
-      "starterFor": ["multi-page SaaS", "internal tools", "admin products"],
-      "sections": ["Shell frame", "Primary navigation", "Account status", "Page toolbar", "Main content", "Empty and loading states"],
-      "requiredComponents": ["Sidebar", "Side Nav", "Top Nav", "Account Status", "Scroll Area", "Skeleton"],
-      "useWhen": ["The product has persistent navigation and repeated work areas"],
-      "avoidWhen": ["The experience is a single focused flow"],
-      "rtlReady": true,
-      "preview": { "kind": "app-shell", "density": "balanced" },
-      "translations": {
-        "ar": {
-          "title": "هيكل تطبيق منتج",
-          "purpose": "هيكل منتج قابل للثيم مع تنقل وشريط أدوات محلي ومنطقة محتوى متجاوبة.",
-          "starterFor": ["منتجات SaaS متعددة الصفحات", "أدوات داخلية", "منتجات الإدارة"],
-          "sections": ["إطار التطبيق", "التنقل الأساسي", "حالة الحساب", "شريط أدوات الصفحة", "المحتوى الرئيسي", "حالات الفراغ والتحميل"]
-        }
-      }
-    },
-    {
-      "id": "template-ai-chat",
-      "title": "AI Chat Workspace",
-      "category": "product-saas",
-      "status": "available",
-      "purpose": "An assistant workspace with messages, composer states, tool calls, citations, and scroll recovery.",
-      "starterFor": ["AI assistants", "support copilots", "research agents"],
-      "sections": ["Conversation header", "Message list", "System events", "Tool calls", "Citations", "Composer", "Scroll recovery"],
-      "requiredComponents": ["Chat Layout", "Chat Message List", "Chat Composer", "Chat Tool Calls", "Attachment"],
-      "useWhen": ["Conversation is the primary product workflow"],
-      "avoidWhen": ["Chat is only a secondary help widget"],
-      "rtlReady": true,
-      "preview": { "kind": "ai-chat", "density": "balanced" },
-      "translations": {
-        "ar": {
-          "title": "مساحة محادثة بالذكاء الاصطناعي",
-          "purpose": "مساحة للمساعد تشمل الرسائل وحالات المؤلف واستدعاءات الأدوات والمراجع واستعادة موضع التمرير.",
-          "starterFor": ["مساعدو الذكاء الاصطناعي", "مساعدو الدعم", "وكلاء البحث"],
-          "sections": ["رأس المحادثة", "قائمة الرسائل", "أحداث النظام", "استدعاءات الأدوات", "المراجع", "المؤلف", "استعادة التمرير"]
-        }
-      }
-    },
-    {
-      "id": "template-settings-workspace",
-      "title": "Settings Workspace",
-      "category": "product-saas",
-      "status": "available",
-      "purpose": "A settings surface for account, team, notifications, integrations, and destructive actions.",
-      "starterFor": ["account settings", "workspace administration", "preferences"],
-      "sections": ["Settings navigation", "Profile fields", "Preference groups", "Integrations", "Billing", "Danger zone"],
-      "requiredComponents": ["Side Nav", "Field", "Input", "Select", "Switch", "Alert Dialog"],
-      "useWhen": ["Settings span several stable categories"],
-      "avoidWhen": ["A single preference can stay inside its local workflow"],
-      "rtlReady": true,
-      "preview": { "kind": "settings", "density": "balanced" },
-      "translations": {
-        "ar": {
-          "title": "مساحة الإعدادات",
-          "purpose": "سطح لإعدادات الحساب والفريق والإشعارات والتكاملات والإجراءات الخطرة.",
-          "starterFor": ["إعدادات الحساب", "إدارة مساحة العمل", "التفضيلات"],
-          "sections": ["تنقل الإعدادات", "حقول الملف", "مجموعات التفضيلات", "التكاملات", "الفوترة", "منطقة الخطر"]
-        }
-      }
-    },
-    {
-      "id": "template-data-workspace",
-      "title": "Data Table Workspace",
-      "category": "product-saas",
-      "status": "available",
-      "purpose": "A repeated data workflow with search, filters, column controls, row actions, selection, and pagination.",
-      "starterFor": ["CRM lists", "operations queues", "inventory", "admin records"],
-      "sections": ["Page toolbar", "Search and filters", "Column controls", "Data table", "Bulk actions", "Pagination", "Empty state"],
-      "requiredComponents": ["Input Group", "Combobox", "Dropdown Menu", "Data Table", "Checkbox", "Pagination", "Empty"],
-      "useWhen": ["Users compare and act across many records"],
-      "avoidWhen": ["The dataset is too small to need table controls"],
-      "rtlReady": true,
-      "preview": { "kind": "data-workspace", "density": "dense" },
-      "translations": {
-        "ar": {
-          "title": "مساحة جدول البيانات",
-          "purpose": "سير عمل متكرر للبيانات مع البحث والفلاتر والتحكم في الأعمدة وإجراءات الصفوف والتحديد وترقيم الصفحات.",
-          "starterFor": ["قوائم CRM", "طوابير العمليات", "المخزون", "السجلات الإدارية"],
-          "sections": ["شريط أدوات الصفحة", "البحث والفلاتر", "التحكم في الأعمدة", "جدول البيانات", "الإجراءات الجماعية", "ترقيم الصفحات", "الحالة الفارغة"]
-        }
-      }
-    },
-    {
-      "id": "template-onboarding-flow",
-      "title": "Onboarding / Application Flow",
-      "category": "product-saas",
-      "status": "available",
-      "purpose": "A multi-step flow that preserves progress, validation, review, and recovery across desktop and mobile.",
-      "starterFor": ["onboarding", "applications", "eligibility", "setup wizards"],
-      "sections": ["Flow header", "Progress", "Step content", "Validation", "Save and resume", "Review", "Completion"],
-      "requiredComponents": ["Progress", "Field", "Radio Group", "Checkbox", "Alert", "Button Group"],
-      "useWhen": ["The task has meaningful steps or dependencies"],
-      "avoidWhen": ["All required information fits one short form"],
-      "rtlReady": true,
-      "preview": { "kind": "onboarding", "density": "balanced" },
-      "translations": {
-        "ar": {
-          "title": "مسار انضمام أو تقديم",
-          "purpose": "مسار متعدد الخطوات يحفظ التقدم والتحقق والمراجعة والاستعادة على سطح المكتب والجوال.",
-          "starterFor": ["الانضمام", "طلبات التقديم", "الأهلية", "معالجات الإعداد"],
-          "sections": ["رأس المسار", "التقدم", "محتوى الخطوة", "التحقق", "الحفظ والمتابعة", "المراجعة", "الإكمال"]
-        }
-      }
-    },
-    {
-      "id": "template-utopia-studio-reference",
-      "title": "The Utopia Studio Website Reference",
-      "category": "production-example",
-      "status": "reference",
-      "purpose": "A composition reference for Utopia brand rhythm, proof sequencing, typography, and media treatment.",
-      "starterFor": ["brand review", "theme validation", "composition study"],
-      "sections": ["Brand navigation", "Studio statement", "Proof sequence", "People and ventures", "Resource path", "Contact"],
-      "requiredComponents": ["Top Nav", "Carousel", "Typography", "Button"],
-      "useWhen": ["Validating The Utopia Studio Default theme"],
-      "avoidWhen": ["Generating a page by copying production content or layout verbatim"],
-      "rtlReady": true,
-      "preview": { "kind": "production-reference", "density": "editorial" },
-      "translations": {
-        "ar": {
-          "title": "مرجع موقع The Utopia Studio",
-          "purpose": "مرجع للتكوين وإيقاع العلامة وتسلسل الأدلة والطباعة ومعالجة الوسائط.",
-          "starterFor": ["مراجعة العلامة", "التحقق من الثيم", "دراسة التكوين"],
-          "sections": ["تنقل العلامة", "رسالة الاستوديو", "تسلسل الأدلة", "الأشخاص والمشاريع", "مسار الموارد", "التواصل"]
-        }
-      }
-    },
-    {
-      "id": "template-ceramic-docs-reference",
-      "title": "Ceramic Docs Shell Reference",
-      "category": "production-example",
-      "status": "reference",
-      "purpose": "A documentation-shell reference with persistent navigation, content hierarchy, local table of contents, and bilingual behavior.",
-      "starterFor": ["design-system docs", "developer portals", "component libraries"],
-      "sections": ["Side navigation", "Top navigation", "Document header", "Content sections", "On-page navigation", "Examples"],
-      "requiredComponents": ["Side Nav", "Top Nav", "Scroll Area", "Tabs", "Typography", "Code Block"],
-      "useWhen": ["Building dense documentation with human and AI entrypoints"],
-      "avoidWhen": ["The product does not need persistent information architecture"],
-      "rtlReady": true,
-      "preview": { "kind": "docs-shell", "density": "dense" },
-      "translations": {
-        "ar": {
-          "title": "مرجع هيكل توثيق Ceramic",
-          "purpose": "مرجع لهيكل توثيق بتنقل ثابت وتسلسل محتوى وفهرس محلي وسلوك ثنائي اللغة.",
-          "starterFor": ["توثيق أنظمة التصميم", "بوابات المطورين", "مكتبات المكونات"],
-          "sections": ["التنقل الجانبي", "التنقل العلوي", "رأس المستند", "أقسام المحتوى", "التنقل داخل الصفحة", "الأمثلة"]
+          "title": "موقع متكامل لحل SaaS",
+          "purpose": "عائلة صفحات SaaS متكاملة تشمل التسويق والمنتج والأتمتة والتكاملات وأدلة العملاء والأسعار والتحديثات والتواصل مع المبيعات.",
+          "starterFor": [
+            "منتجات SaaS للأعمال",
+            "منصات العمليات",
+            "منتجات أتمتة الذكاء الاصطناعي"
+          ],
+          "sections": [
+            "التنقل العلوي",
+            "القيمة الرئيسية",
+            "معاينة واجهة المنتج",
+            "سير العمل الأساسي",
+            "الوكلاء والأتمتة",
+            "التكاملات",
+            "الأمان والموثوقية",
+            "دليل الفريق",
+            "دعوة الاعتماد",
+            "التذييل"
+          ]
         }
       }
     }

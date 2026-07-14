@@ -1661,6 +1661,7 @@ a {
 .uds-side-nav-section-content {
   display: grid;
   gap: var(--space-1);
+  min-inline-size: 0;
   max-block-size: var(--uds-side-nav-section-content-size, 20rem);
   overflow: hidden;
   opacity: 1;
@@ -2055,6 +2056,8 @@ a {
 }
 
 .uds-side-nav-section[data-variant='nested'] > .uds-side-nav-section-content {
+  inline-size: calc(100% - var(--space-2));
+  box-sizing: border-box;
   margin-inline-start: var(--space-2);
   border-inline-start: var(--border-width-hairline) solid var(--border);
   padding-inline-start: var(--space-2);

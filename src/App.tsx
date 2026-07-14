@@ -1,4 +1,4 @@
-import { lazy, Suspense, useEffect, useMemo, useRef, useState } from 'react'
+import { lazy, Suspense, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
 import {
   catalog,
@@ -25,10 +25,8 @@ import {
   PanelIcon,
 } from '../packages/design-system/src/Navigation'
 
-const ArabicFriendlyPage = lazy(() => import('./pages/ArabicFriendlyPage').then((module) => ({ default: module.ArabicFriendlyPage })))
 const ComponentDetailPage = lazy(() => import('./pages/ComponentDetailPage').then((module) => ({ default: module.ComponentDetailPage })))
 const ComponentsPage = lazy(() => import('./pages/ComponentsPage').then((module) => ({ default: module.ComponentsPage })))
-const CommunityPage = lazy(() => import('./pages/CommunityPage').then((module) => ({ default: module.CommunityPage })))
 const DocsPage = lazy(() => import('./pages/DocsPage').then((module) => ({ default: module.DocsPage })))
 const TemplatesPage = lazy(() => import('./pages/TemplatesPage').then((module) => ({ default: module.TemplatesPage })))
 const ThemesPage = lazy(() => import('./pages/ThemesPage').then((module) => ({ default: module.ThemesPage })))
@@ -43,10 +41,9 @@ const pageMap = {
   '/components': ComponentsPage,
   '/templates': TemplatesPage,
   '/themes': ThemesPage,
-  '/arabic-friendly': ArabicFriendlyPage,
 }
 
-const topNav = routeMap.filter((item) => item.id !== 'home' && item.id !== 'arabic-friendly')
+const topNav = routeMap.filter((item) => item.id !== 'home')
 const docsRoute = routeMap.find((item) => item.id === 'docs')!
 
 function slugFor(value: string) {
@@ -56,7 +53,7 @@ function slugFor(value: string) {
 function getActiveAreaId(path: string) {
   if (path.startsWith('/components')) return 'components'
   if (path.startsWith('/themes')) return 'themes'
-  if (path === '/' || path === '/arabic-friendly' || path.startsWith('/docs')) return 'docs'
+  if (path === '/' || path.startsWith('/docs')) return 'docs'
   return path.replace('/', '')
 }
 
@@ -164,9 +161,8 @@ function getToc(path: string, tab: string) {
   }
   if (path === '/templates') {
     return [
-      { id: 'website-pages', label: 'Website Pages' },
-      { id: 'product-saas', label: 'Product / SaaS' },
-      { id: 'production-examples', label: 'Production Examples' },
+      { id: 'ready-template', label: 'Runnable template' },
+      { id: 'how-to-use', label: 'How to use' },
     ]
   }
   if (path === '/themes') {
@@ -177,6 +173,13 @@ function getToc(path: string, tab: string) {
       { id: 'icon-policy', label: 'Icon policy' },
       { id: 'core-boundary', label: 'Core boundary' },
       { id: 'semantic-contract', label: 'Stable semantic contract' },
+    ]
+  }
+  if (path.startsWith('/themes/')) {
+    return [
+      { id: 'theme-overview', label: 'Overview' },
+      { id: 'theme-ownership', label: 'Ownership boundary' },
+      { id: 'theme-contract', label: 'Stable roles' },
     ]
   }
   if (path === '/docs/foundations/typography/dextrum/marketing-sales') {
@@ -197,16 +200,6 @@ function getToc(path: string, tab: string) {
       { id: 'specimens', label: 'Specimens' },
       { id: 'usage', label: 'Usage' },
       { id: 'ai-rules', label: 'AI rules' },
-    ]
-  }
-  if (path === '/arabic-friendly') {
-    return [
-      { id: 'arabic-preview', label: 'Arabic preview' },
-      { id: 'contract', label: 'Contract' },
-      { id: 'typography', label: 'Typography' },
-      { id: 'api-naming', label: 'API naming' },
-      { id: 'ai-rule', label: 'AI rule' },
-      { id: 'ai-entrypoints', label: 'AI entrypoints' },
     ]
   }
   return [
@@ -260,6 +253,27 @@ function getInitialLocale(): Locale {
   return savedLocale === 'ar' ? 'ar' : 'en'
 }
 
+function RouteScrollManager({ path, section }: { path: string; section: string }) {
+  useLayoutEffect(() => {
+    if ('scrollRestoration' in window.history) window.history.scrollRestoration = 'manual'
+
+    const scroll = () => {
+      if (section) document.getElementById(section)?.scrollIntoView({ block: 'start' })
+      else window.scrollTo({ top: 0, left: 0, behavior: 'auto' })
+    }
+
+    scroll()
+    const frame = window.requestAnimationFrame(scroll)
+    const settle = window.setTimeout(scroll, 360)
+    return () => {
+      window.cancelAnimationFrame(frame)
+      window.clearTimeout(settle)
+    }
+  }, [path, section])
+
+  return null
+}
+
 export function App() {
   return (
     <ThemeProvider>
@@ -279,7 +293,6 @@ function AppShell() {
   const [pendingLocale, setPendingLocale] = useState<Locale | null>(null)
   const transitionTimers = useRef<number[]>([])
   const dir = locale === 'ar' ? 'rtl' : 'ltr'
-  const isCommunitySite = path === '/' || path === '/community'
 
   function clearLocaleTransitionTimers() {
     transitionTimers.current.forEach((timer) => window.clearTimeout(timer))
@@ -293,10 +306,10 @@ function AppShell() {
     transitionTimers.current = [
       window.setTimeout(() => {
         setLocale(nextLocale)
-      }, 1320),
+      }, 180),
       window.setTimeout(() => {
         setPendingLocale(null)
-      }, 2300),
+      }, 560),
     ]
   }
 
@@ -311,22 +324,11 @@ function AppShell() {
   }, [])
 
   useEffect(() => {
-    if (!section) {
-      window.requestAnimationFrame(() => window.scrollTo({ top: 0, behavior: 'auto' }))
-      return
-    }
-    const scrollToSection = () => document.getElementById(section)?.scrollIntoView({ block: 'start' })
-    window.requestAnimationFrame(scrollToSection)
-    const timeout = window.setTimeout(scrollToSection, 100)
-    return () => window.clearTimeout(timeout)
-  }, [path, section])
-
-  useEffect(() => {
-    document.documentElement.lang = isCommunitySite ? 'en' : locale === 'ar' ? 'ar' : 'en'
-    document.documentElement.dir = isCommunitySite ? 'ltr' : dir
-    document.title = isCommunitySite ? 'Utopia Design Club' : 'Ceramic Design System'
+    document.documentElement.lang = locale === 'ar' ? 'ar' : 'en'
+    document.documentElement.dir = dir
+    document.title = 'Ceramic Design System'
     window.localStorage.setItem('utopia-ds-locale', locale)
-  }, [dir, isCommunitySite, locale])
+  }, [dir, locale])
 
   useEffect(() => () => clearLocaleTransitionTimers(), [])
 
@@ -342,6 +344,7 @@ function AppShell() {
   const componentId = path.startsWith('/components/') ? path.replace('/components/', '') : ''
   const isComponentsArea = sidebarArea.id === 'components'
   const isDocsArea = sidebarArea.id === 'docs'
+  const isTemplatesArea = sidebarArea.id === 'templates'
   const isThemesArea = sidebarArea.id === 'themes'
   const normalizedComponentSearch = componentSearch.trim().toLowerCase()
   const componentFamilies = isComponentsArea ? getComponentFamilies() : []
@@ -376,6 +379,7 @@ function AppShell() {
   ]
 
   const isComponentsOverview = path === '/components'
+  const isWidePage = isComponentsOverview || path === '/templates'
 
   function sidebarHref(groupId: string, item: string) {
     const slug = slugFor(item)
@@ -386,18 +390,11 @@ function AppShell() {
     if (isDocsArea && groupId === 'libraries') return `#/docs/libraries/${slug}`
     if (isDocsArea && item === 'Arabic Friendly') return '#/docs#arabic-friendly'
     if (isDocsArea) return `#/docs#${slug}`
+    if (isTemplatesArea) return '#/templates#ready-template'
     if (isThemesArea && item === 'The Utopia Studio Default') return '#/themes/utopia-default/overview'
     if (isThemesArea && item === 'Dextrum') return '#/themes/dextrum/overview'
     if (isThemesArea && item === 'Barrier Intelligence') return '#/themes#barrier-intelligence'
     return `#/${sidebarArea.id}`
-  }
-
-  if (isCommunitySite) {
-    return (
-      <I18nProvider locale={locale} setLocale={transitionLocale}>
-        <Suspense fallback={<RouteFallback locale={locale} />}><CommunityPage /></Suspense>
-      </I18nProvider>
-    )
   }
 
   return (
@@ -615,12 +612,13 @@ function AppShell() {
           <motion.div
             key={`${locale}-${path}-${tab}`}
             animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
-            className={isComponentsOverview ? 'content-frame content-frame-wide' : 'content-frame'}
+            className={isWidePage ? 'content-frame content-frame-wide' : 'content-frame'}
             exit={{ opacity: 0, y: -8, filter: 'blur(2px)' }}
             initial={{ opacity: 0, y: 10, filter: 'blur(2px)' }}
             transition={{ duration: 0.28, ease: [0.22, 1, 0.36, 1] }}
           >
             <Suspense fallback={<RouteFallback locale={locale} />}>
+              <RouteScrollManager path={path} section={section} />
               {componentId ? <ComponentDetailPage componentId={componentId} tab={tab} /> : <Page path={path} />}
             </Suspense>
           </motion.div>

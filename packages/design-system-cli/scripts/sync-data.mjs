@@ -1,4 +1,4 @@
-import { cpSync, mkdirSync, rmSync } from 'node:fs'
+import { cpSync, mkdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs'
 import { dirname, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
 
@@ -10,4 +10,12 @@ rmSync(data, { recursive: true, force: true })
 mkdirSync(data, { recursive: true })
 cpSync(resolve(workspaceRoot, 'packages/design-system/src/manifests'), resolve(data, 'manifests'), { recursive: true })
 cpSync(resolve(workspaceRoot, 'docs/design-system'), resolve(data, 'docs'), { recursive: true })
-console.log('Synced Ceramic manifests and docs into the CLI package.')
+const templateTarget = resolve(data, 'templates/saas-solution-homepage')
+cpSync(resolve(workspaceRoot, 'templates/saas-solution-homepage'), templateTarget, { recursive: true })
+const templateMain = resolve(templateTarget, 'main.tsx')
+const portableMain = readFileSync(templateMain, 'utf8')
+  .replace("from '../../packages/design-system/src'", "from '@utopia-studio-design/design-system'")
+  .replace("import '../../packages/design-system/src/core.css'", "import '@utopia-studio-design/design-system/core.css'")
+  .replace("import '../../packages/design-system/src/themes/utopia-default.css'", "import '@utopia-studio-design/design-system/themes/utopia-default.css'")
+writeFileSync(templateMain, portableMain, 'utf8')
+console.log('Synced Ceramic manifests, docs, and runnable templates into the CLI package.')

@@ -273,11 +273,20 @@ if (!detailPage.includes("import { Toaster, toast }")) {
   fail('Sonner copy-paste usage must use Toaster + toast')
 }
 
-if (templatesManifest.templates.length < 10) {
-  fail('templates manifest must expose a useful starter library, not placeholder cards')
+if (templatesManifest.templates.length < 1) {
+  fail('templates manifest must expose at least one runnable template')
 }
 
 for (const template of templatesManifest.templates) {
+  if (!template.sourcePath || !template.entryPath || !template.manifestPath || !template.bundlePath) {
+    fail(`${template.id}: runnable template must define source, entry, manifest, and bundle paths`)
+  }
+  for (const sourcePath of [template.sourcePath, template.entryPath, template.manifestPath, template.bundlePath]) {
+    if (!fs.existsSync(path.join(root, sourcePath))) fail(`${template.id}: missing runnable source ${sourcePath}`)
+  }
+  if (!template.pageCount || template.pages?.length !== template.pageCount) {
+    fail(`${template.id}: runnable template pageCount must match its page list`)
+  }
   if (!template.purpose || !template.starterFor?.length || !template.sections?.length) {
     fail(`${template.id}: template must define purpose, starterFor, and sections`)
   }

@@ -11,7 +11,6 @@ const themePolicyById = {
 } as const
 
 type ThemeEntry = (typeof themes.themes)[number]
-type PlannedThemeSlot = (typeof themes.plannedThemeSlots)[number]
 
 const pageCopy = {
   en: {
@@ -85,18 +84,6 @@ function localizedTheme(theme: ThemeEntry, locale: Locale) {
     description: theme.translations.ar.description,
     bestFor: theme.translations.ar.bestFor,
     principles: theme.translations.ar.principles,
-  }
-}
-
-function localizedSlot(slot: PlannedThemeSlot, locale: Locale) {
-  if (locale !== 'ar') return slot
-  return {
-    ...slot,
-    name: slot.translations.ar.name,
-    purpose: slot.translations.ar.purpose,
-    audience: slot.translations.ar.audience,
-    visualDirection: slot.translations.ar.visualDirection,
-    requiredValidation: slot.translations.ar.requiredValidation,
   }
 }
 
@@ -244,52 +231,6 @@ export function ThemesPage({ path = '/themes' }: ThemesPageProps) {
             </article>
           </section>
 
-          <section className="catalog-section" aria-labelledby="planned-theme-heading">
-            <div className="section-heading">
-              <p>{copy.planned}</p>
-              <h2 id="planned-theme-heading">{locale === 'ar' ? 'مساحات الثيمات المستقبلية' : 'Future theme workspaces'}</h2>
-            </div>
-            <div className="planned-theme-grid">
-              {themes.plannedThemeSlots.map((sourceSlot) => {
-                const slot = localizedSlot(sourceSlot, locale)
-                return (
-                  <article key={slot.id} className="theme-planned-card">
-                    <div className="card-row">
-                      <span className="kicker">{copy.planned}</span>
-                      <span className="pill">{copy.plannedStatus}</span>
-                    </div>
-                    <h3>{slot.name}</h3>
-                    <p>{slot.purpose}</p>
-                    <div className="theme-meta-grid">
-                      <div>
-                        <strong>{copy.audience}</strong>
-                        <div className="chip-list">
-                          {slot.audience.map((item) => <span key={item}>{item}</span>)}
-                        </div>
-                      </div>
-                      <div>
-                        <strong>{copy.direction}</strong>
-                        <p>{slot.visualDirection}</p>
-                      </div>
-                      <div>
-                        <strong>{copy.extensions}</strong>
-                        <div className="chip-list">
-                          {slot.semanticExtensions.map((item) => <span key={item}>{item}</span>)}
-                        </div>
-                      </div>
-                      <div>
-                        <strong>{copy.validation}</strong>
-                        <ul className="theme-check-list">
-                          {slot.requiredValidation.map((item) => <li key={item}>{item}</li>)}
-                        </ul>
-                      </div>
-                    </div>
-                  </article>
-                )
-              })}
-            </div>
-          </section>
-
           <article className="card accent" id="semantic-contract">
             <span className="kicker">{copy.semanticContract}</span>
             <h3>{copy.semanticContractTitle}</h3>
@@ -309,7 +250,7 @@ function DextrumTypographyLanding({ locale }: { locale: Locale }) {
 
   return (
     <div className="page">
-      <header className="page-hero compact">
+      <header className="page-hero compact" id="theme-overview">
         <p className="eyebrow">Dextrum</p>
         <h1>{isArabic ? 'نظام Dextrum الطباعي' : 'Dextrum Typography'}</h1>
         <p>
@@ -350,6 +291,12 @@ function ThemeImplementationPage({ path, locale }: { path: string; locale: Local
     'semantic-mapping': { en: 'Semantic Mapping', ar: 'الربط الدلالي' },
   }
   const label = sectionLabels[section] ?? sectionLabels.overview
+  const sectionRoles = themes.requiredSemanticRoles.filter((role) => {
+    if (section === 'typography') return role.startsWith('--font') || role.startsWith('--line-height')
+    if (section === 'primitives') return ['--background', '--foreground', '--primary', '--secondary', '--muted', '--border', '--input', '--ring', '--radius', '--radius-control', '--radius-surface'].includes(role)
+    if (section === 'semantic-mapping') return ['--background', '--foreground', '--card', '--card-foreground', '--primary', '--primary-foreground', '--secondary', '--secondary-foreground', '--muted', '--muted-foreground', '--border', '--input', '--ring'].includes(role)
+    return ['--background', '--foreground', '--primary', '--primary-foreground', '--secondary', '--muted', '--muted-foreground', '--border', '--ring', '--radius-control', '--radius-surface', '--motion-duration-page', '--motion-ease-standard', '--font-sans', '--font-arabic'].includes(role)
+  })
 
   return (
     <div className="page">
@@ -364,8 +311,8 @@ function ThemeImplementationPage({ path, locale }: { path: string; locale: Local
       </header>
 
       <section className="section">
-        <div className="foundation-card-grid">
-          <article className="foundation-card">
+        <div className="foundation-card-grid theme-implementation-grid">
+          <article className="foundation-card" id="theme-ownership">
             <span className="kicker">{isArabic ? 'حدود الملكية' : 'Ownership boundary'}</span>
             <h2>{isArabic ? 'ما يملكه الثيم' : 'What the theme owns'}</h2>
             <p>
@@ -374,11 +321,11 @@ function ThemeImplementationPage({ path, locale }: { path: string; locale: Local
                 : 'Primitive values, typefaces, brand expression, and their mapping into required semantic roles.'}
             </p>
           </article>
-          <article className="foundation-card">
+          <article className="foundation-card" id="theme-contract">
             <span className="kicker">{isArabic ? 'العقد' : 'Contract'}</span>
             <h2>{isArabic ? 'أدوار ثابتة' : 'Stable roles'}</h2>
             <div className="chip-list">
-              {themes.requiredSemanticRoles.map((role) => <span key={role}>{role}</span>)}
+              {sectionRoles.map((role) => <span key={role}>{role}</span>)}
             </div>
           </article>
           {isDextrum && section === 'typography' ? (

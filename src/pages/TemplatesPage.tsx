@@ -1,49 +1,61 @@
-import { getArea, templates } from '../data/design-system'
-import { sideNavLabel, useI18n, type Locale } from '../i18n'
+import { useState } from 'react'
+import { Check, Copy, ExternalLink, FileCode2, Layers3, Play, TerminalSquare } from 'lucide-react'
+import { Badge, Button } from '../../packages/design-system/src'
+import { templates } from '../data/design-system'
+import { useI18n, type Locale } from '../i18n'
 
 type TemplateEntry = (typeof templates.templates)[number]
-
-const categoryCopy = {
-  'website-page': {
-    en: { eyebrow: 'Website pages', title: 'Narrative and conversion pages' },
-    ar: { eyebrow: 'صفحات المواقع', title: 'صفحات السرد والتحويل' },
-  },
-  'product-saas': {
-    en: { eyebrow: 'Product / SaaS', title: 'Operational product surfaces' },
-    ar: { eyebrow: 'المنتج وSaaS', title: 'أسطح المنتج التشغيلية' },
-  },
-  'production-example': {
-    en: { eyebrow: 'Production examples', title: 'Composition references' },
-    ar: { eyebrow: 'أمثلة الإنتاج', title: 'مراجع التكوين' },
-  },
-} as const
+type RunnableTemplate = TemplateEntry & {
+  bundlePath?: string
+  entryPath?: string
+  manifestPath?: string
+  pageCount?: number
+  pages?: string[]
+  sourcePath?: string
+}
 
 const pageCopy = {
   en: {
     eyebrow: 'Templates',
-    title: 'Start with a page blueprint, not an empty canvas.',
-    intro: 'Reusable information architecture for websites and product surfaces. Each blueprint names the sections, Ceramic components, and RTL checks an AI agent or product team should begin with.',
-    sourceNote: 'Templates are structural starters. They do not copy another product’s brand, content, or visual primitives.',
-    available: 'Available',
-    reference: 'Reference',
-    starterFor: 'Start here for',
-    sections: 'Page structure',
-    components: 'Required components',
-    command: 'Agent command',
-    previewLabel: 'Blueprint preview',
+    title: 'Start from something you can run.',
+    intro: 'Open the complete Ceramic website, inspect every route, then generate a local copy with the CLI.',
+    runnable: 'Runnable template',
+    pages: 'pages',
+    openPreview: 'Open live preview',
+    copyCommand: 'Copy command',
+    copied: 'Copied',
+    included: 'Included routes',
+    source: 'Source contract',
+    howTitle: 'Use it in three steps',
+    howBody: 'The CLI creates a standalone Vite project with Ceramic imports, page entries, seed data, and the template manifest already connected.',
+    steps: [
+      ['Preview', 'Check the full site, responsive behavior, theme modes, and Arabic before adopting it.'],
+      ['Generate', 'Run the copy command in the directory where you want the new website project.'],
+      ['Customize', 'Replace seeded demo content while preserving semantic tokens, components, and route structure.'],
+    ],
+    command: 'Generate a standalone copy',
+    importTitle: 'Ceramic package imports',
   },
   ar: {
     eyebrow: 'القوالب',
-    title: 'ابدأ بمخطط صفحة، لا بلوحة فارغة.',
-    intro: 'بنية معلومات قابلة لإعادة الاستخدام للمواقع وأسطح المنتجات. يحدد كل مخطط الأقسام ومكونات Ceramic وفحوص RTL التي يبدأ منها وكيل الذكاء الاصطناعي أو فريق المنتج.',
-    sourceNote: 'القوالب نقاط بداية بنيوية. لا تنسخ علامة منتج آخر أو محتواه أو قيمه البصرية.',
-    available: 'متاح',
-    reference: 'مرجع',
-    starterFor: 'مناسب للبدء في',
-    sections: 'بنية الصفحة',
-    components: 'المكونات المطلوبة',
-    command: 'أمر الوكيل',
-    previewLabel: 'معاينة المخطط',
+    title: 'ابدأ من شيء يمكنك تشغيله.',
+    intro: 'افتح موقع Ceramic الكامل، وراجع كل مسار، ثم أنشئ نسخة محلية عبر سطر الأوامر.',
+    runnable: 'قالب قابل للتشغيل',
+    pages: 'صفحات',
+    openPreview: 'فتح المعاينة المباشرة',
+    copyCommand: 'نسخ الأمر',
+    copied: 'تم النسخ',
+    included: 'المسارات المضمنة',
+    source: 'عقد المصدر',
+    howTitle: 'استخدمه في ثلاث خطوات',
+    howBody: 'ينشئ سطر الأوامر مشروع Vite مستقلاً مع استيرادات Ceramic ومسارات الصفحات والبيانات الحتمية وبيان القالب.',
+    steps: [
+      ['عاين', 'راجع الموقع الكامل والاستجابة وأنماط الألوان والعربية قبل اعتماده.'],
+      ['أنشئ', 'شغّل أمر النسخ في المجلد الذي تريد إنشاء مشروع الموقع داخله.'],
+      ['خصّص', 'استبدل المحتوى التجريبي مع الحفاظ على الرموز الدلالية والمكونات وبنية المسارات.'],
+    ],
+    command: 'إنشاء نسخة مستقلة',
+    importTitle: 'استيرادات حزمة Ceramic',
   },
 } as const
 
@@ -58,118 +70,110 @@ function localizedTemplate(template: TemplateEntry, locale: Locale) {
   }
 }
 
-function TemplateBlueprintPreview({ kind, label }: { kind: string; label: string }) {
-  return (
-    <div aria-label={label} className="template-preview" data-kind={kind} role="img">
-      <span className="template-preview__rail" />
-      <div className="template-preview__canvas">
-        <span className="template-preview__nav" />
-        <div className="template-preview__hero">
-          <span />
-          <span />
-        </div>
-        <div className="template-preview__metrics">
-          <span />
-          <span />
-          <span />
-        </div>
-        <div className="template-preview__body">
-          <span />
-          <span />
-          <span />
-          <span />
-        </div>
-      </div>
-    </div>
-  )
+async function copyValue(value: string, onCopied: (value: string) => void) {
+  let didCopy = false
+  try {
+    await navigator.clipboard.writeText(value)
+    didCopy = true
+  } catch {
+    const input = document.createElement('textarea')
+    input.value = value
+    input.setAttribute('readonly', '')
+    input.style.position = 'fixed'
+    input.style.opacity = '0'
+    document.body.appendChild(input)
+    input.select()
+    didCopy = document.execCommand('copy')
+    input.remove()
+  }
+  if (didCopy) {
+    onCopied(value)
+    window.setTimeout(() => onCopied(''), 1800)
+  }
 }
 
 export function TemplatesPage() {
-  const area = getArea('templates')
   const { locale } = useI18n()
   const copy = pageCopy[locale]
-  const categorySections = (['website-page', 'product-saas', 'production-example'] as const).map((category) => ({
-    category,
-    id: category === 'website-page' ? 'website-pages' : category === 'product-saas' ? 'product-saas' : 'production-examples',
-    templates: templates.templates.filter((template) => template.category === category),
-  }))
+  const [copied, setCopied] = useState('')
+  const featuredSource = templates.templates.find((template) => template.id === 'template-saas-solution-homepage') as RunnableTemplate
+  const featured = localizedTemplate(featuredSource, locale) as RunnableTemplate
+  const previewUrl = `/${featured.entryPath}?seed=1974341818`
+  const generateCommand = `npm run ds -- template ${featured.id} --copy ./saas-solution-website`
+  const importExample = `import { Button, Card, TopNav } from '@utopia-studio-design/design-system'\nimport '@utopia-studio-design/design-system/core.css'\nimport '@utopia-studio-design/design-system/themes/utopia-default.css'`
 
   return (
-    <div className="page">
-      <section className="page-hero compact">
+    <div className="page templates-page">
+      <section className="page-hero compact templates-hero">
         <p className="eyebrow">{copy.eyebrow}</p>
         <h1>{copy.title}</h1>
         <p>{copy.intro}</p>
-        <p className="template-source-note">{copy.sourceNote}</p>
-      </section>
-
-      <section className="split-grid">
-        <aside className="rail" aria-label={copy.eyebrow}>
-          {area?.groups.map((group) => (
-            <div key={group.id} className="rail-group">
-              <strong>{sideNavLabel(locale, group.label)}</strong>
-              {group.items.map((item) => <span key={item}>{sideNavLabel(locale, item)}</span>)}
-            </div>
-          ))}
-        </aside>
-
-        <div className="content-stack template-catalog">
-          {categorySections.map((section) => {
-            const category = categoryCopy[section.category][locale]
-            return (
-              <section key={section.id} id={section.id} className="catalog-section">
-                <div className="section-heading">
-                  <p>{category.eyebrow}</p>
-                  <h2>{category.title}</h2>
-                </div>
-                <div className="template-grid">
-                  {section.templates.map((sourceTemplate) => {
-                    const template = localizedTemplate(sourceTemplate, locale)
-                    const status = template.status === 'reference' ? copy.reference : copy.available
-                    return (
-                      <article key={template.id} className="template-card">
-                        <TemplateBlueprintPreview kind={template.preview.kind} label={`${template.title}: ${copy.previewLabel}`} />
-                        <div className="template-card__content">
-                          <div className="card-row">
-                            <span className="kicker">{category.eyebrow}</span>
-                            <span className="pill">{status}</span>
-                          </div>
-                          <h3>{template.title}</h3>
-                          <p>{template.purpose}</p>
-                          <div className="template-meta-grid">
-                            <div>
-                              <strong>{copy.starterFor}</strong>
-                              <div className="chip-list">
-                                {template.starterFor.map((item) => <span key={item}>{item}</span>)}
-                              </div>
-                            </div>
-                            <div>
-                              <strong>{copy.sections}</strong>
-                              <ol className="template-section-list">
-                                {template.sections.map((item) => <li key={item}>{item}</li>)}
-                              </ol>
-                            </div>
-                            <div>
-                              <strong>{copy.components}</strong>
-                              <div className="chip-list">
-                                {template.requiredComponents.map((item) => <span key={item}>{item}</span>)}
-                              </div>
-                            </div>
-                          </div>
-                          <div className="template-command">
-                            <span>{copy.command}</span>
-                            <code>npx utopia-ds template {template.id} --skeleton --dense</code>
-                          </div>
-                        </div>
-                      </article>
-                    )
-                  })}
-                </div>
-              </section>
-            )
-          })}
+        <div className="templates-summary" aria-label={copy.eyebrow}>
+          <span><strong>1</strong>{copy.runnable}</span>
+          <span><strong>{featured.pageCount}</strong>{copy.pages}</span>
         </div>
       </section>
+
+      <section className="template-feature" id="ready-template" aria-labelledby="featured-template-title">
+        <div className="template-feature__preview">
+          <div className="template-browser-bar" aria-hidden="true"><span /><span /><span /><small>/saas-solution-homepage</small></div>
+          <iframe src={previewUrl} title={`${featured.title} — ${copy.openPreview}`} loading="eager" tabIndex={-1} />
+        </div>
+        <div className="template-feature__content">
+          <div className="template-feature__status">
+            <Badge variant="success">{copy.runnable}</Badge>
+            <span>{featured.pageCount} {copy.pages}</span>
+          </div>
+          <h2 id="featured-template-title">{featured.title}</h2>
+          <p>{featured.purpose}</p>
+          <div className="template-feature__actions">
+            <Button endContent={<ExternalLink aria-hidden="true" />} onClick={() => window.open(previewUrl, '_blank', 'noopener,noreferrer')}>
+              {copy.openPreview}
+            </Button>
+            <Button
+              onClick={() => copyValue(generateCommand, setCopied)}
+              startContent={copied === generateCommand ? <Check aria-hidden="true" /> : <Copy aria-hidden="true" />}
+              variant="outline"
+            >
+              {copied === generateCommand ? copy.copied : copy.copyCommand}
+            </Button>
+          </div>
+          <div className="template-route-list">
+            <strong>{copy.included}</strong>
+            <div>{featured.pages?.map((page) => <span key={page}>{page}</span>)}</div>
+          </div>
+          <dl className="template-source-list">
+            <div><dt>{copy.source}</dt><dd><code>{featured.manifestPath}</code></dd></div>
+            <div><dt>Seed</dt><dd><code>?seed=1974341818</code></dd></div>
+          </dl>
+        </div>
+      </section>
+
+      <section className="template-usage" id="how-to-use" aria-labelledby="template-usage-title">
+        <div className="section-heading">
+          <p>{copy.command}</p>
+          <h2 id="template-usage-title">{copy.howTitle}</h2>
+          <span>{copy.howBody}</span>
+        </div>
+        <div className="template-steps">
+          {copy.steps.map(([title, body], index) => {
+            const StepIcon = [Play, TerminalSquare, Layers3][index]
+            return <article key={title}><span><StepIcon aria-hidden="true" /></span><small>0{index + 1}</small><h3>{title}</h3><p>{body}</p></article>
+          })}
+        </div>
+        <div className="template-code-grid">
+          <div className="template-code-block">
+            <div><TerminalSquare aria-hidden="true" /><strong>{copy.command}</strong><Button aria-label={copy.copyCommand} isIconOnly onClick={() => copyValue(generateCommand, setCopied)} size="icon" variant="ghost">{copied === generateCommand ? <Check aria-hidden="true" /> : <Copy aria-hidden="true" />}</Button></div>
+            <pre><code>{generateCommand}</code></pre>
+          </div>
+          <div className="template-code-block">
+            <div><FileCode2 aria-hidden="true" /><strong>{copy.importTitle}</strong><Button aria-label={copy.copyCommand} isIconOnly onClick={() => copyValue(importExample, setCopied)} size="icon" variant="ghost">{copied === importExample ? <Check aria-hidden="true" /> : <Copy aria-hidden="true" />}</Button></div>
+            <pre><code>{importExample}</code></pre>
+          </div>
+        </div>
+        <span aria-live="polite" className="sr-only">{copied ? copy.copied : ''}</span>
+      </section>
+
     </div>
   )
 }

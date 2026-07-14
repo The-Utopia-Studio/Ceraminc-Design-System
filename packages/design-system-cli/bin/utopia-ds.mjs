@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs'
+import { cpSync, existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs'
 import { dirname, join, resolve } from 'node:path'
 import { spawn } from 'node:child_process'
 import {
@@ -41,6 +41,7 @@ Commands:
   search <query>                           Search every design-system domain
   component <Name>|--list                 Inspect component contracts
   template <id>|--list [--skeleton]       Inspect starter structures
+  template <id> --copy <directory>        Generate a runnable template project
   theme <id>|--list                       Inspect theme contracts
   docs <topic>|--list                     Read design-system guidance
   manifest                                Print the self-describing CLI contract
@@ -102,6 +103,41 @@ function runMcp() {
   child.on('exit', (code) => { process.exitCode = code ?? 0 })
 }
 
+function copyTemplateProject(entry) {
+  if (!entry.bundlePath) return fail(`Template "${entry.id}" is a blueprint contract and has no runnable bundle.`, 'ERR_TEMPLATE_BUNDLE')
+  const requestedTarget = argAfter('--copy', entry.id.replace(/^template-/, ''))
+  const target = resolve(requestedTarget)
+  if (existsSync(target) && !args.includes('--force')) return fail(`Target already exists: ${target}. Pass --force to overwrite it.`, 'ERR_TARGET_EXISTS')
+  const source = resolve(dirname(new URL(import.meta.url).pathname), '..', 'data', entry.bundlePath)
+  if (!existsSync(source)) return fail(`Runnable bundle is missing for "${entry.id}".`, 'ERR_TEMPLATE_BUNDLE')
+  cpSync(source, target, { recursive: true, force: args.includes('--force') })
+
+  const packageName = target.split('/').filter(Boolean).at(-1)?.replace(/[^a-z0-9-]+/gi, '-').toLowerCase() || 'ceramic-saas-website'
+  const workspacePackage = resolve(process.cwd(), 'packages/design-system')
+  const designSystemDependency = existsSync(join(workspacePackage, 'package.json'))
+    ? `file:${workspacePackage}`
+    : '^0.2.0'
+  write(join(target, 'package.json'), `${JSON.stringify({
+    name: packageName,
+    private: true,
+    version: '0.1.0',
+    type: 'module',
+    scripts: { dev: 'vite', build: 'vite build', preview: 'vite preview' },
+    dependencies: {
+      '@utopia-studio-design/design-system': designSystemDependency,
+      'framer-motion': '^12.42.2',
+      'lucide-react': '^1.23.0',
+      react: '^19.0.0',
+      'react-dom': '^19.0.0',
+    },
+    devDependencies: { '@vitejs/plugin-react': '^4.3.4', typescript: '^5.7.2', vite: '^6.0.7' },
+  }, null, 2)}\n`)
+  write(join(target, 'vite.config.ts'), `import { resolve } from 'node:path'\nimport react from '@vitejs/plugin-react'\nimport { defineConfig } from 'vite'\n\nexport default defineConfig({\n  plugins: [react()],\n  build: {\n    rollupOptions: {\n      input: {\n        home: resolve('index.html'),\n        product: resolve('product/index.html'),\n        agents: resolve('agents/index.html'),\n        integrations: resolve('integrations/index.html'),\n        integrationDetail: resolve('integrations/slack/index.html'),\n        customers: resolve('customers/index.html'),\n        customerStory: resolve('customers/aster-labs/index.html'),\n        pricing: resolve('pricing/index.html'),\n        changelog: resolve('changelog/index.html'),\n        contactSales: resolve('contact-sales/index.html'),\n      },\n    },\n  },\n})\n`)
+  const existingReadme = readFileSync(join(target, 'README.md'), 'utf8')
+  write(join(target, 'README.md'), `# Generated Ceramic SaaS website\n\n\`\`\`sh\nnpm install\nnpm run dev\n\`\`\`\n\nOpen \`http://localhost:5173/?seed=1974341818\`. All ten page entries share the same seed, theme, and locale state.\n\n${existingReadme}`)
+  output('template-copy-result', { ok: true, id: entry.id, target, pages: entry.pages ?? [] }, (data) => `Generated ${data.id} in ${data.target}.\nNext: cd ${data.target} && npm install && npm run dev`)
+}
+
 if (command === 'help' || args.includes('--help')) help()
 else if (command === 'init') init()
 else if (command === 'manifest') output('manifest', capabilityManifest())
@@ -116,7 +152,12 @@ else if (command === 'search') {
 } else if (command === 'template') {
   const name = values[0]
   if (!name || args.includes('--list')) output('template-list', listTemplates(), (rows) => rows.map((item) => `${item.id}|${item.category}|${item.title}|${item.purpose}`).join('\n'))
-  else { const item = getTemplate(name); item ? output('template', item, (entry) => args.includes('--skeleton') ? entry.sections.map((section) => `<section data-ceramic-part="${section}">{/* ${section} */}</section>`).join('\n') : JSON.stringify(entry, null, 2)) : fail(`Unknown template "${name}".`, 'ERR_TEMPLATE') }
+  else {
+    const item = getTemplate(name)
+    if (!item) fail(`Unknown template "${name}".`, 'ERR_TEMPLATE')
+    else if (args.includes('--copy')) copyTemplateProject(item)
+    else output('template', item, (entry) => args.includes('--skeleton') ? entry.sections.map((section) => `<section data-ceramic-part="${section}">{/* ${section} */}</section>`).join('\n') : JSON.stringify(entry, null, 2))
+  }
 } else if (command === 'theme') {
   const name = values[0]
   if (!name || args.includes('--list')) output('theme-list', listThemes(), (rows) => rows.map((item) => `${item.id}|${item.name}|${item.role}|${item.policyManifest}`).join('\n'))

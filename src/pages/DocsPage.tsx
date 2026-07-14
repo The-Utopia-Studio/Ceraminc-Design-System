@@ -792,7 +792,7 @@ export function Example() {
             <pre>{`npx utopia-ds manifest --json
 npx utopia-ds search "Arabic settings form" --json
 npx utopia-ds component Button --json
-npx utopia-ds template template-app-shell --skeleton --dense
+npm run ds -- template template-saas-solution-homepage --copy ./saas-solution-website
 npx utopia-ds theme utopia-default --json
 npx utopia-ds docs arabic-friendly --dense
 npx utopia-ds doctor --json`}</pre>
