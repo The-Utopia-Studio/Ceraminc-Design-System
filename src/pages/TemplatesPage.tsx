@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { Check, Copy, ExternalLink, FileCode2, Layers3, Play, TerminalSquare } from 'lucide-react'
-import { Badge, Button } from '../../packages/design-system/src'
-import { templates } from '../data/design-system'
+import { Badge, Button, Selector } from '../../packages/design-system/src'
+import { templates, themes } from '../data/design-system'
 import { useI18n, type Locale } from '../i18n'
 
 type TemplateEntry = (typeof templates.templates)[number]
@@ -35,6 +35,9 @@ const pageCopy = {
     ],
     command: 'Generate a standalone copy',
     importTitle: 'Ceramic package imports',
+    themePicker: 'Theme for the generated website',
+    themePickerHelp: 'The CLI keeps the CSS import, HTML metadata, runtime constant, and Ceramic config in sync.',
+    selectedTheme: 'Selected theme',
   },
   ar: {
     eyebrow: 'القوالب',
@@ -56,6 +59,9 @@ const pageCopy = {
     ],
     command: 'إنشاء نسخة مستقلة',
     importTitle: 'استيرادات حزمة Ceramic',
+    themePicker: 'ثيم الموقع الذي سيتم إنشاؤه',
+    themePickerHelp: 'يحافظ سطر الأوامر على تطابق استيراد CSS وبيانات HTML وثابت التشغيل وإعداد Ceramic.',
+    selectedTheme: 'الثيم المختار',
   },
 } as const
 
@@ -96,11 +102,14 @@ export function TemplatesPage() {
   const { locale } = useI18n()
   const copy = pageCopy[locale]
   const [copied, setCopied] = useState('')
+  const [selectedTheme, setSelectedTheme] = useState('utopia-default')
   const featuredSource = templates.templates.find((template) => template.id === 'template-saas-solution-homepage') as RunnableTemplate
   const featured = localizedTemplate(featuredSource, locale) as RunnableTemplate
   const previewUrl = `/${featured.entryPath}?seed=1974341818`
-  const generateCommand = `npm run ds -- template ${featured.id} --copy ./saas-solution-website`
-  const importExample = `import { Button, Card, TopNav } from '@utopia-studio-design/design-system'\nimport '@utopia-studio-design/design-system/core.css'\nimport '@utopia-studio-design/design-system/themes/utopia-default.css'`
+  const selectedThemeEntry = themes.themes.find((theme) => theme.id === selectedTheme) ?? themes.themes[0]
+  const selectedThemeName = locale === 'ar' ? selectedThemeEntry.translations.ar.name : selectedThemeEntry.name
+  const generateCommand = `npx utopia-ds template ${featured.id} --theme ${selectedTheme} --copy ./saas-solution-website`
+  const importExample = `import { Button, Card, TopNav } from '@utopia-studio-design/design-system'\nimport '@utopia-studio-design/design-system/core.css'\nimport '@utopia-studio-design/design-system/themes/${selectedTheme}.css'`
 
   return (
     <div className="page templates-page">
@@ -160,6 +169,16 @@ export function TemplatesPage() {
             const StepIcon = [Play, TerminalSquare, Layers3][index]
             return <article key={title}><span><StepIcon aria-hidden="true" /></span><small>0{index + 1}</small><h3>{title}</h3><p>{body}</p></article>
           })}
+        </div>
+        <div className="template-theme-picker">
+          <div>
+            <label htmlFor="template-theme">{copy.themePicker}</label>
+            <p>{copy.themePickerHelp}</p>
+          </div>
+          <Selector id="template-theme" onChange={(event) => setSelectedTheme(event.target.value)} value={selectedTheme}>
+            {themes.themes.map((theme) => <option key={theme.id} value={theme.id}>{locale === 'ar' ? theme.translations.ar.name : theme.name}</option>)}
+          </Selector>
+          <span><small>{copy.selectedTheme}</small><strong>{selectedThemeName}</strong><code>{selectedTheme}</code></span>
         </div>
         <div className="template-code-grid">
           <div className="template-code-block">

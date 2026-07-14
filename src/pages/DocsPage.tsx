@@ -1,5 +1,5 @@
 import { useState, type ReactNode } from 'react'
-import { ArrowLeft, ArrowRight, Bell, ChevronDown, Copy, Download, Home, PanelLeft, Search, Settings } from 'lucide-react'
+import { ArrowLeft, ArrowRight, Bell, ChevronDown, Copy, Download, Home, PackagePlus, Palette, PanelLeft, PanelsTopLeft, Search, Settings } from 'lucide-react'
 import { themes, utopiaDefaultTheme } from '../data/design-system'
 import { DextrumTypographySubpage, dextrumTypographySegmentFromPath } from './DextrumTypographySubpage'
 import { ArabicDisplay, ArabicText } from '../../packages/design-system/src/Typography'
@@ -698,6 +698,30 @@ function GettingStartedPage() {
       </section>
 
       <article className="docs-article">
+        <section id="choose-path">
+          <div className="scenario-heading">
+            <p className="eyebrow">{isArabic ? 'اختر مسارك' : 'Choose your path'}</p>
+            <h2>{isArabic ? 'ابدأ من النتيجة التي تريدها.' : 'Start from the outcome you need.'}</h2>
+            <p>{isArabic ? 'كل مسار ينتهي بمشروع قابل للتشغيل وعقد Ceramic واضح.' : 'Each path ends with a runnable project and an explicit Ceramic contract.'}</p>
+          </div>
+          <div className="getting-started-paths">
+            {[
+              { body: isArabic ? 'ثبّت الحزمتين، ثم أنشئ قواعد الوكيل وإعداد Ceramic داخل تطبيقك الحالي.' : 'Install both packages, then initialize Ceramic and agent guidance inside your current app.', command: 'npx utopia-ds init --theme utopia-default', href: '#/docs#install', icon: PackagePlus, title: isArabic ? 'أضف Ceramic إلى مشروع قائم' : 'Add Ceramic to an existing project' },
+              { body: isArabic ? 'أنشئ CSS وسياسة وبيان ثيم جديد داخل مساحة عمل نظام التصميم.' : 'Scaffold theme CSS, policy, and catalog registration inside the Design System workspace.', command: 'npx utopia-ds theme create nova', href: '#/themes#create-theme', icon: Palette, title: isArabic ? 'أنشئ ثيم علامة جديداً' : 'Create a new brand theme' },
+              { body: isArabic ? 'اختر ثيماً مسجلاً وأنشئ موقع SaaS مستقلاً من عشر صفحات.' : 'Choose a registered theme and generate a standalone ten-page SaaS website.', command: 'npx utopia-ds template template-saas-solution-homepage --theme dextrum --copy ./site', href: '#/templates#how-to-use', icon: PanelsTopLeft, title: isArabic ? 'أنشئ قالباً بثيم مختار' : 'Generate a template with a theme' },
+            ].map(({ body, command, href, icon: Icon, title }, index) => (
+              <a className="getting-started-path" href={href} key={title}>
+                <span className="getting-started-path__icon"><Icon aria-hidden="true" /></span>
+                <small>0{index + 1}</small>
+                <h3>{title}</h3>
+                <p>{body}</p>
+                <code>{command}</code>
+                <strong>{isArabic ? 'افتح المسار' : 'Open this path'} <ArrowRight aria-hidden="true" className="directional-icon" /></strong>
+              </a>
+            ))}
+          </div>
+        </section>
+
         <section id="quick-start-ai">
           <h2>{isArabic ? 'بدء سريع مع الذكاء الاصطناعي' : 'Quick Start with AI'}</h2>
           <p>{isArabic ? 'الصق هذا في أداة البرمجة بالذكاء الاصطناعي واتركها تضبط المشروع وفق قواعد Ceramic.' : 'Paste this into your AI coding tool and let it handle the setup.'}</p>
@@ -792,7 +816,7 @@ export function Example() {
             <pre>{`npx utopia-ds manifest --json
 npx utopia-ds search "Arabic settings form" --json
 npx utopia-ds component Button --json
-npm run ds -- template template-saas-solution-homepage --copy ./saas-solution-website
+npx utopia-ds template template-saas-solution-homepage --theme utopia-default --copy ./saas-solution-website
 npx utopia-ds theme utopia-default --json
 npx utopia-ds docs arabic-friendly --dense
 npx utopia-ds doctor --json`}</pre>

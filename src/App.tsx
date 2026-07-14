@@ -167,6 +167,7 @@ function getToc(path: string, tab: string) {
   }
   if (path === '/themes') {
     return [
+      { id: 'create-theme', label: 'Create a theme' },
       { id: 'utopia-default', label: 'Utopia Default' },
       { id: 'dextrum', label: 'Dextrum' },
       { id: 'theme-policy', label: 'Theme policy' },
@@ -203,6 +204,7 @@ function getToc(path: string, tab: string) {
     ]
   }
   return [
+    { id: 'choose-path', label: 'Choose your path' },
     { id: 'quick-start-ai', label: 'Quick Start with AI' },
     { id: 'install', label: 'Install' },
     { id: 'add-theme-css', label: 'Add the theme CSS' },

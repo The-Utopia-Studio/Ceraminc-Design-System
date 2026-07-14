@@ -1,3 +1,5 @@
+import { useState } from 'react'
+import { Check, Copy, FileCode2, Palette, TerminalSquare } from 'lucide-react'
 import { Button } from '../../packages/design-system/src/Button'
 import { barrierIntelligenceTheme, dextrumTheme, getArea, themes, utopiaDefaultTheme } from '../data/design-system'
 import { sideNavLabel, useI18n, type Locale } from '../i18n'
@@ -42,6 +44,12 @@ const pageCopy = {
     colorRoles: 'color roles',
     marketingTypography: 'Marketing & Sales typography',
     appTypography: 'App & Website typography',
+    createEyebrow: 'Theme authoring',
+    createTitle: 'Create a brand theme without forking the components.',
+    createBody: 'Run the scaffold in the Design System workspace, replace its placeholder primitives, then sync and validate the catalog before publishing.',
+    copyCommand: 'Copy command',
+    copied: 'Copied',
+    createSteps: [['Scaffold', 'Create theme CSS, policy manifest, and catalog registration.'], ['Define', 'Replace placeholder colors, typography, geometry, icons, motion, and Arabic rules.'], ['Validate', 'Sync CLI data, build, audit components, and run Ceramic doctor.']],
   },
   ar: {
     eyebrow: 'الثيمات',
@@ -72,6 +80,12 @@ const pageCopy = {
     colorRoles: 'أدوار الألوان',
     marketingTypography: 'طباعة التسويق والمبيعات',
     appTypography: 'طباعة التطبيق والموقع',
+    createEyebrow: 'تأليف الثيم',
+    createTitle: 'أنشئ ثيم علامة من دون نسخ المكونات.',
+    createBody: 'شغّل أداة الإنشاء داخل مساحة عمل نظام التصميم، واستبدل القيم الأولية المؤقتة، ثم زامن الكتالوج وتحقق منه قبل النشر.',
+    copyCommand: 'نسخ الأمر',
+    copied: 'تم النسخ',
+    createSteps: [['أنشئ', 'أنشئ CSS وسياسة الثيم وتسجيله في الكتالوج.'], ['عرّف', 'استبدل الألوان والطباعة والهندسة والأيقونات والحركة وقواعد العربية.'], ['تحقق', 'زامن بيانات CLI وابنِ النظام وشغّل التدقيق وCeramic doctor.']],
   },
 } as const
 
@@ -101,6 +115,18 @@ export function ThemesPage({ path = '/themes' }: ThemesPageProps) {
   const activePolicySummary = locale === 'ar' ? activePolicy.translations.ar.summary : activePolicy.summary
   const activeIconPolicy = locale === 'ar' ? activePolicy.translations.ar.iconPolicy : activePolicy.iconPolicy
   const coreBoundaryItems = locale === 'ar' ? themes.translations.ar.coreBoundary.doesNotOwn : themes.coreBoundary.doesNotOwn
+  const [copied, setCopied] = useState(false)
+  const createCommand = 'npx utopia-ds theme create nova'
+
+  const copyCreateCommand = async () => {
+    try {
+      await navigator.clipboard.writeText(createCommand)
+      setCopied(true)
+      window.setTimeout(() => setCopied(false), 1800)
+    } catch {
+      setCopied(false)
+    }
+  }
 
   if (path === '/themes/dextrum/typography/app-website') {
     return <DextrumTypographySubpage segment="app-website" />
@@ -124,6 +150,28 @@ export function ThemesPage({ path = '/themes' }: ThemesPageProps) {
         <p className="eyebrow">{copy.eyebrow}</p>
         <h1>{copy.title}</h1>
         <p>{copy.intro}</p>
+      </section>
+
+      <section className="theme-create" id="create-theme" aria-labelledby="theme-create-title">
+        <div className="theme-create__intro">
+          <span><Palette aria-hidden="true" /></span>
+          <p className="eyebrow">{copy.createEyebrow}</p>
+          <h2 id="theme-create-title">{copy.createTitle}</h2>
+          <p>{copy.createBody}</p>
+        </div>
+        <div className="theme-create__steps">
+          {copy.createSteps.map(([title, body], index) => {
+            const Icon = [TerminalSquare, FileCode2, Check][index]
+            return <article key={title}><Icon aria-hidden="true" /><small>0{index + 1}</small><h3>{title}</h3><p>{body}</p></article>
+          })}
+        </div>
+        <div className="theme-create__command">
+          <div><TerminalSquare aria-hidden="true" /><strong>{copy.createEyebrow}</strong></div>
+          <code>{createCommand}</code>
+          <Button onClick={copyCreateCommand} startContent={copied ? <Check aria-hidden="true" /> : <Copy aria-hidden="true" />} variant="outline">
+            {copied ? copy.copied : copy.copyCommand}
+          </Button>
+        </div>
       </section>
 
       <section className="split-grid">
