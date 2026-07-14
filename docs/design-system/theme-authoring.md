@@ -28,3 +28,9 @@ A theme maps primitives to semantic roles and declares its own visual policy:
 - Copy and casing guidance
 
 Utopia Default is strict about Brick Red, Special Black, TWK Lausanne, square geometry, and dot/bar icons. Those are not global design-system rules.
+
+## Motion Profile
+
+Every theme implements the stable semantic roles `--motion-duration-press`, `--motion-duration-page`, `--motion-duration-expand`, `--motion-duration-reveal`, `--motion-duration-icon`, `--motion-ease-standard`, and `--motion-ease-emphasized`. A theme may change timing and easing, but it must preserve the intent of each pattern and reduced-motion behavior.
+
+Components use `MotionProvider` and their optional `motion` prop. Theme authors must not introduce component-specific hardcoded milliseconds or a generic bounce animation.

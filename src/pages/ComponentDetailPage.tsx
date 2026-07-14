@@ -7,6 +7,7 @@ import { Badge } from '../../packages/design-system/src/Badge'
 import { Button } from '../../packages/design-system/src/Button'
 import { ButtonGroup, ButtonGroupSeparator, ButtonGroupText } from '../../packages/design-system/src/ButtonGroup'
 import { IconButton } from '../../packages/design-system/src/IconButton'
+import { MotionProvider } from '../../packages/design-system/src/Motion'
 import { Card, CardAction, CardContent, CardDescription, CardFooter, CardHeader, CardStatus, CardTitle } from '../../packages/design-system/src/Card'
 import { Field, FieldContent, FieldDescription, FieldError, FieldGroup, FieldLabel, FieldLegend, FieldSeparator, FieldSet, FieldTitle, TextInput, TextArea, Checkbox, RadioGroup, RadioGroupItem, RadioGroupOption, Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectScrollDownButton, SelectScrollUpButton, SelectSeparator, SelectTrigger, SelectValue, Slider, Switch } from '../../packages/design-system/src/Forms'
 import { AspectRatio, Center, Grid, HStack, VStack } from '../../packages/design-system/src/Layout'
@@ -47,6 +48,21 @@ const CHAT_COMPONENTS = [
   'Chat Tokenized Text',
   'Chat Tool Calls',
 ]
+
+const MOTION_COMPONENTS = new Set([
+  'Accordion',
+  'Alert Dialog',
+  'Button',
+  'Checkbox',
+  'Collapsible',
+  'Dialog',
+  'Drawer',
+  'Hover Card',
+  'Popover',
+  'Sheet',
+  'Tabs',
+  'Tooltip',
+])
 
 export function ComponentDetailPage({ componentId, tab = 'overview' }: ComponentDetailPageProps) {
   const { locale } = useI18n()
@@ -97,6 +113,7 @@ function ButtonDetailPage({ tab }: { tab: string }) {
   const [endContent, setEndContent] = useState(false)
   const [isIconOnly, setIsIconOnly] = useState(false)
   const [buttonType, setButtonType] = useState<'button' | 'submit' | 'reset'>('button')
+  const [motionEnabled, setMotionEnabled] = useState(true)
   const isProperties = tab === 'properties'
   const isArabic = locale === 'ar'
   const previewLabel = isArabic && label === 'Click me' ? 'اضغط' : label.trim() || (isArabic ? 'زر' : 'Button')
@@ -156,6 +173,7 @@ function ButtonDetailPage({ tab }: { tab: string }) {
                 isIconOnly={isIconOnly}
                 loading={loading}
                 loadingText={isArabic ? 'جار العمل' : 'Working'}
+                motion={motionEnabled}
                 size={size}
                 startContent={startContent && !isIconOnly ? '+' : undefined}
                 type={buttonType}
@@ -255,6 +273,20 @@ function ButtonDetailPage({ tab }: { tab: string }) {
                 </div>
                 <div className="prop-control">
                   <PropSelectControl label="type value" onChange={(value) => setButtonType(value as typeof buttonType)} options={['button', 'submit', 'reset']} value={buttonType} />
+                </div>
+              </div>
+              <div className="prop-row">
+                <strong>motion</strong>
+                <div>
+                  <code>boolean</code>
+                  <p>{isArabic ? 'يشغّل أو يوقف نمط الضغط الدلالي. يحترم أيضا إعداد تقليل الحركة في النظام.' : 'Enables or disables the semantic press pattern. System reduced-motion preference always wins.'}</p>
+                </div>
+                <div className="prop-control">
+                  <PropBooleanControl
+                    checked={motionEnabled}
+                    label={isArabic ? 'تفعيل حركة الزر' : 'motion value'}
+                    onChange={setMotionEnabled}
+                  />
                 </div>
               </div>
               <div className="prop-row">
@@ -1662,6 +1694,12 @@ type ComponentManifestEntry = typeof components.components[number]
 function GenericComponentDetailPage({ entry, tab }: { entry: ComponentManifestEntry; tab: string }) {
   const { locale } = useI18n()
   const isProperties = tab === 'properties'
+  const [motionEnabled, setMotionEnabled] = useState(true)
+  const motionAware = MOTION_COMPONENTS.has(entry.name)
+  const preview = motionAware
+    ? <MotionProvider motion={motionEnabled}>{renderGenericPreview(entry.name, locale)}</MotionProvider>
+    : renderGenericPreview(entry.name, locale)
+  const motionControl = motionAware ? { enabled: motionEnabled, onChange: setMotionEnabled } : undefined
 
   return (
     <ActionDocPage
@@ -1672,11 +1710,11 @@ function GenericComponentDetailPage({ entry, tab }: { entry: ComponentManifestEn
       importCode={entry.packageImport}
       isProperties={isProperties}
       name={entry.name}
-      overview={renderGenericPreview(entry.name, locale)}
-      overviewPropsPanel={locale === 'ar' ? genericArabicProps(entry.name, false) : genericProps(entry.name, false)}
-      propsPanel={locale === 'ar' ? genericArabicProps(entry.name, false) : genericProps(entry.name, false)}
-      propsInteractive={false}
-      tokens={entry.requiredTokens}
+      overview={preview}
+      overviewPropsPanel={locale === 'ar' ? genericArabicProps(entry.name, false, motionControl) : genericProps(entry.name, false, motionControl)}
+      propsPanel={locale === 'ar' ? genericArabicProps(entry.name, motionAware, motionControl) : genericProps(entry.name, motionAware, motionControl)}
+      propsInteractive={motionAware}
+      tokens={motionAware ? [...new Set([...entry.requiredTokens, '--motion-duration-press', '--motion-duration-page', '--motion-duration-expand', '--motion-duration-reveal', '--motion-ease-standard'])] : entry.requiredTokens}
       usageCode={usageFor(entry.name, locale)}
       usageDescription={componentIntro(locale, entry.name) ?? `${entry.name} is a ${entry.category.toLowerCase()} primitive. It follows shadcn/ui architecture where relevant and stays on semantic Utopia tokens.`}
     />
@@ -2768,8 +2806,18 @@ function SideNavTypeOne({ isArabic = false }: { isArabic?: boolean }) {
   )
 }
 
-function genericProps(name: string, interactive = false) {
-  const rows = genericPropRows(name)
+type MotionControl = { enabled: boolean; onChange: (enabled: boolean) => void }
+
+function genericProps(name: string, interactive = false, motionControl?: MotionControl) {
+  const rows = [
+    ...(motionControl ? [{
+      name: 'motion',
+      type: 'boolean',
+      description: 'Enables the component motion pattern. MotionProvider and prefers-reduced-motion can disable it globally.',
+      control: <PropBooleanControl checked={motionControl.enabled} label={`${name} motion value`} onChange={motionControl.onChange} />,
+    }] : []),
+    ...genericPropRows(name),
+  ]
 
   return (
     <div className="props-table">
@@ -2780,7 +2828,7 @@ function genericProps(name: string, interactive = false) {
   )
 }
 
-function genericArabicProps(name: string, interactive = false) {
+function genericArabicProps(name: string, interactive = false, motionControl?: MotionControl) {
   const extraRows = (() => {
     if (name === 'Label') {
       return [
@@ -2863,6 +2911,12 @@ function genericArabicProps(name: string, interactive = false) {
   })()
 
   const rows = [
+    ...(motionControl ? [{
+      name: 'motion',
+      type: 'boolean',
+      description: 'يشغّل نمط الحركة الخاص بالمكوّن. يمكن لـ MotionProvider أو تفضيل تقليل الحركة إيقافه على مستوى النظام.',
+      control: <PropBooleanControl checked={motionControl.enabled} label="تفعيل حركة المكوّن" onChange={motionControl.onChange} />,
+    }] : []),
     ...extraRows,
     { name: 'className', type: 'string', description: 'منفذ تركيب فقط. لا تستخدمه لتجاوز التوكنات الدلالية أو قيم الثيم.', control: <input aria-label="className value" placeholder="value" /> },
     { name: 'children', type: 'ReactNode', description: 'المحتوى المرئي داخل المكوّن. يجب أن يأتي النص العربي من الترجمة أو المحتوى المعتمد.', control: <input aria-label="children value" placeholder="محتوى" /> },

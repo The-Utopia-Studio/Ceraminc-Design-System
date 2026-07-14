@@ -30,6 +30,32 @@
       }
     },
     {
+      "id": "template-saas-solution-homepage",
+      "title": "SaaS Solution Homepage",
+      "category": "website-page",
+      "status": "available",
+      "purpose": "A complete product-led SaaS homepage with early interface proof, workflow depth, automation, integrations, reliability, team evidence, and a focused adoption path.",
+      "referenceNote": "Uses Linear only as a reference for information density, section rhythm, and product-led storytelling. Do not copy Linear branding, assets, layouts, or product copy.",
+      "starterFor": ["B2B SaaS", "operations platforms", "AI automation products"],
+      "sections": ["Top navigation", "Hero and value", "Product interface preview", "Core workflow", "Agents and automation", "Integrations", "Security and reliability", "Team proof", "Adoption CTA", "Footer"],
+      "requiredComponents": ["Top Nav", "Button", "Badge", "Card"],
+      "sourcePath": "templates/saas-solution-homepage/main.tsx",
+      "entryPath": "templates/saas-solution-homepage/index.html",
+      "manifestPath": "templates/saas-solution-homepage/template.manifest.json",
+      "useWhen": ["A SaaS product needs a complete product-led marketing narrative", "Workflow, automation, integrations, and reliability are material buying criteria"],
+      "avoidWhen": ["The page is a single-feature launch", "There is no reviewed product model behind the interface claims"],
+      "rtlReady": true,
+      "preview": { "kind": "saas-solution-homepage", "density": "balanced" },
+      "translations": {
+        "ar": {
+          "title": "صفحة رئيسية لحل SaaS",
+          "purpose": "صفحة SaaS متكاملة تبدأ بإثبات المنتج ثم توضح سير العمل والأتمتة والتكاملات والموثوقية ودليل الفريق ومسار الاعتماد.",
+          "starterFor": ["منتجات SaaS للأعمال", "منصات العمليات", "منتجات أتمتة الذكاء الاصطناعي"],
+          "sections": ["التنقل العلوي", "القيمة الرئيسية", "معاينة واجهة المنتج", "سير العمل الأساسي", "الوكلاء والأتمتة", "التكاملات", "الأمان والموثوقية", "دليل الفريق", "دعوة الاعتماد", "التذييل"]
+        }
+      }
+    },
+    {
       "id": "template-studio-homepage",
       "title": "Studio / Agency Homepage",
       "category": "website-page",

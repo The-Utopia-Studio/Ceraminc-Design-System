@@ -9,6 +9,7 @@ import { motion, useReducedMotion } from 'framer-motion'
 import { Search } from 'lucide-react'
 import { Button, type ButtonProps } from './Button'
 import { cn } from '../lib/utils'
+import { useMotionPattern } from './Motion'
 
 type AnchorProps = React.AnchorHTMLAttributes<HTMLAnchorElement>
 
@@ -591,8 +592,9 @@ export function NavHeadingMenuContent({ align = 'start', className, sideOffset =
   )
 }
 
-export function Tabs({ className, ...props }: React.ComponentProps<typeof TabsPrimitive.Root>) {
-  return <TabsPrimitive.Root className={cn('uds-tabs', className)} {...props} />
+export function Tabs({ className, motion = true, ...props }: React.ComponentProps<typeof TabsPrimitive.Root> & { motion?: boolean }) {
+  const resolvedMotion = useMotionPattern('page', motion)
+  return <TabsPrimitive.Root className={cn('uds-tabs', className)} data-motion={resolvedMotion.enabled ? 'on' : 'off'} {...props} />
 }
 
 export function TabList({ className, ...props }: React.ComponentProps<typeof TabsPrimitive.List>) {

@@ -5,6 +5,10 @@ export default defineConfig({
   plugins: [react()],
   build: {
     rollupOptions: {
+      input: {
+        main: 'index.html',
+        saasSolutionHomepage: 'templates/saas-solution-homepage/index.html',
+      },
       output: {
         manualChunks(id) {
           if (id.includes('node_modules/recharts') || id.includes('node_modules/d3-')) return 'charts'

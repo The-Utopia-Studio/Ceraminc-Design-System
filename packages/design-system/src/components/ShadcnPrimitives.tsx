@@ -6,7 +6,7 @@ import * as DialogPrimitive from '@radix-ui/react-dialog'
 import * as MenubarPrimitive from '@radix-ui/react-menubar'
 import * as NavigationMenuPrimitive from '@radix-ui/react-navigation-menu'
 import * as ScrollAreaPrimitive from '@radix-ui/react-scroll-area'
-import { motion } from 'framer-motion'
+import { motion, type Transition } from 'framer-motion'
 import { AlertTriangle, Check, CheckCircle2, ChevronDown, ChevronLeft, ChevronRight, Circle, GripVertical, Info, MoreHorizontal, X, XCircle } from 'lucide-react'
 import { Toaster as SonnerPrimitive, toast } from 'sonner'
 import { Legend as RechartsLegend, ResponsiveContainer, Tooltip as RechartsTooltip } from 'recharts'
@@ -14,6 +14,7 @@ import { Group as ResizableGroupPrimitive, Panel as ResizablePanelPrimitive, Sep
 import { cn } from '../lib/utils'
 import { Button, type ButtonProps } from './Button'
 import { DatePicker as DataDisplayDatePicker, type DatePickerProps } from './DataDisplay'
+import { useMotionPattern } from './Motion'
 
 type DivProps = React.HTMLAttributes<HTMLDivElement>
 type SpanProps = React.HTMLAttributes<HTMLSpanElement>
@@ -51,11 +52,12 @@ export function SheetTrigger(props: React.ComponentProps<typeof DialogPrimitive.
   return <DialogPrimitive.Trigger {...props} />
 }
 
-export function SheetContent({ children, className, closeLabel, showCloseButton = true, side = 'end', ...props }: React.ComponentProps<typeof DialogPrimitive.Content> & { closeLabel?: string; showCloseButton?: boolean; side?: 'start' | 'end' | 'top' | 'bottom' }) {
+export function SheetContent({ children, className, closeLabel, motion = true, showCloseButton = true, side = 'end', ...props }: React.ComponentProps<typeof DialogPrimitive.Content> & { closeLabel?: string; motion?: boolean; showCloseButton?: boolean; side?: 'start' | 'end' | 'top' | 'bottom' }) {
+  const resolvedMotion = useMotionPattern('reveal', motion)
   return (
     <DialogPrimitive.Portal>
       <DialogPrimitive.Overlay className="uds-dialog-overlay" />
-      <DialogPrimitive.Content className={cn('uds-sheet-content', `uds-sheet-content--${side}`, className)} {...props}>
+      <DialogPrimitive.Content className={cn('uds-sheet-content', `uds-sheet-content--${side}`, className)} data-motion={resolvedMotion.enabled ? 'on' : 'off'} {...props}>
         {children}
         {showCloseButton && closeLabel ? <DialogPrimitive.Close aria-label={closeLabel} className="uds-sheet-close"><X aria-hidden="true" /></DialogPrimitive.Close> : null}
       </DialogPrimitive.Content>
@@ -374,11 +376,12 @@ export function DialogTrigger(props: React.ComponentProps<typeof DialogPrimitive
   return <DialogPrimitive.Trigger {...props} />
 }
 
-export function DialogContent({ className, ...props }: React.ComponentProps<typeof DialogPrimitive.Content>) {
+export function DialogContent({ className, motion = true, ...props }: React.ComponentProps<typeof DialogPrimitive.Content> & { motion?: boolean }) {
+  const resolvedMotion = useMotionPattern('reveal', motion)
   return (
     <DialogPrimitive.Portal>
       <DialogPrimitive.Overlay className="uds-dialog-overlay" />
-      <DialogPrimitive.Content className={cn('uds-dialog-content', className)} {...props} />
+      <DialogPrimitive.Content className={cn('uds-dialog-content', className)} data-motion={resolvedMotion.enabled ? 'on' : 'off'} {...props} />
     </DialogPrimitive.Portal>
   )
 }
@@ -411,11 +414,12 @@ export function DrawerTrigger(props: React.ComponentProps<typeof DialogPrimitive
   return <DialogPrimitive.Trigger {...props} />
 }
 
-export function DrawerContent({ className, side = 'end', ...props }: React.ComponentProps<typeof DialogPrimitive.Content> & { side?: 'start' | 'end' | 'bottom' }) {
+export function DrawerContent({ className, motion = true, side = 'end', ...props }: React.ComponentProps<typeof DialogPrimitive.Content> & { motion?: boolean; side?: 'start' | 'end' | 'bottom' }) {
+  const resolvedMotion = useMotionPattern('reveal', motion)
   return (
     <DialogPrimitive.Portal>
       <DialogPrimitive.Overlay className="uds-dialog-overlay" />
-      <DialogPrimitive.Content className={cn('uds-drawer-content', `uds-drawer-content--${side}`, className)} data-side={side} {...props} />
+      <DialogPrimitive.Content className={cn('uds-drawer-content', `uds-drawer-content--${side}`, className)} data-motion={resolvedMotion.enabled ? 'on' : 'off'} data-side={side} {...props} />
     </DialogPrimitive.Portal>
   )
 }
@@ -677,17 +681,22 @@ export function DataTableFooter({ className, ...props }: DivProps) {
   return <div className={cn('uds-data-table-footer', className)} {...props} />
 }
 
-const CollapsibleMotionContext = React.createContext({ open: false })
+const CollapsibleMotionContext = React.createContext({
+  open: false,
+  transition: { duration: 0 } as Transition,
+})
 
 export function Collapsible({
   defaultOpen = false,
+  motion = true,
   onOpenChange,
   open,
   ...props
-}: React.ComponentProps<typeof CollapsiblePrimitive.Root>) {
+}: React.ComponentProps<typeof CollapsiblePrimitive.Root> & { motion?: boolean }) {
   const [uncontrolledOpen, setUncontrolledOpen] = React.useState(defaultOpen)
   const isControlled = open !== undefined
   const currentOpen = isControlled ? open : uncontrolledOpen
+  const resolvedMotion = useMotionPattern('expand', motion)
 
   function handleOpenChange(nextOpen: boolean) {
     if (!isControlled) setUncontrolledOpen(nextOpen)
@@ -695,8 +704,8 @@ export function Collapsible({
   }
 
   return (
-    <CollapsibleMotionContext.Provider value={{ open: currentOpen }}>
-      <CollapsiblePrimitive.Root open={currentOpen} onOpenChange={handleOpenChange} {...props} />
+    <CollapsibleMotionContext.Provider value={{ open: currentOpen, transition: resolvedMotion.transition }}>
+      <CollapsiblePrimitive.Root data-motion={resolvedMotion.enabled ? 'on' : 'off'} open={currentOpen} onOpenChange={handleOpenChange} {...props} />
     </CollapsibleMotionContext.Provider>
   )
 }
@@ -706,7 +715,7 @@ export function CollapsibleTrigger({ className, ...props }: React.ComponentProps
 }
 
 export function CollapsibleContent({ children, className, ...props }: React.ComponentProps<typeof CollapsiblePrimitive.Content>) {
-  const { open } = React.useContext(CollapsibleMotionContext)
+  const { open, transition } = React.useContext(CollapsibleMotionContext)
 
   return (
     <CollapsiblePrimitive.Content className={cn('uds-collapsible-content', className)} forceMount {...props}>
@@ -714,7 +723,7 @@ export function CollapsibleContent({ children, className, ...props }: React.Comp
         animate={open ? { height: 'auto', opacity: 1 } : { height: 0, opacity: 0 }}
         className="uds-collapsible-motion"
         initial={false}
-        transition={{ duration: 0.22, ease: [0.2, 0, 0, 1] }}
+        transition={transition}
       >
         <div className="uds-collapsible-content-inner">{children}</div>
       </motion.div>
@@ -784,11 +793,12 @@ export function AlertDialogOverlay({ className, ...props }: React.ComponentProps
   return <AlertDialogPrimitive.Overlay className={cn('uds-alert-dialog-overlay', className)} {...props} />
 }
 
-export function AlertDialogContent({ className, ...props }: React.ComponentProps<typeof AlertDialogPrimitive.Content>) {
+export function AlertDialogContent({ className, motion = true, ...props }: React.ComponentProps<typeof AlertDialogPrimitive.Content> & { motion?: boolean }) {
+  const resolvedMotion = useMotionPattern('reveal', motion)
   return (
     <AlertDialogPrimitive.Portal>
       <AlertDialogPrimitive.Overlay className="uds-alert-dialog-overlay" />
-      <AlertDialogPrimitive.Content className={cn('uds-alert-dialog-content', className)} {...props} />
+      <AlertDialogPrimitive.Content className={cn('uds-alert-dialog-content', className)} data-motion={resolvedMotion.enabled ? 'on' : 'off'} {...props} />
     </AlertDialogPrimitive.Portal>
   )
 }
@@ -817,8 +827,9 @@ export function AlertDialogCancel({ className, ...props }: React.ComponentProps<
   return <AlertDialogPrimitive.Cancel className={cn('uds-alert-dialog-cancel', className)} {...props} />
 }
 
-export function Accordion({ className, ...props }: React.ComponentProps<typeof AccordionPrimitive.Root>) {
-  return <AccordionPrimitive.Root className={cn('uds-accordion', className)} {...props} />
+export function Accordion({ className, motion = true, ...props }: React.ComponentProps<typeof AccordionPrimitive.Root> & { motion?: boolean }) {
+  const resolvedMotion = useMotionPattern('expand', motion)
+  return <AccordionPrimitive.Root className={cn('uds-accordion', className)} data-motion={resolvedMotion.enabled ? 'on' : 'off'} {...props} />
 }
 
 export function AccordionItem({ className, ...props }: React.ComponentProps<typeof AccordionPrimitive.Item>) {

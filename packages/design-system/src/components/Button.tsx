@@ -2,6 +2,7 @@ import * as React from 'react'
 import { Slot } from '@radix-ui/react-slot'
 import { cva, type VariantProps } from 'class-variance-authority'
 import { cn } from '../lib/utils'
+import { useMotionPattern } from './Motion'
 
 export const buttonVariants = cva('uds-button', {
   variants: {
@@ -33,6 +34,7 @@ export interface ButtonProps
   isIconOnly?: boolean
   loading?: boolean
   loadingText?: React.ReactNode
+  motion?: boolean
   startContent?: React.ReactNode
 }
 
@@ -47,6 +49,7 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
       isIconOnly = false,
       loading = false,
       loadingText,
+      motion = true,
       size,
       startContent,
       variant,
@@ -57,6 +60,7 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     const Comp = asChild ? Slot : 'button'
     const isDisabled = disabled || loading
     const resolvedSize = isIconOnly ? 'icon' : size
+    const resolvedMotion = useMotionPattern('press', motion)
 
     return (
       <Comp
@@ -65,6 +69,7 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
         className={cn(buttonVariants({ variant, size: resolvedSize }), className)}
         data-icon-only={isIconOnly || undefined}
         data-loading={loading || undefined}
+        data-motion={resolvedMotion.enabled ? 'on' : 'off'}
         disabled={!asChild ? isDisabled : undefined}
         ref={ref}
         {...props}

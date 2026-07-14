@@ -2,6 +2,7 @@ import { Button } from '../../packages/design-system/src/Button'
 import { barrierIntelligenceTheme, dextrumTheme, getArea, themes, utopiaDefaultTheme } from '../data/design-system'
 import { sideNavLabel, useI18n, type Locale } from '../i18n'
 import { useTheme, type ThemeId } from '../theme'
+import { DextrumTypographySubpage } from './DextrumTypographySubpage'
 
 const themePolicyById = {
   'utopia-default': utopiaDefaultTheme,
@@ -99,7 +100,11 @@ function localizedSlot(slot: PlannedThemeSlot, locale: Locale) {
   }
 }
 
-export function ThemesPage() {
+type ThemesPageProps = {
+  path?: string
+}
+
+export function ThemesPage({ path = '/themes' }: ThemesPageProps) {
   const area = getArea('themes')
   const { locale } = useI18n()
   const { setThemeId, themeEntry, themeId } = useTheme()
@@ -109,6 +114,22 @@ export function ThemesPage() {
   const activePolicySummary = locale === 'ar' ? activePolicy.translations.ar.summary : activePolicy.summary
   const activeIconPolicy = locale === 'ar' ? activePolicy.translations.ar.iconPolicy : activePolicy.iconPolicy
   const coreBoundaryItems = locale === 'ar' ? themes.translations.ar.coreBoundary.doesNotOwn : themes.coreBoundary.doesNotOwn
+
+  if (path === '/themes/dextrum/typography/app-website') {
+    return <DextrumTypographySubpage segment="app-website" />
+  }
+
+  if (path === '/themes/dextrum/typography/marketing-sales') {
+    return <DextrumTypographySubpage segment="marketing-sales" />
+  }
+
+  if (path === '/themes/dextrum/typography') {
+    return <DextrumTypographyLanding locale={locale} />
+  }
+
+  if (path.startsWith('/themes/utopia-default/') || path.startsWith('/themes/dextrum/')) {
+    return <ThemeImplementationPage path={path} locale={locale} />
+  }
 
   return (
     <div className="page">
@@ -190,8 +211,8 @@ export function ThemesPage() {
                   </Button>
                   {theme.id === 'dextrum' ? (
                     <div className="dextrum-type-links">
-                      <a href="#/docs/foundations/typography/dextrum/marketing-sales">{copy.marketingTypography}</a>
-                      <a href="#/docs/foundations/typography/dextrum/app-website">{copy.appTypography}</a>
+                    <a href="#/themes/dextrum/typography/marketing-sales">{copy.marketingTypography}</a>
+                    <a href="#/themes/dextrum/typography/app-website">{copy.appTypography}</a>
                     </div>
                   ) : null}
                 </article>
@@ -277,6 +298,96 @@ export function ThemesPage() {
               {themes.requiredSemanticRoles.map((role) => <span key={role}>{role}</span>)}
             </div>
           </article>
+        </div>
+      </section>
+    </div>
+  )
+}
+
+function DextrumTypographyLanding({ locale }: { locale: Locale }) {
+  const isArabic = locale === 'ar'
+
+  return (
+    <div className="page">
+      <header className="page-hero compact">
+        <p className="eyebrow">Dextrum</p>
+        <h1>{isArabic ? 'نظام Dextrum الطباعي' : 'Dextrum Typography'}</h1>
+        <p>
+          {isArabic
+            ? 'تنتمي الخطوط ونبرتها وقواعد استخدامها إلى تنفيذ ثيم Dextrum، بينما يبقى عقد الأدوار الدلالية مستقرا في Foundations.'
+            : 'Typeface choices, tone, and usage rules belong to the Dextrum theme implementation. Foundations keeps only the stable semantic type contract.'}
+        </p>
+      </header>
+
+      <section className="section">
+        <div className="foundation-card-grid">
+          <a className="foundation-card link-card" href="#/themes/dextrum/typography/app-website">
+            <span className="kicker">Dextrum</span>
+            <h2>{isArabic ? 'التطبيقات والمواقع' : 'App & Website'}</h2>
+            <p>{isArabic ? 'هرمية كثيفة وواضحة لواجهات المنتجات.' : 'Dense, legible hierarchy for product interfaces.'}</p>
+          </a>
+          <a className="foundation-card link-card" href="#/themes/dextrum/typography/marketing-sales">
+            <span className="kicker">Dextrum</span>
+            <h2>{isArabic ? 'التسويق والمبيعات' : 'Marketing & Sales'}</h2>
+            <p>{isArabic ? 'مقاييس وعروض طباعية للتواصل الخارجي.' : 'Display scale and pairings for external communication.'}</p>
+          </a>
+        </div>
+      </section>
+    </div>
+  )
+}
+
+function ThemeImplementationPage({ path, locale }: { path: string; locale: Locale }) {
+  const isArabic = locale === 'ar'
+  const isDextrum = path.startsWith('/themes/dextrum')
+  const segments = path.split('/').filter(Boolean)
+  const section = segments[segments.length - 1] ?? 'overview'
+  const themeName = isDextrum ? 'Dextrum' : 'The Utopia Studio Default'
+  const sectionLabels: Record<string, { en: string; ar: string }> = {
+    overview: { en: 'Overview', ar: 'نظرة عامة' },
+    primitives: { en: 'Primitives', ar: 'الرموز الأولية' },
+    typography: { en: 'Typography', ar: 'الطباعة' },
+    'semantic-mapping': { en: 'Semantic Mapping', ar: 'الربط الدلالي' },
+  }
+  const label = sectionLabels[section] ?? sectionLabels.overview
+
+  return (
+    <div className="page">
+      <header className="page-hero compact">
+        <p className="eyebrow">{themeName}</p>
+        <h1>{isArabic ? label.ar : label.en}</h1>
+        <p>
+          {isArabic
+            ? 'هذه الصفحة توثق تنفيذ الثيم فوق عقد دلالي مشترك. لا تعتمد المكونات القابلة لإعادة الاستخدام على قيم العلامة مباشرة.'
+            : 'This page documents a theme implementation over the shared semantic contract. Reusable components never consume brand values directly.'}
+        </p>
+      </header>
+
+      <section className="section">
+        <div className="foundation-card-grid">
+          <article className="foundation-card">
+            <span className="kicker">{isArabic ? 'حدود الملكية' : 'Ownership boundary'}</span>
+            <h2>{isArabic ? 'ما يملكه الثيم' : 'What the theme owns'}</h2>
+            <p>
+              {isArabic
+                ? 'القيم الأولية، والخطوط، ونبرة العلامة، ثم ربطها بالأدوار الدلالية المطلوبة.'
+                : 'Primitive values, typefaces, brand expression, and their mapping into required semantic roles.'}
+            </p>
+          </article>
+          <article className="foundation-card">
+            <span className="kicker">{isArabic ? 'العقد' : 'Contract'}</span>
+            <h2>{isArabic ? 'أدوار ثابتة' : 'Stable roles'}</h2>
+            <div className="chip-list">
+              {themes.requiredSemanticRoles.map((role) => <span key={role}>{role}</span>)}
+            </div>
+          </article>
+          {isDextrum && section === 'typography' ? (
+            <a className="foundation-card link-card" href="#/themes/dextrum/typography">
+              <span className="kicker">Dextrum</span>
+              <h2>{isArabic ? 'استعراض قواعد الطباعة' : 'Browse typography rules'}</h2>
+              <p>{isArabic ? 'قواعد التطبيقات والمواقع والتسويق.' : 'App, website, marketing, and sales guidance.'}</p>
+            </a>
+          ) : null}
         </div>
       </section>
     </div>

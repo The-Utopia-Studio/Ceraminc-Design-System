@@ -5,7 +5,7 @@ export default defineConfig({
     'src/index.ts',
     'src/Accordion.ts', 'src/Alert.ts', 'src/AlertDialog.ts', 'src/Attachment.ts',
     'src/Badge.ts', 'src/Button.ts', 'src/ButtonGroup.ts', 'src/Card.ts', 'src/Chat.ts',
-    'src/DataDisplay.ts', 'src/Forms.ts', 'src/IconButton.ts', 'src/Layout.ts',
+    'src/DataDisplay.ts', 'src/Forms.ts', 'src/IconButton.ts', 'src/Layout.ts', 'src/Motion.ts',
     'src/Navigation.ts', 'src/ShadcnPrimitives.ts', 'src/Sidebar.ts', 'src/Surface.ts',
     'src/ToggleButton.ts', 'src/ToggleButtonGroup.ts', 'src/Typography.ts', 'src/Utilities.ts',
   ],

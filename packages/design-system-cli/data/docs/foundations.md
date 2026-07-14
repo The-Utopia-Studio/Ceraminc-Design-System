@@ -69,10 +69,25 @@ Arabic display sizing should follow the Latin display scale at about 95%, rather
 
 ## Motion Contract
 
-- Hover/focus uses fast motion.
-- Disclosure, collapse, side navigation, and layout transitions use medium motion.
-- Directional motion follows inline start/end, not hardcoded left/right.
-- Support reduced motion for non-essential transitions.
+- Ceramic defines five semantic patterns: `press`, `page`, `expand`, `reveal`, and `icon`.
+- Components consume `--motion-duration-*` and `--motion-ease-*` roles rather than hardcoded milliseconds or easing curves.
+- `MotionProvider` sets the subtree default. Motion-aware components expose `motion?: boolean` for a local override.
+- `motion={false}` and `prefers-reduced-motion: reduce` disable decorative movement while preserving state changes and accessibility.
+- Directional motion follows logical inline start/end and mirrors in RTL when direction carries meaning.
+- Icon motion follows the action: a bell swings from its top, download moves downward, and copy snaps once. Do not apply a generic bounce.
+
+```tsx
+import { MotionProvider } from '@utopia-studio-design/design-system/Motion'
+import { Button } from '@utopia-studio-design/design-system/Button'
+
+export function App() {
+  return (
+    <MotionProvider motion>
+      <Button motion={false}>Static local action</Button>
+    </MotionProvider>
+  )
+}
+```
 
 ## Elevation Contract
 

@@ -4,6 +4,7 @@ import * as PopoverPrimitive from '@radix-ui/react-popover'
 import * as TooltipPrimitive from '@radix-ui/react-tooltip'
 import { X } from 'lucide-react'
 import { cn } from '../lib/utils'
+import { useMotionPattern } from './Motion'
 
 type HoverCardProps = React.ComponentProps<typeof HoverCardPrimitive.Root> & {
   delay?: number
@@ -22,10 +23,11 @@ export function HoverCardTrigger(props: React.ComponentProps<typeof HoverCardPri
   return <HoverCardPrimitive.Trigger {...props} />
 }
 
-export function HoverCardContent({ align = 'center', className, sideOffset = 8, ...props }: React.ComponentProps<typeof HoverCardPrimitive.Content>) {
+export function HoverCardContent({ align = 'center', className, motion = true, sideOffset = 8, ...props }: React.ComponentProps<typeof HoverCardPrimitive.Content> & { motion?: boolean }) {
+  const resolvedMotion = useMotionPattern('reveal', motion)
   return (
     <HoverCardPrimitive.Portal>
-      <HoverCardPrimitive.Content align={align} className={cn('uds-floating-content uds-hover-card-content', className)} sideOffset={sideOffset} {...props} />
+      <HoverCardPrimitive.Content align={align} className={cn('uds-floating-content uds-hover-card-content', className)} data-motion={resolvedMotion.enabled ? 'on' : 'off'} sideOffset={sideOffset} {...props} />
     </HoverCardPrimitive.Portal>
   )
 }
@@ -42,10 +44,11 @@ export function PopoverAnchor(props: React.ComponentProps<typeof PopoverPrimitiv
   return <PopoverPrimitive.Anchor {...props} />
 }
 
-export function PopoverContent({ align = 'center', className, sideOffset = 8, ...props }: React.ComponentProps<typeof PopoverPrimitive.Content>) {
+export function PopoverContent({ align = 'center', className, motion = true, sideOffset = 8, ...props }: React.ComponentProps<typeof PopoverPrimitive.Content> & { motion?: boolean }) {
+  const resolvedMotion = useMotionPattern('reveal', motion)
   return (
     <PopoverPrimitive.Portal>
-      <PopoverPrimitive.Content align={align} className={cn('uds-floating-content uds-popover-content', className)} sideOffset={sideOffset} {...props} />
+      <PopoverPrimitive.Content align={align} className={cn('uds-floating-content uds-popover-content', className)} data-motion={resolvedMotion.enabled ? 'on' : 'off'} sideOffset={sideOffset} {...props} />
     </PopoverPrimitive.Portal>
   )
 }
@@ -82,10 +85,11 @@ export function TooltipTrigger(props: React.ComponentProps<typeof TooltipPrimiti
   return <TooltipPrimitive.Trigger {...props} />
 }
 
-export function TooltipContent({ className, sideOffset = 6, ...props }: React.ComponentProps<typeof TooltipPrimitive.Content>) {
+export function TooltipContent({ className, motion = true, sideOffset = 6, ...props }: React.ComponentProps<typeof TooltipPrimitive.Content> & { motion?: boolean }) {
+  const resolvedMotion = useMotionPattern('reveal', motion)
   return (
     <TooltipPrimitive.Portal>
-      <TooltipPrimitive.Content className={cn('uds-floating-content uds-tooltip-content', className)} sideOffset={sideOffset} {...props} />
+      <TooltipPrimitive.Content className={cn('uds-floating-content uds-tooltip-content', className)} data-motion={resolvedMotion.enabled ? 'on' : 'off'} sideOffset={sideOffset} {...props} />
     </TooltipPrimitive.Portal>
   )
 }

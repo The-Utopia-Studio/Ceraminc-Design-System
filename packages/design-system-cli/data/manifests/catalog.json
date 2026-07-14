@@ -28,13 +28,10 @@
           "id": "foundations",
           "label": "Foundations",
           "items": [
+            "Token Architecture",
             "All Tokens",
-            "Color",
-            "Typography",
-            "Spacing",
-            "Shape",
-            "Motion",
-            "Elevation",
+            "Semantic Tokens",
+            "Component Tokens",
             "Icons",
             "Illustrations"
           ]
@@ -504,15 +501,50 @@
   },
   "docFamilies": [
     {
-      "id": "dextrum-typography",
-      "label": "Dextrum Typography",
-      "parent": "Typography",
+      "id": "semantic-tokens",
+      "label": "Semantic Tokens",
+      "parent": "Semantic Tokens",
       "group": "foundations",
       "items": [
-        "Marketing & Sales",
-        "App & Website"
+        "Color",
+        "Typography",
+        "Spacing",
+        "Shape",
+        "Motion",
+        "Elevation",
+        "Direction / RTL"
       ],
-      "description": "Dextrum theme font pairings for marketing surfaces and product UI."
+      "description": "Stable role contracts that every compatible theme implements."
+    }
+  ],
+  "themeFamilies": [
+    {
+      "id": "utopia-default-theme",
+      "label": "The Utopia Studio Default",
+      "parent": "The Utopia Studio Default",
+      "group": "active",
+      "items": [
+        "Overview",
+        "Primitives",
+        "Typography",
+        "Semantic Mapping"
+      ],
+      "description": "The first locked brand implementation of the shared semantic contract."
+    },
+    {
+      "id": "dextrum-theme",
+      "label": "Dextrum",
+      "parent": "Dextrum",
+      "group": "active",
+      "items": [
+        "Overview",
+        "Primitives",
+        "Typography",
+        "App & Website",
+        "Marketing & Sales",
+        "Semantic Mapping"
+      ],
+      "description": "A separate theme implementation with product and marketing typography profiles."
     }
   ],
   "componentFamilies": [

@@ -35,6 +35,7 @@ Ceramic is the standalone Utopia Studio design system. It is shadcn-founded, the
 
 - Use Ceramic exports before raw shadcn primitives.
 - Components consume semantic tokens; themes map those roles to primitives.
+- Motion-aware components consume the press/page/expand/reveal/icon contract, inherit from MotionProvider, expose motion?: boolean where documented, and always respect prefers-reduced-motion.
 - Do not invent props, imports, tokens, Arabic product copy, or component availability.
 - Use logical CSS and start/end naming. Verify `dir="rtl"`, mixed scripts, focus, keyboard behavior, and directional mirroring.
 - Production websites consume the system; they do not define reusable component logic.

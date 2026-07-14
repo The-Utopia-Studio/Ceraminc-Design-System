@@ -192,6 +192,18 @@
   --duration-medium: 220ms;
   --duration-slow: 420ms;
   --ease-standard: cubic-bezier(0.2, 0, 0, 1);
+  --motion-duration-press: 160ms;
+  --motion-duration-page: 200ms;
+  --motion-duration-expand: 320ms;
+  --motion-duration-reveal: 520ms;
+  --motion-duration-icon: 640ms;
+  --motion-duration-fast: var(--motion-duration-press);
+  --motion-ease-standard: cubic-bezier(0.2, 0, 0, 1);
+  --motion-ease-emphasized: cubic-bezier(0.16, 1, 0.3, 1);
+  --motion-ease-icon: var(--motion-ease-emphasized);
+  --motion-press-scale: 0.97;
+  --motion-distance-page: var(--space-2);
+  --motion-distance-reveal: var(--space-2);
   --border-width-hairline: 0.0625rem;
   --control-height-sm: var(--button-height-sm);
   --sidebar-width: 17rem;

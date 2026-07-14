@@ -4,9 +4,10 @@ import * as RadioGroupPrimitive from '@radix-ui/react-radio-group'
 import * as SelectPrimitive from '@radix-ui/react-select'
 import * as SliderPrimitive from '@radix-ui/react-slider'
 import * as SwitchPrimitive from '@radix-ui/react-switch'
-import { AnimatePresence, motion, useReducedMotion } from 'framer-motion'
+import { AnimatePresence, motion as MotionPrimitive } from 'framer-motion'
 import { Check, Minus } from 'lucide-react'
 import { cn } from '../lib/utils'
+import { useMotionPattern } from './Motion'
 
 type FieldProps = React.HTMLAttributes<HTMLDivElement> & {
   orientation?: 'vertical' | 'horizontal' | 'responsive'
@@ -83,6 +84,7 @@ export function TextArea({ className, resize = 'vertical', ...props }: React.Tex
 export const Textarea = TextArea
 
 type CheckboxProps = React.ComponentProps<typeof CheckboxPrimitive.Root> & {
+  motion?: boolean
   variant?: 'normal' | 'fancy'
 }
 
@@ -93,10 +95,11 @@ export function Checkbox({
   variant = 'normal',
   checked,
   defaultChecked,
+  motion = true,
   onCheckedChange,
   ...props
 }: CheckboxProps) {
-  const reduceMotion = useReducedMotion()
+  const resolvedMotion = useMotionPattern('press', motion)
   const isControlled = checked !== undefined
   const [uncontrolledChecked, setUncontrolledChecked] = React.useState<CheckboxState>(defaultChecked ?? false)
   const currentChecked = (isControlled ? checked : uncontrolledChecked) as CheckboxState
@@ -113,6 +116,7 @@ export function Checkbox({
   return (
     <CheckboxPrimitive.Root
       className={cn('uds-checkbox', className)}
+      data-motion={resolvedMotion.enabled ? 'on' : 'off'}
       data-variant={variant}
       checked={currentChecked}
       onCheckedChange={handleCheckedChange}
@@ -121,17 +125,17 @@ export function Checkbox({
       <CheckboxPrimitive.Indicator className="uds-checkbox-indicator" forceMount>
         <AnimatePresence initial={false}>
           {showMark ? (
-            <motion.span
+            <MotionPrimitive.span
               key={currentChecked === 'indeterminate' ? 'indeterminate' : 'checked'}
               className="uds-checkbox-motion-mark"
-              initial={reduceMotion ? { opacity: 1 } : { opacity: 0, scale: 0.72 }}
-              animate={reduceMotion ? { opacity: 1 } : { opacity: 1, scale: 1 }}
-              exit={reduceMotion ? { opacity: 0 } : { opacity: 0, scale: 0.72 }}
-              transition={reduceMotion ? { duration: 0 } : { duration: 0.16, ease: [0.16, 1, 0.3, 1] }}
+              initial={resolvedMotion.enabled ? { opacity: 0, scale: 0.72 } : { opacity: 1, scale: 1 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={resolvedMotion.enabled ? { opacity: 0, scale: 0.72 } : { opacity: 0, scale: 1 }}
+              transition={resolvedMotion.transition}
               aria-hidden="true"
             >
               {currentChecked === 'indeterminate' ? <Minus aria-hidden="true" /> : <Check aria-hidden="true" />}
-            </motion.span>
+            </MotionPrimitive.span>
           ) : null}
         </AnimatePresence>
       </CheckboxPrimitive.Indicator>

@@ -85,6 +85,18 @@
   --duration-medium: 220ms;
   --duration-slow: 420ms;
   --ease-standard: cubic-bezier(0.2, 0, 0, 1);
+  --motion-duration-press: 160ms;
+  --motion-duration-page: 200ms;
+  --motion-duration-expand: 320ms;
+  --motion-duration-reveal: 520ms;
+  --motion-duration-icon: 640ms;
+  --motion-duration-fast: var(--motion-duration-press);
+  --motion-ease-standard: cubic-bezier(0.2, 0, 0, 1);
+  --motion-ease-emphasized: cubic-bezier(0.16, 1, 0.3, 1);
+  --motion-ease-icon: var(--motion-ease-emphasized);
+  --motion-press-scale: 0.97;
+  --motion-distance-page: var(--space-2);
+  --motion-distance-reveal: var(--space-2);
 
   --focus-ring-width: 2px;
   --focus-ring-offset: 2px;
@@ -270,6 +282,59 @@ a {
   outline-offset: var(--focus-ring-offset);
 }
 
+.uds-motion-provider {
+  display: contents;
+}
+
+[data-motion='off'] {
+  --motion-duration-press: 0ms;
+  --motion-duration-page: 0ms;
+  --motion-duration-expand: 0ms;
+  --motion-duration-reveal: 0ms;
+  --motion-duration-icon: 0ms;
+  --motion-duration-fast: 0ms;
+  --motion-press-scale: 1;
+  --motion-distance-page: 0px;
+  --motion-distance-reveal: 0px;
+}
+
+.uds-motion-icon {
+  display: inline-flex;
+  transform-origin: center;
+}
+
+.uds-motion-icon[data-motion='on'][data-active='true'][data-pattern='bell'] {
+  animation: uds-icon-bell var(--motion-duration-icon) var(--motion-ease-icon);
+  transform-origin: 50% 0;
+}
+
+.uds-motion-icon[data-motion='on'][data-active='true'][data-pattern='download'] {
+  animation: uds-icon-download var(--motion-duration-icon) var(--motion-ease-icon);
+}
+
+.uds-motion-icon[data-motion='on'][data-active='true'][data-pattern='copy'] {
+  animation: uds-icon-copy var(--motion-duration-icon) var(--motion-ease-icon);
+}
+
+@keyframes uds-icon-bell {
+  0%, 100% { transform: rotate(0deg); }
+  28% { transform: rotate(12deg); }
+  55% { transform: rotate(-8deg); }
+  78% { transform: rotate(4deg); }
+}
+
+@keyframes uds-icon-download {
+  0% { transform: translateY(calc(-1 * var(--motion-distance-reveal))); opacity: 0; }
+  68% { transform: translateY(1px); opacity: 1; }
+  100% { transform: translateY(0); opacity: 1; }
+}
+
+@keyframes uds-icon-copy {
+  0%, 100% { transform: scale(1); }
+  42% { transform: scale(0.88); }
+  72% { transform: scale(1.04); }
+}
+
 .uds-button {
   display: inline-flex;
   align-items: center;
@@ -283,9 +348,16 @@ a {
   white-space: nowrap;
   cursor: pointer;
   transition:
-    background-color var(--duration-fast) var(--ease-standard),
-    border-color var(--duration-fast) var(--ease-standard),
-    color var(--duration-fast) var(--ease-standard);
+    background-color var(--motion-duration-press) var(--motion-ease-standard),
+    border-color var(--motion-duration-press) var(--motion-ease-standard),
+    color var(--motion-duration-press) var(--motion-ease-standard),
+    transform var(--motion-duration-press) var(--motion-ease-standard);
+  transform-origin: center;
+}
+
+.uds-button:not(:disabled):active,
+.uds-button.uds-button-state-active {
+  transform: scale(var(--motion-press-scale));
 }
 
 :lang(ar) .uds-button,
@@ -832,7 +904,7 @@ a {
 
 .uds-floating-content {
   --uds-floating-enter-x: 0;
-  --uds-floating-enter-y: -4px;
+  --uds-floating-enter-y: calc(-1 * var(--motion-distance-reveal));
   border: var(--border-width-hairline) solid var(--border);
   border-radius: var(--radius-surface);
   background: var(--popover-surface);
@@ -840,25 +912,25 @@ a {
   box-shadow: var(--shadow-popover);
   padding: var(--space-4);
   transform-origin: var(--radix-popover-content-transform-origin, var(--radix-hover-card-content-transform-origin, center));
-  animation: uds-content-in var(--duration-fast) var(--ease-standard);
+  animation: uds-content-in var(--motion-duration-reveal) var(--motion-ease-emphasized);
   z-index: 50;
 }
 
 .uds-floating-content[data-side='top'] {
-  --uds-floating-enter-y: 4px;
+  --uds-floating-enter-y: var(--motion-distance-reveal);
 }
 
 .uds-floating-content[data-side='bottom'] {
-  --uds-floating-enter-y: -4px;
+  --uds-floating-enter-y: calc(-1 * var(--motion-distance-reveal));
 }
 
 .uds-floating-content[data-side='left'] {
-  --uds-floating-enter-x: 4px;
+  --uds-floating-enter-x: var(--motion-distance-reveal);
   --uds-floating-enter-y: 0;
 }
 
 .uds-floating-content[data-side='right'] {
-  --uds-floating-enter-x: -4px;
+  --uds-floating-enter-x: calc(-1 * var(--motion-distance-reveal));
   --uds-floating-enter-y: 0;
 }
 
@@ -935,7 +1007,7 @@ a {
 
 @keyframes uds-content-in {
   from {
-    opacity: 1;
+    opacity: 0;
     transform: translate(var(--uds-floating-enter-x), var(--uds-floating-enter-y)) scale(0.985);
   }
 
@@ -1021,6 +1093,26 @@ a {
 @keyframes uds-drawer-out-bottom {
   from { transform: translateY(0); }
   to { transform: translateY(100%); }
+}
+
+@keyframes uds-drawer-in-top {
+  from { transform: translateY(-100%); }
+  to { transform: translateY(0); }
+}
+
+@keyframes uds-drawer-out-top {
+  from { transform: translateY(0); }
+  to { transform: translateY(-100%); }
+}
+
+@keyframes uds-dialog-in {
+  from { opacity: 0; transform: translate(-50%, calc(-50% + var(--motion-distance-reveal))) scale(0.985); }
+  to { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+}
+
+@keyframes uds-dialog-in-rtl {
+  from { opacity: 0; transform: translate(50%, calc(-50% + var(--motion-distance-reveal))) scale(0.985); }
+  to { opacity: 1; transform: translate(50%, -50%) scale(1); }
 }
 
 .uds-stack {
@@ -2050,9 +2142,9 @@ a {
   cursor: pointer;
   white-space: nowrap;
   transition:
-    color var(--duration-fast) var(--ease-standard),
-    background var(--duration-fast) var(--ease-standard),
-    box-shadow var(--duration-fast) var(--ease-standard);
+    color var(--motion-duration-page) var(--motion-ease-standard),
+    background var(--motion-duration-page) var(--motion-ease-standard),
+    box-shadow var(--motion-duration-page) var(--motion-ease-standard);
 }
 
 .uds-tab[data-state='active'],
@@ -2076,6 +2168,15 @@ a {
   min-block-size: 3rem;
   padding-block: var(--space-4);
   color: var(--foreground);
+}
+
+.uds-tab-panel[data-state='active'] {
+  animation: uds-page-shift var(--motion-duration-page) var(--motion-ease-standard);
+}
+
+@keyframes uds-page-shift {
+  from { opacity: 0; transform: translateY(var(--motion-distance-page)); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
 .uds-menu,
@@ -3639,6 +3740,22 @@ a {
 }
 
 @media (prefers-reduced-motion: reduce) {
+  :root {
+    --motion-duration-press: 0ms;
+    --motion-duration-page: 0ms;
+    --motion-duration-expand: 0ms;
+    --motion-duration-reveal: 0ms;
+    --motion-duration-icon: 0ms;
+    --motion-duration-fast: 0ms;
+    --motion-press-scale: 1;
+    --motion-distance-page: 0px;
+    --motion-distance-reveal: 0px;
+  }
+
+  .uds-motion-icon {
+    animation: none !important;
+  }
+
   .uds-progress-indicator[data-state='indeterminate'] {
     inset-inline-start: 31%;
     animation: none;
@@ -3846,8 +3963,8 @@ a {
   flex: 0 0 auto;
   color: var(--muted-foreground);
   transition:
-    color var(--duration-fast) var(--ease-standard),
-    transform var(--duration-medium) var(--ease-standard);
+    color var(--motion-duration-press) var(--motion-ease-standard),
+    transform var(--motion-duration-expand) var(--motion-ease-standard);
 }
 
 .uds-accordion-trigger[data-state='open'] .uds-accordion-indicator {
@@ -3861,12 +3978,12 @@ a {
 }
 
 .uds-accordion-content[data-state='open'] {
-  animation: uds-accordion-down var(--duration-medium) var(--ease-standard);
+  animation: uds-accordion-down var(--motion-duration-expand) var(--motion-ease-standard);
   opacity: 1;
 }
 
 .uds-accordion-content[data-state='closed'] {
-  animation: uds-accordion-up var(--duration-medium) var(--ease-standard);
+  animation: uds-accordion-up var(--motion-duration-expand) var(--motion-ease-standard);
   opacity: 0;
 }
 
@@ -4451,8 +4568,16 @@ a {
   transform: translate(-50%, -50%);
 }
 
+.uds-dialog-content[data-state='open'] {
+  animation: uds-dialog-in var(--motion-duration-reveal) var(--motion-ease-emphasized);
+}
+
 :dir(rtl) .uds-dialog-content {
   transform: translate(50%, -50%);
+}
+
+:dir(rtl) .uds-dialog-content[data-state='open'] {
+  animation-name: uds-dialog-in-rtl;
 }
 
 .uds-drawer-content {
@@ -4472,11 +4597,11 @@ a {
 }
 
 .uds-drawer-content--end[data-state='open'] {
-  animation: uds-drawer-in-end var(--duration-medium) var(--ease-standard);
+  animation: uds-drawer-in-end var(--motion-duration-reveal) var(--motion-ease-emphasized);
 }
 
 .uds-drawer-content--end[data-state='closed'] {
-  animation: uds-drawer-out-end var(--duration-medium) var(--ease-standard);
+  animation: uds-drawer-out-end var(--motion-duration-reveal) var(--motion-ease-emphasized);
 }
 
 .uds-drawer-content--end:dir(rtl)[data-state='open'] {
@@ -4494,11 +4619,11 @@ a {
 }
 
 .uds-drawer-content--start[data-state='open'] {
-  animation: uds-drawer-in-start var(--duration-medium) var(--ease-standard);
+  animation: uds-drawer-in-start var(--motion-duration-reveal) var(--motion-ease-emphasized);
 }
 
 .uds-drawer-content--start[data-state='closed'] {
-  animation: uds-drawer-out-start var(--duration-medium) var(--ease-standard);
+  animation: uds-drawer-out-start var(--motion-duration-reveal) var(--motion-ease-emphasized);
 }
 
 .uds-drawer-content--start:dir(rtl)[data-state='open'] {
@@ -4520,11 +4645,11 @@ a {
 }
 
 .uds-drawer-content--bottom[data-state='open'] {
-  animation: uds-drawer-in-bottom var(--duration-medium) var(--ease-standard);
+  animation: uds-drawer-in-bottom var(--motion-duration-reveal) var(--motion-ease-emphasized);
 }
 
 .uds-drawer-content--bottom[data-state='closed'] {
-  animation: uds-drawer-out-bottom var(--duration-medium) var(--ease-standard);
+  animation: uds-drawer-out-bottom var(--motion-duration-reveal) var(--motion-ease-emphasized);
 }
 
 .uds-sheet-content {
@@ -4551,11 +4676,21 @@ a {
   border-end-start-radius: var(--radius-surface);
 }
 
+.uds-sheet-content--end[data-state='open'] { animation: uds-drawer-in-end var(--motion-duration-reveal) var(--motion-ease-emphasized); }
+.uds-sheet-content--end[data-state='closed'] { animation: uds-drawer-out-end var(--motion-duration-reveal) var(--motion-ease-emphasized); }
+.uds-sheet-content--end:dir(rtl)[data-state='open'] { animation-name: uds-drawer-in-start; }
+.uds-sheet-content--end:dir(rtl)[data-state='closed'] { animation-name: uds-drawer-out-start; }
+
 .uds-sheet-content--start {
   inset-inline-start: 0;
   border-start-end-radius: var(--radius-surface);
   border-end-end-radius: var(--radius-surface);
 }
+
+.uds-sheet-content--start[data-state='open'] { animation: uds-drawer-in-start var(--motion-duration-reveal) var(--motion-ease-emphasized); }
+.uds-sheet-content--start[data-state='closed'] { animation: uds-drawer-out-start var(--motion-duration-reveal) var(--motion-ease-emphasized); }
+.uds-sheet-content--start:dir(rtl)[data-state='open'] { animation-name: uds-drawer-in-end; }
+.uds-sheet-content--start:dir(rtl)[data-state='closed'] { animation-name: uds-drawer-out-end; }
 
 .uds-sheet-content--top,
 .uds-sheet-content--bottom {
@@ -4569,11 +4704,17 @@ a {
   border-end-end-radius: var(--radius-surface);
 }
 
+.uds-sheet-content--top[data-state='open'] { animation: uds-drawer-in-top var(--motion-duration-reveal) var(--motion-ease-emphasized); }
+.uds-sheet-content--top[data-state='closed'] { animation: uds-drawer-out-top var(--motion-duration-reveal) var(--motion-ease-emphasized); }
+
 .uds-sheet-content--bottom {
   inset-block-end: 0;
   border-start-start-radius: var(--radius-surface);
   border-start-end-radius: var(--radius-surface);
 }
+
+.uds-sheet-content--bottom[data-state='open'] { animation: uds-drawer-in-bottom var(--motion-duration-reveal) var(--motion-ease-emphasized); }
+.uds-sheet-content--bottom[data-state='closed'] { animation: uds-drawer-out-bottom var(--motion-duration-reveal) var(--motion-ease-emphasized); }
 
 .uds-dialog-header {
   display: grid;
@@ -4751,8 +4892,16 @@ a {
   transform: translate(-50%, -50%);
 }
 
+.uds-alert-dialog-content[data-state='open'] {
+  animation: uds-dialog-in var(--motion-duration-reveal) var(--motion-ease-emphasized);
+}
+
 :dir(rtl) .uds-alert-dialog-content {
   transform: translate(50%, -50%);
+}
+
+:dir(rtl) .uds-alert-dialog-content[data-state='open'] {
+  animation-name: uds-dialog-in-rtl;
 }
 
 .uds-alert-dialog-header {

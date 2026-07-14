@@ -1,0 +1,19 @@
+{
+  "id": "template-saas-solution-homepage",
+  "name": "SaaS Solution Homepage",
+  "category": "website-page",
+  "status": "available",
+  "purpose": "A product-led SaaS homepage that moves from a concise value proposition through interface proof, workflow, automation, integrations, reliability, team evidence, and adoption.",
+  "packageImport": "@utopia-studio-design/design-system",
+  "sourcePath": "templates/saas-solution-homepage/main.tsx",
+  "entryPath": "templates/saas-solution-homepage/index.html",
+  "shadcnFoundation": ["Navigation Menu", "Button", "Badge", "Card"],
+  "requiredTokens": ["background", "foreground", "muted-foreground", "surface", "surface-strong", "border", "primary", "ring", "radius-control", "radius-surface", "space-*", "motion-duration-*"],
+  "sections": ["Hero", "Product interface preview", "Core workflow", "Agents and automation", "Integrations", "Security and reliability", "Team proof", "Adoption CTA", "Footer"],
+  "features": { "lightDark": true, "rtl": true, "responsive": true, "seededDemoData": true, "scrollAwareNavigation": true, "reducedMotion": true },
+  "useWhen": ["A SaaS product needs a complete product-led marketing narrative", "A real interface preview can carry the product proof", "Automation, integrations, and reliability are material buying criteria"],
+  "avoidWhen": ["The page is a single-feature launch", "The primary experience is editorial", "There is no reviewed product model behind the interface claims"],
+  "neverInvent": ["Do not copy Linear branding, copy, assets, or proprietary interface details", "Do not hard-code brand primitives inside reusable components", "Do not use left/right-only layout APIs where logical properties work", "Do not invent production customer claims from seeded demo content"],
+  "queryParameters": { "seed": "Integer used to deterministically select product, company, people, pricing, and proof data." },
+  "defaultUrl": "/templates/saas-solution-homepage/index.html?seed=1974341818#agents"
+}

@@ -1,8 +1,10 @@
-import type { ReactNode } from 'react'
-import { ArrowLeft, ArrowRight, Bell, ChevronDown, Download, Home, PanelLeft, Search, Settings } from 'lucide-react'
-import { dextrumTheme, themes, utopiaDefaultTheme } from '../data/design-system'
+import { useState, type ReactNode } from 'react'
+import { ArrowLeft, ArrowRight, Bell, ChevronDown, Copy, Download, Home, PanelLeft, Search, Settings } from 'lucide-react'
+import { themes, utopiaDefaultTheme } from '../data/design-system'
 import { DextrumTypographySubpage, dextrumTypographySegmentFromPath } from './DextrumTypographySubpage'
 import { ArabicDisplay, ArabicText } from '../../packages/design-system/src/Typography'
+import { Button } from '../../packages/design-system/src/Button'
+import { MotionIcon, MotionProvider } from '../../packages/design-system/src/Motion'
 import { docsLabel, t, useI18n, type Locale } from '../i18n'
 
 type DocsPageProps = {
@@ -60,11 +62,15 @@ const tokenRows: TokenRow[] = [
   { group: 'shape', name: '--radius-chat-composer', value: 'chat composer shape', role: 'Chat composer input surfaces', aiRule: 'Use for assistant input/composer geometry.' },
   { group: 'shape', name: '--radius-chat-token', value: 'chat token shape', role: 'Composer chips and chat token elements', aiRule: 'Use for attachments, command tokens, and chips inside chat composers.' },
   { group: 'shape', name: '--radius-round', value: 'fully rounded role', role: 'Avatars, badges, circular controls', aiRule: 'Use only for intentionally circular/rounded affordances.' },
-  { group: 'motion', name: '--duration-fast', value: '120ms', role: 'Hover/focus feedback', aiRule: 'Use for small interaction state changes.' },
-  { group: 'motion', name: '--duration-medium', value: '220ms', role: 'Collapse/expand and layout motion', aiRule: 'Use for nav sections and disclosure motion.' },
-  { group: 'motion', name: '--duration-slow', value: '360ms', role: 'Large surface entrance/exit', aiRule: 'Use sparingly and respect reduced motion.' },
-  { group: 'motion', name: '--ease-standard', value: 'theme easing', role: 'Default state transition', aiRule: 'Use standard easing unless component contract says otherwise.' },
-  { group: 'motion', name: '--ease-emphasized', value: 'theme emphasized easing', role: 'Disclosure and shell motion', aiRule: 'Use for collapse/expand transitions.' },
+  { group: 'motion', name: '--motion-duration-press', value: '160ms', role: 'Physical press feedback', aiRule: 'Use for buttons, toggles, and compact controls.' },
+  { group: 'motion', name: '--motion-duration-page', value: '200ms', role: 'Quiet page or tab shift', aiRule: 'Use for view changes without theatrical movement.' },
+  { group: 'motion', name: '--motion-duration-expand', value: '320ms', role: 'Disclosure and layout expansion', aiRule: 'Use for accordion and collapsible content without layout jumps.' },
+  { group: 'motion', name: '--motion-duration-reveal', value: '520ms', role: 'Soft content reveal', aiRule: 'Use for popovers, dialogs, sheets, and drawers.' },
+  { group: 'motion', name: '--motion-duration-icon', value: '640ms', role: 'Meaningful icon motion', aiRule: 'Move icons in the direction of their action; do not apply a generic bounce.' },
+  { group: 'motion', name: '--motion-ease-standard', value: 'cubic-bezier(0.2, 0, 0, 1)', role: 'Press, page, and expand easing', aiRule: 'Use for direct interaction feedback.' },
+  { group: 'motion', name: '--motion-ease-emphasized', value: 'cubic-bezier(0.16, 1, 0.3, 1)', role: 'Reveal and icon easing', aiRule: 'Use for soft entrances and action-specific icon motion.' },
+  { group: 'motion', name: '--motion-distance-page', value: 'logical spacing role', role: 'Quiet view-shift distance', aiRule: 'Use a small logical distance and let RTL-aware layout own direction.' },
+  { group: 'motion', name: '--motion-distance-reveal', value: 'logical spacing role', role: 'Surface reveal distance', aiRule: 'Use for soft entrances; do not hardcode pixels in components.' },
   { group: 'elevation', name: '--shadow-surface', value: 'surface shadow role', role: 'Subtle raised surface', aiRule: 'Theme may map to none, border, or shadow.' },
   { group: 'elevation', name: '--shadow-popover', value: 'popover shadow role', role: 'Floating menus and popovers', aiRule: 'Use only with semantic elevated surface.' },
   { group: 'elevation', name: '--shadow-dialog', value: 'dialog shadow role', role: 'Modal surfaces', aiRule: 'Do not hardcode CSS box-shadow in components.' },
@@ -182,7 +188,6 @@ const foundationSectionLabels: Record<string, { en: string; ar: string }> = {
   'Theme Swatches': { en: 'Theme Swatches', ar: 'عينات الثيم' },
   'State Matrix': { en: 'State Matrix', ar: 'مصفوفة الحالات' },
   'Type Scale': { en: 'Type Scale', ar: 'مقياس الطباعة' },
-  'Dextrum Typography': { en: 'Dextrum Typography', ar: 'طباعة Dextrum' },
   'Arabic Display Is Not Uppercase': { en: 'Arabic Display Is Not Uppercase', ar: 'العرض العربي ليس Uppercase' },
   'Mixed-Script Rhythm': { en: 'Mixed-Script Rhythm', ar: 'إيقاع النص المختلط' },
   'Spacing Scale': { en: 'Spacing Scale', ar: 'مقياس المسافات' },
@@ -451,6 +456,15 @@ function slugFromPath(path = '/docs') {
   return path.replace('/docs/foundations/', '') as keyof typeof foundationPages
 }
 
+const semanticFoundationSlugByPath: Partial<Record<string, keyof typeof foundationPages>> = {
+  '/docs/foundations/semantic-tokens/color': 'color',
+  '/docs/foundations/semantic-tokens/typography': 'typography',
+  '/docs/foundations/semantic-tokens/spacing': 'spacing',
+  '/docs/foundations/semantic-tokens/shape': 'shape',
+  '/docs/foundations/semantic-tokens/motion': 'motion',
+  '/docs/foundations/semantic-tokens/elevation': 'elevation',
+}
+
 function guideSlugFromPath(path = '/docs') {
   return path.replace('/docs/guide/', '') as keyof typeof guidePages
 }
@@ -471,6 +485,27 @@ export function DocsPage({ path = '/docs' }: DocsPageProps) {
     return <GuidePage slug={slug in guidePages ? slug : 'quick-start-with-ai'} />
   }
 
+  if (path === '/docs/foundations/token-architecture') {
+    return <TokenContractPage kind="architecture" />
+  }
+
+  if (path === '/docs/foundations/semantic-tokens') {
+    return <TokenContractPage kind="semantic" />
+  }
+
+  if (path === '/docs/foundations/component-tokens') {
+    return <TokenContractPage kind="component" />
+  }
+
+  if (path === '/docs/foundations/semantic-tokens/direction-rtl') {
+    return <TokenContractPage kind="direction" />
+  }
+
+  const semanticFoundationSlug = semanticFoundationSlugByPath[path]
+  if (semanticFoundationSlug) {
+    return <FoundationsPage page={foundationPages[semanticFoundationSlug]} slug={semanticFoundationSlug} />
+  }
+
   if (path.startsWith('/docs/foundations/')) {
     const slug = slugFromPath(path)
     const page = foundationPages[slug] ?? foundationPages['all-tokens']
@@ -482,6 +517,117 @@ export function DocsPage({ path = '/docs' }: DocsPageProps) {
   }
 
   return <GettingStartedPage />
+}
+
+type TokenContractKind = 'architecture' | 'semantic' | 'component' | 'direction'
+
+function TokenContractPage({ kind }: { kind: TokenContractKind }) {
+  const { locale } = useI18n()
+  const isArabic = locale === 'ar'
+  const copy = {
+    architecture: {
+      title: isArabic ? 'بنية التوكنات' : 'Token Architecture',
+      intro: isArabic
+        ? 'تفصل البنية بين قيم الثيم الخام والأدوار الدلالية وواجهات المكونات حتى تبقى الثيمات قابلة للاستبدال.'
+        : 'The contract separates raw theme values, semantic roles, and component interfaces so themes remain replaceable.',
+    },
+    semantic: {
+      title: isArabic ? 'التوكنات الدلالية' : 'Semantic Tokens',
+      intro: isArabic
+        ? 'هذه هي الأدوار الثابتة التي تستهلكها المكونات والمنتجات. تنفذ كل ثيمة هذه الأدوار بقيمها الخاصة.'
+        : 'These stable roles are consumed by components and products. Every theme implements them with its own values.',
+    },
+    component: {
+      title: isArabic ? 'توكنات المكونات' : 'Component Tokens',
+      intro: isArabic
+        ? 'تضيق توكنات المكونات العقد الدلالي لسياق مكون محدد من دون ربطه بقيم العلامة التجارية الخام.'
+        : 'Component tokens narrow the semantic contract for a specific control without coupling it to raw brand values.',
+    },
+    direction: {
+      title: isArabic ? 'الاتجاه وواجهة RTL' : 'Direction / RTL',
+      intro: isArabic
+        ? 'يعامل النظام RTL كعقد تخطيط وسلوك وتوطين كامل، وليس كتبديل بصري لاحق.'
+        : 'The system treats RTL as a complete layout, behavior, and localization contract, not a late visual flip.',
+    },
+  }[kind]
+
+  const architectureCards = isArabic
+    ? [
+        ['التوكنات الخام', 'قيم اللون والخط والمسافة والشكل والحركة التي تملكها الثيمة. لا تستخدمها المكونات مباشرة.'],
+        ['الأدوار الدلالية', 'عقد ثابت مثل --primary و--background و--radius-control يربط النية بقيم الثيمة.'],
+        ['توكنات المكونات', 'أسماء دقيقة مثل --button-background ترجع إلى الأدوار الدلالية وتحافظ على حدود المكون.'],
+      ]
+    : [
+        ['Primitive Tokens', 'Theme-owned color, type, spacing, shape, and motion values. Reusable components never consume them directly.'],
+        ['Semantic Roles', 'Stable roles such as --primary, --background, and --radius-control map intent to theme values.'],
+        ['Component Tokens', 'Focused aliases such as --button-background resolve to semantic roles and preserve component boundaries.'],
+      ]
+
+  const componentCards = isArabic
+    ? [
+        ['العقد', 'تعرف المكونات واجهة صغيرة من التوكنات الخاصة بها وتوفر رجوعا دلاليا لكل قيمة.'],
+        ['الاستبدال', 'يمكن للثيمة تغيير الشكل والمقياس والحركة من دون تعديل منطق React أو بنية Radix.'],
+        ['قواعد الوكيل', 'يجب على وكلاء الذكاء الاصطناعي قراءة manifest المكون قبل إضافة CSS أو قيم جديدة.'],
+      ]
+    : [
+        ['Contract', 'Components expose a small token interface and provide a semantic fallback for every value.'],
+        ['Substitution', 'A theme can change geometry, scale, and motion without editing React logic or Radix structure.'],
+        ['Agent Rule', 'AI agents read the component manifest before adding CSS or introducing a new value.'],
+      ]
+
+  const directionCards = isArabic
+    ? [
+        ['خصائص منطقية', 'استخدم inline-start وinline-end وmargin-inline وpadding-inline بدلا من left وright.'],
+        ['السلوك الاتجاهي', 'تعكس الأسهم وشارات التنقل الاتجاهية فقط. لا تعكس الأيقونات غير الاتجاهية.'],
+        ['مسؤولية التوطين', 'اختبر نصا عربيا حقيقيا ونصا مختلطا وأرقاما وتواريخ وعملات محلية. لا تخترع نصا عربيا.'],
+      ]
+    : [
+        ['Logical Properties', 'Use inline-start, inline-end, margin-inline, and padding-inline instead of left and right.'],
+        ['Directional Behavior', 'Mirror directional arrows and navigation affordances only. Keep non-directional icons unchanged.'],
+        ['Localization Ownership', 'Test real Arabic, mixed scripts, numerals, dates, and local currency. Never invent Arabic copy.'],
+      ]
+
+  const semanticTopics = [
+    ['color', isArabic ? 'اللون' : 'Color', isArabic ? 'أدوار السطح والنص والحالة والتفاعل.' : 'Surface, text, state, and interaction roles.'],
+    ['typography', isArabic ? 'الطباعة' : 'Typography', isArabic ? 'أدوار العرض والنص والكود للعربية واللاتينية.' : 'Display, body, and code roles across Arabic and Latin.'],
+    ['spacing', isArabic ? 'المسافات' : 'Spacing', isArabic ? 'مقياس كثافة وتخطيط مستقل عن الاتجاه.' : 'Direction-independent layout and density scale.'],
+    ['shape', isArabic ? 'الشكل' : 'Shape', isArabic ? 'أدوار نصف القطر والحدود والهندسة.' : 'Radius, border, and geometry roles.'],
+    ['motion', isArabic ? 'الحركة' : 'Motion', isArabic ? 'المدة والتخفيف والحركة المخفضة.' : 'Duration, easing, and reduced-motion roles.'],
+    ['elevation', isArabic ? 'الارتفاع' : 'Elevation', isArabic ? 'طبقات السطح والظل والتراكب.' : 'Surface, shadow, and overlay layers.'],
+    ['direction-rtl', isArabic ? 'الاتجاه و RTL' : 'Direction / RTL', isArabic ? 'عقد الاتجاه والانعكاس والتوطين.' : 'Direction, mirroring, and localization contract.'],
+  ]
+
+  const cards = kind === 'architecture' ? architectureCards : kind === 'component' ? componentCards : directionCards
+
+  return (
+    <div className="page">
+      <section className="page-hero compact">
+        <p className="eyebrow">{isArabic ? 'الأسس' : 'Foundations'}</p>
+        <h1>{copy.title}</h1>
+        <p>{copy.intro}</p>
+      </section>
+
+      <section className="foundation-section" id="contract">
+        <div className="foundation-card-grid">
+          {kind === 'semantic'
+            ? semanticTopics.map(([slug, title, description]) => (
+                <a className="foundation-card link-card" href={`#/docs/foundations/semantic-tokens/${slug}`} key={slug}>
+                  <span className="kicker">{isArabic ? 'دلالي' : 'Semantic'}</span>
+                  <strong>{title}</strong>
+                  <p>{description}</p>
+                </a>
+              ))
+            : cards.map(([title, description], index) => (
+                <article className="foundation-card" key={title}>
+                  <span className="kicker">{String(index + 1).padStart(2, '0')}</span>
+                  <strong>{title}</strong>
+                  <p>{description}</p>
+                </article>
+              ))}
+        </div>
+      </section>
+    </div>
+  )
 }
 
 function GuidePage({ slug }: { slug: keyof typeof guidePages }) {
@@ -742,9 +888,6 @@ function FoundationsPage({ page, slug }: { page: typeof foundationPages[keyof ty
           <>
             <FoundationSection id="type-scale" title={foundationSectionLabel(locale, 'Type Scale')}>
               <TypeScale locale={locale} />
-            </FoundationSection>
-            <FoundationSection id="dextrum-typography" title={foundationSectionLabel(locale, 'Dextrum Typography')}>
-              <DextrumTypographyLinks locale={locale} />
             </FoundationSection>
             <FoundationSection id="arabic-display" title={foundationSectionLabel(locale, 'Arabic Display Is Not Uppercase')}>
               <ArabicDisplayPreview locale={locale} />
@@ -1208,35 +1351,6 @@ function TypeScale({ locale }: { locale: Locale }) {
   )
 }
 
-function DextrumTypographyLinks({ locale }: { locale: Locale }) {
-  const pairings = [
-    {
-      href: '#/docs/foundations/typography/dextrum/marketing-sales',
-      label: locale === 'ar' ? 'التسويق والمبيعات' : 'Marketing & Sales',
-      title: 'Clash Grotesk + Satoshi',
-      description: dextrumTheme.brandPrimitives.typography.marketingSales.use,
-    },
-    {
-      href: '#/docs/foundations/typography/dextrum/app-website',
-      label: locale === 'ar' ? 'التطبيق والموقع' : 'App & Website',
-      title: 'Manrope + Satoshi',
-      description: dextrumTheme.brandPrimitives.typography.appWebsite.use,
-    },
-  ]
-
-  return (
-    <div className="foundation-card-grid">
-      {pairings.map((pairing) => (
-        <a className="foundation-card link-card" href={pairing.href} key={pairing.href}>
-          <span className="kicker">{pairing.label}</span>
-          <strong>{pairing.title}</strong>
-          <p>{pairing.description}</p>
-        </a>
-      ))}
-    </div>
-  )
-}
-
 function ArabicDisplayPreview({ locale }: { locale: Locale }) {
   return (
     <div className="foundation-type-comparison">
@@ -1325,26 +1439,45 @@ function ThemeVariancePreview({ locale }: { locale: Locale }) {
 }
 
 function MotionScale({ locale }: { locale: Locale }) {
+  const [motionEnabled, setMotionEnabled] = useState(true)
   const items = locale === 'ar' ? [
-    ['سريع', '--duration-fast', 'التحويم والتركيز والضغط'],
-    ['متوسط', '--duration-medium', 'Accordion وطي التنقل وdisclosure'],
-    ['بطيء', '--duration-slow', 'انتقال modal أو shell كبير'],
+    ['الضغط', '--motion-duration-press', '١٦٠ms · يجعل اللمس والنقر محسوسين'],
+    ['انتقال الصفحة', '--motion-duration-page', '٢٠٠ms · يغيّر العرض بهدوء'],
+    ['التوسّع', '--motion-duration-expand', '٣٢٠ms · يفتح المحتوى من دون قفزة تخطيط'],
+    ['الكشف', '--motion-duration-reveal', '٥٢٠ms · يظهر السطح بلطف'],
+    ['حركة الأيقونة', '--motion-duration-icon', '٦٤٠ms · تتحرك الأيقونة مثل معنى الإجراء'],
   ] : [
-    ['Fast', '--duration-fast', 'Hover, focus, pressed state'],
-    ['Medium', '--duration-medium', 'Accordion, side nav collapse, disclosure'],
-    ['Slow', '--duration-slow', 'Large modal or shell transition'],
+    ['Press', '--motion-duration-press', '160ms · Make taps feel physical'],
+    ['Page shift', '--motion-duration-page', '200ms · Change views quietly'],
+    ['Expand', '--motion-duration-expand', '320ms · Open without layout jumps'],
+    ['Reveal', '--motion-duration-reveal', '520ms · Show content softly'],
+    ['Icon motion', '--motion-duration-icon', '640ms · Move icons like the action'],
   ]
   return (
-    <div className="motion-scale">
-      {items.map(([label, token, use]) => (
-        <article key={token}>
-          <span />
-          <strong>{label}</strong>
-          <code>{token}</code>
-          <p>{use}</p>
-        </article>
-      ))}
-    </div>
+    <MotionProvider motion={motionEnabled}>
+      <div className="motion-scale-controls">
+        <Button motion={motionEnabled} onClick={() => setMotionEnabled((value) => !value)} variant="secondary">
+          {locale === 'ar' ? (motionEnabled ? 'إيقاف الحركة' : 'تشغيل الحركة') : (motionEnabled ? 'Turn motion off' : 'Turn motion on')}
+        </Button>
+        <span>{locale === 'ar' ? 'يُحفظ هذا العقد في MotionProvider ويمكن تجاوزه لكل مكوّن.' : 'MotionProvider sets the default; each component can override it with motion.'}</span>
+      </div>
+      <div className="motion-scale">
+        {items.map(([label, token, use], index) => (
+          <article data-motion-pattern={['press', 'page', 'expand', 'reveal', 'icon'][index]} key={token}>
+            {index === 4 ? (
+              <MotionIcon active key={`${motionEnabled}`} pattern="bell"><Bell aria-hidden="true" /></MotionIcon>
+            ) : <span className="motion-scale-sample" />}
+            <strong>{label}</strong>
+            <code>{token}</code>
+            <p>{use}</p>
+          </article>
+        ))}
+      </div>
+      <div className="motion-icon-examples" aria-label={locale === 'ar' ? 'أمثلة حركة الأيقونات' : 'Icon motion examples'}>
+        <MotionIcon active key={`copy-${motionEnabled}`} pattern="copy"><Copy aria-hidden="true" /></MotionIcon>
+        <MotionIcon active key={`download-${motionEnabled}`} pattern="download"><Download aria-hidden="true" /></MotionIcon>
+      </div>
+    </MotionProvider>
   )
 }
 

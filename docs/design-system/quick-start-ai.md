@@ -42,6 +42,26 @@ export function SaveAction() {
 }
 ```
 
+## Set Motion Policy
+
+Ceramic maps BeUI-inspired interaction patterns to semantic roles: `press`, `page`, `expand`, `reveal`, and `icon`. Set the application default once and override only when a local workflow needs to be static.
+
+```tsx
+import { MotionProvider } from '@utopia-studio-design/design-system/Motion'
+import { Button } from '@utopia-studio-design/design-system/Button'
+
+export function App() {
+  return (
+    <MotionProvider motion>
+      <Button>Animated by the press contract</Button>
+      <Button motion={false}>Static override</Button>
+    </MotionProvider>
+  )
+}
+```
+
+Never bypass `MotionProvider`, semantic motion tokens, or `prefers-reduced-motion`. The `motion` prop changes transition behavior, not component state or accessibility.
+
 ## Discover Before Generating
 
 ```sh

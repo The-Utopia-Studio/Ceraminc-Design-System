@@ -80,8 +80,23 @@ export function getDocFamilies() {
   }))
 }
 
-export function dextrumTypographyHref(item: string) {
-  if (item === 'Marketing & Sales') return '#/docs/foundations/typography/dextrum/marketing-sales'
-  if (item === 'App & Website') return '#/docs/foundations/typography/dextrum/app-website'
-  return null
+export function getThemeFamilies() {
+  return (catalog.themeFamilies ?? []).map((family) => ({
+    ...family,
+    items: [...family.items],
+  }))
+}
+
+export function docFamilyHref(parent: string, item: string) {
+  return `#/docs/foundations/${slugify(parent)}/${slugify(item)}`
+}
+
+export function themeFamilyHref(parent: string, item: string) {
+  const themeSlug = parent === 'The Utopia Studio Default' ? 'utopia-default' : slugify(parent)
+
+  if (parent === 'Dextrum' && (item === 'App & Website' || item === 'Marketing & Sales')) {
+    return `#/themes/${themeSlug}/typography/${slugify(item)}`
+  }
+
+  return `#/themes/${themeSlug}/${slugify(item)}`
 }

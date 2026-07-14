@@ -22,10 +22,9 @@
         "--radius-surface",
         "--space-3",
         "--space-4",
-        "--duration-fast",
-        "--duration-medium",
-        "--ease-standard",
-        "--focus-ring-width"
+        "--focus-ring-width",
+        "--motion-duration-expand",
+        "--motion-ease-standard"
       ],
       "useWhen": [
         "A sectioned disclosure list needs keyboard-accessible expand/collapse behavior",
@@ -41,7 +40,8 @@
         "Custom disclosure keyboard behavior",
         "Raw shadcn theme colors",
         "Left/right-only indicator placement",
-        "Utopia brand primitives inside reusable component logic"
+        "Utopia brand primitives inside reusable component logic",
+        "Motion that bypasses MotionProvider or prefers-reduced-motion"
       ],
       "ai": {
         "props": {
@@ -49,7 +49,8 @@
           "collapsible": "Allow the active single item to close when the content is optional.",
           "AccordionItem": "Requires a stable value for Radix state.",
           "AccordionTrigger": "Visible section title and full hit target.",
-          "AccordionContent": "Panel body. Keep product copy supplied by the app."
+          "AccordionContent": "Panel body. Keep product copy supplied by the app.",
+          "motion": "Optional boolean. Defaults to the MotionProvider policy and disables this component pattern when false."
         },
         "arabicFriendly": "Trigger text uses start alignment and indicator sits at inline-end. In dir=\"rtl\", spacing and hit target must mirror without left/right CSS."
       }
@@ -200,7 +201,9 @@
         "--z-modal",
         "--focus-ring-width",
         "--overlay",
-        "--modal-surface"
+        "--modal-surface",
+        "--motion-duration-reveal",
+        "--motion-ease-emphasized"
       ],
       "useWhen": [
         "Destructive confirmations",
@@ -216,7 +219,8 @@
         "Unreviewed destructive copy",
         "Raw shadcn theme colors",
         "Left/right-only footer ordering",
-        "Utopia brand primitives inside reusable component logic"
+        "Utopia brand primitives inside reusable component logic",
+        "Motion that bypasses MotionProvider or prefers-reduced-motion"
       ],
       "ai": {
         "props": {
@@ -225,7 +229,8 @@
           "AlertDialogHeader": "Groups title and description.",
           "AlertDialogFooter": "Groups cancel/action controls at inline-end.",
           "AlertDialogCancel": "Non-destructive escape path.",
-          "AlertDialogAction": "Confirmed action; pair destructive wording with product-approved copy."
+          "AlertDialogAction": "Confirmed action; pair destructive wording with product-approved copy.",
+          "motion": "Optional boolean. Defaults to the MotionProvider policy and disables this component pattern when false."
         },
         "arabicFriendly": "Footer, text alignment, and modal centering use logical properties. Do not invent Arabic confirmation copy; use supplied localization."
       }
@@ -670,7 +675,10 @@
         "--button-height",
         "--button-height-sm",
         "--button-height-lg",
-        "--focus-ring-width"
+        "--focus-ring-width",
+        "--motion-duration-press",
+        "--motion-ease-standard",
+        "--motion-press-scale"
       ],
       "useWhen": [
         "Primary actions",
@@ -686,8 +694,14 @@
         "Gradient states",
         "Unlabeled icon-only buttons",
         "Left/right-only layout rules",
-        "Utopia brand primitives inside reusable component logic"
-      ]
+        "Utopia brand primitives inside reusable component logic",
+        "Motion that bypasses MotionProvider or prefers-reduced-motion"
+      ],
+      "ai": {
+        "props": {
+          "motion": "Optional boolean. Defaults to the MotionProvider policy and disables this component pattern when false."
+        }
+      }
     },
     {
       "name": "Button Group",
@@ -1906,7 +1920,9 @@
         "--primary",
         "--primary-foreground",
         "--radius-control",
-        "--focus-ring-width"
+        "--focus-ring-width",
+        "--motion-duration-press",
+        "--motion-ease-standard"
       ],
       "useWhen": [
         "Multi-select boolean choices",
@@ -1921,8 +1937,14 @@
       "neverInvent": [
         "Left/right label placement",
         "Left/right-only layout rules",
-        "Utopia brand primitives inside reusable component logic"
-      ]
+        "Utopia brand primitives inside reusable component logic",
+        "Motion that bypasses MotionProvider or prefers-reduced-motion"
+      ],
+      "ai": {
+        "props": {
+          "motion": "Optional boolean. Defaults to the MotionProvider policy and disables this component pattern when false."
+        }
+      }
     },
     {
       "name": "Collapsible",
@@ -1943,7 +1965,9 @@
         "--border",
         "--radius-surface",
         "--radius-control",
-        "--focus-ring-width"
+        "--focus-ring-width",
+        "--motion-duration-expand",
+        "--motion-ease-standard"
       ],
       "useWhen": [
         "Optional details",
@@ -1958,8 +1982,14 @@
       "neverInvent": [
         "Raw shadcn theme colors",
         "Left/right-only layout rules",
-        "Utopia brand primitives inside reusable component logic"
-      ]
+        "Utopia brand primitives inside reusable component logic",
+        "Motion that bypasses MotionProvider or prefers-reduced-motion"
+      ],
+      "ai": {
+        "props": {
+          "motion": "Optional boolean. Defaults to the MotionProvider policy and disables this component pattern when false."
+        }
+      }
     },
     {
       "name": "Combobox",
@@ -2209,7 +2239,9 @@
         "--z-modal",
         "--focus-ring-width",
         "--overlay",
-        "--modal-surface"
+        "--modal-surface",
+        "--motion-duration-reveal",
+        "--motion-ease-emphasized"
       ],
       "useWhen": [
         "Focused interruptive content",
@@ -2224,8 +2256,14 @@
       "neverInvent": [
         "Raw shadcn theme colors",
         "Left/right-only layout rules",
-        "Utopia brand primitives inside reusable component logic"
-      ]
+        "Utopia brand primitives inside reusable component logic",
+        "Motion that bypasses MotionProvider or prefers-reduced-motion"
+      ],
+      "ai": {
+        "props": {
+          "motion": "Optional boolean. Defaults to the MotionProvider policy and disables this component pattern when false."
+        }
+      }
     },
     {
       "name": "Direction",
@@ -2287,7 +2325,9 @@
         "--z-modal",
         "--focus-ring-width",
         "--overlay",
-        "--modal-surface"
+        "--modal-surface",
+        "--motion-duration-reveal",
+        "--motion-ease-emphasized"
       ],
       "useWhen": [
         "Supplemental panels that slide from logical start, end, or bottom",
@@ -2302,8 +2342,14 @@
       "neverInvent": [
         "Raw shadcn theme colors",
         "Left/right-only layout rules",
-        "Utopia brand primitives inside reusable component logic"
-      ]
+        "Utopia brand primitives inside reusable component logic",
+        "Motion that bypasses MotionProvider or prefers-reduced-motion"
+      ],
+      "ai": {
+        "props": {
+          "motion": "Optional boolean. Defaults to the MotionProvider policy and disables this component pattern when false."
+        }
+      }
     },
     {
       "name": "Dropdown Menu",
@@ -2474,8 +2520,8 @@
         "--radius-surface",
         "--popover-surface",
         "--floating-content-width",
-        "--duration-fast",
-        "--ease-standard"
+        "--motion-duration-reveal",
+        "--motion-ease-emphasized"
       ],
       "useWhen": [
         "Supplemental previews",
@@ -2493,8 +2539,14 @@
         "Physical left/right names for logical alignment",
         "Hover-only product actions",
         "Left/right-only layout rules",
-        "Utopia brand primitives inside reusable component logic"
-      ]
+        "Utopia brand primitives inside reusable component logic",
+        "Motion that bypasses MotionProvider or prefers-reduced-motion"
+      ],
+      "ai": {
+        "props": {
+          "motion": "Optional boolean. Defaults to the MotionProvider policy and disables this component pattern when false."
+        }
+      }
     },
     {
       "name": "Icon Button",
@@ -3173,9 +3225,9 @@
         "--focus-ring-offset",
         "--surface-hover",
         "--muted-foreground",
-        "--duration-fast",
-        "--ease-standard",
-        "--popover-surface"
+        "--popover-surface",
+        "--motion-duration-reveal",
+        "--motion-ease-emphasized"
       ],
       "useWhen": [
         "Small contextual panels",
@@ -3191,8 +3243,14 @@
         "Modal behavior",
         "Left/right-only alignment rules instead of logical start/end alignment",
         "Product form values, Arabic production copy, or persistence behavior",
-        "Utopia brand primitives inside reusable component logic"
-      ]
+        "Utopia brand primitives inside reusable component logic",
+        "Motion that bypasses MotionProvider or prefers-reduced-motion"
+      ],
+      "ai": {
+        "props": {
+          "motion": "Optional boolean. Defaults to the MotionProvider policy and disables this component pattern when false."
+        }
+      }
     },
     {
       "name": "Progress",
@@ -3529,7 +3587,9 @@
         "--z-modal",
         "--focus-ring-width",
         "--overlay",
-        "--modal-surface"
+        "--modal-surface",
+        "--motion-duration-reveal",
+        "--motion-ease-emphasized"
       ],
       "useWhen": [
         "Supplemental panels attached to a logical side",
@@ -3544,8 +3604,14 @@
       "neverInvent": [
         "Raw shadcn theme colors",
         "Left/right-only layout rules",
-        "Utopia brand primitives inside reusable component logic"
-      ]
+        "Utopia brand primitives inside reusable component logic",
+        "Motion that bypasses MotionProvider or prefers-reduced-motion"
+      ],
+      "ai": {
+        "props": {
+          "motion": "Optional boolean. Defaults to the MotionProvider policy and disables this component pattern when false."
+        }
+      }
     },
     {
       "name": "Side Nav",
@@ -3853,13 +3919,68 @@
       "status": "available",
       "packageImport": "import { Sidebar, SidebarContent, SidebarFooter, SidebarGroup, SidebarGroupAction, SidebarGroupLabel, SidebarHeader, SidebarInset, SidebarMenu, SidebarMenuAction, SidebarMenuBadge, SidebarMenuButton, SidebarMenuItem, SidebarMenuSub, SidebarMenuSubButton, SidebarMenuSubItem, SidebarOverlay, SidebarProvider, SidebarRail, SidebarTrigger, useSidebar } from '@utopia-studio-design/design-system/Sidebar';",
       "sourcePath": "packages/design-system/src/components/Sidebar.tsx",
-      "shadcnFoundation": ["sidebar", "composable app shell", "semantic Utopia wrapper"],
+      "shadcnFoundation": [
+        "sidebar",
+        "composable app shell",
+        "semantic Utopia wrapper"
+      ],
       "fallbackToShadcn": "sidebar",
-      "requiredTokens": ["--background", "--foreground", "--border", "--surface-hover", "--popover-surface", "--radius-control", "--radius-surface", "--sidebar-width", "--sidebar-width-collapsed", "--sidebar-min-block-size", "--sidebar-rail-size", "--duration-medium", "--ease-standard"],
-      "useWhen": ["Building a controlled or uncontrolled application shell with collapsible navigation", "Composing header, content, footer, groups, menu items, actions, badges, submenus, rail, and inset content", "A responsive off-canvas or icon-collapse application sidebar is required independently from documentation Side Nav"],
-      "avoidWhen": ["Rendering the design-system documentation tree; use Side Nav", "A temporary overlay should use Sheet", "Hardcoding product destinations inside the reusable primitive"],
-      "neverInvent": ["Left/right-only collapse rules", "Product-specific menu data", "Utopia brand primitives inside reusable component logic"],
-      "ai": {"parts": ["SidebarProvider", "Sidebar", "SidebarHeader", "SidebarContent", "SidebarFooter", "SidebarGroup", "SidebarGroupAction", "SidebarGroupLabel", "SidebarInset", "SidebarMenu", "SidebarMenuItem", "SidebarMenuButton", "SidebarMenuAction", "SidebarMenuBadge", "SidebarMenuSub", "SidebarMenuSubItem", "SidebarMenuSubButton", "SidebarOverlay", "SidebarRail", "SidebarTrigger", "useSidebar"], "arabicFriendly": "Use dir=rtl at the shell boundary and provide localized collapseLabel, expandLabel, overlay labels, rail labels, and tooltip strings. Logical borders, alignment, off-canvas motion, submenus, and badges mirror without changing the component API."}
+      "requiredTokens": [
+        "--background",
+        "--foreground",
+        "--border",
+        "--surface-hover",
+        "--popover-surface",
+        "--radius-control",
+        "--radius-surface",
+        "--sidebar-width",
+        "--sidebar-width-collapsed",
+        "--sidebar-min-block-size",
+        "--sidebar-rail-size",
+        "--duration-medium",
+        "--ease-standard"
+      ],
+      "useWhen": [
+        "Building a controlled or uncontrolled application shell with collapsible navigation",
+        "Composing header, content, footer, groups, menu items, actions, badges, submenus, rail, and inset content",
+        "A responsive off-canvas or icon-collapse application sidebar is required independently from documentation Side Nav"
+      ],
+      "avoidWhen": [
+        "Rendering the design-system documentation tree; use Side Nav",
+        "A temporary overlay should use Sheet",
+        "Hardcoding product destinations inside the reusable primitive"
+      ],
+      "neverInvent": [
+        "Left/right-only collapse rules",
+        "Product-specific menu data",
+        "Utopia brand primitives inside reusable component logic"
+      ],
+      "ai": {
+        "parts": [
+          "SidebarProvider",
+          "Sidebar",
+          "SidebarHeader",
+          "SidebarContent",
+          "SidebarFooter",
+          "SidebarGroup",
+          "SidebarGroupAction",
+          "SidebarGroupLabel",
+          "SidebarInset",
+          "SidebarMenu",
+          "SidebarMenuItem",
+          "SidebarMenuButton",
+          "SidebarMenuAction",
+          "SidebarMenuBadge",
+          "SidebarMenuSub",
+          "SidebarMenuSubItem",
+          "SidebarMenuSubButton",
+          "SidebarOverlay",
+          "SidebarRail",
+          "SidebarTrigger",
+          "useSidebar"
+        ],
+        "arabicFriendly": "Use dir=rtl at the shell boundary and provide localized collapseLabel, expandLabel, overlay labels, rail labels, and tooltip strings. Logical borders, alignment, off-canvas motion, submenus, and badges mirror without changing the component API."
+      }
     },
     {
       "name": "Slider",
@@ -4050,7 +4171,9 @@
         "--border",
         "--secondary",
         "--radius-control",
-        "--focus-ring-width"
+        "--focus-ring-width",
+        "--motion-duration-page",
+        "--motion-ease-standard"
       ],
       "useWhen": [
         "Peer views",
@@ -4064,8 +4187,14 @@
       "neverInvent": [
         "Tabs as unrelated links",
         "Left/right-only layout rules",
-        "Utopia brand primitives inside reusable component logic"
-      ]
+        "Utopia brand primitives inside reusable component logic",
+        "Motion that bypasses MotionProvider or prefers-reduced-motion"
+      ],
+      "ai": {
+        "props": {
+          "motion": "Optional boolean. Defaults to the MotionProvider policy and disables this component pattern when false."
+        }
+      }
     },
     {
       "name": "Textarea",
@@ -4267,7 +4396,9 @@
         "--surface",
         "--border",
         "--radius-surface",
-        "--popover-surface"
+        "--popover-surface",
+        "--motion-duration-reveal",
+        "--motion-ease-emphasized"
       ],
       "useWhen": [
         "Short helper text",
@@ -4281,8 +4412,14 @@
         "Interactive tooltip content",
         "Untranslated production Arabic copy",
         "Left/right-only layout rules",
-        "Utopia brand primitives inside reusable component logic"
-      ]
+        "Utopia brand primitives inside reusable component logic",
+        "Motion that bypasses MotionProvider or prefers-reduced-motion"
+      ],
+      "ai": {
+        "props": {
+          "motion": "Optional boolean. Defaults to the MotionProvider policy and disables this component pattern when false."
+        }
+      }
     },
     {
       "category": "Navigation",
