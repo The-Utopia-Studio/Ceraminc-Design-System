@@ -42,7 +42,7 @@ import '@utopia-studio-design/design-system/core.css'
 import '@utopia-studio-design/design-system/themes/utopia-default.css'
 ```
 
-Use `data-theme="utopia-default"` on the document root. The template consumes semantic roles only. It uses logical CSS properties, mirrors directional icons in RTL, supports mixed Arabic and English data, and reads the `seed` query parameter deterministically.
+Generate a themed copy with `npx utopia-ds template template-saas-solution-homepage --theme dextrum --copy ./saas-website`. The CLI rewrites the static theme import, document metadata, runtime theme constant, and `.ceramic/config.json` together. The template consumes semantic roles only. It uses logical CSS properties, mirrors directional icons in RTL, supports mixed Arabic and English data, and reads the `seed` query parameter deterministically.
 
 ## Adaptation boundaries
 

@@ -12,6 +12,7 @@
     "build": "tsc -b && vite build",
     "lint": "tsc -b --pretty false",
     "audit:components": "node scripts/audit-design-system-components.mjs",
+    "test:cli": "node scripts/test-design-system-cli.mjs",
     "ds": "node packages/design-system-cli/bin/utopia-ds.mjs",
     "ds:mcp": "node packages/design-system-cli/bin/utopia-ds-mcp.mjs",
     "check:design-system": "npm run audit:components && npm run ds -- doctor --json",

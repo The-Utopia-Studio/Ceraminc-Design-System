@@ -46,6 +46,8 @@ import '@utopia-studio-design/design-system/core.css'
 import '@utopia-studio-design/design-system/themes/utopia-default.css'
 import './styles.css'
 
+const activeTheme = 'utopia-default'
+
 type Locale = 'en' | 'ar'
 type PreviewMode = 'overview' | 'automations' | 'insights'
 type PageKey = 'home' | 'product' | 'agents' | 'integrations' | 'integration-detail' | 'customers' | 'customer-story' | 'pricing' | 'changelog' | 'contact-sales'
@@ -485,7 +487,7 @@ function App() {
   useEffect(() => {
     document.documentElement.lang = locale
     document.documentElement.dir = locale === 'ar' ? 'rtl' : 'ltr'
-    document.documentElement.dataset.theme = 'utopia-default'
+    document.documentElement.dataset.theme = activeTheme
     document.documentElement.dataset.colorMode = colorMode
     window.localStorage.setItem('ceramic-saas-locale', locale)
     window.localStorage.setItem('ceramic-saas-mode', colorMode)

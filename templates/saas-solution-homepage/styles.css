@@ -8,38 +8,6 @@
   --template-surface-subtle: color-mix(in srgb, var(--surface) 72%, transparent);
 }
 
-[data-color-mode='light'] {
-  color-scheme: light;
-  --background: var(--utopia-white);
-  --foreground: var(--utopia-special-black);
-  --foreground-muted: color-mix(in srgb, var(--foreground) 64%, var(--background) 36%);
-  --foreground-subtle: color-mix(in srgb, var(--foreground) 44%, var(--background) 56%);
-  --card: color-mix(in srgb, var(--foreground) 3%, var(--background) 97%);
-  --card-foreground: var(--foreground);
-  --secondary: color-mix(in srgb, var(--foreground) 9%, var(--background) 91%);
-  --secondary-foreground: var(--foreground);
-  --muted: color-mix(in srgb, var(--foreground) 12%, var(--background) 88%);
-  --muted-foreground: color-mix(in srgb, var(--foreground) 62%, var(--background) 38%);
-  --border: color-mix(in srgb, var(--foreground) 18%, var(--background) 82%);
-  --input: color-mix(in srgb, var(--foreground) 24%, var(--background) 76%);
-  --surface: color-mix(in srgb, var(--foreground) 4%, var(--background) 96%);
-  --surface-strong: color-mix(in srgb, var(--foreground) 8%, var(--background) 92%);
-  --surface-elevated: color-mix(in srgb, var(--foreground) 6%, var(--background) 94%);
-  --surface-hover: var(--surface-strong);
-  --overlay: color-mix(in srgb, var(--background) 84%, transparent);
-  --popover-surface: var(--background);
-  --modal-surface: var(--background);
-  --ghost-hover: color-mix(in srgb, var(--foreground) 8%, transparent);
-  --ghost-active: color-mix(in srgb, var(--foreground) 12%, transparent);
-  --outline-hover: var(--surface-strong);
-  --outline-active: var(--muted);
-  --success: var(--primary);
-  --success-foreground: var(--background);
-  --success-surface: color-mix(in srgb, var(--primary) 10%, var(--background) 90%);
-  --success-border: color-mix(in srgb, var(--primary) 42%, var(--border) 58%);
-  --success-text: color-mix(in srgb, var(--primary) 72%, var(--foreground) 28%);
-}
-
 html {
   background: var(--background);
   scroll-padding-block-start: calc(var(--template-header-block) + var(--space-4));

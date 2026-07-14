@@ -149,3 +149,32 @@
   letter-spacing: var(--tracking-arabic);
   text-transform: none;
 }
+
+[data-theme="barrier-intelligence"][data-color-mode="light"] {
+  color-scheme: light;
+  --background: #f5f5f2;
+  --foreground: #17140f;
+  --foreground-muted: #5f5a50;
+  --foreground-subtle: #817a6e;
+  --card: #ffffff;
+  --card-foreground: #17140f;
+  --primary: var(--bi-gold-dk);
+  --primary-foreground: #ffffff;
+  --secondary: #eeeae2;
+  --secondary-foreground: #17140f;
+  --muted: #e8e5de;
+  --muted-foreground: #6d675d;
+  --border: rgb(23 20 15 / 16%);
+  --input: rgb(23 20 15 / 24%);
+  --surface: rgb(23 20 15 / 4.5%);
+  --surface-strong: rgb(23 20 15 / 8%);
+  --surface-elevated: #ffffff;
+  --surface-hover: var(--surface-strong);
+  --overlay: rgb(245 245 242 / 86%);
+  --modal-surface: #ffffff;
+  --popover-surface: #ffffff;
+  --ghost-hover: rgb(23 20 15 / 8%);
+  --ghost-active: rgb(23 20 15 / 12%);
+  --outline-hover: var(--surface-strong);
+  --outline-active: var(--muted);
+}

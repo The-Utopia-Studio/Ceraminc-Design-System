@@ -144,3 +144,32 @@
   letter-spacing: var(--tracking-arabic);
   text-transform: none;
 }
+
+[data-theme="dextrum"][data-color-mode="light"] {
+  color-scheme: light;
+  --background: var(--dx-neutral-100);
+  --foreground: var(--dx-dark-blue);
+  --foreground-muted: color-mix(in srgb, var(--dx-dark-blue) 68%, var(--dx-neutral-100) 32%);
+  --foreground-subtle: color-mix(in srgb, var(--dx-dark-blue) 48%, var(--dx-neutral-100) 52%);
+  --card: #ffffff;
+  --card-foreground: var(--dx-dark-blue);
+  --primary: var(--dx-ocean-500);
+  --primary-foreground: #ffffff;
+  --secondary: var(--dx-ocean-100);
+  --secondary-foreground: var(--dx-dark-blue);
+  --muted: color-mix(in srgb, var(--dx-dark-blue) 9%, var(--dx-neutral-100) 91%);
+  --muted-foreground: color-mix(in srgb, var(--dx-dark-blue) 62%, var(--dx-neutral-100) 38%);
+  --border: rgb(25 43 57 / 16%);
+  --input: rgb(25 43 57 / 24%);
+  --surface: rgb(25 43 57 / 4.5%);
+  --surface-strong: rgb(25 43 57 / 8%);
+  --surface-elevated: #ffffff;
+  --surface-hover: var(--surface-strong);
+  --overlay: rgb(247 247 247 / 86%);
+  --modal-surface: #ffffff;
+  --popover-surface: #ffffff;
+  --ghost-hover: rgb(25 43 57 / 8%);
+  --ghost-active: rgb(25 43 57 / 12%);
+  --outline-hover: var(--surface-strong);
+  --outline-active: var(--muted);
+}

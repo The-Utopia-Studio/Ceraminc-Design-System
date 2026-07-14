@@ -6,11 +6,6 @@ const manifestPath = path.join(root, 'packages/design-system/src/manifests/compo
 const catalogPath = path.join(root, 'packages/design-system/src/manifests/catalog.json')
 const templatesPath = path.join(root, 'packages/design-system/src/manifests/templates.json')
 const themesPath = path.join(root, 'packages/design-system/src/manifests/themes.json')
-const themePolicyPaths = [
-  path.join(root, 'packages/design-system/src/manifests/theme-utopia-default.json'),
-  path.join(root, 'packages/design-system/src/manifests/theme-dextrum.json'),
-  path.join(root, 'packages/design-system/src/manifests/theme-barrier-intelligence.json'),
-]
 const detailPagePath = path.join(root, 'src/pages/ComponentDetailPage.tsx')
 const docsPagePath = path.join(root, 'src/pages/DocsPage.tsx')
 const arabicFriendlyPagePath = path.join(root, 'src/pages/ArabicFriendlyPage.tsx')
@@ -150,6 +145,7 @@ const componentsManifest = readJson(manifestPath)
 const catalog = readJson(catalogPath)
 const templatesManifest = readJson(templatesPath)
 const themesManifest = readJson(themesPath)
+const themePolicyPaths = themesManifest.themes.map((theme) => path.join(root, theme.policyManifest))
 const themePolicies = themePolicyPaths.map(readJson)
 const detailPage = fs.readFileSync(detailPagePath, 'utf8')
 const docsPage = fs.readFileSync(docsPagePath, 'utf8')

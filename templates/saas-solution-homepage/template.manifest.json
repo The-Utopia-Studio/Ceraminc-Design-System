@@ -27,5 +27,10 @@
   "avoidWhen": ["The page is a single-feature launch", "The primary experience is editorial", "There is no reviewed product model behind the interface claims"],
   "neverInvent": ["Do not copy Linear branding, copy, assets, or proprietary interface details", "Do not hard-code brand primitives inside reusable components", "Do not use left/right-only layout APIs where logical properties work", "Do not invent production customer claims from seeded demo content"],
   "queryParameters": { "seed": "Integer used to deterministically select product, company, people, pricing, and proof data." },
-  "defaultUrl": "/templates/saas-solution-homepage/index.html?seed=1974341818#agents"
+  "defaultUrl": "/templates/saas-solution-homepage/index.html?seed=1974341818#agents",
+  "themeContract": {
+    "default": "utopia-default",
+    "generationFlag": "--theme <id>",
+    "ownership": "The active theme owns dark/light semantic mappings; the template owns no brand primitives."
+  }
 }

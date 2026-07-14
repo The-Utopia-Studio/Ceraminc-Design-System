@@ -19,6 +19,8 @@ This workspace is the parent system. Production websites are consumers and refer
 npm install @utopia-studio-design/design-system
 npm install -D @utopia-studio-design/design-system-cli
 npx utopia-ds init --theme utopia-default
+npx utopia-ds theme create nova
+npx utopia-ds template template-saas-solution-homepage --theme nova --copy ./nova-website
 ```
 
 `init` adds agent instructions for Codex/Claude, Cursor, and GitHub Copilot plus a project-local MCP configuration. All clients query the same manifests through CLI text, typed JSON, the programmatic API, or MCP.
@@ -31,6 +33,7 @@ npm run dev
 npm run build
 npm run ds -- component --list --dense
 npm run ds -- template --list --dense
+npm run ds -- theme create nova
 npm run ds -- docs arabic-friendly --dense
 npm run ds -- manifest --json
 npm run ds -- search "Arabic data table" --json

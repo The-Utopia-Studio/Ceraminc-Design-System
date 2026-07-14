@@ -70,7 +70,9 @@ npx utopia-ds search "Arabic settings form" --json
 npx utopia-ds component Button --json
 npx utopia-ds template --list --json
 npx utopia-ds template template-saas-solution-homepage --copy ./saas-solution-website
+npx utopia-ds template template-saas-solution-homepage --theme dextrum --copy ./dextrum-website
 npx utopia-ds theme utopia-default --json
+npx utopia-ds theme create nova
 npx utopia-ds docs arabic-friendly --dense
 npx utopia-ds doctor --json
 ```
@@ -102,6 +104,18 @@ Available tools include search, component/template/theme/doc discovery, and doct
 4. Read the active theme and Arabic-friendly contract.
 5. Implement with package exports and semantic tokens.
 6. Run product tests and `doctor --json` before handoff.
+
+## Create A Theme
+
+Run this from the Ceramic Design System workspace:
+
+```sh
+npx utopia-ds theme create nova
+npm run sync-data --workspace @utopia-studio-design/design-system-cli
+npm run ds -- doctor
+```
+
+The command creates `nova.css`, `theme-nova.json`, and registers the theme in `themes.json`. The scaffold includes dark, light, Arabic typography, shape, and semantic motion contracts. Replace its placeholder brand primitives before publishing it.
 
 ## Core And Theme Boundary
 

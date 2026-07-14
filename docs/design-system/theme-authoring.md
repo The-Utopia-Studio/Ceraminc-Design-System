@@ -2,6 +2,14 @@
 
 Themes are token-contract and visual-policy implementations.
 
+## Scaffold A Theme
+
+```sh
+npx utopia-ds theme create nova
+```
+
+Run the command from the Design System workspace. It writes the theme CSS and policy manifest and registers the theme in the catalog. Theme IDs use lowercase kebab-case. The generated colors and typography are safe placeholders, not a finished brand direction.
+
 ## Required Read Order
 
 1. `packages/design-system/src/core.css`
@@ -26,6 +34,8 @@ A theme maps primitives to semantic roles and declares its own visual policy:
 - Icon policy
 - Motion profile
 - Copy and casing guidance
+
+Theme CSS owns both `[data-theme="<id>"]` and `[data-theme="<id>"][data-color-mode="light"]`. Templates set theme and color-mode attributes but must not remap brand primitives themselves.
 
 Utopia Default is strict about Brick Red, Special Black, TWK Lausanne, square geometry, and dot/bar icons. Those are not global design-system rules.
 
