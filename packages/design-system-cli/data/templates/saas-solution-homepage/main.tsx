@@ -34,11 +34,13 @@ import {
   CardDescription,
   CardHeader,
   CardTitle,
+  MotionProvider,
   Selector,
   Textarea,
   TextInput,
   TopNav,
   TopNavItem,
+  useMotionPattern,
 } from '@utopia-studio-design/design-system'
 import '@utopia-studio-design/design-system/core.css'
 import '@utopia-studio-design/design-system/themes/utopia-default.css'
@@ -203,25 +205,56 @@ function ArrowIcon() {
   return <ArrowUpRight aria-hidden="true" className="directional-icon" />
 }
 
-function SectionHeading({ body, eyebrow, title }: { body: string; eyebrow: string; title: string }) {
+function RevealBlock({ children, className, delay = 0 }: { children: ReactNode; className?: string; delay?: number }) {
+  const reveal = useMotionPattern('reveal')
   return (
-    <div className="section-heading reveal">
+    <motion.div
+      className={className}
+      initial={reveal.enabled ? { opacity: 0, y: 16 } : false}
+      transition={{ ...reveal.transition, delay: reveal.enabled ? delay : 0 }}
+      viewport={{ amount: 0.22, once: true }}
+      whileInView={{ opacity: 1, y: 0 }}
+    >
+      {children}
+    </motion.div>
+  )
+}
+
+function SectionHeading({ body, eyebrow, title }: { body: string; eyebrow: string; title: string }) {
+  const reveal = useMotionPattern('reveal')
+  return (
+    <motion.div
+      className="section-heading"
+      initial={reveal.enabled ? { opacity: 0, y: 18 } : false}
+      transition={reveal.transition}
+      viewport={{ amount: 0.35, once: true }}
+      whileInView={{ opacity: 1, y: 0 }}
+    >
       <p className="eyebrow">{eyebrow}</p>
       <h2>{title}</h2>
       <p>{body}</p>
-    </div>
+    </motion.div>
   )
 }
 
 function ProductPreview({ locale, mode, product, setMode }: { locale: Locale; mode: PreviewMode; product: string; setMode: (mode: PreviewMode) => void }) {
   const t = copy[locale]
+  const reveal = useMotionPattern('reveal')
+  const pageMotion = useMotionPattern('page')
   const tabs: PreviewMode[] = ['overview', 'automations', 'insights']
   const rows = locale === 'ar'
     ? [['مراجعة إطلاق المنطقة', 'Noor Al-Sayed', 'قيد التنفيذ'], ['توجيه طلب الشراكة', 'Maya Chen', 'مؤتمت'], ['اعتماد موجز العميل', 'James Walker', 'بانتظار المراجعة']]
     : [['Review regional launch', 'Noor Al-Sayed', 'In progress'], ['Route partnership request', 'Maya Chen', 'Automated'], ['Approve customer brief', 'James Walker', 'Awaiting review']]
 
   return (
-    <div className="product-window reveal" data-preview={mode}>
+    <motion.div
+      className="product-window"
+      data-preview={mode}
+      initial={reveal.enabled ? { opacity: 0, y: 20 } : false}
+      transition={reveal.transition}
+      viewport={{ amount: 0.18, once: true }}
+      whileInView={{ opacity: 1, y: 0 }}
+    >
       <div className="window-bar">
         <span className="window-brand"><span className="brand-mark" />{product}</span>
         <div className="window-search"><Search aria-hidden="true" /><span>{locale === 'ar' ? 'ابحث في مساحة العمل' : 'Search workspace'}</span><kbd>⌘ K</kbd></div>
@@ -240,13 +273,15 @@ function ProductPreview({ locale, mode, product, setMode }: { locale: Locale; mo
           )})}
           <div className="preview-sidebar__footer"><CircleCheck aria-hidden="true" />{t.health}</div>
         </aside>
-        <motion.div
-          animate={{ opacity: 1, y: 0 }}
-          className="preview-main"
-          initial={{ opacity: 0, y: 8 }}
-          key={`${locale}-${mode}`}
-          transition={{ duration: 0.24, ease: [0.16, 1, 0.3, 1] }}
-        >
+        <AnimatePresence initial={false} mode="wait">
+          <motion.div
+            animate={{ opacity: 1, y: 0 }}
+            className="preview-main"
+            exit={pageMotion.enabled ? { opacity: 0, y: -6 } : undefined}
+            initial={pageMotion.enabled ? { opacity: 0, y: 8 } : false}
+            key={`${locale}-${mode}`}
+            transition={pageMotion.transition}
+          >
           <div className="preview-toolbar">
             <div><p>{t.live}</p><h3>{mode === 'overview' ? t.previewTabs[0] : mode === 'automations' ? t.previewTabs[1] : t.previewTabs[2]}</h3></div>
             <Badge variant="outline">{locale === 'ar' ? 'آخر 30 يوماً' : 'Last 30 days'}</Badge>
@@ -265,21 +300,32 @@ function ProductPreview({ locale, mode, product, setMode }: { locale: Locale; mo
               </div>
             ))}
           </div>
-        </motion.div>
+          </motion.div>
+        </AnimatePresence>
       </div>
-    </div>
+    </motion.div>
   )
 }
 
 function PageHero({ body, children, eyebrow, title }: { body: string; children?: ReactNode; eyebrow: string; title: string }) {
+  const reveal = useMotionPattern('reveal')
   return (
-    <section className="page-hero-secondary" id="top">
+    <motion.section
+      animate="visible"
+      className="page-hero-secondary"
+      id="top"
+      initial={reveal.enabled ? 'hidden' : false}
+      variants={{
+        hidden: {},
+        visible: { transition: { delayChildren: 0.06, staggerChildren: reveal.enabled ? 0.08 : 0 } },
+      }}
+    >
       <div className="hero-grid" aria-hidden="true" />
-      <p className="eyebrow">{eyebrow}</p>
-      <h1>{title}</h1>
-      <p>{body}</p>
-      {children ? <div className="hero-actions">{children}</div> : null}
-    </section>
+      <motion.p className="eyebrow" variants={{ hidden: { opacity: 0, y: 12 }, visible: { opacity: 1, y: 0, transition: reveal.transition } }}>{eyebrow}</motion.p>
+      <motion.h1 variants={{ hidden: { opacity: 0, y: 16 }, visible: { opacity: 1, y: 0, transition: reveal.transition } }}>{title}</motion.h1>
+      <motion.p variants={{ hidden: { opacity: 0, y: 14 }, visible: { opacity: 1, y: 0, transition: reveal.transition } }}>{body}</motion.p>
+      {children ? <motion.div className="hero-actions" variants={{ hidden: { opacity: 0, y: 12 }, visible: { opacity: 1, y: 0, transition: reveal.transition } }}>{children}</motion.div> : null}
+    </motion.section>
   )
 }
 
@@ -410,6 +456,8 @@ function App() {
   const [previewMode, setPreviewMode] = useState<PreviewMode>('overview')
   const [isolated, setIsolated] = useState(false)
   const [menuOpen, setMenuOpen] = useState(false)
+  const pageMotion = useMotionPattern('page')
+  const revealMotion = useMotionPattern('reveal')
   const t = copy[locale]
   const siteNav = [
     { key: 'product', label: locale === 'ar' ? 'المنتج' : 'Product', href: pageHref('product', seed) },
@@ -464,17 +512,6 @@ function App() {
     return () => window.cancelAnimationFrame(frame)
   }, [page])
 
-  useEffect(() => {
-    const targets = document.querySelectorAll('.reveal')
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) entry.target.setAttribute('data-visible', 'true')
-      })
-    }, { threshold: 0.12 })
-    targets.forEach((target) => observer.observe(target))
-    return () => observer.disconnect()
-  }, [locale])
-
   const workflowSteps = locale === 'ar'
     ? [['استقبل', 'حوّل الطلبات والإشارات إلى سجل منظم مع السياق الصحيح.'], ['نسّق', 'حدد المسؤول والخطوة التالية واتفاقية مستوى الخدمة تلقائياً.'], ['اعتمد', 'أدخل الحكم البشري عند القرارات الحساسة فقط.'], ['تعلّم', 'حوّل النتائج إلى قواعد ومؤشرات أوضح للدورة التالية.']]
     : [['Capture', 'Turn requests and signals into structured work with the right context.'], ['Coordinate', 'Assign the owner, next action, and service level automatically.'], ['Approve', 'Bring human judgment into the moments that carry real consequence.'], ['Learn', 'Feed outcomes back into clearer rules and signals for the next cycle.']]
@@ -504,64 +541,70 @@ function App() {
         </AnimatePresence>
       </header>
 
-      <AnimatePresence initial={false} mode="wait">
+      <AnimatePresence mode="wait">
       <motion.main
         animate={{ opacity: 1, y: 0 }}
-        exit={{ opacity: 0, y: -6 }}
+        exit={pageMotion.enabled ? { opacity: 0, y: -6 } : undefined}
         id="main-content"
-        initial={{ opacity: 0, y: 8 }}
+        initial={pageMotion.enabled ? { opacity: 0, y: 8 } : false}
         key={`${page}-${locale}`}
-        transition={{ duration: 0.22, ease: [0.16, 1, 0.3, 1] }}
+        transition={pageMotion.transition}
       >
         {page === 'home' ? <>
-        <section className="hero" id="top">
+        <motion.section
+          animate="visible"
+          className="hero"
+          id="top"
+          initial={revealMotion.enabled ? 'hidden' : false}
+          variants={{ hidden: {}, visible: { transition: { delayChildren: 0.08, staggerChildren: revealMotion.enabled ? 0.07 : 0 } } }}
+        >
           <div className="hero-grid" aria-hidden="true" />
-          <a className="announcement reveal" href="#agents"><span>{t.announcement}</span><ChevronRight className="directional-icon" /></a>
-          <p className="eyebrow reveal">{t.heroEyebrow}</p>
-          <h1 className="reveal">{t.heroTitle}</h1>
-          <p className="hero-copy reveal">{t.heroBody}</p>
-          <div className="hero-actions reveal">
+          <motion.a className="announcement" href="#agents" variants={{ hidden: { opacity: 0, y: 10 }, visible: { opacity: 1, y: 0, transition: revealMotion.transition } }}><span>{t.announcement}</span><ChevronRight className="directional-icon" /></motion.a>
+          <motion.p className="eyebrow" variants={{ hidden: { opacity: 0, y: 12 }, visible: { opacity: 1, y: 0, transition: revealMotion.transition } }}>{t.heroEyebrow}</motion.p>
+          <motion.h1 variants={{ hidden: { opacity: 0, y: 18 }, visible: { opacity: 1, y: 0, transition: revealMotion.transition } }}>{t.heroTitle}</motion.h1>
+          <motion.p className="hero-copy" variants={{ hidden: { opacity: 0, y: 16 }, visible: { opacity: 1, y: 0, transition: revealMotion.transition } }}>{t.heroBody}</motion.p>
+          <motion.div className="hero-actions" variants={{ hidden: { opacity: 0, y: 14 }, visible: { opacity: 1, y: 0, transition: revealMotion.transition } }}>
             <Button endContent={<ArrowIcon />} onClick={() => goTo('pricing')} size="lg">{t.start}</Button>
             <Button onClick={() => goTo('product')} size="lg" startContent={<Play aria-hidden="true" />} variant="outline">{t.tour}</Button>
-          </div>
-          <div className="hero-proof reveal"><span>{demo.metric}%</span><p>{locale === 'ar' ? 'وقت أقل في التنسيق اليدوي خلال أول 90 يوماً' : 'less time spent on manual coordination in the first 90 days'}</p></div>
-        </section>
+          </motion.div>
+          <motion.div className="hero-proof" variants={{ hidden: { opacity: 0, y: 12 }, visible: { opacity: 1, y: 0, transition: revealMotion.transition } }}><span>{demo.metric}%</span><p>{locale === 'ar' ? 'وقت أقل في التنسيق اليدوي خلال أول 90 يوماً' : 'less time spent on manual coordination in the first 90 days'}</p></motion.div>
+        </motion.section>
 
         <section className="section product-section" id="product">
           <SectionHeading body={t.productBody} eyebrow={t.productEyebrow} title={t.productTitle} />
           <ProductPreview locale={locale} mode={previewMode} product={demo.product} setMode={setPreviewMode} />
-          <div className="logo-proof reveal"><p>{t.trusted}</p><div>{['Sahm', 'NORTHSTAR', 'ASTER', 'CEDAR', 'MAJLIS'].map((name) => <span key={name}>{name}</span>)}</div></div>
+          <RevealBlock className="logo-proof"><p>{t.trusted}</p><div>{['Sahm', 'NORTHSTAR', 'ASTER', 'CEDAR', 'MAJLIS'].map((name) => <span key={name}>{name}</span>)}</div></RevealBlock>
         </section>
 
         <section className="section workflow-section" id="workflow">
           <SectionHeading body={t.workflowBody} eyebrow={t.workflowEyebrow} title={t.workflowTitle} />
           <div className="workflow-grid">
             {workflowSteps.map(([title, body], index) => (
-              <article className="workflow-step reveal" key={title}><span>0{index + 1}</span><div><h3>{title}</h3><p>{body}</p></div>{index < workflowSteps.length - 1 ? <ChevronRight aria-hidden="true" className="step-arrow directional-icon" /> : null}</article>
+              <RevealBlock className="workflow-step" delay={index * 0.06} key={title}><span>0{index + 1}</span><div><h3>{title}</h3><p>{body}</p></div>{index < workflowSteps.length - 1 ? <ChevronRight aria-hidden="true" className="step-arrow directional-icon" /> : null}</RevealBlock>
             ))}
           </div>
         </section>
 
         <section className="section agents-section" id="agents">
-          <div className="agents-copy"><SectionHeading body={t.agentsBody} eyebrow={t.agentsEyebrow} title={t.agentsTitle} /><ul className="check-list reveal">
+          <div className="agents-copy"><SectionHeading body={t.agentsBody} eyebrow={t.agentsEyebrow} title={t.agentsTitle} /><RevealBlock><ul className="check-list">
             {(locale === 'ar' ? ['حدود اعتماد واضحة لكل إجراء', 'سجل قابل للمراجعة لكل قرار', 'تحويل فوري إلى عضو الفريق عند الحاجة'] : ['Explicit approval boundaries for every action', 'An inspectable trace for every decision', 'Immediate handoff to a teammate when needed']).map((item) => <li key={item}><Check aria-hidden="true" />{item}</li>)}
-          </ul></div>
-          <div className="agent-console reveal">
+          </ul></RevealBlock></div>
+          <RevealBlock className="agent-console">
             <div className="console-head"><span><Bot aria-hidden="true" />{locale === 'ar' ? 'وكيل الفرز' : 'Triage agent'}</span><Badge variant="success">{locale === 'ar' ? 'نشط' : 'Active'}</Badge></div>
             <div className="agent-flow"><div><span>01</span><p>{locale === 'ar' ? 'وصل طلب شراكة جديد' : 'New partnership request received'}</p><small>09:42</small></div><i /><div><span>02</span><p>{locale === 'ar' ? 'تم إثراء الحساب والسياق' : 'Account and context enriched'}</p><small>09:42</small></div><i /><div className="requires-review"><span>03</span><p>{locale === 'ar' ? 'مطلوب اعتماد بشري' : 'Human approval required'}</p><Button size="sm">{locale === 'ar' ? 'مراجعة' : 'Review'}</Button></div></div>
             <div className="console-note"><ShieldCheck aria-hidden="true" /><span>{locale === 'ar' ? 'لن يرسل الوكيل أي رد قبل الاعتماد.' : 'The agent cannot send a response before approval.'}</span></div>
-          </div>
+          </RevealBlock>
         </section>
 
         <section className="section integrations-section" id="integrations">
           <SectionHeading body={t.integrationsBody} eyebrow={t.integrationsEyebrow} title={t.integrationsTitle} />
-          <div className="integration-stage reveal">
+          <RevealBlock className="integration-stage">
             <div className="integration-core"><Network aria-hidden="true" /><strong>{demo.product}</strong><span>{locale === 'ar' ? 'طبقة التشغيل' : 'Operating layer'}</span></div>
             <div className="integration-grid">{integrationNames.map((name, index) => {
               const IntegrationIcon = [Zap, Cloud, Database, GitBranch, Code2, Database, Workflow, Globe2][index]
               return <div key={name}><span><IntegrationIcon aria-hidden="true" /></span><strong>{name}</strong><small>{locale === 'ar' ? 'متصل' : 'Connected'}</small></div>
             })}</div>
-          </div>
+          </RevealBlock>
         </section>
 
         <section className="section security-section" id="security">
@@ -571,19 +614,19 @@ function App() {
               [ShieldCheck, locale === 'ar' ? 'صلاحيات دقيقة' : 'Granular access', locale === 'ar' ? 'أدوار ونطاقات وموافقات تناسب طريقة عمل كل فريق.' : 'Roles, scopes, and approvals that match how each team operates.'],
               [Clock3, locale === 'ar' ? 'سجل تدقيق كامل' : 'Complete audit trail', locale === 'ar' ? 'كل تغيير وإجراء آلي وقرار بشري قابل للتتبع.' : 'Every change, automated action, and human decision remains traceable.'],
               [Globe2, locale === 'ar' ? 'جاهزية إقليمية' : 'Regional readiness', locale === 'ar' ? 'ضوابط بيانات وعمليات تناسب فرقاً تعمل عبر مناطق متعددة.' : 'Data and operating controls for teams working across regions.'],
-            ].map(([Icon, title, body]) => <Card accent="hover" className="security-card reveal" key={String(title)}><CardHeader><div className="security-icon"><Icon aria-hidden="true" /></div><CardTitle>{title as string}</CardTitle><CardDescription>{body as string}</CardDescription></CardHeader><CardContent><span><Check aria-hidden="true" />{locale === 'ar' ? 'متوفر في كل الخطط' : 'Available on every plan'}</span></CardContent></Card>)}
+            ].map(([Icon, title, body], index) => <RevealBlock className="motion-card-wrap" delay={index * 0.06} key={String(title)}><Card accent="hover" className="security-card"><CardHeader><div className="security-icon"><Icon aria-hidden="true" /></div><CardTitle>{title as string}</CardTitle><CardDescription>{body as string}</CardDescription></CardHeader><CardContent><span><Check aria-hidden="true" />{locale === 'ar' ? 'متوفر في كل الخطط' : 'Available on every plan'}</span></CardContent></Card></RevealBlock>)}
           </div>
-          <div className="reliability-strip reveal"><span><b>99.99%</b>{locale === 'ar' ? 'وقت التشغيل' : 'uptime'}</span><span><b>SOC 2</b>{locale === 'ar' ? 'ضوابط مدققة' : 'audited controls'}</span><span><b>24/7</b>{locale === 'ar' ? 'مراقبة' : 'monitoring'}</span><span><b>4</b>{locale === 'ar' ? 'مناطق بيانات' : 'data regions'}</span></div>
+          <RevealBlock className="reliability-strip"><span><b>99.99%</b>{locale === 'ar' ? 'وقت التشغيل' : 'uptime'}</span><span><b>SOC 2</b>{locale === 'ar' ? 'ضوابط مدققة' : 'audited controls'}</span><span><b>24/7</b>{locale === 'ar' ? 'مراقبة' : 'monitoring'}</span><span><b>4</b>{locale === 'ar' ? 'مناطق بيانات' : 'data regions'}</span></RevealBlock>
         </section>
 
         <section className="section proof-section" aria-labelledby="proof-title">
-          <div className="proof-number reveal"><span>{demo.metric}%</span><p>{locale === 'ar' ? 'انخفاض في وقت دورة العمل بعد ربع واحد' : 'shorter work cycle after one quarter'}</p></div>
-          <figure className="quote reveal"><p className="eyebrow" id="proof-title">{t.proofEyebrow}</p><blockquote>“{t.proofQuote}”</blockquote><figcaption><span>{demo.leaders[0].split(' ').map((part) => part[0]).join('')}</span><div><strong>{demo.leaders[0]}</strong><small>{t.proofRole}, {demo.company}</small></div></figcaption></figure>
+          <RevealBlock className="proof-number"><span>{demo.metric}%</span><p>{locale === 'ar' ? 'انخفاض في وقت دورة العمل بعد ربع واحد' : 'shorter work cycle after one quarter'}</p></RevealBlock>
+          <RevealBlock><figure className="quote"><p className="eyebrow" id="proof-title">{t.proofEyebrow}</p><blockquote>“{t.proofQuote}”</blockquote><figcaption><span>{demo.leaders[0].split(' ').map((part) => part[0]).join('')}</span><div><strong>{demo.leaders[0]}</strong><small>{t.proofRole}, {demo.company}</small></div></figcaption></figure></RevealBlock>
         </section>
 
         <section className="section pricing-section" id="pricing">
           <div className="pricing-copy"><SectionHeading body={t.pricingBody} eyebrow={t.pricingEyebrow} title={t.pricingTitle} /><Button endContent={<ArrowIcon />} onClick={() => { window.location.href = 'mailto:hello@example.com?subject=SaaS%20workspace' }} size="lg">{t.contact}</Button></div>
-          <Card accent="always" className="pricing-card reveal"><CardHeader><CardTitle>{t.plan}</CardTitle><CardDescription>{locale === 'ar' ? 'للفرق التي تبدأ سير عمل تشغيلياً مشتركاً.' : 'For teams beginning with one shared operational workflow.'}</CardDescription></CardHeader><CardContent><div className="price"><span>$</span><strong>{demo.price}</strong><small>{t.perMonth}</small></div><ul>{(locale === 'ar' ? ['5 أعضاء أساسيين', 'أتمتة ووكلاء بلا حد', 'تكاملات جاهزة', 'سجل تدقيق كامل'] : ['5 core members', 'Unlimited automations and agents', 'Native integrations', 'Complete audit history']).map((item) => <li key={item}><Check aria-hidden="true" />{item}</li>)}</ul><Button endContent={<ArrowIcon />} onClick={() => { window.location.href = 'mailto:hello@example.com?subject=Create%20workspace' }} size="lg">{t.cta}</Button><p>{t.planNote}</p></CardContent></Card>
+          <RevealBlock className="motion-card-wrap"><Card accent="always" className="pricing-card"><CardHeader><CardTitle>{t.plan}</CardTitle><CardDescription>{locale === 'ar' ? 'للفرق التي تبدأ سير عمل تشغيلياً مشتركاً.' : 'For teams beginning with one shared operational workflow.'}</CardDescription></CardHeader><CardContent><div className="price"><span>$</span><strong>{demo.price}</strong><small>{t.perMonth}</small></div><ul>{(locale === 'ar' ? ['5 أعضاء أساسيين', 'أتمتة ووكلاء بلا حد', 'تكاملات جاهزة', 'سجل تدقيق كامل'] : ['5 core members', 'Unlimited automations and agents', 'Native integrations', 'Complete audit history']).map((item) => <li key={item}><Check aria-hidden="true" />{item}</li>)}</ul><Button endContent={<ArrowIcon />} onClick={() => { window.location.href = 'mailto:hello@example.com?subject=Create%20workspace' }} size="lg">{t.cta}</Button><p>{t.planNote}</p></CardContent></Card></RevealBlock>
         </section>
         </> : <SecondaryPage demo={demo} locale={locale} page={page} previewMode={previewMode} seed={seed} setPreviewMode={setPreviewMode} />}
       </motion.main>
@@ -594,4 +637,4 @@ function App() {
   )
 }
 
-createRoot(document.getElementById('root')!).render(<StrictMode><App /></StrictMode>)
+createRoot(document.getElementById('root')!).render(<StrictMode><MotionProvider asChild><App /></MotionProvider></StrictMode>)
