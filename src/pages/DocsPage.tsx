@@ -1,5 +1,5 @@
 import { useState, type ReactNode } from 'react'
-import { ArrowLeft, ArrowRight, Bell, ChevronDown, Copy, Download, Home, PackagePlus, Palette, PanelLeft, PanelsTopLeft, Search, Settings } from 'lucide-react'
+import { ArrowLeft, ArrowRight, Bell, ChevronDown, Copy, Download, Home, PanelLeft, Search, Settings } from 'lucide-react'
 import { themes, utopiaDefaultTheme } from '../data/design-system'
 import { DextrumTypographySubpage, dextrumTypographySegmentFromPath } from './DextrumTypographySubpage'
 import { ArabicDisplay, ArabicText } from '../../packages/design-system/src/Typography'
@@ -689,36 +689,125 @@ function GuidePage({ slug }: { slug: keyof typeof guidePages }) {
 function GettingStartedPage() {
   const { locale } = useI18n()
   const isArabic = locale === 'ar'
+  const [activePath, setActivePath] = useState(0)
+  const [copiedCommand, setCopiedCommand] = useState(false)
+  const paths = [
+    {
+      body: isArabic ? 'ثبّت الحزمتين، ثم أنشئ قواعد الوكيل وإعداد Ceramic داخل تطبيقك الحالي.' : 'Install both packages, then initialize Ceramic and agent guidance inside your current app.',
+      command: 'npx utopia-ds init --theme utopia-default',
+      href: '#/docs#install',
+      result: isArabic
+        ? ['catalog.json — سجل النظام', 'components.json — عقود المكونات', 'themes.json — ربط التوكنات', 'rules/agent.md — إرشادات الوكيل']
+        : ['catalog.json — System registry', 'components.json — Component contracts', 'themes.json — Token mappings', 'rules/agent.md — AI coding guidance'],
+      steps: isArabic
+        ? [['ثبّت الحزم', 'أضف المكتبة الأساسية وواجهة CLI إلى مشروعك.'], ['هيّئ Ceramic', 'شغّل الأمر لإنشاء ملفات العقد والإرشادات.'], ['تحقق من العقد', 'افحص البيان والمكونات والثيم النشط قبل إنشاء الواجهة.']]
+        : [['Install packages', 'Add the core library and CLI to your project.'], ['Initialize Ceramic', 'Run the command to create contract files and agent guidance.'], ['Verify the contract', 'Inspect the manifest, components, and active theme before generating UI.']],
+      title: isArabic ? 'أضف Ceramic إلى مشروع قائم' : 'Add Ceramic to an existing project',
+    },
+    {
+      body: isArabic ? 'أنشئ CSS وسياسة وبيان ثيم جديد داخل مساحة عمل نظام التصميم.' : 'Scaffold theme CSS, policy, and catalog registration inside the Design System workspace.',
+      command: 'npx utopia-ds theme create nova',
+      href: '#/themes#create-theme',
+      result: isArabic
+        ? ['nova.css — توكنات العلامة', 'theme-nova.json — سياسة الثيم', 'themes.json — تسجيل الكتالوج', 'Arabic / RTL — عقد الطباعة']
+        : ['nova.css — Brand tokens', 'theme-nova.json — Theme policy', 'themes.json — Catalog registration', 'Arabic / RTL — Typography contract'],
+      steps: isArabic
+        ? [['أنشئ الملفات', 'أنشئ CSS والسياسة وإدخال الكتالوج.'], ['عرّف العلامة', 'استبدل القيم المؤقتة بالألوان والطباعة والشكل والحركة.'], ['زامن وتحقق', 'زامن بيانات CLI وشغّل فحص Ceramic.']]
+        : [['Scaffold files', 'Create CSS, policy, and catalog registration.'], ['Define the brand', 'Replace placeholders with color, type, shape, and motion primitives.'], ['Sync and validate', 'Sync CLI data and run the Ceramic doctor.']],
+      title: isArabic ? 'أنشئ ثيم علامة جديداً' : 'Create a new brand theme',
+    },
+    {
+      body: isArabic ? 'اختر ثيماً مسجلاً وأنشئ موقع SaaS مستقلاً من عشر صفحات.' : 'Choose a registered theme and generate a standalone ten-page SaaS website.',
+      command: 'npx utopia-ds template template-saas-solution-homepage --theme dextrum --copy ./site',
+      href: '#/templates#how-to-use',
+      result: isArabic
+        ? ['10 صفحات — هيكل SaaS', 'Dextrum — الثيم النشط', 'Arabic / RTL — محتوى ثنائي الاتجاه', 'README.md — خطوات التشغيل']
+        : ['10 pages — SaaS structure', 'Dextrum — Active theme', 'Arabic / RTL — Bidirectional content', 'README.md — Run instructions'],
+      steps: isArabic
+        ? [['اختر الثيم', 'استخدم ثيماً مسجلاً يطابق المنتج والجمهور.'], ['أنشئ الصفحات', 'انسخ القالب الكامل إلى مجلد مستقل.'], ['شغّل وراجع', 'ثبّت الحزم ثم راجع كل صفحة في LTR وRTL.']]
+        : [['Choose a theme', 'Use a registered theme that fits the product and audience.'], ['Generate pages', 'Copy the complete template into a standalone folder.'], ['Run and review', 'Install dependencies, then review every page in LTR and RTL.']],
+      title: isArabic ? 'أنشئ قالباً بثيم مختار' : 'Generate a template with a theme',
+    },
+  ]
+  const selectedPath = paths[activePath]
+
+  function copySelectedCommand() {
+    void navigator.clipboard.writeText(selectedPath.command).catch(() => undefined)
+    setCopiedCommand(true)
+    window.setTimeout(() => setCopiedCommand(false), 1600)
+  }
 
   return (
-    <div className="page">
+    <div className="page getting-started-page">
       <section className="page-hero compact">
+        <p className="eyebrow">Ceramic Design System</p>
         <h1>{t(locale, 'gettingStarted')}</h1>
         <p>{isArabic ? 'أضف نظام التصميم إلى مشروعك وابدأ البناء بتوكنات دلالية ومكونات قابلة للقراءة من البشر والذكاء الاصطناعي.' : 'Add the design system to your project and start building.'}</p>
       </section>
 
       <article className="docs-article">
         <section id="choose-path">
-          <div className="scenario-heading">
-            <p className="eyebrow">{isArabic ? 'اختر مسارك' : 'Choose your path'}</p>
-            <h2>{isArabic ? 'ابدأ من النتيجة التي تريدها.' : 'Start from the outcome you need.'}</h2>
-            <p>{isArabic ? 'كل مسار ينتهي بمشروع قابل للتشغيل وعقد Ceramic واضح.' : 'Each path ends with a runnable project and an explicit Ceramic contract.'}</p>
-          </div>
-          <div className="getting-started-paths">
-            {[
-              { body: isArabic ? 'ثبّت الحزمتين، ثم أنشئ قواعد الوكيل وإعداد Ceramic داخل تطبيقك الحالي.' : 'Install both packages, then initialize Ceramic and agent guidance inside your current app.', command: 'npx utopia-ds init --theme utopia-default', href: '#/docs#install', icon: PackagePlus, title: isArabic ? 'أضف Ceramic إلى مشروع قائم' : 'Add Ceramic to an existing project' },
-              { body: isArabic ? 'أنشئ CSS وسياسة وبيان ثيم جديد داخل مساحة عمل نظام التصميم.' : 'Scaffold theme CSS, policy, and catalog registration inside the Design System workspace.', command: 'npx utopia-ds theme create nova', href: '#/themes#create-theme', icon: Palette, title: isArabic ? 'أنشئ ثيم علامة جديداً' : 'Create a new brand theme' },
-              { body: isArabic ? 'اختر ثيماً مسجلاً وأنشئ موقع SaaS مستقلاً من عشر صفحات.' : 'Choose a registered theme and generate a standalone ten-page SaaS website.', command: 'npx utopia-ds template template-saas-solution-homepage --theme dextrum --copy ./site', href: '#/templates#how-to-use', icon: PanelsTopLeft, title: isArabic ? 'أنشئ قالباً بثيم مختار' : 'Generate a template with a theme' },
-            ].map(({ body, command, href, icon: Icon, title }, index) => (
-              <a className="getting-started-path" href={href} key={title}>
-                <span className="getting-started-path__icon"><Icon aria-hidden="true" /></span>
-                <small>0{index + 1}</small>
-                <h3>{title}</h3>
-                <p>{body}</p>
-                <code>{command}</code>
-                <strong>{isArabic ? 'افتح المسار' : 'Open this path'} <ArrowRight aria-hidden="true" className="directional-icon" /></strong>
-              </a>
-            ))}
+          <div className="getting-started-workspace">
+            <div aria-label={isArabic ? 'مسارات البدء' : 'Getting started paths'} className="getting-started-path-selector" role="tablist">
+              {paths.map((path, index) => (
+                <button
+                  aria-controls={`getting-started-path-panel-${index}`}
+                  aria-selected={activePath === index}
+                  className="getting-started-path-trigger"
+                  id={`getting-started-path-${index}`}
+                  key={path.title}
+                  onClick={() => {
+                    setActivePath(index)
+                    setCopiedCommand(false)
+                  }}
+                  role="tab"
+                  type="button"
+                >
+                  <span>{path.title}</span>
+                </button>
+              ))}
+            </div>
+
+            <div
+              aria-labelledby={`getting-started-path-${activePath}`}
+              className="getting-started-contract"
+              id={`getting-started-path-panel-${activePath}`}
+              role="tabpanel"
+            >
+              <header>
+                <div>
+                  <h3>{selectedPath.title}</h3>
+                  <p>{selectedPath.body}</p>
+                </div>
+              </header>
+
+              <ol className="getting-started-contract-steps">
+                {selectedPath.steps.map(([title, description], index) => (
+                  <li key={title}>
+                    <span>{index + 1}</span>
+                    <div>
+                      <strong>{title}</strong>
+                      <p>{description}</p>
+                      {index === 0 ? (
+                        <div className="getting-started-command">
+                          <code>{selectedPath.command}</code>
+                          <button aria-label={isArabic ? 'نسخ الأمر' : 'Copy command'} onClick={copySelectedCommand} type="button">
+                            <Copy aria-hidden="true" />
+                            <span>{copiedCommand ? (isArabic ? 'تم النسخ' : 'Copied') : (isArabic ? 'نسخ' : 'Copy')}</span>
+                          </button>
+                        </div>
+                      ) : null}
+                    </div>
+                  </li>
+                ))}
+              </ol>
+
+              <div className="getting-started-result">
+                <strong>{isArabic ? 'حالة النظام الناتجة' : 'Resulting system state'}</strong>
+                <p>{isArabic ? 'ينشئ المسار هذه العقود القابلة للفحص.' : 'This path creates inspectable, machine-readable contracts.'}</p>
+                <pre>{selectedPath.result.join('\n')}</pre>
+              </div>
+            </div>
           </div>
         </section>
 

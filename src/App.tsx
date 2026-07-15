@@ -381,7 +381,7 @@ function AppShell() {
   ]
 
   const isComponentsOverview = path === '/components'
-  const isWidePage = isComponentsOverview || path === '/templates'
+  const isWidePage = isComponentsOverview || path === '/templates' || path === '/' || path === '/docs'
 
   function sidebarHref(groupId: string, item: string) {
     const slug = slugFor(item)
