@@ -5,6 +5,7 @@ import {
   TopNavItem,
 } from '../../packages/design-system/src/Navigation'
 import { t, type Locale } from '../i18n'
+import { Search } from 'lucide-react'
 
 type TopNavigationLink = {
   href: string
@@ -16,10 +17,11 @@ type TopNavigationProps = {
   links: TopNavigationLink[]
   locale: Locale
   onLocaleChange: (locale: Locale) => void
+  onSearch: () => void
   showBrand?: boolean
 }
 
-export function TopNavigation({ links, locale, onLocaleChange, showBrand = true }: TopNavigationProps) {
+export function TopNavigation({ links, locale, onLocaleChange, onSearch, showBrand = true }: TopNavigationProps) {
   const topLevelLabel = locale === 'ar' ? 'التنقل الرئيسي لنظام التصميم' : 'Design system top level'
   const homeLabel = locale === 'ar' ? 'الصفحة الرئيسية لنظام التصميم' : 'Design system home'
 
@@ -42,6 +44,11 @@ export function TopNavigation({ links, locale, onLocaleChange, showBrand = true 
         ))}
       </TopNav>
       <div className="topbar-actions">
+        <button aria-label={locale === 'ar' ? 'البحث في Ceramic' : 'Search Ceramic'} className="topbar-search" onClick={onSearch} type="button">
+          <Search aria-hidden="true" />
+          <span>{locale === 'ar' ? 'بحث' : 'Search'}</span>
+          <kbd>⌘K</kbd>
+        </button>
         <label className="locale-switch">
           <span>{t(locale, 'arabicMode')}</span>
           <Switch

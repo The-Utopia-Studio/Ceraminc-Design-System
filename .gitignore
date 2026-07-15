@@ -3,6 +3,8 @@
 node_modules/
 dist/
 .vercel/
+playwright-report/
+test-results/
 *.tsbuildinfo
 
 .env

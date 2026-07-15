@@ -1,11 +1,18 @@
 {
   "name": "@utopia-studio-design/design-system",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "shadcn-founded, theme-extensible, Arabic-friendly Ceramic Design System",
   "type": "module",
   "license": "MIT",
-  "files": ["dist", "src/core.css", "src/themes", "src/manifests"],
-  "publishConfig": { "access": "public" },
+  "files": [
+    "dist",
+    "src/core.css",
+    "src/themes",
+    "src/manifests"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
   "scripts": {
     "build": "tsdown",
     "check": "tsc --noEmit -p tsconfig.json",
@@ -24,7 +31,10 @@
       "import": "./dist/*.mjs"
     }
   },
-  "sideEffects": ["src/core.css", "src/themes/*.css"],
+  "sideEffects": [
+    "src/core.css",
+    "src/themes/*.css"
+  ],
   "peerDependencies": {
     "react": "^19.0.0",
     "react-dom": "^19.0.0"
@@ -70,5 +80,7 @@
     "tsdown": "^0.22.5",
     "typescript": "^5.7.2"
   },
-  "engines": { "node": ">=20" }
+  "engines": {
+    "node": ">=20"
+  }
 }

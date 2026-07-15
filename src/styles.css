@@ -209,6 +209,277 @@ body {
   margin-inline-end: 0;
 }
 
+.topbar-search {
+  align-items: center;
+  background: transparent;
+  border: 1px solid var(--border);
+  color: var(--foreground-muted);
+  cursor: pointer;
+  display: inline-flex;
+  font: inherit;
+  gap: var(--space-2);
+  min-block-size: 36px;
+  padding: 0 var(--space-3);
+}
+
+.topbar-search:hover,
+.topbar-search:focus-visible {
+  background: var(--surface-hover);
+  color: var(--foreground);
+}
+
+.topbar-search:focus-visible {
+  outline: var(--focus-ring-width) solid var(--ring);
+  outline-offset: 2px;
+}
+
+.topbar-search svg {
+  block-size: 16px;
+  inline-size: 16px;
+}
+
+.topbar-search kbd {
+  border: 1px solid var(--border);
+  color: var(--foreground-subtle);
+  font-size: 11px;
+  padding: 1px 5px;
+}
+
+.global-command-backdrop {
+  align-items: flex-start;
+  background: color-mix(in srgb, var(--background) 78%, transparent);
+  display: flex;
+  inset: 0;
+  justify-content: center;
+  padding: min(14vh, 120px) var(--space-4) var(--space-4);
+  position: fixed;
+  z-index: 1000;
+}
+
+.global-command-dialog {
+  background: var(--popover-surface);
+  border: 1px solid var(--border-strong);
+  box-shadow: 0 24px 80px color-mix(in srgb, var(--background) 48%, transparent);
+  inline-size: min(680px, 100%);
+}
+
+.global-command-dialog .uds-command-palette {
+  border: 0;
+  max-inline-size: none;
+}
+
+.global-command-dialog .uds-command-palette-list {
+  max-block-size: min(58vh, 520px);
+}
+
+.global-command-dialog .uds-command-palette-item > span:not(.uds-command-palette-shortcut) {
+  display: grid;
+  gap: 2px;
+}
+
+.global-command-dialog .uds-command-palette-item small {
+  color: var(--foreground-subtle);
+  font-size: 12px;
+  font-weight: 400;
+}
+
+.global-command-dialog > footer {
+  align-items: center;
+  border-block-start: 1px solid var(--border);
+  color: var(--foreground-subtle);
+  display: flex;
+  font-size: 12px;
+  gap: var(--space-4);
+  justify-content: flex-end;
+  padding: var(--space-2) var(--space-3);
+}
+
+.global-command-dialog > footer kbd {
+  border: 1px solid var(--border);
+  color: var(--foreground);
+  margin-inline-end: 2px;
+  padding: 1px 4px;
+}
+
+.component-detail-shell {
+  min-inline-size: 0;
+}
+
+.component-workbench {
+  background: var(--card);
+  border: 1px solid var(--border);
+  display: grid;
+  gap: var(--space-3);
+  margin: var(--space-6) var(--space-6) 0;
+  padding: var(--space-4);
+}
+
+.component-workbench__intro,
+.component-workbench__actions,
+.component-workbench__details,
+.component-workbench__intro > div {
+  align-items: center;
+  display: flex;
+  gap: var(--space-3);
+}
+
+.component-workbench__intro {
+  justify-content: space-between;
+}
+
+.component-workbench__intro > div {
+  align-items: flex-start;
+  flex-direction: column;
+  gap: 2px;
+  margin-inline-end: auto;
+}
+
+.component-workbench__intro span,
+.component-workbench details,
+.component-workbench li {
+  color: var(--foreground-muted);
+  font-size: 13px;
+}
+
+.component-workbench__actions {
+  flex-wrap: wrap;
+}
+
+.component-workbench__actions .uds-button svg,
+.component-workbench .uds-badge svg {
+  block-size: 15px;
+  inline-size: 15px;
+}
+
+.component-workbench details {
+  border-block-start: 1px solid var(--border);
+  padding-block-start: var(--space-3);
+}
+
+.component-workbench summary {
+  color: var(--foreground);
+  cursor: pointer;
+  font-weight: 500;
+}
+
+.component-workbench__details {
+  align-items: flex-start;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  margin-block-start: var(--space-3);
+}
+
+.component-workbench__details > div {
+  display: grid;
+  gap: var(--space-2);
+}
+
+.component-workbench__details ul {
+  margin: 0;
+  padding-inline-start: 18px;
+}
+
+.component-workbench__details nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+.component-workbench__details a {
+  border: 1px solid var(--border);
+  color: var(--foreground);
+  padding: var(--space-1) var(--space-2);
+  text-decoration: none;
+}
+
+.component-workbench__details a:hover,
+.component-workbench__details a:focus-visible {
+  border-color: var(--primary);
+}
+
+.mcp-playground-page {
+  inline-size: 100%;
+}
+
+.mcp-status-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  margin-block-start: var(--space-4);
+}
+
+.mcp-status-row svg {
+  block-size: 14px;
+  inline-size: 14px;
+}
+
+.mcp-playground-grid {
+  display: grid;
+  gap: var(--space-5);
+  grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
+  padding: 0 var(--space-6) var(--space-8);
+}
+
+.mcp-playground-grid .uds-card {
+  min-inline-size: 0;
+}
+
+.mcp-playground-grid .code-block {
+  margin-block: 0 var(--space-4);
+}
+
+.mcp-tool-explorer {
+  display: grid;
+  gap: var(--space-4);
+}
+
+.mcp-tool-explorer > label {
+  display: grid;
+  gap: var(--space-2);
+}
+
+.mcp-tool-explorer > label > span {
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.mcp-request-response {
+  display: grid;
+  gap: var(--space-3);
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.mcp-request-response > div {
+  background: var(--background);
+  border: 1px solid var(--border);
+  min-inline-size: 0;
+}
+
+.mcp-request-response span {
+  align-items: center;
+  border-block-end: 1px solid var(--border);
+  color: var(--foreground-muted);
+  display: flex;
+  font-size: 12px;
+  gap: var(--space-2);
+  padding: var(--space-2) var(--space-3);
+}
+
+.mcp-request-response svg {
+  block-size: 14px;
+  inline-size: 14px;
+}
+
+.mcp-request-response pre {
+  color: var(--foreground);
+  font: 12px/1.55 ui-monospace, SFMono-Regular, Menlo, monospace;
+  margin: 0;
+  max-block-size: 360px;
+  overflow: auto;
+  padding: var(--space-3);
+  white-space: pre-wrap;
+}
+
 .locale-switch {
   display: inline-flex;
   align-items: center;
@@ -5938,6 +6209,49 @@ body {
 }
 
 @media (max-width: 820px) {
+  .topbar-search span,
+  .topbar-search kbd {
+    display: none;
+  }
+
+  .topbar-search {
+    block-size: 44px;
+    inline-size: 44px;
+    justify-content: center;
+    padding: 0;
+  }
+
+  .global-command-backdrop {
+    padding: var(--space-3);
+  }
+
+  .global-command-dialog {
+    inline-size: 100%;
+    margin-block-start: 8vh;
+  }
+
+  .component-workbench {
+    margin: var(--space-4) var(--space-4) 0;
+  }
+
+  .component-workbench__intro,
+  .component-workbench__details {
+    align-items: flex-start;
+    grid-template-columns: 1fr;
+  }
+
+  .component-workbench__intro {
+    display: grid;
+  }
+
+  .mcp-playground-grid,
+  .mcp-request-response {
+    grid-template-columns: 1fr;
+  }
+
+  .mcp-playground-grid {
+    padding: 0 var(--space-4) var(--space-6);
+  }
   .app-shell {
     grid-template-columns: 1fr;
     grid-template-rows: auto auto 1fr;

@@ -25,6 +25,8 @@ import { Sidebar, SidebarContent, SidebarFooter, SidebarGroup, SidebarGroupLabel
 import * as ShadcnPrimitives from '../../packages/design-system/src/ShadcnPrimitives'
 import { ArabicText, Heading, Prose, Text } from '../../packages/design-system/src/Typography'
 import { componentIntro, componentLabel, t, useI18n, type Locale } from '../i18n'
+import { ComponentDetailWorkbench } from '../components/ComponentDetailWorkbench'
+import designSystemPackage from '../../packages/design-system/package.json'
 
 type ComponentDetailPageProps = {
   componentId: string
@@ -87,19 +89,21 @@ export function ComponentDetailPage({ componentId, tab = 'overview' }: Component
     )
   }
 
-  if (entry.name === 'Button') return <ButtonDetailPage tab={tab} />
-  if (entry.name === 'Icon Button') return <IconButtonDetailPage tab={tab} />
-  if (entry.name === 'Button Group') return <ButtonGroupDetailPage tab={tab} />
-  if (entry.name === 'Alert') return <AlertDetailPage tab={tab} />
-  if (entry.name === 'Avatar') return <AvatarDetailPage tab={tab} />
-  if (entry.name === 'Badge') return <BadgeDetailPage tab={tab} />
-  if (entry.name === 'Card') return <CardDetailPage tab={tab} />
-  if (entry.name === 'Dropdown Menu') return <DropdownMenuDetailPage tab={tab} />
-  if (entry.name === 'Select') return <SelectDetailPage tab={tab} />
-  if (entry.name === 'Toggle Button') return <ToggleButtonDetailPage tab={tab} name="Toggle Button" />
-  if (entry.name === 'Toggle Button Group') return <ToggleButtonGroupDetailPage tab={tab} name="Toggle Button Group" />
+  let detail: ReactNode
+  if (entry.name === 'Button') detail = <ButtonDetailPage tab={tab} />
+  else if (entry.name === 'Icon Button') detail = <IconButtonDetailPage tab={tab} />
+  else if (entry.name === 'Button Group') detail = <ButtonGroupDetailPage tab={tab} />
+  else if (entry.name === 'Alert') detail = <AlertDetailPage tab={tab} />
+  else if (entry.name === 'Avatar') detail = <AvatarDetailPage tab={tab} />
+  else if (entry.name === 'Badge') detail = <BadgeDetailPage tab={tab} />
+  else if (entry.name === 'Card') detail = <CardDetailPage tab={tab} />
+  else if (entry.name === 'Dropdown Menu') detail = <DropdownMenuDetailPage tab={tab} />
+  else if (entry.name === 'Select') detail = <SelectDetailPage tab={tab} />
+  else if (entry.name === 'Toggle Button') detail = <ToggleButtonDetailPage tab={tab} name="Toggle Button" />
+  else if (entry.name === 'Toggle Button Group') detail = <ToggleButtonGroupDetailPage tab={tab} name="Toggle Button Group" />
+  else detail = <GenericComponentDetailPage entry={entry} tab={tab} />
 
-  return <GenericComponentDetailPage entry={entry} tab={tab} />
+  return <ComponentDetailWorkbench entry={entry}>{detail}</ComponentDetailWorkbench>
 }
 
 function ButtonDetailPage({ tab }: { tab: string }) {
@@ -155,7 +159,7 @@ function ButtonDetailPage({ tab }: { tab: string }) {
     <div className="page component-doc-page">
       <section className="component-doc-hero">
         <h1>{componentLabel(locale, 'Button')}</h1>
-        <p>@utopia-studio-design/design-system v0.1.0 · Button</p>
+        <p>@utopia-studio-design/design-system v{designSystemPackage.version} · Button</p>
         <nav className="component-tabs" aria-label="Button documentation views">
           <a href="#/components/button#overview" aria-current={isProperties ? undefined : 'page'}>{t(locale, 'overview')}</a>
           <a href="#/components/button?tab=properties#props" aria-current={isProperties ? 'page' : undefined}>{t(locale, 'props')}</a>
@@ -573,7 +577,7 @@ function ButtonGroupDetailPage({ tab }: { tab: string }) {
     <div className="page component-doc-page">
       <section className="component-doc-hero">
         <h1>{componentLabel(locale, 'Button Group')}</h1>
-        <p>@utopia-studio-design/design-system v0.1.0 · ButtonGroup</p>
+        <p>@utopia-studio-design/design-system v{designSystemPackage.version} · ButtonGroup</p>
         <nav className="component-tabs" aria-label="Button Group documentation views">
           <a href="#/components/button-group#overview" aria-current={isProperties ? undefined : 'page'}>{t(locale, 'overview')}</a>
           <a href="#/components/button-group?tab=properties#props" aria-current={isProperties ? 'page' : undefined}>{t(locale, 'props')}</a>
@@ -2237,7 +2241,7 @@ function ActionDocPage({
     <div className="page component-doc-page">
       <section className="component-doc-hero">
         <h1>{displayName}</h1>
-        <p>@utopia-studio-design/design-system v0.1.0 · {name.replaceAll(' ', '')}</p>
+        <p>@utopia-studio-design/design-system v{designSystemPackage.version} · {name.replaceAll(' ', '')}</p>
         <nav className="component-tabs" aria-label={`${name} documentation views`}>
           <a href={`#/components/${slug}#overview`} aria-current={isProperties ? undefined : 'page'}>{tabOverview}</a>
           <a href={`#/components/${slug}?tab=properties#props`} aria-current={isProperties ? 'page' : undefined}>{tabProps}</a>

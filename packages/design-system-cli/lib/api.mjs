@@ -8,7 +8,7 @@ const packagedDataRoot = join(packageRoot, 'data')
 const hasWorkspaceSource = existsSync(join(workspaceRoot, 'packages/design-system/src/manifests/components.json'))
 
 export const apiVersion = 1
-export const cliVersion = '0.2.0'
+export const cliVersion = '0.3.0'
 export const mcpLaunch = {
   command: 'npx',
   args: ['-y', '--package', '@utopia-studio-design/design-system-cli', 'utopia-ds', 'mcp'],

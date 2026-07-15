@@ -1,6 +1,6 @@
 {
   "name": "utopia-design-system",
-  "version": "0.1.0",
+  "version": "0.3.0",
   "private": true,
   "type": "module",
   "workspaces": [
@@ -13,12 +13,16 @@
     "lint": "tsc -b --pretty false",
     "audit:components": "node scripts/audit-design-system-components.mjs",
     "test:cli": "node scripts/test-design-system-cli.mjs",
+    "test:e2e": "playwright test",
+    "test:e2e:update": "playwright test --update-snapshots",
     "ds": "node packages/design-system-cli/bin/utopia-ds.mjs",
     "ds:mcp": "node packages/design-system-cli/bin/utopia-ds-mcp.mjs",
     "check:design-system": "npm run audit:components && npm run ds -- doctor --json",
     "check:design-system-cli": "npm run ds -- manifest --json && npm run ds -- search button --json",
     "pack:design-system": "npm pack --workspace @utopia-studio-design/design-system --dry-run",
-    "pack:design-system-cli": "npm pack --workspace @utopia-studio-design/design-system-cli --dry-run"
+    "pack:design-system-cli": "npm pack --workspace @utopia-studio-design/design-system-cli --dry-run",
+    "release:check": "npm run lint && npm run test:cli && npm run test:e2e && npm run check:design-system && npm run check:design-system-cli && npm run build && npm run pack:design-system && npm run pack:design-system-cli",
+    "release:packages": "npm publish --workspace @utopia-studio-design/design-system && npm publish --workspace @utopia-studio-design/design-system-cli"
   },
   "dependencies": {
     "@radix-ui/react-accordion": "^1.2.15",
@@ -61,6 +65,7 @@
     "vite": "^6.0.7"
   },
   "devDependencies": {
+    "@playwright/test": "^1.61.1",
     "@types/react": "^19.0.2",
     "@types/react-dom": "^19.0.2"
   }

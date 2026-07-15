@@ -11,6 +11,7 @@ import {
   themeFamilyHref,
 } from './data/design-system'
 import { LocaleTransitionOverlay } from './components/LocaleTransitionOverlay'
+import { GlobalCommandPalette } from './components/GlobalCommandPalette'
 import { RouteErrorBoundary } from './components/RouteErrorBoundary'
 import { TopNavigation } from './components/TopNavigation'
 import { I18nProvider, categoryLabel, docsLabel, routeLabel, sideNavLabel, t, type Locale } from './i18n'
@@ -31,6 +32,7 @@ const ComponentsPage = lazy(() => import('./pages/ComponentsPage').then((module)
 const DocsPage = lazy(() => import('./pages/DocsPage').then((module) => ({ default: module.DocsPage })))
 const TemplatesPage = lazy(() => import('./pages/TemplatesPage').then((module) => ({ default: module.TemplatesPage })))
 const ThemesPage = lazy(() => import('./pages/ThemesPage').then((module) => ({ default: module.ThemesPage })))
+const McpPlaygroundPage = lazy(() => import('./pages/McpPlaygroundPage').then((module) => ({ default: module.McpPlaygroundPage })))
 
 function RouteFallback({ locale }: { locale: Locale }) {
   return <div aria-label={locale === 'ar' ? 'جار تحميل الصفحة' : 'Loading page'} className="route-loading" role="status" />
@@ -63,6 +65,12 @@ function getSidebarArea(path: string) {
 }
 
 function getToc(path: string, tab: string) {
+  if (path === '/docs/mcp-playground') {
+    return [
+      { id: 'connection', label: 'Connection' },
+      { id: 'tools', label: 'Tool explorer' },
+    ]
+  }
   if (path.startsWith('/docs/guide/')) {
     if (path.endsWith('/arabic-friendly')) {
       return [
@@ -293,6 +301,7 @@ function AppShell() {
   const [componentSearch, setComponentSearch] = useState('')
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false)
   const [mobileNavOpen, setMobileNavOpen] = useState(false)
+  const [commandPaletteOpen, setCommandPaletteOpen] = useState(false)
   const [isMobileShell, setIsMobileShell] = useState(false)
   const [locale, setLocale] = useState<Locale>(getInitialLocale)
   const [pendingLocale, setPendingLocale] = useState<Locale | null>(null)
@@ -328,6 +337,17 @@ function AppShell() {
     }
     window.addEventListener('hashchange', handleHashChange)
     return () => window.removeEventListener('hashchange', handleHashChange)
+  }, [])
+
+  useEffect(() => {
+    const openCommandPalette = (event: KeyboardEvent) => {
+      if ((event.metaKey || event.ctrlKey) && event.key.toLowerCase() === 'k') {
+        event.preventDefault()
+        setCommandPaletteOpen(true)
+      }
+    }
+    window.addEventListener('keydown', openCommandPalette)
+    return () => window.removeEventListener('keydown', openCommandPalette)
   }, [])
 
   useEffect(() => {
@@ -425,6 +445,7 @@ function AppShell() {
     const slug = slugFor(item)
     if (isComponentsArea) return `#/components/${slug}`
     if (isDocsArea && groupId === 'guide' && item === 'Getting Started') return '#/docs'
+    if (isDocsArea && groupId === 'guide' && item === 'MCP Playground') return '#/docs/mcp-playground'
     if (isDocsArea && groupId === 'guide') return `#/docs/guide/${slug}`
     if (isDocsArea && groupId === 'foundations') return `#/docs/foundations/${slug}`
     if (isDocsArea && groupId === 'libraries') return `#/docs/libraries/${slug}`
@@ -455,6 +476,7 @@ function AppShell() {
         links={navLinks}
         locale={locale}
         onLocaleChange={transitionLocale}
+        onSearch={() => setCommandPaletteOpen(true)}
         showBrand={false}
       />
 
@@ -665,7 +687,11 @@ function AppShell() {
             <RouteErrorBoundary locale={locale} resetKey={`${locale}-${path}-${tab}`}>
               <Suspense fallback={<RouteFallback locale={locale} />}>
                 <RouteScrollManager path={path} section={section} />
-                {componentId ? <ComponentDetailPage componentId={componentId} tab={tab} /> : <Page path={path} />}
+                {path === '/docs/mcp-playground'
+                  ? <McpPlaygroundPage />
+                  : componentId
+                    ? <ComponentDetailPage componentId={componentId} tab={tab} />
+                    : <Page path={path} />}
               </Suspense>
             </RouteErrorBoundary>
           </motion.div>
@@ -689,6 +715,7 @@ function AppShell() {
       <AnimatePresence>
         {pendingLocale ? <LocaleTransitionOverlay nextLocale={pendingLocale} /> : null}
       </AnimatePresence>
+      <GlobalCommandPalette locale={locale} onOpenChange={setCommandPaletteOpen} open={commandPaletteOpen} />
     </div>
     </I18nProvider>
   )

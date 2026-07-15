@@ -1,6 +1,6 @@
 # Utopia Design System
 
-Standalone design-system production for Utopia Studio.
+Standalone design-system production for Utopia Studio. The current public package line is `0.3.x`.
 
 This workspace is the parent system. Production websites are consumers and reference implementations under this design-system contract.
 
@@ -31,6 +31,8 @@ npx utopia-ds template template-saas-solution-homepage --theme nova --copy ./nov
 npm install
 npm run dev
 npm run build
+npm run test:e2e
+npm run release:check
 npm run ds -- component --list --dense
 npm run ds -- template --list --dense
 npm run ds -- theme create nova
@@ -45,10 +47,21 @@ npm run ds -- doctor
 
 - CLI: `npx utopia-ds component Button --json`
 - Programmatic API: `@utopia-studio-design/design-system-cli/api`
-- MCP: `npx utopia-ds mcp`
+- MCP: `npx --package @utopia-studio-design/design-system-cli utopia-ds mcp`
 - Capability discovery: `npx utopia-ds manifest --json`
 - Static crawler entrypoint: `/llms.txt`
 - Platform roadmap and release gates: `docs/design-system/ai-platform-plan.md`
+- Browser MCP contract inspector: `#/docs/mcp-playground`
+- Global documentation search: `⌘K` on macOS or `Ctrl+K` elsewhere
+
+## Release
+
+Published packages:
+
+- `@utopia-studio-design/design-system@0.3.0`
+- `@utopia-studio-design/design-system-cli@0.3.0`
+
+Run `npm run release:check` before publishing. It gates the release on TypeScript, MCP protocol tests, desktop/mobile Playwright coverage, visual baselines, component audits, production builds, and package dry-runs. See `CHANGELOG.md` for release notes.
 
 ## Principles
 

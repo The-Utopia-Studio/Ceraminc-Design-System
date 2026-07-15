@@ -1,6 +1,6 @@
 {
   "name": "@utopia-studio-design/design-system-cli",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "AI-readable CLI and MCP server for Ceramic Design System",
   "type": "module",
   "license": "MIT",
@@ -13,11 +13,20 @@
     "./api": "./lib/api.mjs",
     "./mcp": "./bin/utopia-ds-mcp.mjs"
   },
-  "files": ["bin", "lib", "data", "README.md"],
+  "files": [
+    "bin",
+    "lib",
+    "data",
+    "README.md"
+  ],
   "scripts": {
     "sync-data": "node scripts/sync-data.mjs",
     "prepack": "npm run sync-data"
   },
-  "publishConfig": { "access": "public" },
-  "engines": { "node": ">=20" }
+  "publishConfig": {
+    "access": "public"
+  },
+  "engines": {
+    "node": ">=20"
+  }
 }

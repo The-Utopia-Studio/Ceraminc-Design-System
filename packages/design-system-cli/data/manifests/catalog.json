@@ -1,7 +1,7 @@
 {
   "$schema": "https://utopia-studio.co/design-system/catalog.schema.json",
   "name": "Utopia Design System Catalog",
-  "version": "0.1.0",
+  "version": "0.3.0",
   "purpose": "Standalone source of truth for the Utopia Design System home, docs, component catalog, templates, themes, and AI agent workflow.",
   "topLevelAreas": [
     {
@@ -13,8 +13,9 @@
           "id": "guide",
           "label": "Guide",
           "items": [
-            "Getting Started",
-            "Quick Start with AI",
+          "Getting Started",
+          "MCP Playground",
+          "Quick Start with AI",
             "Working with AI",
             "Principles",
             "Theme System",

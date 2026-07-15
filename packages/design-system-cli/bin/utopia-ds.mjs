@@ -207,10 +207,10 @@ function copyTemplateProject(entry) {
   const workspaceCli = resolve(process.cwd(), 'packages/design-system-cli')
   const designSystemDependency = existsSync(join(workspacePackage, 'package.json'))
     ? `file:${workspacePackage}`
-    : '^0.2.0'
+    : '^0.3.0'
   const cliDependency = existsSync(join(workspaceCli, 'package.json'))
     ? `file:${workspaceCli}`
-    : '^0.2.0'
+    : '^0.3.0'
   write(join(target, 'package.json'), `${JSON.stringify({
     name: packageName,
     private: true,

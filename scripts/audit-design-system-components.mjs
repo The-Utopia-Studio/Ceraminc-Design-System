@@ -13,6 +13,10 @@ const templatesPagePath = path.join(root, 'src/pages/TemplatesPage.tsx')
 const themesPagePath = path.join(root, 'src/pages/ThemesPage.tsx')
 const appPath = path.join(root, 'src/App.tsx')
 const appStylesPath = path.join(root, 'src/styles.css')
+const commandPalettePath = path.join(root, 'src/components/GlobalCommandPalette.tsx')
+const workbenchPath = path.join(root, 'src/components/ComponentDetailWorkbench.tsx')
+const mcpPlaygroundPath = path.join(root, 'src/pages/McpPlaygroundPage.tsx')
+const e2ePath = path.join(root, 'tests/e2e/design-system.spec.ts')
 const coreCssPath = path.join(root, 'packages/design-system/src/core.css')
 const defaultThemePath = path.join(root, 'packages/design-system/src/themes/utopia-default.css')
 
@@ -156,6 +160,10 @@ const templatesPage = fs.readFileSync(templatesPagePath, 'utf8')
 const themesPage = fs.readFileSync(themesPagePath, 'utf8')
 const appSource = fs.readFileSync(appPath, 'utf8')
 const appStyles = fs.readFileSync(appStylesPath, 'utf8')
+const commandPalette = fs.readFileSync(commandPalettePath, 'utf8')
+const workbench = fs.readFileSync(workbenchPath, 'utf8')
+const mcpPlayground = fs.readFileSync(mcpPlaygroundPath, 'utf8')
+const e2eSuite = fs.readFileSync(e2ePath, 'utf8')
 const componentSourcePaths = [...new Set(componentsManifest.components.map((component) => path.join(root, component.sourcePath)))]
 const missingSourcePaths = componentSourcePaths.filter((filePath) => !fs.existsSync(filePath))
 for (const filePath of missingSourcePaths) fail(`missing component source: ${path.relative(root, filePath)}`)
@@ -365,6 +373,18 @@ if (appStyles.includes('transition: grid-template-columns')) {
 }
 if (!appStyles.includes('.skip-link:focus-visible') || !docsPage.includes('onKeyDown={(event) => handlePathKeyDown(event, index)}')) {
   fail('Docs shell must preserve skip navigation and keyboard-operable path tabs')
+}
+if (!appSource.includes('GlobalCommandPalette') || !commandPalette.includes('themes.requiredSemanticRoles') || !commandPalette.includes('MCP Playground')) {
+  fail('Global command palette must index components, semantic tokens, documentation, and MCP')
+}
+if (!detailPage.includes('ComponentDetailWorkbench') || !workbench.includes('Copy package import') || !workbench.includes('Related components')) {
+  fail('Component detail pages must expose the shared workbench contract')
+}
+if (!mcpPlayground.includes('Package contract verified') || !mcpPlayground.includes('not a live stdio transport')) {
+  fail('MCP Playground must distinguish the browser mirror from live stdio transport')
+}
+for (const e2eContract of ['global command palette', 'mobile navigation', 'documentation tab keys', 'visual baselines']) {
+  if (!e2eSuite.includes(e2eContract)) fail(`Playwright suite missing contract: ${e2eContract}`)
 }
 
 for (const requiredText of [
