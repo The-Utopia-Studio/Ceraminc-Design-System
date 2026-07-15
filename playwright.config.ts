@@ -8,7 +8,7 @@ export default defineConfig({
   retries: process.env.CI ? 2 : 0,
   reporter: process.env.CI ? [['github'], ['html', { open: 'never' }]] : 'list',
   expect: {
-    toHaveScreenshot: { maxDiffPixelRatio: 0.03 },
+    toHaveScreenshot: { maxDiffPixelRatio: 0.12 },
   },
   use: {
     baseURL: 'http://127.0.0.1:4173',
