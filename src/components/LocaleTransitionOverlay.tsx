@@ -1,24 +1,27 @@
 import { motion } from 'framer-motion'
 import type { Locale } from '../i18n'
+import { useMotionRecipe } from '../../packages/design-system/src/Motion'
+import { toFramerMotionState, toFramerTransition } from '../../packages/design-system/src/MotionFramer'
 
 export function LocaleTransitionOverlay({ nextLocale }: { nextLocale: Locale }) {
   const isArabic = nextLocale === 'ar'
+  const surfaceMotion = useMotionRecipe('surface')
   return (
     <motion.div
-      animate={{ opacity: 1 }}
+      animate={{ opacity: surfaceMotion.enter.to.opacity }}
       className="locale-transition-overlay"
       dir={isArabic ? 'rtl' : 'ltr'}
-      exit={{ opacity: 0 }}
-      initial={{ opacity: 0 }}
+      exit={{ opacity: surfaceMotion.exit.to.opacity }}
+      initial={{ opacity: surfaceMotion.enter.from.opacity }}
       lang={nextLocale}
-      transition={{ duration: 0.16, ease: [0.22, 1, 0.36, 1] }}
+      transition={toFramerTransition(surfaceMotion.enter.timing)}
     >
       <motion.div
-        animate={{ opacity: 1, scale: 1, y: 0 }}
+        animate={toFramerMotionState(surfaceMotion.enter.to)}
         className="locale-transition-card"
-        exit={{ opacity: 0, scale: 0.98, y: -8 }}
-        initial={{ opacity: 0, scale: 0.96, y: 8 }}
-        transition={{ duration: 0.22, ease: [0.22, 1, 0.36, 1] }}
+        exit={toFramerMotionState(surfaceMotion.exit.to)}
+        initial={toFramerMotionState(surfaceMotion.enter.from)}
+        transition={toFramerTransition(surfaceMotion.enter.timing)}
       >
         <span aria-hidden="true" className="locale-transition-symbol">{isArabic ? 'ع' : 'A'}</span>
         <div className="locale-transition-copy">

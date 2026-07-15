@@ -6,7 +6,6 @@ import * as DialogPrimitive from '@radix-ui/react-dialog'
 import * as MenubarPrimitive from '@radix-ui/react-menubar'
 import * as NavigationMenuPrimitive from '@radix-ui/react-navigation-menu'
 import * as ScrollAreaPrimitive from '@radix-ui/react-scroll-area'
-import { motion, type Transition } from 'framer-motion'
 import { AlertTriangle, Check, CheckCircle2, ChevronDown, ChevronLeft, ChevronRight, Circle, GripVertical, Info, MoreHorizontal, X, XCircle } from 'lucide-react'
 import { Toaster as SonnerPrimitive, toast } from 'sonner'
 import { Legend as RechartsLegend, ResponsiveContainer, Tooltip as RechartsTooltip } from 'recharts'
@@ -683,7 +682,6 @@ export function DataTableFooter({ className, ...props }: DivProps) {
 
 const CollapsibleMotionContext = React.createContext({
   open: false,
-  transition: { duration: 0 } as Transition,
 })
 
 export function Collapsible({
@@ -704,7 +702,7 @@ export function Collapsible({
   }
 
   return (
-    <CollapsibleMotionContext.Provider value={{ open: currentOpen, transition: resolvedMotion.transition }}>
+    <CollapsibleMotionContext.Provider value={{ open: currentOpen }}>
       <CollapsiblePrimitive.Root data-motion={resolvedMotion.enabled ? 'on' : 'off'} open={currentOpen} onOpenChange={handleOpenChange} {...props} />
     </CollapsibleMotionContext.Provider>
   )
@@ -715,18 +713,16 @@ export function CollapsibleTrigger({ className, ...props }: React.ComponentProps
 }
 
 export function CollapsibleContent({ children, className, ...props }: React.ComponentProps<typeof CollapsiblePrimitive.Content>) {
-  const { open, transition } = React.useContext(CollapsibleMotionContext)
+  const { open } = React.useContext(CollapsibleMotionContext)
 
   return (
     <CollapsiblePrimitive.Content className={cn('uds-collapsible-content', className)} forceMount {...props}>
-      <motion.div
-        animate={open ? { height: 'auto', opacity: 1 } : { height: 0, opacity: 0 }}
+      <div
         className="uds-collapsible-motion"
-        initial={false}
-        transition={transition}
+        data-state={open ? 'open' : 'closed'}
       >
         <div className="uds-collapsible-content-inner">{children}</div>
-      </motion.div>
+      </div>
     </CollapsiblePrimitive.Content>
   )
 }

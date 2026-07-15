@@ -4,7 +4,8 @@ import { themes, utopiaDefaultTheme } from '../data/design-system'
 import { DextrumTypographySubpage, dextrumTypographySegmentFromPath } from './DextrumTypographySubpage'
 import { ArabicDisplay, ArabicText } from '../../packages/design-system/src/Typography'
 import { Button } from '../../packages/design-system/src/Button'
-import { MotionIcon, MotionProvider } from '../../packages/design-system/src/Motion'
+import { MotionIcon, MotionProvider, useMotionAnimation, useMotionSystem, waapiMotionAdapter, type MotionAdapter, type MotionThemeProfile } from '../../packages/design-system/src/Motion'
+import { framerMotionAdapter } from '../../packages/design-system/src/MotionFramer'
 import { docsLabel, t, useI18n, type Locale } from '../i18n'
 
 type DocsPageProps = {
@@ -62,11 +63,11 @@ const tokenRows: TokenRow[] = [
   { group: 'shape', name: '--radius-chat-composer', value: 'chat composer shape', role: 'Chat composer input surfaces', aiRule: 'Use for assistant input/composer geometry.' },
   { group: 'shape', name: '--radius-chat-token', value: 'chat token shape', role: 'Composer chips and chat token elements', aiRule: 'Use for attachments, command tokens, and chips inside chat composers.' },
   { group: 'shape', name: '--radius-round', value: 'fully rounded role', role: 'Avatars, badges, circular controls', aiRule: 'Use only for intentionally circular/rounded affordances.' },
-  { group: 'motion', name: '--motion-duration-press', value: '160ms', role: 'Physical press feedback', aiRule: 'Use for buttons, toggles, and compact controls.' },
-  { group: 'motion', name: '--motion-duration-page', value: '200ms', role: 'Quiet page or tab shift', aiRule: 'Use for view changes without theatrical movement.' },
-  { group: 'motion', name: '--motion-duration-expand', value: '320ms', role: 'Disclosure and layout expansion', aiRule: 'Use for accordion and collapsible content without layout jumps.' },
-  { group: 'motion', name: '--motion-duration-reveal', value: '520ms', role: 'Soft content reveal', aiRule: 'Use for popovers, dialogs, sheets, and drawers.' },
-  { group: 'motion', name: '--motion-duration-icon', value: '640ms', role: 'Meaningful icon motion', aiRule: 'Move icons in the direction of their action; do not apply a generic bounce.' },
+  { group: 'motion', name: '--motion-duration-press', value: 'theme profile', role: 'Physical press feedback', aiRule: 'Use for buttons, toggles, and compact controls.' },
+  { group: 'motion', name: '--motion-duration-page', value: 'theme profile', role: 'Theme-owned page or tab shift', aiRule: 'Resolve through the active motion profile.' },
+  { group: 'motion', name: '--motion-duration-expand', value: 'theme profile', role: 'Disclosure and layout expansion', aiRule: 'Resolve through the active motion profile without layout jumps.' },
+  { group: 'motion', name: '--motion-duration-reveal', value: 'theme profile', role: 'Theme-owned surface reveal', aiRule: 'Use for popovers, dialogs, sheets, and drawers.' },
+  { group: 'motion', name: '--motion-duration-icon', value: 'theme profile', role: 'Meaningful icon motion', aiRule: 'Move icons in the direction of their action; do not apply a generic bounce.' },
   { group: 'motion', name: '--motion-ease-standard', value: 'cubic-bezier(0.2, 0, 0, 1)', role: 'Press, page, and expand easing', aiRule: 'Use for direct interaction feedback.' },
   { group: 'motion', name: '--motion-ease-emphasized', value: 'cubic-bezier(0.16, 1, 0.3, 1)', role: 'Reveal and icon easing', aiRule: 'Use for soft entrances and action-specific icon motion.' },
   { group: 'motion', name: '--motion-distance-page', value: 'logical spacing role', role: 'Quiet view-shift distance', aiRule: 'Use a small logical distance and let RTL-aware layout own direction.' },
@@ -1065,6 +1066,9 @@ function FoundationsPage({ page, slug }: { page: typeof foundationPages[keyof ty
             <FoundationSection id="motion-scale" title={foundationSectionLabel(locale, 'Motion Scale')}>
               <MotionScale locale={locale} />
             </FoundationSection>
+            <FoundationSection id="runtime-adapters" title={locale === 'ar' ? 'محركات الحركة' : 'Runtime Adapters'}>
+              <MotionRuntimeMatrix locale={locale} />
+            </FoundationSection>
             <FoundationSection id="mirroring-rules" title={foundationSectionLabel(locale, 'Directional Motion Rules')}>
               <DirectionalRules locale={locale} />
             </FoundationSection>
@@ -1581,17 +1585,17 @@ function ThemeVariancePreview({ locale }: { locale: Locale }) {
 function MotionScale({ locale }: { locale: Locale }) {
   const [motionEnabled, setMotionEnabled] = useState(true)
   const items = locale === 'ar' ? [
-    ['الضغط', '--motion-duration-press', '١٦٠ms · يجعل اللمس والنقر محسوسين'],
-    ['انتقال الصفحة', '--motion-duration-page', '٢٠٠ms · يغيّر العرض بهدوء'],
-    ['التوسّع', '--motion-duration-expand', '٣٢٠ms · يفتح المحتوى من دون قفزة تخطيط'],
-    ['الكشف', '--motion-duration-reveal', '٥٢٠ms · يظهر السطح بلطف'],
-    ['حركة الأيقونة', '--motion-duration-icon', '٦٤٠ms · تتحرك الأيقونة مثل معنى الإجراء'],
+    ['الضغط', '--motion-duration-press', 'الثيم · يجعل اللمس والنقر محسوسين'],
+    ['انتقال الصفحة', '--motion-duration-page', 'ثيم · يحدد ملف الحركة الإيقاع'],
+    ['التوسّع', '--motion-duration-expand', 'ثيم · يفتح المحتوى من دون قفزة تخطيط'],
+    ['الكشف', '--motion-duration-reveal', 'ثيم · يحدد الثيم تأثير السطح'],
+    ['حركة الأيقونة', '--motion-duration-icon', 'الثيم · تتحرك الأيقونة مثل معنى الإجراء'],
   ] : [
-    ['Press', '--motion-duration-press', '160ms · Make taps feel physical'],
-    ['Page shift', '--motion-duration-page', '200ms · Change views quietly'],
-    ['Expand', '--motion-duration-expand', '320ms · Open without layout jumps'],
-    ['Reveal', '--motion-duration-reveal', '520ms · Show content softly'],
-    ['Icon motion', '--motion-duration-icon', '640ms · Move icons like the action'],
+    ['Press', '--motion-duration-press', 'Theme · Make taps feel physical'],
+    ['Page shift', '--motion-duration-page', 'Theme · The motion profile owns the rhythm'],
+    ['Expand', '--motion-duration-expand', 'Theme · Open without layout jumps'],
+    ['Reveal', '--motion-duration-reveal', 'Theme · The profile owns the surface effect'],
+    ['Icon motion', '--motion-duration-icon', 'Theme · Move icons like the action'],
   ]
   return (
     <MotionProvider motion={motionEnabled}>
@@ -1618,6 +1622,96 @@ function MotionScale({ locale }: { locale: Locale }) {
         <MotionIcon active key={`download-${motionEnabled}`} pattern="download"><Download aria-hidden="true" /></MotionIcon>
       </div>
     </MotionProvider>
+  )
+}
+
+type MotionRuntimeAdapterDescriptor = {
+  id: string
+  label: string
+  entry: string
+  install: string
+  load: () => Promise<MotionAdapter>
+}
+
+const motionRuntimeAdapters: MotionRuntimeAdapterDescriptor[] = [
+  { id: 'waapi', label: 'CSS / WAAPI', entry: 'Motion', install: 'Built in', load: async () => waapiMotionAdapter },
+  { id: 'framer-motion', label: 'Motion for React', entry: 'MotionFramer', install: 'framer-motion', load: async () => framerMotionAdapter },
+  { id: 'animejs', label: 'Anime.js', entry: 'MotionAnime', install: 'animejs', load: async () => (await import('../../packages/design-system/src/MotionAnime')).animeMotionAdapter },
+  { id: 'gsap', label: 'GSAP', entry: 'MotionGsap', install: 'gsap', load: async () => (await import('../../packages/design-system/src/MotionGsap')).gsapMotionAdapter },
+]
+
+function MotionRuntimeMatrix({ locale }: { locale: Locale }) {
+  const { themeProfile } = useMotionSystem()
+  const [adapter, setAdapter] = useState<MotionAdapter>(framerMotionAdapter)
+  const [loadingAdapterId, setLoadingAdapterId] = useState<string | null>(null)
+
+  const selectAdapter = async (descriptor: MotionRuntimeAdapterDescriptor) => {
+    setLoadingAdapterId(descriptor.id)
+    try {
+      setAdapter(await descriptor.load())
+    } finally {
+      setLoadingAdapterId(null)
+    }
+  }
+
+  return (
+    <MotionProvider adapter={adapter} themeProfile={themeProfile}>
+      <MotionRuntimeDemo adapter={adapter} loadingAdapterId={loadingAdapterId} locale={locale} onAdapterChange={selectAdapter} themeProfile={themeProfile} />
+    </MotionProvider>
+  )
+}
+
+function MotionRuntimeDemo({
+  adapter,
+  loadingAdapterId,
+  locale,
+  onAdapterChange,
+  themeProfile,
+}: {
+  adapter: MotionAdapter
+  loadingAdapterId: string | null
+  locale: Locale
+  onAdapterChange: (adapter: MotionRuntimeAdapterDescriptor) => Promise<void>
+  themeProfile: MotionThemeProfile
+}) {
+  const { engine, ref, animate } = useMotionAnimation<HTMLDivElement>('surface')
+  const isArabic = locale === 'ar'
+
+  return (
+    <div className="motion-runtime-contract">
+      <div className="motion-runtime-summary">
+        <div ref={ref} className="motion-runtime-preview" data-personality={themeProfile.personality}>
+          <span>{isArabic ? 'ملف الثيم' : 'Theme profile'}</span>
+          <strong>{themeProfile.label}</strong>
+          <small>{themeProfile.personality} · {engine}</small>
+        </div>
+        <Button onClick={() => animate('enter')} variant="secondary">
+          {isArabic ? 'إعادة الحركة' : 'Replay active profile'}
+        </Button>
+      </div>
+      <div className="motion-runtime-matrix" role="list">
+        {motionRuntimeAdapters.map((descriptor) => (
+          <div data-active={descriptor.id === engine ? 'true' : undefined} key={descriptor.id} role="listitem">
+            <button aria-busy={descriptor.id === loadingAdapterId} aria-pressed={descriptor.id === engine}
+              disabled={loadingAdapterId !== null} onClick={() => void onAdapterChange(descriptor)} type="button">
+              <span>{descriptor.id === loadingAdapterId ? (isArabic ? 'جار التحميل' : 'Loading') : descriptor.id === engine ? (isArabic ? 'نشط' : 'Active') : (isArabic ? 'اختياري' : 'Optional')}</span>
+              <strong>{descriptor.label}</strong>
+              <code>{descriptor.entry}</code>
+              <small>{descriptor.install}</small>
+            </button>
+          </div>
+        ))}
+      </div>
+      <pre>{`<MotionProvider
+  themeProfile={getMotionThemeProfile(activeTheme.motionProfile)}
+  adapter={animeMotionAdapter}
+>
+  <App />
+</MotionProvider>`}</pre>
+      <p>{isArabic
+        ? 'يختار الثيم شخصية الحركة، ويختار التطبيق المحرك، وتطلب المكونات وصفة دلالية، ويبقى motion={false} مخرجا آمنا.'
+        : 'The theme chooses personality, the application chooses the engine, components request semantic recipes, and motion={false} remains the escape hatch.'}</p>
+    </div>
   )
 }
 

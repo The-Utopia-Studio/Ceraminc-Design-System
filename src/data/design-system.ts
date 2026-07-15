@@ -3,11 +3,12 @@ import components from '../../packages/design-system/src/manifests/components.js
 import patterns from '../../packages/design-system/src/manifests/patterns.json'
 import templates from '../../packages/design-system/src/manifests/templates.json'
 import themes from '../../packages/design-system/src/manifests/themes.json'
+import motionProfiles from '../../packages/design-system/src/manifests/motion-profiles.json'
 import utopiaDefaultTheme from '../../packages/design-system/src/manifests/theme-utopia-default.json'
 import dextrumTheme from '../../packages/design-system/src/manifests/theme-dextrum.json'
 import barrierIntelligenceTheme from '../../packages/design-system/src/manifests/theme-barrier-intelligence.json'
 
-export { catalog, components, patterns, templates, themes, utopiaDefaultTheme, dextrumTheme, barrierIntelligenceTheme }
+export { catalog, components, motionProfiles, patterns, templates, themes, utopiaDefaultTheme, dextrumTheme, barrierIntelligenceTheme }
 
 export const routeMap = [
   { id: 'home', label: 'Overview', path: '/', description: 'System map and first decisions.' },

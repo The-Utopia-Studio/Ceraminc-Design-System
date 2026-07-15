@@ -19,6 +19,7 @@
     "packages/design-system/src/manifests/theme-dextrum.json"
 
   ],
+  "motionProfile": "swift",
 
   "brandPrimitives": {
 

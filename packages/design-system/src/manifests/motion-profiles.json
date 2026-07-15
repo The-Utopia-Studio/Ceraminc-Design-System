@@ -1,0 +1,121 @@
+{
+  "$schema": "https://utopia-studio.co/design-system/motion-profiles.schema.json",
+  "version": 1,
+  "contract": {
+    "themeChooses": "motion personality and semantic recipes",
+    "applicationChooses": "runtime adapter",
+    "componentRequests": "feedback, page, surface, or layout",
+    "escapeHatch": "motion={false}",
+    "reducedMotion": "apply the semantic final state immediately without transform, filter, or temporal animation"
+  },
+  "adapters": [
+    { "id": "waapi", "package": "built-in", "entry": "Motion" },
+    { "id": "framer-motion", "package": "framer-motion", "entry": "MotionFramer" },
+    { "id": "animejs", "package": "animejs", "entry": "MotionAnime" },
+    { "id": "gsap", "package": "gsap", "entry": "MotionGsap" }
+  ],
+  "profiles": [
+    {
+      "id": "ceremonial",
+      "label": "Ceremonial reveal",
+      "themes": ["utopia-default"],
+      "personality": "ceremonial",
+      "description": "A composed, high-fidelity reveal with restrained blur and long deceleration.",
+      "rules": ["Keep direct feedback fast", "Use blur only for page and large-surface reveals", "Make exits shorter than entrances"],
+      "timings": {
+        "press": { "duration": 0.16, "ease": [0.2, 0, 0, 1] },
+        "page": { "duration": 0.42, "ease": [0.16, 1, 0.3, 1] },
+        "expand": { "duration": 0.36, "ease": [0.16, 1, 0.3, 1] },
+        "reveal": { "duration": 0.44, "ease": [0.16, 1, 0.3, 1] },
+        "icon": { "duration": 0.64, "ease": [0.16, 1, 0.3, 1] }
+      },
+      "recipes": {
+        "feedback": {
+          "enter": { "from": { "scale": 1 }, "to": { "scale": 0.98 }, "timing": { "duration": 0.14, "ease": [0.2, 0, 0, 1] } },
+          "exit": { "from": { "scale": 0.98 }, "to": { "scale": 1 }, "timing": { "duration": 0.12, "ease": [0.2, 0, 0, 1] } }
+        },
+        "page": {
+          "enter": { "from": { "opacity": 0, "y": 6, "blur": 8 }, "to": { "opacity": 1, "x": 0, "y": 0, "scale": 1, "rotate": 0, "blur": 0 }, "timing": { "duration": 0.42, "ease": [0.16, 1, 0.3, 1] } },
+          "exit": { "from": { "opacity": 1, "x": 0, "y": 0, "scale": 1, "rotate": 0, "blur": 0 }, "to": { "opacity": 0, "y": -2, "blur": 4 }, "timing": { "duration": 0.24, "ease": [0.7, 0, 0.84, 0] } }
+        },
+        "surface": {
+          "enter": { "from": { "opacity": 0, "y": 8, "scale": 0.995, "blur": 8 }, "to": { "opacity": 1, "x": 0, "y": 0, "scale": 1, "rotate": 0, "blur": 0 }, "timing": { "duration": 0.44, "ease": [0.16, 1, 0.3, 1] } },
+          "exit": { "from": { "opacity": 1, "x": 0, "y": 0, "scale": 1, "rotate": 0, "blur": 0 }, "to": { "opacity": 0, "y": 2, "scale": 0.995, "blur": 4 }, "timing": { "duration": 0.26, "ease": [0.7, 0, 0.84, 0] } }
+        },
+        "layout": {
+          "enter": { "from": { "opacity": 0.88, "x": 8 }, "to": { "opacity": 1, "x": 0, "y": 0, "scale": 1, "rotate": 0, "blur": 0 }, "timing": { "duration": 0.36, "ease": [0.16, 1, 0.3, 1] } },
+          "exit": { "from": { "opacity": 1, "x": 0, "y": 0, "scale": 1, "rotate": 0, "blur": 0 }, "to": { "opacity": 0.88, "x": 4 }, "timing": { "duration": 0.22, "ease": [0.7, 0, 0.84, 0] } }
+        }
+      },
+      "orchestration": { "delayChildren": 0.04, "stagger": 0.035 }
+    },
+    {
+      "id": "swift",
+      "label": "Swift response",
+      "themes": ["dextrum"],
+      "personality": "swift",
+      "description": "Fast, compact movement for dense technical workflows.",
+      "rules": ["No reveal blur", "No orchestration delay", "Prefer short directional shifts"],
+      "timings": {
+        "press": { "duration": 0.08, "ease": [0.2, 0, 0, 1] },
+        "page": { "duration": 0.14, "ease": [0.2, 0, 0, 1] },
+        "expand": { "duration": 0.16, "ease": [0.2, 0, 0, 1] },
+        "reveal": { "duration": 0.14, "ease": [0.2, 0, 0, 1] },
+        "icon": { "duration": 0.24, "ease": [0.2, 0, 0, 1] }
+      },
+      "recipes": {
+        "feedback": {
+          "enter": { "from": { "scale": 1 }, "to": { "scale": 0.97 }, "timing": { "duration": 0.08, "ease": [0.2, 0, 0, 1] } },
+          "exit": { "from": { "scale": 0.97 }, "to": { "scale": 1 }, "timing": { "duration": 0.07, "ease": [0.2, 0, 0, 1] } }
+        },
+        "page": {
+          "enter": { "from": { "opacity": 0, "x": 3 }, "to": { "opacity": 1, "x": 0, "y": 0, "scale": 1, "rotate": 0, "blur": 0 }, "timing": { "duration": 0.14, "ease": [0.2, 0, 0, 1] } },
+          "exit": { "from": { "opacity": 1, "x": 0, "y": 0, "scale": 1, "rotate": 0, "blur": 0 }, "to": { "opacity": 0, "x": -2 }, "timing": { "duration": 0.09, "ease": [0.7, 0, 0.84, 0] } }
+        },
+        "surface": {
+          "enter": { "from": { "opacity": 0, "y": 2 }, "to": { "opacity": 1, "x": 0, "y": 0, "scale": 1, "rotate": 0, "blur": 0 }, "timing": { "duration": 0.14, "ease": [0.2, 0, 0, 1] } },
+          "exit": { "from": { "opacity": 1, "x": 0, "y": 0, "scale": 1, "rotate": 0, "blur": 0 }, "to": { "opacity": 0 }, "timing": { "duration": 0.09, "ease": [0.7, 0, 0.84, 0] } }
+        },
+        "layout": {
+          "enter": { "from": { "opacity": 0.94, "x": 4 }, "to": { "opacity": 1, "x": 0, "y": 0, "scale": 1, "rotate": 0, "blur": 0 }, "timing": { "duration": 0.16, "ease": [0.2, 0, 0, 1] } },
+          "exit": { "from": { "opacity": 1, "x": 0, "y": 0, "scale": 1, "rotate": 0, "blur": 0 }, "to": { "opacity": 0.94, "x": 2 }, "timing": { "duration": 0.1, "ease": [0.7, 0, 0.84, 0] } }
+        }
+      },
+      "orchestration": { "delayChildren": 0, "stagger": 0 }
+    },
+    {
+      "id": "precise",
+      "label": "Precise dissolve",
+      "themes": ["barrier-intelligence"],
+      "personality": "precise",
+      "description": "Controlled dissolves and small scale changes for analytical surfaces.",
+      "rules": ["Prefer opacity over travel", "Keep scale changes below two percent", "Preserve analytical continuity"],
+      "timings": {
+        "press": { "duration": 0.1, "ease": [0.2, 0, 0, 1] },
+        "page": { "duration": 0.2, "ease": [0.16, 1, 0.3, 1] },
+        "expand": { "duration": 0.22, "ease": [0.16, 1, 0.3, 1] },
+        "reveal": { "duration": 0.24, "ease": [0.16, 1, 0.3, 1] },
+        "icon": { "duration": 0.32, "ease": [0.16, 1, 0.3, 1] }
+      },
+      "recipes": {
+        "feedback": {
+          "enter": { "from": { "scale": 1 }, "to": { "scale": 0.985 }, "timing": { "duration": 0.1, "ease": [0.2, 0, 0, 1] } },
+          "exit": { "from": { "scale": 0.985 }, "to": { "scale": 1 }, "timing": { "duration": 0.08, "ease": [0.2, 0, 0, 1] } }
+        },
+        "page": {
+          "enter": { "from": { "opacity": 0 }, "to": { "opacity": 1, "x": 0, "y": 0, "scale": 1, "rotate": 0, "blur": 0 }, "timing": { "duration": 0.2, "ease": [0.16, 1, 0.3, 1] } },
+          "exit": { "from": { "opacity": 1, "x": 0, "y": 0, "scale": 1, "rotate": 0, "blur": 0 }, "to": { "opacity": 0 }, "timing": { "duration": 0.14, "ease": [0.7, 0, 0.84, 0] } }
+        },
+        "surface": {
+          "enter": { "from": { "opacity": 0, "scale": 0.99 }, "to": { "opacity": 1, "x": 0, "y": 0, "scale": 1, "rotate": 0, "blur": 0 }, "timing": { "duration": 0.24, "ease": [0.16, 1, 0.3, 1] } },
+          "exit": { "from": { "opacity": 1, "x": 0, "y": 0, "scale": 1, "rotate": 0, "blur": 0 }, "to": { "opacity": 0, "scale": 0.995 }, "timing": { "duration": 0.16, "ease": [0.7, 0, 0.84, 0] } }
+        },
+        "layout": {
+          "enter": { "from": { "opacity": 0.92, "x": 5 }, "to": { "opacity": 1, "x": 0, "y": 0, "scale": 1, "rotate": 0, "blur": 0 }, "timing": { "duration": 0.22, "ease": [0.16, 1, 0.3, 1] } },
+          "exit": { "from": { "opacity": 1, "x": 0, "y": 0, "scale": 1, "rotate": 0, "blur": 0 }, "to": { "opacity": 0.92, "x": 3 }, "timing": { "duration": 0.14, "ease": [0.7, 0, 0.84, 0] } }
+        }
+      },
+      "orchestration": { "delayChildren": 0.02, "stagger": 0.02 }
+    }
+  ]
+}

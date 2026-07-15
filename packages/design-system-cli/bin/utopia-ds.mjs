@@ -3,8 +3,8 @@ import { cpSync, existsSync, mkdirSync, readFileSync, readdirSync, statSync, wri
 import { dirname, join, resolve } from 'node:path'
 import { spawn } from 'node:child_process'
 import {
-  capabilityManifest, envelope, getComponent, getDoc, getTemplate, getTheme,
-  listComponents, listDocs, listTemplates, listThemes, mcpLaunch, repositoryDoctor, search,
+  capabilityManifest, envelope, getComponent, getDoc, getMotionProfile, getTemplate, getTheme,
+  listComponents, listDocs, listMotionProfiles, listTemplates, listThemes, mcpLaunch, repositoryDoctor, search,
 } from '../lib/api.mjs'
 
 const args = process.argv.slice(2)
@@ -45,6 +45,7 @@ Commands:
                                               Generate a themed runnable project
   theme <id>|--list                       Inspect theme contracts
   theme create <id> [directory]           Scaffold and register a theme
+  motion <id>|--list                      Inspect motion personalities and adapters
   docs <topic>|--list                     Read design-system guidance
   manifest                                Print the self-describing CLI contract
   doctor                                  Validate the design-system source
@@ -96,40 +97,42 @@ function scaffoldTheme() {
   }
 
   const themeValues = {
-    '--background': '#15171C', '--foreground': '#F7F7F5', '--card': '#1D2027', '--card-foreground': '#F7F7F5',
-    '--primary': '#6F5CFF', '--primary-foreground': '#FFFFFF', '--secondary': '#292D37', '--secondary-foreground': '#F7F7F5',
-    '--muted': '#222630', '--muted-foreground': '#A8ADB8', '--border': 'rgba(247,247,245,0.16)', '--input': 'rgba(247,247,245,0.24)',
-    '--ring': '#6F5CFF', '--radius': '8px', '--radius-control': '8px', '--radius-surface': '12px', '--radius-chat-bubble': '18px',
-    '--radius-chat-composer': '24px', '--radius-chat-token': '14px', '--shadow-control': 'none', '--motion-duration-press': '160ms',
-    '--motion-duration-page': '200ms', '--motion-duration-expand': '320ms', '--motion-duration-reveal': '520ms', '--motion-duration-icon': '640ms',
+    '--background': '#F2EFE8', '--foreground': '#292725', '--card': '#FAF8F3', '--card-foreground': '#292725',
+    '--primary': '#4A514B', '--primary-foreground': '#FAF8F3', '--secondary': '#DFDBD1', '--secondary-foreground': '#292725',
+    '--muted': '#E8E4DB', '--muted-foreground': '#66625C', '--border': 'rgba(41,39,37,0.18)', '--input': 'rgba(41,39,37,0.28)',
+    '--ring': '#4A514B', '--radius': '2px', '--radius-control': '2px', '--radius-surface': '4px', '--radius-chat-bubble': '4px',
+    '--radius-chat-composer': '6px', '--radius-chat-token': '4px', '--shadow-control': 'none', '--motion-duration-press': '100ms',
+    '--motion-duration-page': '200ms', '--motion-duration-expand': '220ms', '--motion-duration-reveal': '240ms', '--motion-duration-icon': '320ms',
     '--motion-ease-standard': 'cubic-bezier(0.2, 0, 0, 1)', '--motion-ease-emphasized': 'cubic-bezier(0.16, 1, 0.3, 1)',
-    '--motion-ease-icon': 'cubic-bezier(0.16, 1, 0.3, 1)', '--motion-press-scale': '0.97', '--motion-distance-page': '8px',
-    '--motion-distance-reveal': '8px', '--font-sans': 'Inter', '--font-display': 'Inter', '--font-ui-support': 'Inter',
-    '--font-marketing-display': 'Inter', '--font-arabic': 'IBM Plex Sans Arabic', '--font-arabic-body': 'IBM Plex Sans Arabic',
+    '--motion-ease-icon': 'cubic-bezier(0.16, 1, 0.3, 1)', '--motion-press-scale': '0.985', '--motion-distance-page': '0px',
+    '--motion-distance-reveal': '0px', '--font-sans': 'ui-sans-serif, sans-serif', '--font-display': 'ui-sans-serif, sans-serif', '--font-ui-support': 'ui-sans-serif, sans-serif',
+    '--font-marketing-display': 'ui-sans-serif, sans-serif', '--font-arabic': 'IBM Plex Sans Arabic', '--font-arabic-body': 'IBM Plex Sans Arabic',
     '--font-arabic-display': 'IBM Plex Sans Arabic', '--font-weight-arabic-body': '400', '--font-weight-arabic-display': '700',
     '--font-size-display': 'clamp(2.75rem, 7vw, 5.5rem)', '--font-size-arabic-body': '16px', '--font-size-arabic-body-lg': '18px',
     '--font-size-arabic-display': 'clamp(2.625rem, 6.6vw, 5.25rem)', '--line-height-arabic': '1.75', '--line-height-arabic-body': '1.75',
     '--line-height-arabic-display': '1.14', '--tracking-arabic': '0', '--tracking-arabic-display': '0', '--sidebar-width': '17rem',
     '--control-height-sm': '2rem', '--sidebar-width-collapsed': '4rem', '--sidebar-min-block-size': '30rem', '--sidebar-rail-size': '8px',
-    '--button-height': '40px', '--card-padding': '24px', '--overlay': 'rgba(21,23,28,0.86)', '--modal-surface': '#1D2027', '--popover-surface': '#1D2027',
+    '--button-height': '40px', '--card-padding': '24px', '--overlay': 'rgba(41,39,37,0.72)', '--modal-surface': '#FAF8F3', '--popover-surface': '#FAF8F3',
   }
   const declarations = Object.entries(themeValues).map(([token, value]) => `  ${token}: ${value};`).join('\n')
-  const css = `[data-theme="${id}"] {\n  color-scheme: dark;\n${declarations}\n}\n\n[data-theme="${id}"][data-color-mode="light"] {\n  color-scheme: light;\n  --background: #F7F7F5;\n  --foreground: #15171C;\n  --card: #FFFFFF;\n  --card-foreground: #15171C;\n  --secondary: #ECECF0;\n  --secondary-foreground: #15171C;\n  --muted: #E5E6EA;\n  --muted-foreground: #5F6470;\n  --border: rgb(21 23 28 / 16%);\n  --input: rgb(21 23 28 / 24%);\n  --surface: rgb(21 23 28 / 4.5%);\n  --surface-strong: rgb(21 23 28 / 8%);\n  --surface-elevated: #FFFFFF;\n  --overlay: rgb(247 247 245 / 86%);\n  --modal-surface: #FFFFFF;\n  --popover-surface: #FFFFFF;\n}\n\n[data-theme="${id}"] :where(:lang(ar), [lang|="ar"]) {\n  font-family: var(--font-arabic-body);\n  line-height: var(--line-height-arabic-body);\n  letter-spacing: var(--tracking-arabic);\n  text-transform: none;\n}\n`
+  const css = `[data-theme="${id}"] {\n  color-scheme: light;\n${declarations}\n}\n\n[data-theme="${id}"][data-color-mode="dark"] {\n  color-scheme: dark;\n  --background: #252523;\n  --foreground: #EEEAE1;\n  --card: #2D2D2A;\n  --card-foreground: #EEEAE1;\n  --primary: #B8C0B8;\n  --primary-foreground: #252523;\n  --secondary: #3A3935;\n  --secondary-foreground: #EEEAE1;\n  --muted: #33322F;\n  --muted-foreground: #B9B4AA;\n  --border: rgb(238 234 225 / 18%);\n  --input: rgb(238 234 225 / 28%);\n  --surface: rgb(238 234 225 / 4%);\n  --surface-strong: rgb(238 234 225 / 8%);\n  --surface-elevated: #2D2D2A;\n  --overlay: rgb(37 37 35 / 82%);\n  --modal-surface: #2D2D2A;\n  --popover-surface: #2D2D2A;\n}\n\n[data-theme="${id}"] :where(:lang(ar), [lang|="ar"]) {\n  font-family: var(--font-arabic-body);\n  line-height: var(--line-height-arabic-body);\n  letter-spacing: var(--tracking-arabic);\n  text-transform: none;\n}\n`
   const policy = {
     '$schema': 'https://utopia-studio.co/design-system/theme.schema.json', id, name, type: 'theme-policy', locked: false,
-    summary: `${name} brand theme mapped to the Ceramic semantic contract.`,
+    motionProfile: 'precise',
+    summary: `${name} neutral theme scaffold mapped to the Ceramic semantic contract; replace placeholder primitives before release.`,
     sourceFiles: [`packages/design-system/src/themes/${id}.css`, `packages/design-system/src/manifests/theme-${id}.json`],
-    brandPrimitives: { colors: { background: themeValues['--background'], foreground: themeValues['--foreground'], accent: themeValues['--primary'] }, typography: { latin: 'Inter', arabic: 'IBM Plex Sans Arabic' }, geometry: { controlRadius: themeValues['--radius-control'], surfaceRadius: themeValues['--radius-surface'] } },
+    brandPrimitives: { colors: { background: themeValues['--background'], foreground: themeValues['--foreground'], accent: themeValues['--primary'] }, typography: { latin: 'Unassigned', arabic: 'IBM Plex Sans Arabic' }, geometry: { controlRadius: themeValues['--radius-control'], surfaceRadius: themeValues['--radius-surface'] } },
     semanticMappings: Object.fromEntries(Object.entries(themeValues).map(([token, value]) => [token, value])),
-    visualPolicy: { tone: ['clear', 'intentional', 'product-focused'], allow: ['semantic color roles', 'logical layout properties', 'theme-owned brand expression'], avoid: ['Utopia brand primitives', 'component-specific color literals', 'left/right-only layout APIs'] },
+    visualPolicy: { tone: ['neutral', 'restrained', 'unfinished-by-design'], allow: ['semantic color roles', 'logical layout properties', 'theme-owned brand expression'], avoid: ['shipping placeholder primitives', 'generic SaaS gradients', 'default purple accents', 'component-specific color literals', 'left/right-only layout APIs'] },
     arabicFriendly: { direction: 'Support dir="rtl" with logical CSS properties.', typography: 'Use the declared Arabic family without Latin tracking or casing.' },
     translations: { ar: { summary: `ثيم ${name} مبني على عقد Ceramic الدلالي.`, iconPolicy: { description: 'استخدم أيقونات واضحة ومحايدة الاتجاه، واعكس الأيقونات الاتجاهية في RTL.', allow: ['أيقونات Lucide', 'أيقونات محايدة الاتجاه', 'انعكاس الأيقونات الاتجاهية في RTL'] } } },
   }
   const entry = {
     id, name, shortName: name, locked: false, role: 'brand theme', description: policy.summary,
+    motionProfile: 'precise',
     bestFor: [`${name} product interfaces`], principles: policy.visualPolicy.tone,
     translations: { ar: { name, role: 'ثيم علامة', description: `ثيم ${name} مبني على عقد Ceramic الدلالي.`, bestFor: [`واجهات ${name}`], principles: ['وضوح', 'اتساق', 'دعم العربية'] } },
-    policyManifest: `packages/design-system/src/manifests/theme-${id}.json`, css: `packages/design-system/src/themes/${id}.css`, iconSystem: 'lucide', values: themeValues,
+    policyManifest: `packages/design-system/src/manifests/theme-${id}.json`, css: `packages/design-system/src/themes/${id}.css`, iconSystem: 'unassigned', values: themeValues,
   }
 
   write(cssPath, css)
@@ -157,15 +160,16 @@ function init() {
 2. Run \`npm run ceramic -- search <intent> --json\`, then inspect the selected component or template.
 3. Prefer \`@utopia-studio-design/design-system\` exports over raw shadcn/ui source.
 4. Components consume semantic tokens only. The active theme is \`${theme}\`.
-5. Read \`npm run ceramic -- docs arabic-friendly --dense\` before Arabic or RTL work.
-6. Never invent component props, import paths, tokens, Arabic product copy, or left/right-only APIs.
-7. Validate with \`npm run ceramic:doctor\` before handoff.
+5. Request semantic motion only; inspect \`npm run ceramic -- motion ${getTheme(theme)?.motionProfile} --json\` before choosing an application runtime adapter.
+6. Read \`npm run ceramic -- docs arabic-friendly --dense\` before Arabic or RTL work.
+7. Never invent component props, import paths, tokens, Arabic product copy, or left/right-only APIs.
+8. Validate with \`npm run ceramic:doctor\` before handoff.
 `
   write(join(target, 'AGENTS.md'), rules)
   write(join(target, 'CLAUDE.md'), rules)
   write(join(target, '.cursor/rules/ceramic-design-system.mdc'), `---\ndescription: Ceramic Design System rules\nalwaysApply: true\n---\n\n${rules}`)
   write(join(target, '.github/copilot-instructions.md'), rules)
-  write(join(target, '.ceramic/config.json'), `${JSON.stringify({ apiVersion: 1, theme, arabicFriendly: true, source: '@utopia-studio-design/design-system' }, null, 2)}\n`)
+  write(join(target, '.ceramic/config.json'), `${JSON.stringify({ apiVersion: 1, theme, motionProfile: getTheme(theme)?.motionProfile, arabicFriendly: true, source: '@utopia-studio-design/design-system' }, null, 2)}\n`)
   write(join(target, '.mcp.json'), `${JSON.stringify({ mcpServers: { ceramic: mcpLaunch } }, null, 2)}\n`)
   output('init-result', { ok: true, target, theme, files: ['AGENTS.md', 'CLAUDE.md', '.cursor/rules/ceramic-design-system.mdc', '.github/copilot-instructions.md', '.ceramic/config.json', '.mcp.json'] },
     (data) => `Ceramic initialized in ${data.target}.\nCreated ${data.files.join(', ')}.`)
@@ -226,7 +230,7 @@ function copyTemplateProject(entry) {
     },
     devDependencies: { '@utopia-studio-design/design-system-cli': cliDependency, '@vitejs/plugin-react': '^4.3.4', typescript: '^5.7.2', vite: '^6.0.7' },
   }, null, 2)}\n`)
-  write(join(target, '.ceramic/config.json'), `${JSON.stringify({ apiVersion: 1, theme, arabicFriendly: true, source: '@utopia-studio-design/design-system' }, null, 2)}\n`)
+  write(join(target, '.ceramic/config.json'), `${JSON.stringify({ apiVersion: 1, theme, motionProfile: getTheme(theme)?.motionProfile, motionAdapter: 'framer-motion', arabicFriendly: true, source: '@utopia-studio-design/design-system' }, null, 2)}\n`)
   write(join(target, 'vite.config.ts'), `import { resolve } from 'node:path'\nimport react from '@vitejs/plugin-react'\nimport { defineConfig } from 'vite'\n\nexport default defineConfig({\n  plugins: [react()],\n  build: {\n    rollupOptions: {\n      input: {\n        home: resolve('index.html'),\n        product: resolve('product/index.html'),\n        agents: resolve('agents/index.html'),\n        integrations: resolve('integrations/index.html'),\n        integrationDetail: resolve('integrations/slack/index.html'),\n        customers: resolve('customers/index.html'),\n        customerStory: resolve('customers/aster-labs/index.html'),\n        pricing: resolve('pricing/index.html'),\n        changelog: resolve('changelog/index.html'),\n        contactSales: resolve('contact-sales/index.html'),\n      },\n    },\n  },\n})\n`)
   const existingReadme = readFileSync(join(target, 'README.md'), 'utf8')
   write(join(target, 'README.md'), `# Generated Ceramic SaaS website\n\nActive theme: \`${theme}\`\n\n\`\`\`sh\nnpm install\nnpm run dev\n\`\`\`\n\nOpen \`http://localhost:5173/?seed=1974341818\`. All ten page entries share the same seed, theme, and locale state.\n\n${existingReadme}`)
@@ -258,11 +262,15 @@ else if (command === 'search') {
   if (name === 'create') scaffoldTheme()
   else if (!name || args.includes('--list')) output('theme-list', listThemes(), (rows) => rows.map((item) => `${item.id}|${item.name}|${item.role}|${item.policyManifest}`).join('\n'))
   else { const item = getTheme(name); item ? output('theme', item) : fail(`Unknown theme "${name}".`, 'ERR_THEME') }
+} else if (command === 'motion') {
+  const name = values[0]
+  if (!name || args.includes('--list')) output('motion-profile-list', listMotionProfiles(), (rows) => rows.map((item) => `${item.id}|${item.themes.join(',')}|${item.label}|${item.description}`).join('\n'))
+  else { const item = getMotionProfile(name); item ? output('motion-profile', item) : fail(`Unknown motion profile "${name}".`, 'ERR_MOTION_PROFILE', listMotionProfiles().map((item) => item.id)) }
 } else if (command === 'docs') {
   const topic = values[0]
   if (!topic || args.includes('--list')) output('docs-list', listDocs(), (rows) => rows.join('\n'))
   else { const item = getDoc(topic); item ? output('docs', item, (doc) => dense ? doc.content.replace(/\n{2,}/g, '\n').trim() : doc.content) : fail(`Unknown docs topic "${topic}".`, 'ERR_DOCS', listDocs()) }
 } else if (command === 'doctor') {
-  const result = repositoryDoctor(); output('doctor-result', result, (data) => data.ok ? `Ceramic doctor passed. ${data.checks.components} components, ${data.checks.templates} templates, ${data.checks.themes} themes, MCP ready.` : `Ceramic doctor failed: ${data.missing.join(', ')}`); if (!result.ok) process.exitCode = 1
+  const result = repositoryDoctor(); output('doctor-result', result, (data) => data.ok ? `Ceramic doctor passed. ${data.checks.components} components, ${data.checks.templates} templates, ${data.checks.themes} themes, ${data.checks.motionProfiles} motion profiles, MCP ready.` : `Ceramic doctor failed: ${data.missing.join(', ')}`); if (!result.ok) process.exitCode = 1
 } else if (command === 'mcp') runMcp()
 else fail(`Unknown command "${command}".`, 'ERR_COMMAND', capabilityManifest().commands.map((item) => item.name))

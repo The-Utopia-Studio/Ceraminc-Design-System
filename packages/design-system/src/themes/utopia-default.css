@@ -194,9 +194,9 @@
   --duration-slow: 420ms;
   --ease-standard: cubic-bezier(0.2, 0, 0, 1);
   --motion-duration-press: 160ms;
-  --motion-duration-page: 200ms;
-  --motion-duration-expand: 320ms;
-  --motion-duration-reveal: 520ms;
+  --motion-duration-page: 420ms;
+  --motion-duration-expand: 360ms;
+  --motion-duration-reveal: 440ms;
   --motion-duration-icon: 640ms;
   --motion-duration-fast: var(--motion-duration-press);
   --motion-ease-standard: cubic-bezier(0.2, 0, 0, 1);

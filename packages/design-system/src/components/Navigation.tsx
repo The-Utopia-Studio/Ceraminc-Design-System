@@ -5,7 +5,6 @@ import * as DropdownMenuPrimitive from '@radix-ui/react-dropdown-menu'
 import * as NavigationMenuPrimitive from '@radix-ui/react-navigation-menu'
 import * as TabsPrimitive from '@radix-ui/react-tabs'
 import { Command as CommandPrimitive } from 'cmdk'
-import { motion, useReducedMotion } from 'framer-motion'
 import { Search } from 'lucide-react'
 import { Button, type ButtonProps } from './Button'
 import { cn } from '../lib/utils'
@@ -299,7 +298,6 @@ export function SideNavSection({
 }: SideNavSectionProps) {
   const contentId = React.useId()
   const contentRef = React.useRef<HTMLDivElement>(null)
-  const shouldReduceMotion = useReducedMotion()
   const [uncontrolledExpanded, setUncontrolledExpanded] = React.useState(defaultExpanded)
   const [contentSize, setContentSize] = React.useState(0)
   const isExpanded = expanded ?? uncontrolledExpanded
@@ -364,12 +362,11 @@ export function SideNavSection({
     >
       {label ? (
         variant === 'nested' ? (
-          <motion.button
+          <button
             aria-controls={collapsible ? contentId : undefined}
             aria-expanded={collapsible ? resolvedExpanded : undefined}
             className="uds-side-nav-nested-trigger"
             onClick={collapsible ? handleToggle : undefined}
-            whileTap={shouldReduceMotion ? undefined : { scale: 0.995 }}
             title={collapsible ? collapsedLabel : undefined}
             type="button"
           >
@@ -379,7 +376,7 @@ export function SideNavSection({
                 ⌄
               </span>
             ) : null}
-          </motion.button>
+          </button>
         ) : (
           <SideNavHeading
             aria-controls={collapsible ? contentId : undefined}

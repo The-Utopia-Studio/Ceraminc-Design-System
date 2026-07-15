@@ -68,6 +68,19 @@
   --radius-control: 0.375rem;
   --radius-surface: 0.5rem;
 
+  --motion-duration-press: 80ms;
+  --motion-duration-page: 140ms;
+  --motion-duration-expand: 160ms;
+  --motion-duration-reveal: 140ms;
+  --motion-duration-icon: 240ms;
+  --motion-duration-fast: var(--motion-duration-press);
+  --motion-ease-standard: cubic-bezier(0.2, 0, 0, 1);
+  --motion-ease-emphasized: cubic-bezier(0.2, 0, 0, 1);
+  --motion-ease-icon: var(--motion-ease-standard);
+  --motion-press-scale: 0.97;
+  --motion-distance-page: 3px;
+  --motion-distance-reveal: 2px;
+
   --font-display: "Manrope", "Helvetica Neue", Arial, sans-serif;
   --font-sans: "Manrope", "Helvetica Neue", Arial, sans-serif;
   --font-ui-support: "Satoshi", "Helvetica Neue", Arial, sans-serif;

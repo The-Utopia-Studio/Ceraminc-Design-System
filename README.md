@@ -54,6 +54,21 @@ npm run ds -- doctor
 - Browser MCP contract inspector: `#/docs/mcp-playground`
 - Global documentation search: `⌘K` on macOS or `Ctrl+K` elsewhere
 
+## Motion adapters
+
+Ceramic keeps theme personality separate from the application runtime. Themes select an engine-neutral profile (`ceremonial`, `swift`, or `precise`); applications select the built-in WAAPI adapter or the optional Motion for React, Anime.js, or GSAP adapter. Components request semantic `feedback`, `page`, `surface`, or `layout` motion and retain `motion={false}` as an escape hatch.
+
+```tsx
+import { getMotionThemeProfile, MotionProvider } from '@utopia-studio-design/design-system/Motion'
+import { animeMotionAdapter } from '@utopia-studio-design/design-system/MotionAnime'
+
+<MotionProvider adapter={animeMotionAdapter} themeProfile={getMotionThemeProfile(activeTheme.motionProfile)}>
+  <App />
+</MotionProvider>
+```
+
+`motion-profiles.json` is the runtime and MCP source of truth for timing, easing, states, orchestration, and reduced-motion behavior. Resolve a custom theme through its declared `motionProfile`, not by guessing from its theme id. Optional adapters can be loaded with `import()` when the user selects them.
+
 ## Release
 
 Published packages:

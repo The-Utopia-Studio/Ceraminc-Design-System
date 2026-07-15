@@ -6,6 +6,8 @@ const manifestPath = path.join(root, 'packages/design-system/src/manifests/compo
 const catalogPath = path.join(root, 'packages/design-system/src/manifests/catalog.json')
 const templatesPath = path.join(root, 'packages/design-system/src/manifests/templates.json')
 const themesPath = path.join(root, 'packages/design-system/src/manifests/themes.json')
+const motionProfilesPath = path.join(root, 'packages/design-system/src/manifests/motion-profiles.json')
+const motionCorePath = path.join(root, 'packages/design-system/src/components/Motion.tsx')
 const detailPagePath = path.join(root, 'src/pages/ComponentDetailPage.tsx')
 const docsPagePath = path.join(root, 'src/pages/DocsPage.tsx')
 const arabicFriendlyPagePath = path.join(root, 'src/pages/ArabicFriendlyPage.tsx')
@@ -151,6 +153,7 @@ const componentsManifest = readJson(manifestPath)
 const catalog = readJson(catalogPath)
 const templatesManifest = readJson(templatesPath)
 const themesManifest = readJson(themesPath)
+const motionProfilesManifest = readJson(motionProfilesPath)
 const themePolicyPaths = themesManifest.themes.map((theme) => path.join(root, theme.policyManifest))
 const themePolicies = themePolicyPaths.map(readJson)
 const detailPage = fs.readFileSync(detailPagePath, 'utf8')
@@ -159,6 +162,7 @@ const arabicFriendlyPage = fs.readFileSync(arabicFriendlyPagePath, 'utf8')
 const templatesPage = fs.readFileSync(templatesPagePath, 'utf8')
 const themesPage = fs.readFileSync(themesPagePath, 'utf8')
 const appSource = fs.readFileSync(appPath, 'utf8')
+const motionCore = fs.readFileSync(motionCorePath, 'utf8')
 const appStyles = fs.readFileSync(appStylesPath, 'utf8')
 const commandPalette = fs.readFileSync(commandPalettePath, 'utf8')
 const workbench = fs.readFileSync(workbenchPath, 'utf8')
@@ -319,6 +323,46 @@ if (!defaultTheme?.translations?.ar?.principles?.length || !defaultTheme?.transl
 }
 if (!themesManifest.translations?.ar?.coreBoundary?.doesNotOwn?.length) {
   fail('The theme contract boundary must be available in Arabic')
+}
+
+const expectedMotionProfiles = ['ceremonial', 'swift', 'precise']
+if (!motionCore.includes("manifests/motion-profiles.json")) fail('runtime motion profiles must derive from the published manifest')
+sameSet(motionProfilesManifest.profiles.map((profile) => profile.id), expectedMotionProfiles, 'motion-profiles.json')
+const expectedMotionRecipes = ['feedback', 'page', 'surface', 'layout']
+const expectedMotionTimings = ['press', 'page', 'expand', 'reveal', 'icon']
+for (const profile of motionProfilesManifest.profiles) {
+  sameSet(Object.keys(profile.recipes ?? {}), expectedMotionRecipes, `${profile.id} motion recipes`)
+  sameSet(Object.keys(profile.timings ?? {}), expectedMotionTimings, `${profile.id} motion timings`)
+  if (!profile.label || !profile.description || !profile.rules?.length || !profile.themes?.length) {
+    fail(`${profile.id}: motion profile must describe its label, personality, rules, and themes`)
+  }
+  for (const recipeName of expectedMotionRecipes) {
+    const recipe = profile.recipes?.[recipeName]
+    for (const phaseName of ['enter', 'exit']) {
+      const phase = recipe?.[phaseName]
+      if (!phase?.from || !phase?.to || phase?.timing?.ease?.length !== 4 || typeof phase?.timing?.duration !== 'number') {
+        fail(`${profile.id}.${recipeName}.${phaseName}: motion recipe must provide states and cubic-bezier timing`)
+      }
+    }
+  }
+}
+for (const theme of themesManifest.themes) {
+  if (!expectedMotionProfiles.includes(theme.motionProfile)) {
+    fail(`${theme.id}: theme must select a registered motion profile`)
+  }
+  const profile = motionProfilesManifest.profiles.find((candidate) => candidate.id === theme.motionProfile)
+  if (!profile?.themes.includes(theme.id)) fail(`${theme.id}: selected motion profile must register the theme id`)
+}
+for (const adapterId of ['waapi', 'framer-motion', 'animejs', 'gsap']) {
+  if (!motionProfilesManifest.adapters.some((adapter) => adapter.id === adapterId)) {
+    fail(`motion adapter registry missing ${adapterId}`)
+  }
+}
+for (const contractText of ['MotionAdapter', 'useMotionAnimation', 'motionProfileRegistry', 'motion={false}']) {
+  if (!`${motionCore}\n${docsPage}`.includes(contractText)) fail(`motion contract missing ${contractText}`)
+}
+if (!appSource.includes('getMotionThemeProfile(themeId)') || !appSource.includes('framerMotionAdapter')) {
+  fail('documentation app must demonstrate application-selected runtime with theme-selected motion profile')
 }
 
 if (themesManifest.plannedThemeSlots.length < 3) {

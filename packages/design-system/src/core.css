@@ -86,9 +86,9 @@
   --duration-slow: 420ms;
   --ease-standard: cubic-bezier(0.2, 0, 0, 1);
   --motion-duration-press: 160ms;
-  --motion-duration-page: 200ms;
-  --motion-duration-expand: 320ms;
-  --motion-duration-reveal: 520ms;
+  --motion-duration-page: 420ms;
+  --motion-duration-expand: 360ms;
+  --motion-duration-reveal: 440ms;
   --motion-duration-icon: 640ms;
   --motion-duration-fast: var(--motion-duration-press);
   --motion-ease-standard: cubic-bezier(0.2, 0, 0, 1);
@@ -2038,9 +2038,12 @@ a {
   text-align: start;
   cursor: pointer;
   transition:
-    background-color var(--duration-fast) var(--ease-standard),
-    color var(--duration-fast) var(--ease-standard);
+    background-color var(--motion-duration-press) var(--motion-ease-standard),
+    color var(--motion-duration-press) var(--motion-ease-standard),
+    transform var(--motion-duration-press) var(--motion-ease-standard);
 }
+
+.uds-side-nav-nested-trigger:active { transform: scale(var(--motion-press-scale)); }
 
 .uds-side-nav[data-density='compact'] .uds-side-nav-nested-trigger {
   min-block-size: var(--button-height-sm);
@@ -2911,7 +2914,12 @@ a {
   inline-size: 100%;
   block-size: 100%;
   color: currentColor;
+  opacity: 0;
+  transform: scale(0.72);
+  transition: opacity var(--motion-duration-press) var(--motion-ease-standard), transform var(--motion-duration-press) var(--motion-ease-standard);
 }
+
+.uds-checkbox-motion-mark[data-visible='true'] { opacity: 1; transform: scale(1); }
 
 .uds-checkbox-motion-mark > svg {
   inline-size: var(--checkbox-icon-size);
@@ -4406,8 +4414,15 @@ a {
 }
 
 .uds-collapsible-motion {
+  display: grid;
+  grid-template-rows: 0fr;
+  opacity: 0;
   overflow: hidden;
+  transition: grid-template-rows var(--motion-duration-expand) var(--motion-ease-standard), opacity var(--motion-duration-expand) var(--motion-ease-standard);
 }
+
+.uds-collapsible-motion[data-state='open'] { grid-template-rows: 1fr; opacity: 1; }
+.uds-collapsible-content-inner { min-block-size: 0; }
 
 .uds-direction {
   display: grid;

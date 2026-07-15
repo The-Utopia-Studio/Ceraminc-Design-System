@@ -36,8 +36,16 @@
     "src/themes/*.css"
   ],
   "peerDependencies": {
+    "animejs": "^4.5.0",
+    "framer-motion": "^12.0.0",
+    "gsap": "^3.15.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0"
+  },
+  "peerDependenciesMeta": {
+    "animejs": { "optional": true },
+    "framer-motion": { "optional": true },
+    "gsap": { "optional": true }
   },
   "dependencies": {
     "@radix-ui/react-accordion": "^1.2.15",
@@ -66,17 +74,19 @@
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "cmdk": "^1.1.1",
-    "framer-motion": "^12.42.2",
     "lucide-react": "^1.23.0",
     "react-day-picker": "^10.0.1",
     "react-resizable-panels": "^4.12.1",
     "recharts": "^3.9.2",
-    "tailwind-merge": "^3.4.0",
-    "sonner": "^2.0.7"
+    "sonner": "^2.0.7",
+    "tailwind-merge": "^3.4.0"
   },
   "devDependencies": {
     "@types/react": "^19.0.2",
     "@types/react-dom": "^19.0.2",
+    "animejs": "^4",
+    "framer-motion": "^12.42.2",
+    "gsap": "^3",
     "tsdown": "^0.22.5",
     "typescript": "^5.7.2"
   },

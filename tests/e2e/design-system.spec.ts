@@ -62,6 +62,64 @@ test('shows an honest MCP browser mirror status', async ({ page }) => {
   await expect(page.getByText('doctor-result')).toBeVisible()
 })
 
+test('binds theme motion profiles to application-selected runtime adapters', async ({ page }) => {
+  const errors: string[] = []
+  const optionalAdapterChunks: string[] = []
+  page.on('console', (message) => {
+    if (message.type() === 'error') errors.push(message.text())
+  })
+  page.on('response', (response) => {
+    if (/Motion(?:Anime|Gsap)(?:\.ts|-)/.test(response.url())) optionalAdapterChunks.push(response.url())
+  })
+  await page.goto('/#/docs/foundations/semantic-tokens/motion')
+  const applicationMotionRoot = page.locator('#root > .uds-motion-provider')
+  await expect(applicationMotionRoot).toHaveAttribute('data-motion-engine', 'framer-motion')
+  await expect(applicationMotionRoot).toHaveAttribute('data-motion-profile', 'ceremonial')
+  expect(optionalAdapterChunks).toEqual([])
+
+  const runtimeProvider = page.locator('.motion-runtime-contract').locator('..')
+  for (const runtime of [
+    { name: /Anime\.js/, id: 'animejs' },
+    { name: /GSAP/, id: 'gsap' },
+    { name: /CSS \/ WAAPI/, id: 'waapi' },
+    { name: /Motion for React/, id: 'framer-motion' },
+  ]) {
+    await page.getByRole('button', { name: runtime.name }).click()
+    await expect(runtimeProvider).toHaveAttribute('data-motion-engine', runtime.id)
+    await page.getByRole('button', { name: 'Replay active profile' }).click()
+  }
+
+  await page.goto('/#/themes')
+  await page.getByRole('button', { name: 'Activate Dextrum', exact: true }).click()
+  await page.goto('/#/docs/foundations/semantic-tokens/motion')
+  await expect(page.locator('#root > .uds-motion-provider')).toHaveAttribute('data-motion-profile', 'swift')
+  await expect(page.getByText('Swift response')).toBeVisible()
+  expect(optionalAdapterChunks.some((url) => url.includes('MotionAnime'))).toBe(true)
+  expect(optionalAdapterChunks.some((url) => url.includes('MotionGsap'))).toBe(true)
+  expect(errors).toEqual([])
+})
+
+test('settles immediately without residual transforms when reduced motion is requested', async ({ page }) => {
+  await page.emulateMedia({ reducedMotion: 'reduce' })
+  await page.goto('/#/docs/foundations/semantic-tokens/motion')
+  const provider = page.locator('#root > .uds-motion-provider')
+  const preview = page.locator('.motion-runtime-preview')
+  await expect(provider).toHaveAttribute('data-motion', 'off')
+  await expect(preview).toHaveCSS('opacity', '1')
+  await expect(preview).toHaveCSS('filter', 'blur(0px)')
+  await expect(preview).toHaveCSS('transform', 'matrix(1, 0, 0, 1, 0, 0)')
+})
+
+test('keeps foundation documentation inside a 320px viewport', async ({ page }, testInfo) => {
+  test.skip(!testInfo.project.name.startsWith('mobile'), 'Mobile reflow contract')
+  await page.setViewportSize({ width: 320, height: 700 })
+  for (const route of ['all-tokens', 'color', 'typography', 'motion', 'icons']) {
+    await page.goto(`/#/docs/foundations/semantic-tokens/${route}`)
+    const widths = await page.evaluate(() => ({ client: document.documentElement.clientWidth, scroll: document.documentElement.scrollWidth }))
+    expect(widths.scroll, route).toBeLessThanOrEqual(widths.client)
+  }
+})
+
 test('matches the released component and MCP visual baselines', async ({ page }) => {
   await page.emulateMedia({ reducedMotion: 'reduce' })
   await page.goto('/#/components/button')

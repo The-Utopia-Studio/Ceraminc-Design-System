@@ -24,7 +24,10 @@ assert.ok(existsSync(join(themeWorkspace, 'packages/design-system/src/themes/nov
 assert.ok(existsSync(join(manifestDirectory, 'theme-nova.json')))
 const createdThemes = JSON.parse(readFileSync(join(manifestDirectory, 'themes.json'), 'utf8'))
 assert.equal(createdThemes.themes[0].id, 'nova')
-assert.match(readFileSync(join(themeWorkspace, 'packages/design-system/src/themes/nova.css'), 'utf8'), /data-color-mode="light"/)
+assert.equal(createdThemes.themes[0].motionProfile, 'precise')
+const createdThemeCss = readFileSync(join(themeWorkspace, 'packages/design-system/src/themes/nova.css'), 'utf8')
+assert.match(createdThemeCss, /data-color-mode="dark"/)
+assert.doesNotMatch(createdThemeCss, /Inter|#6F5CFF/)
 run(['theme', 'create', 'nova', themeWorkspace, '--force'])
 assert.equal(JSON.parse(readFileSync(join(manifestDirectory, 'themes.json'), 'utf8')).themes.length, 1)
 
@@ -57,6 +60,7 @@ const mcp = spawnSync(process.execPath, [join(root, 'packages/design-system-cli/
     JSON.stringify({ jsonrpc: '2.0', method: 'notifications/initialized', params: {} }),
     JSON.stringify({ jsonrpc: '2.0', id: 2, method: 'tools/list', params: {} }),
     JSON.stringify({ jsonrpc: '2.0', id: 3, method: 'tools/call', params: { name: 'doctor', arguments: {} } }),
+    JSON.stringify({ jsonrpc: '2.0', id: 4, method: 'tools/call', params: { name: 'get_motion_profile', arguments: { id: 'ceremonial' } } }),
     '',
   ].join('\n'),
 })
@@ -64,6 +68,10 @@ assert.equal(mcp.status, 0, mcp.stderr)
 const mcpReplies = mcp.stdout.trim().split('\n').map((line) => JSON.parse(line))
 assert.equal(mcpReplies.find((reply) => reply.id === 1)?.result.serverInfo.name, 'ceramic-design-system')
 assert.ok(mcpReplies.find((reply) => reply.id === 2)?.result.tools.some((tool) => tool.name === 'doctor'))
+assert.ok(mcpReplies.find((reply) => reply.id === 2)?.result.tools.some((tool) => tool.name === 'get_motion_profile'))
 assert.equal(mcpReplies.find((reply) => reply.id === 3)?.result.structuredContent.ok, true)
+assert.equal(mcpReplies.find((reply) => reply.id === 4)?.result.structuredContent.id, 'ceremonial')
+assert.equal(mcpReplies.find((reply) => reply.id === 4)?.result.structuredContent.recipes.page.enter.timing.duration, 0.42)
+assert.equal(mcpReplies.find((reply) => reply.id === 4)?.result.structuredContent.contract.reducedMotion.includes('immediately'), true)
 
 console.log('Ceramic CLI generation and MCP protocol tests passed.')

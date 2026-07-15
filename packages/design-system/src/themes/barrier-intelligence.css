@@ -64,6 +64,19 @@
   --radius-chat-composer: 1.5rem;
   --radius-chat-token: 0.875rem;
 
+  --motion-duration-press: 100ms;
+  --motion-duration-page: 200ms;
+  --motion-duration-expand: 220ms;
+  --motion-duration-reveal: 240ms;
+  --motion-duration-icon: 320ms;
+  --motion-duration-fast: var(--motion-duration-press);
+  --motion-ease-standard: cubic-bezier(0.2, 0, 0, 1);
+  --motion-ease-emphasized: cubic-bezier(0.16, 1, 0.3, 1);
+  --motion-ease-icon: var(--motion-ease-emphasized);
+  --motion-press-scale: 0.985;
+  --motion-distance-page: 0px;
+  --motion-distance-reveal: 0px;
+
   --font-display: "Hanken Grotesk", "Helvetica Neue", "Inter", system-ui, sans-serif;
   --font-sans: "Hanken Grotesk", "Helvetica Neue", "Inter", system-ui, sans-serif;
   --font-ui-support: "Hanken Grotesk", "Helvetica Neue", "Inter", system-ui, sans-serif;

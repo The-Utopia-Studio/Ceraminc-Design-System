@@ -17,6 +17,7 @@
     "packages/design-system/src/themes/utopia-default.css",
     "packages/design-system/src/manifests/theme-utopia-default.json"
   ],
+  "motionProfile": "ceremonial",
   "brandPrimitives": {
     "colors": {
       "brickRed": "#CC5536",
@@ -60,9 +61,9 @@
     "--radius-chat-composer": "Square chat input geometry",
     "--radius-chat-token": "Square chat token geometry",
     "--motion-duration-press": "160ms physical press feedback",
-    "--motion-duration-page": "200ms quiet view transition",
-    "--motion-duration-expand": "320ms disclosure transition",
-    "--motion-duration-reveal": "520ms soft surface reveal",
+    "--motion-duration-page": "420ms ceremonial view transition",
+    "--motion-duration-expand": "360ms composed disclosure transition",
+    "--motion-duration-reveal": "440ms blur-capable surface reveal",
     "--motion-duration-icon": "640ms action-specific icon motion",
     "--motion-ease-standard": "Direct interaction easing",
     "--motion-ease-emphasized": "Soft reveal and icon easing",

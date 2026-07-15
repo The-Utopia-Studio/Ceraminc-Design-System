@@ -71,6 +71,21 @@ export function getTheme(name) {
   return { ...entry, policy: readJson(policyPath) }
 }
 
+export function getMotionRegistry() {
+  return readJson(join(paths().manifests, 'motion-profiles.json'))
+}
+
+export function listMotionProfiles() {
+  return getMotionRegistry().profiles
+}
+
+export function getMotionProfile(name) {
+  const key = normalize(name)
+  const registry = getMotionRegistry()
+  const profile = registry.profiles.find((item) => normalize(item.id) === key)
+  return profile ? { ...profile, adapters: registry.adapters, contract: registry.contract } : null
+}
+
 export function listDocs() {
   return readdirSync(paths().docs)
     .filter((name) => name.endsWith('.md'))
@@ -91,6 +106,7 @@ export function search(query) {
     ...listComponents().map((item) => ({ kind: 'component', id: item.name, title: item.name, summary: [...item.useWhen, item.category].join(' '), item })),
     ...listTemplates().map((item) => ({ kind: 'template', id: item.id, title: item.title, summary: `${item.category} ${item.purpose}`, item })),
     ...listThemes().map((item) => ({ kind: 'theme', id: item.id, title: item.name, summary: item.role, item })),
+    ...listMotionProfiles().map((item) => ({ kind: 'motion-profile', id: item.id, title: item.label, summary: `${item.description} ${item.rules.join(' ')}`, item })),
     ...listDocs().map((topic) => ({ kind: 'docs', id: topic, title: topic, summary: getDoc(topic)?.content.slice(0, 500) ?? '', item: { topic } })),
   ]
   return results
@@ -116,6 +132,7 @@ export function capabilityManifest() {
       { name: 'component', args: ['<name>|--list'], flags: [], responseType: 'component|component-list' },
       { name: 'template', args: ['<id>|--list'], flags: ['--skeleton', '--copy <directory>', '--theme <id>', '--force'], responseType: 'template|template-list|template-copy-result' },
       { name: 'theme', args: ['<id>|--list', 'create <id> [directory]'], flags: ['--force'], responseType: 'theme|theme-list|theme-create-result' },
+      { name: 'motion', args: ['<id>|--list'], flags: [], responseType: 'motion-profile|motion-profile-list' },
       { name: 'docs', args: ['<topic>|--list'], flags: [], responseType: 'docs|docs-list' },
       { name: 'manifest', args: [], flags: [], responseType: 'manifest' },
       { name: 'doctor', args: [], flags: [], responseType: 'doctor-result' },
@@ -123,30 +140,40 @@ export function capabilityManifest() {
     ],
     mcp: {
       ...mcpLaunch,
-      tools: ['search', 'list_components', 'get_component', 'list_templates', 'get_template', 'list_themes', 'get_theme', 'list_docs', 'get_docs', 'doctor'],
+      tools: ['search', 'list_components', 'get_component', 'list_templates', 'get_template', 'list_themes', 'get_theme', 'list_motion_profiles', 'get_motion_profile', 'list_docs', 'get_docs', 'doctor'],
     },
   }
 }
 
 export function repositoryDoctor() {
   const required = [
-    'catalog.json', 'components.json', 'templates.json', 'themes.json',
+    'catalog.json', 'components.json', 'templates.json', 'themes.json', 'motion-profiles.json',
   ].map((name) => join(paths().manifests, name))
   const docs = ['quick-start-ai', 'arabic-friendly', 'theme-authoring'].map((name) => join(paths().docs, `${name}.md`))
   const missing = [...required, ...docs].filter((path) => !existsSync(path))
+  const motionRegistry = missing.includes(join(paths().manifests, 'motion-profiles.json')) ? null : getMotionRegistry()
+  const motionContract = motionRegistry?.profiles?.every((profile) =>
+    ['feedback', 'page', 'surface', 'layout'].every((recipe) =>
+      ['enter', 'exit'].every((phase) => profile.recipes?.[recipe]?.[phase]?.timing?.ease?.length === 4)
+    )
+  ) === true
+  const contractIssues = motionContract ? [] : ['motion-profiles.json: incomplete semantic recipe contract']
   return {
-    ok: missing.length === 0,
+    ok: missing.length === 0 && motionContract,
     checks: {
       manifests: required.every(existsSync),
       docs: docs.every(existsSync),
       components: listComponents().length,
       templates: listTemplates().length,
       themes: listThemes().length,
+      motionProfiles: listMotionProfiles().length,
+      motionAdapters: getMotionRegistry().adapters.length,
+      motionContract,
       mcp: existsSync(join(packageRoot, 'bin/utopia-ds-mcp.mjs'))
         && mcpLaunch.command === 'npx'
         && mcpLaunch.args.includes('utopia-ds')
         && mcpLaunch.args.at(-1) === 'mcp',
     },
-    missing,
+    missing: [...missing, ...contractIssues],
   }
 }

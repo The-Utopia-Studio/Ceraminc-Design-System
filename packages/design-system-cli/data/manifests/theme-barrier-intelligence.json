@@ -9,6 +9,7 @@
     "packages/design-system/src/themes/barrier-intelligence.css",
     "packages/design-system/src/manifests/theme-barrier-intelligence.json"
   ],
+  "motionProfile": "precise",
   "brandPrimitives": {
     "colors": {
       "black": "#000000",

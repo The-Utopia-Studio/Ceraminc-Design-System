@@ -4,7 +4,6 @@ import * as RadioGroupPrimitive from '@radix-ui/react-radio-group'
 import * as SelectPrimitive from '@radix-ui/react-select'
 import * as SliderPrimitive from '@radix-ui/react-slider'
 import * as SwitchPrimitive from '@radix-ui/react-switch'
-import { AnimatePresence, motion as MotionPrimitive } from 'framer-motion'
 import { Check, Minus } from 'lucide-react'
 import { cn } from '../lib/utils'
 import { useMotionPattern } from './Motion'
@@ -123,21 +122,13 @@ export function Checkbox({
       {...props}
     >
       <CheckboxPrimitive.Indicator className="uds-checkbox-indicator" forceMount>
-        <AnimatePresence initial={false}>
-          {showMark ? (
-            <MotionPrimitive.span
-              key={currentChecked === 'indeterminate' ? 'indeterminate' : 'checked'}
-              className="uds-checkbox-motion-mark"
-              initial={resolvedMotion.enabled ? { opacity: 0, scale: 0.72 } : { opacity: 1, scale: 1 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={resolvedMotion.enabled ? { opacity: 0, scale: 0.72 } : { opacity: 0, scale: 1 }}
-              transition={resolvedMotion.transition}
-              aria-hidden="true"
-            >
-              {currentChecked === 'indeterminate' ? <Minus aria-hidden="true" /> : <Check aria-hidden="true" />}
-            </MotionPrimitive.span>
-          ) : null}
-        </AnimatePresence>
+        <span
+          aria-hidden="true"
+          className="uds-checkbox-motion-mark"
+          data-visible={showMark ? 'true' : 'false'}
+        >
+          {showMark ? (currentChecked === 'indeterminate' ? <Minus aria-hidden="true" /> : <Check aria-hidden="true" />) : null}
+        </span>
       </CheckboxPrimitive.Indicator>
     </CheckboxPrimitive.Root>
   )

@@ -69,25 +69,45 @@ Arabic display sizing should follow the Latin display scale at about 95%, rather
 
 ## Motion Contract
 
-- Ceramic defines five semantic patterns: `press`, `page`, `expand`, `reveal`, and `icon`.
+- Ceramic separates motion policy from motion execution: the theme selects a personality, the application selects an adapter, and components request semantic motion.
+- Component timing continues to use five semantic patterns: `press`, `page`, `expand`, `reveal`, and `icon`.
+- Runtime recipes use four engine-neutral intents: `feedback`, `page`, `surface`, and `layout`.
 - Components consume `--motion-duration-*` and `--motion-ease-*` roles rather than hardcoded milliseconds or easing curves.
-- `MotionProvider` sets the subtree default. Motion-aware components expose `motion?: boolean` for a local override.
+- `MotionProvider` sets the theme profile and runtime adapter for a subtree. Motion-aware components expose `motion?: boolean` for a local override.
 - `motion={false}` and `prefers-reduced-motion: reduce` disable decorative movement while preserving state changes and accessibility.
 - Directional motion follows logical inline start/end and mirrors in RTL when direction carries meaning.
 - Icon motion follows the action: a bell swings from its top, download moves downward, and copy snaps once. Do not apply a generic bounce.
+- `utopia-default` uses the `ceremonial` profile, `dextrum` uses `swift`, and `barrier-intelligence` uses `precise`.
+- WAAPI is built in. Motion for React, Anime.js, and GSAP are optional peer adapters, so unused engines do not need to ship with an application.
 
 ```tsx
-import { MotionProvider } from '@utopia-studio-design/design-system/Motion'
+import { getMotionThemeProfile, MotionProvider } from '@utopia-studio-design/design-system/Motion'
+import { animeMotionAdapter } from '@utopia-studio-design/design-system/MotionAnime'
 import { Button } from '@utopia-studio-design/design-system/Button'
 
 export function App() {
   return (
-    <MotionProvider motion>
+    <MotionProvider
+      adapter={animeMotionAdapter}
+      themeProfile={getMotionThemeProfile(activeTheme.motionProfile)}
+    >
       <Button motion={false}>Static local action</Button>
     </MotionProvider>
   )
 }
 ```
+
+Install only the engine selected by the application:
+
+```bash
+npm install animejs
+# or
+npm install gsap
+# or
+npm install framer-motion
+```
+
+The engine-neutral registry is published as `manifests/motion-profiles.json`. It is the runtime, CLI, and MCP source of truth for timing, easing, semantic recipes, orchestration, theme mappings, and reduced-motion behavior. Resolve custom themes through their declared `motionProfile`; reduced motion applies each semantic final state immediately and clears transform and filter effects. Optional adapters should be loaded with `import()` when they are selected. Motion AI Kit and GSAP Skills may help agents author or audit engine-specific code, but they are authoring tools rather than runtime adapters.
 
 ## Elevation Contract
 

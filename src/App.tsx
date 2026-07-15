@@ -1,5 +1,5 @@
 import { lazy, Suspense, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
-import { AnimatePresence, motion, useReducedMotion } from 'framer-motion'
+import { AnimatePresence, motion } from 'framer-motion'
 import {
   catalog,
   docFamilyHref,
@@ -16,6 +16,8 @@ import { RouteErrorBoundary } from './components/RouteErrorBoundary'
 import { TopNavigation } from './components/TopNavigation'
 import { I18nProvider, categoryLabel, docsLabel, routeLabel, sideNavLabel, t, type Locale } from './i18n'
 import { ThemeProvider, useTheme } from './theme'
+import { getMotionThemeProfile, MotionProvider, useMotionRecipe, useMotionSystem, type MotionState } from '../packages/design-system/src/Motion'
+import { framerMotionAdapter, toFramerMotionState, toFramerTransition } from '../packages/design-system/src/MotionFramer'
 import {
   SideNav,
   SideNavCollapseButton,
@@ -134,7 +136,7 @@ function getToc(path: string, tab: string) {
   if (path.endsWith('/typography')) return [common[0], common[1], { id: 'type-scale', label: 'Type Scale' }, { id: 'arabic-display', label: 'Arabic Display' }, { id: 'mixed-script', label: 'Mixed Script' }, common[2], common[3], common[4], common[5]]
     if (path.endsWith('/spacing')) return [common[0], common[1], { id: 'scale', label: 'Spacing Scale' }, { id: 'logical-layout', label: 'Logical Layout' }, common[2], common[3], common[4], common[5]]
     if (path.endsWith('/shape')) return [common[0], common[1], { id: 'radius-preview', label: 'Radius Roles' }, { id: 'theme-variance', label: 'Theme Variance' }, common[2], common[3], common[4], common[5]]
-    if (path.endsWith('/motion')) return [common[0], common[1], { id: 'motion-scale', label: 'Motion Scale' }, { id: 'mirroring-rules', label: 'Directional Motion' }, common[2], common[3], common[4], common[5]]
+    if (path.endsWith('/motion')) return [common[0], common[1], { id: 'motion-scale', label: 'Motion Scale' }, { id: 'runtime-adapters', label: 'Runtime Adapters' }, { id: 'mirroring-rules', label: 'Directional Motion' }, common[2], common[3], common[4], common[5]]
     if (path.endsWith('/elevation')) return [common[0], common[1], { id: 'surface-preview', label: 'Surface Preview' }, { id: 'overlay-rules', label: 'Overlay Rules' }, common[2], common[3], common[4], common[5]]
     if (path.endsWith('/icons')) return [common[0], common[1], { id: 'shadcn-icons', label: 'shadcn Icons' }, { id: 'icon-policy', label: 'Icon Policy' }, { id: 'icon-mirroring', label: 'Mirroring Rules' }, common[2], common[3], common[4], common[5]]
     if (path.endsWith('/illustrations')) return [common[0], common[1], { id: 'media-rules', label: 'Media Rules' }, { id: 'empty-state', label: 'Empty State' }, common[2], common[3], common[4], common[5]]
@@ -288,13 +290,26 @@ function RouteScrollManager({ path, section }: { path: string; section: string }
 export function App() {
   return (
     <ThemeProvider>
-      <AppShell />
+      <ThemedMotionRoot />
     </ThemeProvider>
+  )
+}
+
+function ThemedMotionRoot() {
+  const { themeId } = useTheme()
+  return (
+    <MotionProvider adapter={framerMotionAdapter} themeProfile={getMotionThemeProfile(themeId)}>
+      <AppShell />
+    </MotionProvider>
   )
 }
 
 function AppShell() {
   const { brand } = useTheme()
+  const { reduceMotion } = useMotionSystem()
+  const pageMotion = useMotionRecipe('page')
+  const layoutMotion = useMotionRecipe('layout')
+  const surfaceMotion = useMotionRecipe('surface')
   const [path, setPath] = useState(getCurrentPath)
   const [section, setSection] = useState(getCurrentSection)
   const [tab, setTab] = useState(getCurrentTab)
@@ -306,9 +321,12 @@ function AppShell() {
   const [locale, setLocale] = useState<Locale>(getInitialLocale)
   const [pendingLocale, setPendingLocale] = useState<Locale | null>(null)
   const transitionTimers = useRef<number[]>([])
-  const reduceMotion = useReducedMotion()
   const dir = locale === 'ar' ? 'rtl' : 'ltr'
   const resolvedSidebarCollapsed = isMobileShell ? false : sidebarCollapsed
+  const directionAware = (state: MotionState) => ({
+    ...state,
+    ...(state.x === undefined ? {} : { x: dir === 'rtl' ? -state.x : state.x }),
+  })
 
   function clearLocaleTransitionTimers() {
     transitionTimers.current.forEach((timer) => window.clearTimeout(timer))
@@ -525,7 +543,7 @@ function AppShell() {
           className="app-sidebar-body"
           inert={resolvedSidebarCollapsed ? true : undefined}
           initial={false}
-          transition={{ duration: 0.18, ease: [0.22, 1, 0.36, 1] }}
+          transition={toFramerTransition(layoutMotion.enter.timing)}
         >
           {isComponentsArea ? (
             <SideNavSection className="side-nav-header">
@@ -679,10 +697,10 @@ function AppShell() {
       <main className="app-main" id="main-content" tabIndex={-1}>
           <motion.div
             key={`${locale}-${path}-${tab}`}
-            animate={{ opacity: 1, x: 0 }}
+            animate={toFramerMotionState(directionAware(pageMotion.enter.to))}
             className={isWidePage ? 'content-frame content-frame-wide' : 'content-frame'}
-            initial={reduceMotion ? false : { opacity: 0, x: dir === 'rtl' ? -6 : 6 }}
-            transition={{ duration: reduceMotion ? 0 : 0.2, ease: [0.22, 1, 0.36, 1] }}
+            initial={reduceMotion ? false : toFramerMotionState(directionAware(pageMotion.enter.from))}
+            transition={toFramerTransition(pageMotion.enter.timing)}
           >
             <RouteErrorBoundary locale={locale} resetKey={`${locale}-${path}-${tab}`}>
               <Suspense fallback={<RouteFallback locale={locale} />}>
@@ -700,12 +718,12 @@ function AppShell() {
       <AnimatePresence initial={false}>
         {isComponentsOverview ? null : (
           <motion.aside
-            animate={{ opacity: 1, x: 0 }}
+            animate={toFramerMotionState(directionAware(surfaceMotion.enter.to))}
             aria-label={t(locale, 'onThisPage')}
             className="toc"
-            exit={reduceMotion ? undefined : { opacity: 0, x: dir === 'rtl' ? -8 : 8 }}
-            initial={reduceMotion ? false : { opacity: 0, x: dir === 'rtl' ? -8 : 8 }}
-            transition={{ duration: reduceMotion ? 0 : 0.16, ease: [0.22, 1, 0.36, 1] }}
+            exit={reduceMotion ? undefined : toFramerMotionState(directionAware(surfaceMotion.exit.to))}
+            initial={reduceMotion ? false : toFramerMotionState(directionAware(surfaceMotion.enter.from))}
+            transition={toFramerTransition(surfaceMotion.enter.timing)}
           >
             <strong>{t(locale, 'onThisPage')}</strong>
             {toc.map((item) => <a key={item.id} href={getTocHref(path, tab, item.id)}>{docsLabel(locale, categoryLabel(locale, item.label))}</a>)}

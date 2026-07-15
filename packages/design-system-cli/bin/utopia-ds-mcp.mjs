@@ -1,17 +1,19 @@
 #!/usr/bin/env node
 import {
-  capabilityManifest, getComponent, getDoc, getTemplate, getTheme,
-  listComponents, listDocs, listTemplates, listThemes, repositoryDoctor, search,
+  capabilityManifest, getComponent, getDoc, getMotionProfile, getTemplate, getTheme,
+  listComponents, listDocs, listMotionProfiles, listTemplates, listThemes, repositoryDoctor, search,
 } from '../lib/api.mjs'
 
 const tools = [
-  ['search', 'Search components, docs, templates, and themes.', { query: { type: 'string' } }, ({ query }) => search(query)],
+  ['search', 'Search components, docs, templates, themes, and motion profiles.', { query: { type: 'string' } }, ({ query }) => search(query)],
   ['list_components', 'List every Ceramic component contract.', {}, () => listComponents()],
   ['get_component', 'Get one component including imports, tokens, usage, and Arabic rules.', { name: { type: 'string' } }, ({ name }) => getComponent(name)],
   ['list_templates', 'List Ceramic starter templates.', {}, () => listTemplates()],
   ['get_template', 'Get a template contract and sections.', { id: { type: 'string' } }, ({ id }) => getTemplate(id)],
   ['list_themes', 'List themes that implement the semantic contract.', {}, () => listThemes()],
   ['get_theme', 'Get a theme policy and semantic mappings.', { id: { type: 'string' } }, ({ id }) => getTheme(id)],
+  ['list_motion_profiles', 'List theme-owned semantic motion personalities.', {}, () => listMotionProfiles()],
+  ['get_motion_profile', 'Get a motion profile, its rules, contract, and compatible runtime adapters.', { id: { type: 'string' } }, ({ id }) => getMotionProfile(id)],
   ['list_docs', 'List AI-readable design-system documents.', {}, () => listDocs()],
   ['get_docs', 'Read one design-system document.', { topic: { type: 'string' } }, ({ topic }) => getDoc(topic)],
   ['doctor', 'Validate the Ceramic source of truth.', {}, () => repositoryDoctor()],

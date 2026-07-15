@@ -7,7 +7,8 @@ import { Badge } from '../../packages/design-system/src/Badge'
 import { Button } from '../../packages/design-system/src/Button'
 import { ButtonGroup, ButtonGroupSeparator, ButtonGroupText } from '../../packages/design-system/src/ButtonGroup'
 import { IconButton } from '../../packages/design-system/src/IconButton'
-import { MotionProvider } from '../../packages/design-system/src/Motion'
+import { MotionProvider, useMotionRecipe } from '../../packages/design-system/src/Motion'
+import { toFramerTransition } from '../../packages/design-system/src/MotionFramer'
 import { Card, CardAction, CardContent, CardDescription, CardFooter, CardHeader, CardStatus, CardTitle } from '../../packages/design-system/src/Card'
 import { Field, FieldContent, FieldDescription, FieldError, FieldGroup, FieldLabel, FieldLegend, FieldSeparator, FieldSet, FieldTitle, TextInput, TextArea, Checkbox, RadioGroup, RadioGroupItem, RadioGroupOption, Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectScrollDownButton, SelectScrollUpButton, SelectSeparator, SelectTrigger, SelectValue, Slider, Switch } from '../../packages/design-system/src/Forms'
 import { AspectRatio, Center, Grid, HStack, VStack } from '../../packages/design-system/src/Layout'
@@ -2743,6 +2744,7 @@ function MobileNavRtlExample() {
 }
 
 function SideNavTypeOne({ isArabic = false }: { isArabic?: boolean }) {
+  const layoutMotion = useMotionRecipe('layout')
   const [collapsed, setCollapsed] = useState(false)
   const collapseLabel = collapsed
     ? (isArabic ? 'فتح الشريط الجانبي' : 'Open sidebar')
@@ -2779,7 +2781,7 @@ function SideNavTypeOne({ isArabic = false }: { isArabic?: boolean }) {
           className="side-nav-type-one-body"
           inert={collapsed ? true : undefined}
           initial={false}
-          transition={{ duration: 0.18, ease: [0.22, 1, 0.36, 1] }}
+          transition={toFramerTransition(layoutMotion.enter.timing)}
         >
           <SideNavSection collapsible label="Overview">
             <SideNavItem icon={<span aria-hidden="true">⌂</span>} isCurrent label="Dashboard" />
