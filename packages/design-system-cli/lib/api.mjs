@@ -9,6 +9,10 @@ const hasWorkspaceSource = existsSync(join(workspaceRoot, 'packages/design-syste
 
 export const apiVersion = 1
 export const cliVersion = '0.2.0'
+export const mcpLaunch = {
+  command: 'npx',
+  args: ['-y', '--package', '@utopia-studio-design/design-system-cli', 'utopia-ds', 'mcp'],
+}
 
 export function paths(root = hasWorkspaceSource ? workspaceRoot : packagedDataRoot) {
   return {
@@ -118,8 +122,7 @@ export function capabilityManifest() {
       { name: 'mcp', args: [], flags: [], responseType: 'stdio-server' },
     ],
     mcp: {
-      command: 'npx',
-      args: ['-y', '@utopia-studio-design/design-system-cli', 'mcp'],
+      ...mcpLaunch,
       tools: ['search', 'list_components', 'get_component', 'list_templates', 'get_template', 'list_themes', 'get_theme', 'list_docs', 'get_docs', 'doctor'],
     },
   }
@@ -139,7 +142,10 @@ export function repositoryDoctor() {
       components: listComponents().length,
       templates: listTemplates().length,
       themes: listThemes().length,
-      mcp: existsSync(join(packageRoot, 'bin/utopia-ds-mcp.mjs')),
+      mcp: existsSync(join(packageRoot, 'bin/utopia-ds-mcp.mjs'))
+        && mcpLaunch.command === 'npx'
+        && mcpLaunch.args.includes('utopia-ds')
+        && mcpLaunch.args.at(-1) === 'mcp',
     },
     missing,
   }

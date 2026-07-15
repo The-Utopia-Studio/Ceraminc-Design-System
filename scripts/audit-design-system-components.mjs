@@ -11,6 +11,8 @@ const docsPagePath = path.join(root, 'src/pages/DocsPage.tsx')
 const arabicFriendlyPagePath = path.join(root, 'src/pages/ArabicFriendlyPage.tsx')
 const templatesPagePath = path.join(root, 'src/pages/TemplatesPage.tsx')
 const themesPagePath = path.join(root, 'src/pages/ThemesPage.tsx')
+const appPath = path.join(root, 'src/App.tsx')
+const appStylesPath = path.join(root, 'src/styles.css')
 const coreCssPath = path.join(root, 'packages/design-system/src/core.css')
 const defaultThemePath = path.join(root, 'packages/design-system/src/themes/utopia-default.css')
 
@@ -152,6 +154,8 @@ const docsPage = fs.readFileSync(docsPagePath, 'utf8')
 const arabicFriendlyPage = fs.readFileSync(arabicFriendlyPagePath, 'utf8')
 const templatesPage = fs.readFileSync(templatesPagePath, 'utf8')
 const themesPage = fs.readFileSync(themesPagePath, 'utf8')
+const appSource = fs.readFileSync(appPath, 'utf8')
+const appStyles = fs.readFileSync(appStylesPath, 'utf8')
 const componentSourcePaths = [...new Set(componentsManifest.components.map((component) => path.join(root, component.sourcePath)))]
 const missingSourcePaths = componentSourcePaths.filter((filePath) => !fs.existsSync(filePath))
 for (const filePath of missingSourcePaths) fail(`missing component source: ${path.relative(root, filePath)}`)
@@ -345,6 +349,22 @@ if (docsSources.includes('#/docs/foundations/arabic-friendly')) {
 }
 if (detailPage.includes("style={{ cursor: 'pointer', padding: '0 4px' }}")) {
   fail('Breadcrumb docs must use BreadcrumbEllipsis instead of a local styled mock')
+}
+
+if (docsPage.includes('"args": ["-y", "@utopia-studio-design/design-system-cli", "mcp"]')) {
+  fail('Getting Started must use an explicit npm package and utopia-ds executable for MCP')
+}
+if (docsPage.includes('apps/example-nextjs') || docsPage.includes('apps/example-vite') || docsPage.includes('rules/agent.md')) {
+  fail('Getting Started must not advertise files or example apps that are not generated')
+}
+if (!appSource.includes('RouteErrorBoundary') || !appSource.includes('data-mobile-nav-open')) {
+  fail('App shell must preserve route recovery and mobile navigation')
+}
+if (appStyles.includes('transition: grid-template-columns')) {
+  fail('App shell must not animate grid-template-columns')
+}
+if (!appStyles.includes('.skip-link:focus-visible') || !docsPage.includes('onKeyDown={(event) => handlePathKeyDown(event, index)}')) {
+  fail('Docs shell must preserve skip navigation and keyboard-operable path tabs')
 }
 
 for (const requiredText of [

@@ -78,6 +78,7 @@
 
   --utopia-black-80: #635b5e;
   --utopia-black-60: #8f898b;
+  --utopia-black-50: #a6a0a2;
   --utopia-black-40: #bdb7b9;
   --utopia-black-20: #e3e1e2;
 
@@ -89,12 +90,12 @@
   --background: var(--utopia-special-black);
   --foreground: var(--utopia-white);
   --foreground-muted: var(--utopia-black-40);
-  --foreground-subtle: var(--utopia-black-60);
+  --foreground-subtle: var(--utopia-black-50);
   --card: var(--surface);
   --card-foreground: var(--foreground);
-  --primary: var(--utopia-brick-red);
+  --primary: #b8472c;
   --primary-foreground: var(--utopia-white);
-  --primary-hover: #b8472c;
+  --primary-hover: #a9442a;
   --primary-active: #9e3d25;
   --destructive: #6f403b;
   --destructive-hover: #7d4842;
@@ -121,7 +122,7 @@
   --muted-foreground: var(--utopia-black-40);
   --border: rgb(255 255 255 / 16%);
   --input: rgb(255 255 255 / 24%);
-  --ring: var(--utopia-brick-red);
+  --ring: var(--utopia-red-80);
 
   --surface: rgb(255 255 255 / 4.5%);
   --surface-strong: rgb(255 255 255 / 8%);

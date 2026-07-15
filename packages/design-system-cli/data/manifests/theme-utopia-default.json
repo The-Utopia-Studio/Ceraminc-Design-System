@@ -52,7 +52,7 @@
   "semanticMappings": {
     "--background": "Special Black",
     "--foreground": "White",
-    "--primary": "Brick Red",
+    "--primary": "Accessible Brick Red action tone (#B8472C); preserve #CC5536 as the brand primitive",
     "--secondary": "Light Grey",
     "--radius-control": "Square geometry",
     "--radius-surface": "Square geometry",

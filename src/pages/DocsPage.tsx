@@ -1,4 +1,4 @@
-import { useState, type ReactNode } from 'react'
+import { useEffect, useState, type KeyboardEvent, type ReactNode } from 'react'
 import { ArrowLeft, ArrowRight, Bell, ChevronDown, Copy, Download, Home, PanelLeft, Search, Settings } from 'lucide-react'
 import { themes, utopiaDefaultTheme } from '../data/design-system'
 import { DextrumTypographySubpage, dextrumTypographySegmentFromPath } from './DextrumTypographySubpage'
@@ -691,14 +691,23 @@ function GettingStartedPage() {
   const isArabic = locale === 'ar'
   const [activePath, setActivePath] = useState(0)
   const [copiedCommand, setCopiedCommand] = useState(false)
+  const [pathsAreHorizontal, setPathsAreHorizontal] = useState(false)
+
+  useEffect(() => {
+    const query = window.matchMedia('(min-width: 621px) and (max-width: 900px)')
+    const updateOrientation = () => setPathsAreHorizontal(query.matches)
+    updateOrientation()
+    query.addEventListener('change', updateOrientation)
+    return () => query.removeEventListener('change', updateOrientation)
+  }, [])
   const paths = [
     {
       body: isArabic ? 'ثبّت الحزمتين، ثم أنشئ قواعد الوكيل وإعداد Ceramic داخل تطبيقك الحالي.' : 'Install both packages, then initialize Ceramic and agent guidance inside your current app.',
-      command: 'npx utopia-ds init --theme utopia-default',
+      command: 'npm install @utopia-studio-design/design-system\nnpm install -D @utopia-studio-design/design-system-cli\nnpx utopia-ds init --theme utopia-default',
       href: '#/docs#install',
       result: isArabic
-        ? ['catalog.json — سجل النظام', 'components.json — عقود المكونات', 'themes.json — ربط التوكنات', 'rules/agent.md — إرشادات الوكيل']
-        : ['catalog.json — System registry', 'components.json — Component contracts', 'themes.json — Token mappings', 'rules/agent.md — AI coding guidance'],
+        ? ['AGENTS.md — إرشادات الوكيل', '.ceramic/config.json — عقد الثيم النشط', '.mcp.json — اتصال MCP', '.github/copilot-instructions.md — إرشادات Copilot']
+        : ['AGENTS.md — Agent guidance', '.ceramic/config.json — Active theme contract', '.mcp.json — MCP connection', '.github/copilot-instructions.md — Copilot guidance'],
       steps: isArabic
         ? [['ثبّت الحزم', 'أضف المكتبة الأساسية وواجهة CLI إلى مشروعك.'], ['هيّئ Ceramic', 'شغّل الأمر لإنشاء ملفات العقد والإرشادات.'], ['تحقق من العقد', 'افحص البيان والمكونات والثيم النشط قبل إنشاء الواجهة.']]
         : [['Install packages', 'Add the core library and CLI to your project.'], ['Initialize Ceramic', 'Run the command to create contract files and agent guidance.'], ['Verify the contract', 'Inspect the manifest, components, and active theme before generating UI.']],
@@ -731,6 +740,25 @@ function GettingStartedPage() {
   ]
   const selectedPath = paths[activePath]
 
+  function selectPath(index: number) {
+    setActivePath(index)
+    setCopiedCommand(false)
+    window.requestAnimationFrame(() => document.getElementById(`getting-started-path-${index}`)?.focus())
+  }
+
+  function handlePathKeyDown(event: KeyboardEvent<HTMLButtonElement>, index: number) {
+    const previousKey = pathsAreHorizontal ? 'ArrowLeft' : 'ArrowUp'
+    const nextKey = pathsAreHorizontal ? 'ArrowRight' : 'ArrowDown'
+    let nextIndex = index
+    if (event.key === previousKey) nextIndex = (index - 1 + paths.length) % paths.length
+    else if (event.key === nextKey) nextIndex = (index + 1) % paths.length
+    else if (event.key === 'Home') nextIndex = 0
+    else if (event.key === 'End') nextIndex = paths.length - 1
+    else return
+    event.preventDefault()
+    selectPath(nextIndex)
+  }
+
   function copySelectedCommand() {
     void navigator.clipboard.writeText(selectedPath.command).catch(() => undefined)
     setCopiedCommand(true)
@@ -748,19 +776,23 @@ function GettingStartedPage() {
       <article className="docs-article">
         <section id="choose-path">
           <div className="getting-started-workspace">
-            <div aria-label={isArabic ? 'مسارات البدء' : 'Getting started paths'} className="getting-started-path-selector" role="tablist">
+            <div
+              aria-label={isArabic ? 'مسارات البدء' : 'Getting started paths'}
+              aria-orientation={pathsAreHorizontal ? 'horizontal' : 'vertical'}
+              className="getting-started-path-selector"
+              role="tablist"
+            >
               {paths.map((path, index) => (
                 <button
-                  aria-controls={`getting-started-path-panel-${index}`}
+                  aria-controls="getting-started-path-panel"
                   aria-selected={activePath === index}
                   className="getting-started-path-trigger"
                   id={`getting-started-path-${index}`}
                   key={path.title}
-                  onClick={() => {
-                    setActivePath(index)
-                    setCopiedCommand(false)
-                  }}
+                  onClick={() => selectPath(index)}
+                  onKeyDown={(event) => handlePathKeyDown(event, index)}
                   role="tab"
+                  tabIndex={activePath === index ? 0 : -1}
                   type="button"
                 >
                   <span>{path.title}</span>
@@ -771,7 +803,7 @@ function GettingStartedPage() {
             <div
               aria-labelledby={`getting-started-path-${activePath}`}
               className="getting-started-contract"
-              id={`getting-started-path-panel-${activePath}`}
+              id="getting-started-path-panel"
               role="tabpanel"
             >
               <header>
@@ -884,14 +916,9 @@ export function Example() {
             </thead>
             <tbody>
               <tr>
-                <td>Next.js</td>
-                <td>Next.js + theme CSS</td>
-                <td>apps/example-nextjs</td>
-              </tr>
-              <tr>
-                <td>Vite</td>
-                <td>Vite + theme CSS</td>
-                <td>apps/example-vite</td>
+                <td>{isArabic ? 'قالب SaaS' : 'SaaS solution template'}</td>
+                <td>Vite + React + theme CSS</td>
+                <td>templates/saas-solution-homepage</td>
               </tr>
             </tbody>
           </table>
@@ -921,7 +948,7 @@ npx utopia-ds doctor --json`}</pre>
   "mcpServers": {
     "ceramic": {
       "command": "npx",
-      "args": ["-y", "@utopia-studio-design/design-system-cli", "mcp"]
+      "args": ["-y", "--package", "@utopia-studio-design/design-system-cli", "utopia-ds", "mcp"]
     }
   }
 }`}</pre>

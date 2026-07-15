@@ -37,7 +37,7 @@ Every authoring command must support `--json`, `--dry-run`, deterministic output
 The generated `.mcp.json` works for clients that support project-local MCP configuration. Codex CLI can register the same stdio server explicitly:
 
 ```sh
-codex mcp add ceramic -- npx -y @utopia-studio-design/design-system-cli mcp
+codex mcp add ceramic -- npx -y --package @utopia-studio-design/design-system-cli utopia-ds mcp
 ```
 
 The server exposes read-only design-system discovery. File-writing operations remain CLI commands with dry-run and explicit user control.

@@ -88,7 +88,7 @@ The MCP server exposes the same API as the CLI. A generated `.mcp.json` uses:
   "mcpServers": {
     "ceramic": {
       "command": "npx",
-      "args": ["-y", "@utopia-studio-design/design-system-cli", "mcp"]
+      "args": ["-y", "--package", "@utopia-studio-design/design-system-cli", "utopia-ds", "mcp"]
     }
   }
 }

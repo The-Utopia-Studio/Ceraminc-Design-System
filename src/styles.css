@@ -63,7 +63,6 @@ body {
   grid-template-columns: 240px minmax(0, 1fr) 240px;
   grid-template-rows: 72px minmax(0, 1fr);
   min-height: 100vh;
-  transition: grid-template-columns 240ms var(--ease-standard);
 }
 
 .app-shell[dir="rtl"] {
@@ -78,20 +77,22 @@ body {
   grid-template-columns: 64px minmax(0, 1fr) 292px;
 }
 
-.components-overview-shell {
-  grid-template-columns: 240px minmax(0, 1fr) 0px;
+.skip-link {
+  position: fixed;
+  inset-block-start: var(--space-3);
+  inset-inline-start: var(--space-3);
+  z-index: 1100;
+  translate: 0 calc(-100% - var(--space-6));
+  border: var(--border-width-focus) solid var(--ring);
+  background: var(--background);
+  padding: var(--space-3) var(--space-4);
+  color: var(--foreground);
+  font-weight: var(--font-weight-medium);
 }
 
-.components-overview-shell[dir="rtl"] {
-  grid-template-columns: 240px minmax(0, 1fr) 0px;
-}
-
-.components-overview-shell[data-sidebar-collapsed="true"] {
-  grid-template-columns: 64px minmax(0, 1fr) 0px;
-}
-
-.components-overview-shell[dir="rtl"][data-sidebar-collapsed="true"] {
-  grid-template-columns: 64px minmax(0, 1fr) 0px;
+.skip-link:focus-visible {
+  translate: 0;
+  outline: none;
 }
 
 .topbar {
@@ -181,7 +182,13 @@ body {
 .toc a:hover,
 .toc a:focus-visible {
   color: var(--foreground);
-  outline: none;
+}
+
+.topbar-nav .uds-top-nav-item:focus-visible,
+.side-nav a:focus-visible,
+.toc a:focus-visible {
+  outline: var(--focus-ring-width) solid var(--focus-ring);
+  outline-offset: var(--focus-ring-offset);
 }
 
 .topbar-cta {
@@ -266,25 +273,6 @@ body {
 .route-loading {
   inline-size: 100%;
   min-block-size: 40vh;
-}
-
-@keyframes ceramic-section-in {
-  from {
-    opacity: 0;
-    transform: translateY(var(--motion-distance-reveal));
-  }
-}
-
-.content-frame > .page > :where(header, section, .split-grid) {
-  animation: ceramic-section-in var(--motion-duration-reveal) var(--motion-ease-emphasized) both;
-}
-
-.content-frame > .page > :where(header, section, .split-grid):nth-child(2) {
-  animation-delay: calc(var(--motion-duration-press) / 2);
-}
-
-.content-frame > .page > :where(header, section, .split-grid):nth-child(n + 3) {
-  animation-delay: var(--motion-duration-press);
 }
 
 .content-frame :where(.card, .foundation-card, .theme-card, .template-card, .link-card) {
@@ -459,25 +447,30 @@ body {
   padding-inline: var(--space-3);
 }
 
-.side-nav-collapse-button {
+.app-sidebar .uds-side-nav-collapse-button {
   justify-self: end;
-  min-inline-size: 36px;
-  inline-size: 36px;
-  block-size: 36px;
+  min-inline-size: 44px;
+  min-block-size: 44px;
+  inline-size: 44px;
+  block-size: 44px;
   border-radius: var(--radius-control);
   color: var(--foreground-muted);
   font-size: 20px;
   line-height: 1;
 }
 
-.side-nav-collapse-button:hover,
-.side-nav-collapse-button:focus-visible {
+.app-sidebar .uds-side-nav-collapse-button:hover,
+.app-sidebar .uds-side-nav-collapse-button:focus-visible {
   background: color-mix(in srgb, var(--background) 88%, var(--foreground) 12%);
   color: var(--foreground);
 }
 
 .app-main {
   grid-column: 2;
+}
+
+.components-overview-shell .app-main {
+  grid-column: 2 / 4;
 }
 
 .app-shell[dir="rtl"] .app-main {
@@ -582,6 +575,25 @@ body {
 .page {
   display: grid;
   gap: 40px;
+}
+
+.route-error {
+  display: grid;
+  align-content: center;
+  justify-items: start;
+  gap: var(--space-4);
+  min-block-size: min(36rem, calc(100vh - 10rem));
+  max-inline-size: 42rem;
+}
+
+.route-error :where(h1, p) {
+  margin: 0;
+}
+
+.route-error-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
 }
 
 .components-library-page {
@@ -1425,11 +1437,8 @@ body {
 }
 
 .getting-started-path-trigger[aria-selected='true'] {
-  box-shadow: inset 2px 0 0 var(--primary);
-}
-
-[dir='rtl'] .getting-started-path-trigger[aria-selected='true'] {
-  box-shadow: inset -2px 0 0 var(--primary);
+  outline: var(--border-width-hairline) solid var(--primary);
+  outline-offset: calc(-1 * var(--border-width-hairline));
 }
 
 .getting-started-path-trigger:focus-visible {
@@ -5914,6 +5923,10 @@ body {
     grid-template-columns: 64px minmax(0, 1fr);
   }
 
+  .components-overview-shell .app-main {
+    grid-column: 2 / -1;
+  }
+
   .topbar {
     grid-template-columns: minmax(0, 1fr) auto;
     grid-column: 2 / -1;
@@ -6032,6 +6045,10 @@ body {
     min-inline-size: 0;
   }
 
+  .components-overview-shell .app-main {
+    grid-column: 1 / -1;
+  }
+
   .app-sidebar-body,
   .side-nav-header,
   .side-nav-content {
@@ -6040,6 +6057,41 @@ body {
 
   .side-nav-group {
     display: none;
+  }
+
+  .app-shell[data-mobile-nav-open="true"] .app-sidebar,
+  .app-shell[data-mobile-nav-open="true"] .app-sidebar.uds-side-nav {
+    position: fixed;
+    inset: 0;
+    z-index: 60;
+    display: flex;
+    inline-size: 100%;
+    block-size: 100dvh;
+    max-block-size: none;
+    overflow: hidden;
+    border-bottom: 0;
+    padding: var(--space-3) var(--space-3) var(--space-6);
+  }
+
+  .app-shell[data-mobile-nav-open="true"] .app-sidebar-body {
+    display: grid;
+    overflow: hidden;
+  }
+
+  .app-shell[data-mobile-nav-open="true"] .side-nav-header,
+  .app-shell[data-mobile-nav-open="true"] .side-nav-content,
+  .app-shell[data-mobile-nav-open="true"] .side-nav-group {
+    display: grid;
+  }
+
+  .app-shell[data-mobile-nav-open="true"] .side-nav-content {
+    overflow-block: auto;
+    overscroll-behavior: contain;
+  }
+
+  .topbar-nav .uds-top-nav-item,
+  .locale-switch {
+    min-block-size: 44px;
   }
 
   .content-frame {
@@ -6061,5 +6113,9 @@ body {
 
   .content-frame :where(a.card, a.foundation-card, .link-card):hover {
     transform: none;
+  }
+
+  .skip-link {
+    transition: none;
   }
 }

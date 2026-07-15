@@ -1,5 +1,5 @@
 import { lazy, Suspense, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
-import { AnimatePresence, motion } from 'framer-motion'
+import { AnimatePresence, motion, useReducedMotion } from 'framer-motion'
 import {
   catalog,
   docFamilyHref,
@@ -11,6 +11,7 @@ import {
   themeFamilyHref,
 } from './data/design-system'
 import { LocaleTransitionOverlay } from './components/LocaleTransitionOverlay'
+import { RouteErrorBoundary } from './components/RouteErrorBoundary'
 import { TopNavigation } from './components/TopNavigation'
 import { I18nProvider, categoryLabel, docsLabel, routeLabel, sideNavLabel, t, type Locale } from './i18n'
 import { ThemeProvider, useTheme } from './theme'
@@ -291,10 +292,14 @@ function AppShell() {
   const [tab, setTab] = useState(getCurrentTab)
   const [componentSearch, setComponentSearch] = useState('')
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false)
+  const [mobileNavOpen, setMobileNavOpen] = useState(false)
+  const [isMobileShell, setIsMobileShell] = useState(false)
   const [locale, setLocale] = useState<Locale>(getInitialLocale)
   const [pendingLocale, setPendingLocale] = useState<Locale | null>(null)
   const transitionTimers = useRef<number[]>([])
+  const reduceMotion = useReducedMotion()
   const dir = locale === 'ar' ? 'rtl' : 'ltr'
+  const resolvedSidebarCollapsed = isMobileShell ? false : sidebarCollapsed
 
   function clearLocaleTransitionTimers() {
     transitionTimers.current.forEach((timer) => window.clearTimeout(timer))
@@ -324,6 +329,39 @@ function AppShell() {
     window.addEventListener('hashchange', handleHashChange)
     return () => window.removeEventListener('hashchange', handleHashChange)
   }, [])
+
+  useEffect(() => {
+    const query = window.matchMedia('(max-width: 820px)')
+    const updateShellMode = () => {
+      setIsMobileShell(query.matches)
+      if (!query.matches) setMobileNavOpen(false)
+    }
+    updateShellMode()
+    query.addEventListener('change', updateShellMode)
+    return () => query.removeEventListener('change', updateShellMode)
+  }, [])
+
+  useEffect(() => {
+    setMobileNavOpen(false)
+  }, [path])
+
+  useEffect(() => {
+    if (!mobileNavOpen) return
+    const previousOverflow = document.body.style.overflow
+    const obscuredRegions = Array.from(document.querySelectorAll<HTMLElement>('.topbar, .app-main, .toc'))
+    const closeOnEscape = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') setMobileNavOpen(false)
+    }
+    document.body.style.overflow = 'hidden'
+    obscuredRegions.forEach((region) => { region.inert = true })
+    window.requestAnimationFrame(() => document.querySelector<HTMLButtonElement>('.app-sidebar .uds-side-nav-collapse-button')?.focus())
+    window.addEventListener('keydown', closeOnEscape)
+    return () => {
+      document.body.style.overflow = previousOverflow
+      obscuredRegions.forEach((region) => { region.inert = false })
+      window.removeEventListener('keydown', closeOnEscape)
+    }
+  }, [mobileNavOpen])
 
   useEffect(() => {
     document.documentElement.lang = locale === 'ar' ? 'ar' : 'en'
@@ -404,11 +442,15 @@ function AppShell() {
     <div
       className={isComponentsOverview ? 'app-shell components-overview-shell' : 'app-shell'}
       aria-busy={pendingLocale ? 'true' : undefined}
-      data-sidebar-collapsed={sidebarCollapsed ? 'true' : undefined}
+      data-sidebar-collapsed={resolvedSidebarCollapsed ? 'true' : undefined}
+      data-mobile-nav-open={mobileNavOpen ? 'true' : undefined}
       data-locale={locale}
       dir={dir}
       lang={locale === 'ar' ? 'ar' : 'en'}
     >
+      <a className="skip-link" href="#main-content">
+        {locale === 'ar' ? 'انتقل إلى المحتوى' : 'Skip to content'}
+      </a>
       <TopNavigation
         links={navLinks}
         locale={locale}
@@ -419,18 +461,21 @@ function AppShell() {
       <SideNav
         aria-label={locale === 'ar' ? `تنقل ${sideNavLabel(locale, sidebarArea.label)}` : `${sideNavLabel(locale, sidebarArea.label)} navigation`}
         className="app-sidebar side-nav"
-        collapsed={sidebarCollapsed}
+        collapsed={resolvedSidebarCollapsed}
         density="compact"
         heading={(
           <SideNavHeading
             className="app-sidebar-heading"
             endContent={(
               <SideNavCollapseButton
-                aria-label={sidebarCollapsed
-                  ? (locale === 'ar' ? 'فتح الشريط الجانبي' : 'Open sidebar')
-                  : (locale === 'ar' ? 'إغلاق الشريط الجانبي' : 'Close sidebar')}
-                aria-expanded={!sidebarCollapsed}
-                onClick={() => setSidebarCollapsed((value) => !value)}
+                aria-label={(isMobileShell ? !mobileNavOpen : sidebarCollapsed)
+                  ? (locale === 'ar' ? 'فتح التنقل' : 'Open navigation')
+                  : (locale === 'ar' ? 'إغلاق التنقل' : 'Close navigation')}
+                aria-expanded={isMobileShell ? mobileNavOpen : !sidebarCollapsed}
+                onClick={() => {
+                  if (isMobileShell) setMobileNavOpen((value) => !value)
+                  else setSidebarCollapsed((value) => !value)
+                }}
               >
                 <PanelIcon />
               </SideNavCollapseButton>
@@ -442,7 +487,7 @@ function AppShell() {
             variant="brand"
           />
         )}
-        search={!sidebarCollapsed && isComponentsArea ? (
+        search={!resolvedSidebarCollapsed && isComponentsArea ? (
           <SideNavSearch
             aria-label={t(locale, 'searchComponents')}
             label={t(locale, 'searchComponents')}
@@ -453,10 +498,10 @@ function AppShell() {
         ) : undefined}
       >
         <motion.div
-          animate={sidebarCollapsed ? { opacity: 0, x: -8 } : { opacity: 1, x: 0 }}
-          aria-hidden={sidebarCollapsed}
+          animate={resolvedSidebarCollapsed ? { opacity: 0, x: -8 } : { opacity: 1, x: 0 }}
+          aria-hidden={resolvedSidebarCollapsed}
           className="app-sidebar-body"
-          inert={sidebarCollapsed ? true : undefined}
+          inert={resolvedSidebarCollapsed ? true : undefined}
           initial={false}
           transition={{ duration: 0.18, ease: [0.22, 1, 0.36, 1] }}
         >
@@ -609,30 +654,38 @@ function AppShell() {
         </motion.div>
       </SideNav>
 
-      <main className="app-main">
-        <AnimatePresence mode="wait" initial={false}>
+      <main className="app-main" id="main-content" tabIndex={-1}>
           <motion.div
             key={`${locale}-${path}-${tab}`}
-            animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+            animate={{ opacity: 1, x: 0 }}
             className={isWidePage ? 'content-frame content-frame-wide' : 'content-frame'}
-            exit={{ opacity: 0, y: -8, filter: 'blur(2px)' }}
-            initial={{ opacity: 0, y: 10, filter: 'blur(2px)' }}
-            transition={{ duration: 0.28, ease: [0.22, 1, 0.36, 1] }}
+            initial={reduceMotion ? false : { opacity: 0, x: dir === 'rtl' ? -6 : 6 }}
+            transition={{ duration: reduceMotion ? 0 : 0.2, ease: [0.22, 1, 0.36, 1] }}
           >
-            <Suspense fallback={<RouteFallback locale={locale} />}>
-              <RouteScrollManager path={path} section={section} />
-              {componentId ? <ComponentDetailPage componentId={componentId} tab={tab} /> : <Page path={path} />}
-            </Suspense>
+            <RouteErrorBoundary locale={locale} resetKey={`${locale}-${path}-${tab}`}>
+              <Suspense fallback={<RouteFallback locale={locale} />}>
+                <RouteScrollManager path={path} section={section} />
+                {componentId ? <ComponentDetailPage componentId={componentId} tab={tab} /> : <Page path={path} />}
+              </Suspense>
+            </RouteErrorBoundary>
           </motion.div>
-        </AnimatePresence>
       </main>
 
-      {isComponentsOverview ? null : (
-        <aside className="toc" aria-label={t(locale, 'onThisPage')}>
-          <strong>{t(locale, 'onThisPage')}</strong>
-          {toc.map((item) => <a key={item.id} href={getTocHref(path, tab, item.id)}>{docsLabel(locale, categoryLabel(locale, item.label))}</a>)}
-        </aside>
-      )}
+      <AnimatePresence initial={false}>
+        {isComponentsOverview ? null : (
+          <motion.aside
+            animate={{ opacity: 1, x: 0 }}
+            aria-label={t(locale, 'onThisPage')}
+            className="toc"
+            exit={reduceMotion ? undefined : { opacity: 0, x: dir === 'rtl' ? -8 : 8 }}
+            initial={reduceMotion ? false : { opacity: 0, x: dir === 'rtl' ? -8 : 8 }}
+            transition={{ duration: reduceMotion ? 0 : 0.16, ease: [0.22, 1, 0.36, 1] }}
+          >
+            <strong>{t(locale, 'onThisPage')}</strong>
+            {toc.map((item) => <a key={item.id} href={getTocHref(path, tab, item.id)}>{docsLabel(locale, categoryLabel(locale, item.label))}</a>)}
+          </motion.aside>
+        )}
+      </AnimatePresence>
       <AnimatePresence>
         {pendingLocale ? <LocaleTransitionOverlay nextLocale={pendingLocale} /> : null}
       </AnimatePresence>

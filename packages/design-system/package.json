@@ -8,7 +8,8 @@
   "publishConfig": { "access": "public" },
   "scripts": {
     "build": "tsdown",
-    "check": "tsc --noEmit -p tsconfig.json"
+    "check": "tsc --noEmit -p tsconfig.json",
+    "prepack": "npm run build"
   },
   "exports": {
     ".": {

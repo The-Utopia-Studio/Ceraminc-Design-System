@@ -4,7 +4,7 @@ import { dirname, join, resolve } from 'node:path'
 import { spawn } from 'node:child_process'
 import {
   capabilityManifest, envelope, getComponent, getDoc, getTemplate, getTheme,
-  listComponents, listDocs, listTemplates, listThemes, repositoryDoctor, search,
+  listComponents, listDocs, listTemplates, listThemes, mcpLaunch, repositoryDoctor, search,
 } from '../lib/api.mjs'
 
 const args = process.argv.slice(2)
@@ -166,7 +166,7 @@ function init() {
   write(join(target, '.cursor/rules/ceramic-design-system.mdc'), `---\ndescription: Ceramic Design System rules\nalwaysApply: true\n---\n\n${rules}`)
   write(join(target, '.github/copilot-instructions.md'), rules)
   write(join(target, '.ceramic/config.json'), `${JSON.stringify({ apiVersion: 1, theme, arabicFriendly: true, source: '@utopia-studio-design/design-system' }, null, 2)}\n`)
-  write(join(target, '.mcp.json'), `${JSON.stringify({ mcpServers: { ceramic: { command: 'npx', args: ['-y', '@utopia-studio-design/design-system-cli', 'mcp'] } } }, null, 2)}\n`)
+  write(join(target, '.mcp.json'), `${JSON.stringify({ mcpServers: { ceramic: mcpLaunch } }, null, 2)}\n`)
   output('init-result', { ok: true, target, theme, files: ['AGENTS.md', 'CLAUDE.md', '.cursor/rules/ceramic-design-system.mdc', '.github/copilot-instructions.md', '.ceramic/config.json', '.mcp.json'] },
     (data) => `Ceramic initialized in ${data.target}.\nCreated ${data.files.join(', ')}.`)
 }
