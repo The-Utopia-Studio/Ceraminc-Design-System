@@ -6404,6 +6404,10 @@ html[data-theme="utopia-default"] .app-shell[data-area="themes"] .page-hero {
   border-color: var(--brand-rule-dark);
 }
 
+html[data-theme="utopia-default"] .app-shell[data-area="themes"] .page-hero {
+  container-type: inline-size;
+}
+
 html[data-theme="utopia-default"] .page-hero::before,
 html[data-theme="utopia-default"] .components-library-hero::before {
   position: absolute;
@@ -6453,6 +6457,15 @@ html[data-theme="utopia-default"] .components-library-hero h1 {
   letter-spacing: var(--brand-display-tracking);
   text-wrap: balance;
   text-transform: uppercase;
+}
+
+html[data-theme="utopia-default"] .app-shell[data-area="themes"] .page-hero h1 {
+  justify-self: stretch;
+  inline-size: 100%;
+  min-inline-size: 0;
+  max-inline-size: 100%;
+  font-size: clamp(2.25rem, 9cqi, 5.75rem);
+  line-height: 0.92;
 }
 
 html[data-theme="utopia-default"] .app-shell[data-locale="ko"] .page-hero h1,

@@ -83,6 +83,28 @@ test('keeps the documentation command readable without a redundant header CTA', 
   expect(colors.fitsWithoutHorizontalScroll).toBe(true)
 })
 
+test('keeps the Themes hero heading inside its responsive frame', async ({ page }) => {
+  await page.goto('/#/themes')
+
+  const metrics = await page.locator('.page-hero').evaluate((hero) => {
+    const heading = hero.querySelector('h1')!
+    const heroBounds = hero.getBoundingClientRect()
+    const headingBounds = heading.getBoundingClientRect()
+    return {
+      headingClientWidth: heading.clientWidth,
+      headingRight: headingBounds.right,
+      headingScrollWidth: heading.scrollWidth,
+      heroClientWidth: hero.clientWidth,
+      heroRight: heroBounds.right,
+      heroScrollWidth: hero.scrollWidth,
+    }
+  })
+
+  expect(metrics.headingScrollWidth).toBeLessThanOrEqual(metrics.headingClientWidth + 1)
+  expect(metrics.headingRight).toBeLessThanOrEqual(metrics.heroRight + 1)
+  expect(metrics.heroScrollWidth).toBeLessThanOrEqual(metrics.heroClientWidth + 1)
+})
+
 test('opens and closes the mobile navigation without leaking scroll', async ({ page }, testInfo) => {
   test.skip(!testInfo.project.name.startsWith('mobile'), 'Mobile navigation contract')
   await page.goto('/#/components')
