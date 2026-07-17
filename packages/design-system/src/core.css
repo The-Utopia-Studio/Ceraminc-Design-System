@@ -6717,7 +6717,10 @@ a {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .uds-utopia-wordmark-loader-mark,
+  .uds-utopia-wordmark-loader-mark {
+    animation: uds-utopia-wordmark-loader-intro 1ms linear both;
+  }
+
   .uds-utopia-wordmark-loader-line {
     opacity: 1;
     transform: none;
@@ -6729,7 +6732,10 @@ a {
   }
 }
 
-:where([data-motion='off']) .uds-utopia-wordmark-loader-mark,
+:where([data-motion='off']) .uds-utopia-wordmark-loader-mark {
+  animation: uds-utopia-wordmark-loader-intro 1ms linear both;
+}
+
 :where([data-motion='off']) .uds-utopia-wordmark-loader-line {
   opacity: 1;
   transform: none;

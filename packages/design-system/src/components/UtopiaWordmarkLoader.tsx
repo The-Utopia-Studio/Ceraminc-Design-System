@@ -8,6 +8,7 @@ export interface UtopiaWordmarkLoaderProps extends Omit<React.HTMLAttributes<HTM
   fullscreen?: boolean
   label: string
   onExitComplete?: () => void
+  onIntroComplete?: () => void
   phase?: UtopiaWordmarkLoaderPhase
   size?: UtopiaWordmarkLoaderSize
 }
@@ -22,14 +23,15 @@ export function UtopiaWordmarkLoader({
   fullscreen = true,
   label,
   onExitComplete,
+  onIntroComplete,
   phase = 'intro',
   size = 'sm',
   ...props
 }: UtopiaWordmarkLoaderProps) {
   const handleAnimationEnd = (event: React.AnimationEvent<SVGSVGElement>) => {
-    if (phase === 'exit' && event.target === event.currentTarget) {
-      onExitComplete?.()
-    }
+    if (event.target !== event.currentTarget) return
+    if (phase === 'intro') onIntroComplete?.()
+    if (phase === 'exit') onExitComplete?.()
   }
 
   return (

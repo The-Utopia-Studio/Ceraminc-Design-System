@@ -338,14 +338,13 @@ function AppShell() {
     if (nextLocale === locale || nextLocale === pendingLocale) return
     setLocaleTransitionPhase('intro')
     setPendingLocale(nextLocale)
-    setLocale(nextLocale)
   }
 
-  useEffect(() => {
-    if (!pendingLocale || pendingLocale !== locale) return
-    const frame = window.requestAnimationFrame(() => setLocaleTransitionPhase('exit'))
-    return () => window.cancelAnimationFrame(frame)
-  }, [locale, pendingLocale])
+  function completeLocaleTransitionIntro() {
+    if (!pendingLocale) return
+    setLocale(pendingLocale)
+    setLocaleTransitionPhase('exit')
+  }
 
   useEffect(() => {
     const handleHashChange = () => {
@@ -733,6 +732,7 @@ function AppShell() {
         <LocaleTransitionOverlay
           nextLocale={pendingLocale}
           onExitComplete={() => setPendingLocale(null)}
+          onIntroComplete={completeLocaleTransitionIntro}
           phase={localeTransitionPhase}
         />
       ) : null}

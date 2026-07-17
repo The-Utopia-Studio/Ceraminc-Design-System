@@ -56,7 +56,6 @@ export function TopNavigation({ links, locale, onLocaleChange, onSearch, showBra
             <option value="ar">العربية</option>
           </select>
         </label>
-        <a className="topbar-cta" href="#/docs">{t(locale, 'getStarted')}</a>
       </div>
     </header>
   )

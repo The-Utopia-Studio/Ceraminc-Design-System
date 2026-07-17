@@ -52,10 +52,35 @@ test('uses the Utopia wordmark loader while switching between English and Arabic
   await expect(loader).toBeVisible()
   await expect(loader).toHaveAttribute('dir', 'rtl')
   await expect(loader).toHaveAttribute('lang', 'ar')
+  await expect(loader).toHaveAttribute('data-phase', 'intro')
+  await expect(page.locator('html')).toHaveAttribute('lang', 'en')
+  await page.waitForTimeout(400)
+  await expect(loader).toBeVisible()
   await expect(loader).toHaveAttribute('data-phase', 'exit')
   await expect(loader).toBeHidden()
   await expect(page.locator('html')).toHaveAttribute('dir', 'rtl')
   await expect(page.locator('html')).toHaveAttribute('lang', 'ar')
+})
+
+test('keeps the documentation command readable without a redundant header CTA', async ({ page }) => {
+  await page.goto('/#/docs')
+
+  await expect(page.locator('.topbar-cta')).toHaveCount(0)
+  const command = page.locator('.getting-started-command code').first()
+  await expect(command).toBeVisible()
+  await expect(command).not.toBeEmpty()
+
+  const colors = await command.evaluate((element) => {
+    const commandStyle = window.getComputedStyle(element)
+    const surfaceStyle = window.getComputedStyle(element.parentElement!)
+    return {
+      background: surfaceStyle.backgroundColor,
+      fitsWithoutHorizontalScroll: element.scrollWidth <= element.clientWidth,
+      foreground: commandStyle.color,
+    }
+  })
+  expect(colors.foreground).not.toBe(colors.background)
+  expect(colors.fitsWithoutHorizontalScroll).toBe(true)
 })
 
 test('opens and closes the mobile navigation without leaking scroll', async ({ page }, testInfo) => {
