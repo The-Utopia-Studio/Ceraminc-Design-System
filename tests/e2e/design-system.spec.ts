@@ -105,6 +105,50 @@ test('keeps the Themes hero heading inside its responsive frame', async ({ page 
   expect(metrics.heroScrollWidth).toBeLessThanOrEqual(metrics.heroClientWidth + 1)
 })
 
+test('documents Native Select limits and the themeable Select migration', async ({ page }) => {
+  await page.goto('/#/components/native-select')
+
+  await expect(page.getByText(/OS or browser renders the opened option menu/)).toBeVisible()
+  await expect(page.getByText(/complete theme coverage is not guaranteed/)).toBeVisible()
+  await expect(page.locator('#usage pre')).toContainText('NativeExample')
+  await expect(page.locator('#usage pre')).toContainText('Migrate to Select')
+  await expect(page.locator('#usage pre')).toContainText('<SelectContent>')
+  await expect(page.locator('#usage pre')).toContainText('<SelectItem value="default">')
+})
+
+test('keeps the Select indicator centered as a fixed-size SVG under zoom', async ({ page }) => {
+  await page.goto('/#/components/select')
+
+  const trigger = page.locator('.uds-select-trigger').first()
+  const indicator = trigger.locator('svg.uds-select-trigger-icon')
+  await expect(trigger).toBeVisible()
+  await expect(indicator).toHaveCount(1)
+  await expect(indicator).toHaveAttribute('aria-hidden', 'true')
+
+  await page.evaluate(() => { document.documentElement.style.zoom = '1.5' })
+  const layout = await trigger.evaluate((element) => {
+    const icon = element.querySelector<SVGElement>('svg.uds-select-trigger-icon')!
+    const triggerBounds = element.getBoundingClientRect()
+    const iconBounds = icon.getBoundingClientRect()
+    const styles = getComputedStyle(element)
+    const iconStyles = getComputedStyle(icon)
+    return {
+      centerDelta: Math.abs(
+        (triggerBounds.top + triggerBounds.height / 2) -
+        (iconBounds.top + iconBounds.height / 2),
+      ),
+      display: styles.display,
+      iconBlockSize: iconStyles.blockSize,
+      iconInlineSize: iconStyles.inlineSize,
+    }
+  })
+
+  expect(layout.display).toBe('flex')
+  expect(layout.iconInlineSize).toBe('16px')
+  expect(layout.iconBlockSize).toBe('16px')
+  expect(layout.centerDelta).toBeLessThanOrEqual(1)
+})
+
 test('opens and closes the mobile navigation without leaking scroll', async ({ page }, testInfo) => {
   test.skip(!testInfo.project.name.startsWith('mobile'), 'Mobile navigation contract')
   await page.goto('/#/components')

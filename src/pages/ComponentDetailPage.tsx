@@ -1722,7 +1722,11 @@ function GenericComponentDetailPage({ entry, tab }: { entry: ComponentManifestEn
       propsInteractive={motionAware}
       tokens={motionAware ? [...new Set([...entry.requiredTokens, '--motion-duration-press', '--motion-duration-page', '--motion-duration-expand', '--motion-duration-reveal', '--motion-ease-standard'])] : entry.requiredTokens}
       usageCode={usageFor(entry.name, locale)}
-      usageDescription={componentIntro(locale, entry.name) ?? `${entry.name} is a ${entry.category.toLowerCase()} primitive. It follows shadcn/ui architecture where relevant and stays on semantic Utopia tokens.`}
+      usageDescription={entry.name === 'Native Select'
+        ? (locale === 'ar'
+            ? 'يعرض Native Select حقل select أصليا. ينسق الحقل المغلق بتوكنات Ceramic، لكن نظام التشغيل أو المتصفح يرسم قائمة الخيارات المفتوحة، لذلك لا يمكن ضمان تطبيق الثيم الكامل. استخدم Select عندما يجب أن تتبع القائمة المفتوحة توكنات popover والثيم.'
+            : 'Native Select renders a native select field. Ceramic tokens style the closed field, but the OS or browser renders the opened option menu, so complete theme coverage is not guaranteed. Use Select when the open menu must follow theme and popover semantic tokens.')
+        : componentIntro(locale, entry.name) ?? `${entry.name} is a ${entry.category.toLowerCase()} primitive. It follows shadcn/ui architecture where relevant and stays on semantic Utopia tokens.`}
     />
   )
 }
@@ -7477,22 +7481,36 @@ export function Example() {
   if (name === 'Native Select') {
     return `import {
   NativeSelect,
-  NativeSelectOptGroup,
   NativeSelectOption,
-} from '@utopia-studio-design/design-system/ShadcnPrimitives';
-import { Field, FieldLabel } from '@utopia-studio-design/design-system/Forms';
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@utopia-studio-design/design-system/Forms';
 
-export function Example() {
+// Native platform picker: the OS/browser owns the opened menu.
+export function NativeExample() {
   return (
-    <Field>
-      <FieldLabel>Theme</FieldLabel>
-      <NativeSelect defaultValue="default">
-        <NativeSelectOption value="default">Utopia Default</NativeSelectOption>
-        <NativeSelectOptGroup label="Future themes">
-          <NativeSelectOption value="future">Future theme</NativeSelectOption>
-        </NativeSelectOptGroup>
-      </NativeSelect>
-    </Field>
+    <NativeSelect aria-label="Theme" defaultValue="default">
+      <NativeSelectOption value="default">Utopia Default</NativeSelectOption>
+      <NativeSelectOption value="future">Future theme</NativeSelectOption>
+    </NativeSelect>
+  );
+}
+
+// Migrate to Select when the open menu must use theme/popover tokens.
+export function ThemeableExample() {
+  return (
+    <Select defaultValue="default">
+      <SelectTrigger aria-label="Theme">
+        <SelectValue placeholder="Theme" />
+      </SelectTrigger>
+      <SelectContent>
+        <SelectItem value="default">Utopia Default</SelectItem>
+        <SelectItem value="future">Future theme</SelectItem>
+      </SelectContent>
+    </Select>
   );
 }`
   }

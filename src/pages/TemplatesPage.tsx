@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { Check, Copy, ExternalLink, FileCode2, Layers3, Play, TerminalSquare } from 'lucide-react'
-import { Badge, Button, Selector } from '../../packages/design-system/src'
+import { Badge, Button, Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../../packages/design-system/src'
 import { templates, themes } from '../data/design-system'
 import { useI18n, type Locale } from '../i18n'
 
@@ -199,9 +199,14 @@ export function TemplatesPage() {
             <label htmlFor="template-theme">{copy.themePicker}</label>
             <p>{copy.themePickerHelp}</p>
           </div>
-          <Selector id="template-theme" onChange={(event) => setSelectedTheme(event.target.value)} value={selectedTheme}>
-            {themes.themes.map((theme) => <option key={theme.id} value={theme.id}>{locale === 'ar' ? theme.translations.ar.name : theme.name}</option>)}
-          </Selector>
+          <Select onValueChange={setSelectedTheme} value={selectedTheme}>
+            <SelectTrigger id="template-theme">
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+              {themes.themes.map((theme) => <SelectItem key={theme.id} value={theme.id}>{locale === 'ar' ? theme.translations.ar.name : theme.name}</SelectItem>)}
+            </SelectContent>
+          </Select>
           <span><small>{copy.selectedTheme}</small><strong>{selectedThemeName}</strong><code>{selectedTheme}</code></span>
         </div>
         <div className="template-code-grid">

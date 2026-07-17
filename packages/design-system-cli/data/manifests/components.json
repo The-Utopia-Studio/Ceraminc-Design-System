@@ -2983,8 +2983,8 @@
       "name": "Native Select",
       "category": "Forms",
       "status": "available",
-      "packageImport": "import { NativeSelect, NativeSelectOptGroup, NativeSelectOption } from '@utopia-studio-design/design-system/ShadcnPrimitives';",
-      "sourcePath": "packages/design-system/src/components/ShadcnPrimitives.tsx",
+      "packageImport": "import { NativeSelect, NativeSelectOptGroup, NativeSelectOption } from '@utopia-studio-design/design-system/Forms';",
+      "sourcePath": "packages/design-system/src/components/Forms.tsx",
       "shadcnFoundation": [
         "native-select",
         "shadcn/ui registry",
@@ -3011,10 +3011,12 @@
       "avoidWhen": [
         "Searchable or async option sets",
         "Complex custom option rendering",
+        "The opened option menu must match dark, light, or popover semantic tokens; use Select, SelectTrigger, SelectContent, and SelectItem",
         "Product localization rules inside reusable component logic"
       ],
       "neverInvent": [
         "Product-owned option values or selection rules",
+        "A promise that the opened native option menu can be fully themed; the OS or browser owns that surface",
         "Production Arabic option labels not supplied by localization",
         "Left/right-only layout rules",
         "Utopia brand primitives inside reusable component logic"
@@ -3485,10 +3487,12 @@
         "--background",
         "--foreground",
         "--muted-foreground",
+        "--icon-size-sm",
         "--button-height-sm"
       ],
       "useWhen": [
         "Compact option selection",
+        "Dark, light, or branded surfaces where the opened menu must follow popover semantic tokens",
         "Longer option sets than Radio Group",
         "AI-generated forms that need explicit trigger, value, content, and item parts",
         "Grouped option lists with labels",

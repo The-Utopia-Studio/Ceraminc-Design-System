@@ -4,7 +4,7 @@ import * as RadioGroupPrimitive from '@radix-ui/react-radio-group'
 import * as SelectPrimitive from '@radix-ui/react-select'
 import * as SliderPrimitive from '@radix-ui/react-slider'
 import * as SwitchPrimitive from '@radix-ui/react-switch'
-import { Check, Minus } from 'lucide-react'
+import { Check, ChevronDown, Minus } from 'lucide-react'
 import { cn } from '../lib/utils'
 import { useMotionPattern } from './Motion'
 
@@ -231,8 +231,52 @@ export function FileInput({ className, ...props }: React.InputHTMLAttributes<HTM
   return <input className={cn('uds-input', className)} type="file" {...props} />
 }
 
-export function Selector({ className, ...props }: React.SelectHTMLAttributes<HTMLSelectElement>) {
-  return <select className={cn('uds-input uds-selector', className)} {...props} />
+export type NativeSelectProps = Omit<React.SelectHTMLAttributes<HTMLSelectElement>, 'size'> & {
+  size?: 'sm' | 'default'
+}
+
+export function NativeSelect({ className, size = 'default', ...props }: NativeSelectProps) {
+  return (
+    <div className="uds-native-select" data-disabled={props.disabled ? 'true' : undefined} data-size={size}>
+      <select className={cn('uds-native-select-control', className)} {...props} />
+      <ChevronDown aria-hidden="true" className="uds-native-select-indicator" />
+    </div>
+  )
+}
+
+export function NativeSelectOption(props: React.OptionHTMLAttributes<HTMLOptionElement>) {
+  return <option {...props} />
+}
+
+export function NativeSelectOptGroup(props: React.OptgroupHTMLAttributes<HTMLOptGroupElement>) {
+  return <optgroup {...props} />
+}
+
+/** @deprecated Use NativeSelect for platform-native selection or Select for a fully themeable menu. */
+export type SelectorProps = NativeSelectProps
+
+let didWarnAboutSelector = false
+
+function warnAboutSelectorDeprecation() {
+  if (didWarnAboutSelector) return
+
+  const viteDevelopment = (import.meta as ImportMeta & { env?: { DEV?: boolean } }).env?.DEV
+  const nodeEnvironment = (globalThis as typeof globalThis & {
+    process?: { env?: { NODE_ENV?: string } }
+  }).process?.env?.NODE_ENV
+
+  if (viteDevelopment !== true && nodeEnvironment !== 'development') return
+
+  didWarnAboutSelector = true
+  console.warn(
+    '[Utopia Design System] Selector is deprecated. Use NativeSelect for platform-native behavior, or Select with SelectTrigger, SelectContent, and SelectItem when the open menu must follow theme and popover tokens.',
+  )
+}
+
+/** @deprecated Use NativeSelect for platform-native selection or Select for a fully themeable menu. */
+export function Selector({ className, ...props }: SelectorProps) {
+  warnAboutSelectorDeprecation()
+  return <NativeSelect className={cn('uds-selector', className)} {...props} />
 }
 
 export function Select(props: React.ComponentProps<typeof SelectPrimitive.Root>) {
@@ -243,7 +287,9 @@ export function SelectTrigger({ children, className, ...props }: React.Component
   return (
     <SelectPrimitive.Trigger className={cn('uds-select-trigger', className)} {...props}>
       {children}
-      <SelectPrimitive.Icon className="uds-select-trigger-icon">⌄</SelectPrimitive.Icon>
+      <SelectPrimitive.Icon asChild>
+        <ChevronDown aria-hidden="true" className="uds-select-trigger-icon" focusable="false" />
+      </SelectPrimitive.Icon>
     </SelectPrimitive.Trigger>
   )
 }

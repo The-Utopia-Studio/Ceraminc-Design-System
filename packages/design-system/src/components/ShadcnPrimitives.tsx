@@ -15,6 +15,13 @@ import { Button, type ButtonProps } from './Button'
 import { DatePicker as DataDisplayDatePicker, type DatePickerProps } from './DataDisplay'
 import { useMotionPattern } from './Motion'
 
+export {
+  NativeSelect,
+  NativeSelectOptGroup,
+  NativeSelectOption,
+  type NativeSelectProps,
+} from './Forms'
+
 type DivProps = React.HTMLAttributes<HTMLDivElement>
 type SpanProps = React.HTMLAttributes<HTMLSpanElement>
 
@@ -981,27 +988,6 @@ export function Kbd({ className, ...props }: React.HTMLAttributes<HTMLElement>) 
 
 export function Label({ className, ...props }: React.LabelHTMLAttributes<HTMLLabelElement>) {
   return <label className={cn('uds-label', className)} {...props} />
-}
-
-export type NativeSelectProps = Omit<React.SelectHTMLAttributes<HTMLSelectElement>, 'size'> & {
-  size?: 'sm' | 'default'
-}
-
-export function NativeSelect({ className, size = 'default', ...props }: NativeSelectProps) {
-  return (
-    <div className="uds-native-select" data-disabled={props.disabled ? 'true' : undefined} data-size={size}>
-      <select className={cn('uds-native-select-control', className)} {...props} />
-      <ChevronDown aria-hidden="true" className="uds-native-select-indicator" />
-    </div>
-  )
-}
-
-export function NativeSelectOption(props: React.OptionHTMLAttributes<HTMLOptionElement>) {
-  return <option {...props} />
-}
-
-export function NativeSelectOptGroup(props: React.OptgroupHTMLAttributes<HTMLOptGroupElement>) {
-  return <optgroup {...props} />
 }
 
 export { PrimitiveHeader, PrimitiveItem }

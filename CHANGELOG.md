@@ -2,6 +2,17 @@
 
 All notable changes to Ceramic Design System are documented here.
 
+## Unreleased
+
+## 0.4.4 — 2026-07-17
+
+### Changed
+
+- `NativeSelect` is now the canonical Forms API for native platform selection. The former `Selector` name remains as a deprecated alias with a one-time development warning where build metadata is available.
+- Native Select documentation now states that the OS/browser owns the opened option menu and recommends `Select`, `SelectTrigger`, `SelectContent`, and `SelectItem` when theme and popover-token consistency is required.
+- Added a Native Select → Select migration example and migrated the Ceramic template theme picker to the themeable Select composition.
+- `SelectTrigger` now uses a fixed-size SVG chevron in a flex-aligned indicator slot so it remains vertically centered across fonts and browser zoom levels.
+
 ## 0.4.3 — 2026-07-17
 
 ### Added

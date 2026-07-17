@@ -1,6 +1,6 @@
 # Utopia Design System
 
-Standalone design-system production for Utopia Studio. The current public package line is `0.3.x`.
+Standalone design-system production for Utopia Studio. The current public package line is `0.4.x`.
 
 This workspace is the parent system. Production websites are consumers and reference implementations under this design-system contract.
 
@@ -83,11 +83,32 @@ import { animeMotionAdapter } from '@utopia-studio-design/design-system/MotionAn
 
 `motion-profiles.json` is the runtime and MCP source of truth for timing, easing, states, orchestration, and reduced-motion behavior. Resolve a custom theme through its declared `motionProfile`, not by guessing from its theme id. Optional adapters can be loaded with `import()` when the user selects them.
 
+## Native Select and themeable Select
+
+`NativeSelect` preserves platform-native `<select>` semantics and mobile picker behavior. Ceramic tokens style its closed field, but the opened option menu is rendered by the operating system or browser. Full dark, light, brand, and `--popover-surface` styling is therefore not guaranteed.
+
+Use `Select`, `SelectTrigger`, `SelectContent`, `SelectValue`, and `SelectItem` by default when the opened menu must follow design-system theme and popover tokens. `Selector` remains temporarily available as a deprecated alias for `NativeSelect` and emits a one-time warning in supported development builds.
+
+```tsx
+// Before: native menu surface
+<NativeSelect defaultValue="open">
+  <NativeSelectOption value="open">Open</NativeSelectOption>
+</NativeSelect>
+
+// After: fully themeable menu surface
+<Select defaultValue="open">
+  <SelectTrigger aria-label="Disposition"><SelectValue /></SelectTrigger>
+  <SelectContent>
+    <SelectItem value="open">Open</SelectItem>
+  </SelectContent>
+</Select>
+```
+
 ## Release
 
 Published packages:
 
-- `@utopia-studio-design/design-system@0.4.1`
+- `@utopia-studio-design/design-system@0.4.4`
 - `@utopia-studio-design/design-system-cli@0.3.0`
 
 Run `npm run release:check` before publishing. It gates the release on TypeScript, MCP protocol tests, desktop/mobile Playwright coverage, visual baselines, component audits, production builds, and package dry-runs. See `CHANGELOG.md` for release notes.

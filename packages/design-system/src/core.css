@@ -3418,7 +3418,7 @@ a {
 }
 
 .uds-select-trigger {
-  display: inline-flex;
+  display: flex;
   align-items: center;
   justify-content: space-between;
   gap: var(--space-3);
@@ -3453,15 +3453,15 @@ a {
 
 .uds-select-trigger > svg,
 .uds-select-trigger-icon {
+  display: block;
   flex: 0 0 auto;
-  inline-size: 1rem;
-  block-size: 1rem;
+  inline-size: var(--icon-size-sm);
+  block-size: var(--icon-size-sm);
   color: var(--muted-foreground);
 }
 
 .uds-selector {
-  appearance: auto;
-  inline-size: min(100%, 18rem);
+  inline-size: 100%;
 }
 
 .uds-select-trigger:focus-visible {
