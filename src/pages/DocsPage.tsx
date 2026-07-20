@@ -464,6 +464,8 @@ const semanticFoundationSlugByPath: Partial<Record<string, keyof typeof foundati
   '/docs/foundations/semantic-tokens/shape': 'shape',
   '/docs/foundations/semantic-tokens/motion': 'motion',
   '/docs/foundations/semantic-tokens/elevation': 'elevation',
+  '/docs/foundations/semantic-tokens/icons': 'icons',
+  '/docs/foundations/semantic-tokens/illustrations': 'illustrations',
 }
 
 function guideSlugFromPath(path = '/docs') {
@@ -986,7 +988,7 @@ function FoundationsPage({ page, slug }: { page: typeof foundationPages[keyof ty
   const [implementationTitle, releaseTitle] = foundationSectionTitles[slug][locale === 'ar' ? 'ar' : 'en']
 
   return (
-    <div className="page foundations-page">
+    <div className="page foundations-page" data-foundation={slug}>
       <section className="page-hero compact">
         <p className="eyebrow">{t(locale, 'foundations')}</p>
         <h1>{displayPage.title}</h1>

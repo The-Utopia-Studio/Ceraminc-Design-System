@@ -302,12 +302,20 @@ body {
 }
 
 .component-detail-shell {
+  --component-doc-frame: color-mix(in srgb, currentColor 30%, transparent);
+  --component-doc-divider: color-mix(in srgb, currentColor 18%, transparent);
+
   min-inline-size: 0;
+}
+
+.component-detail-shell .code-block,
+.component-detail-shell .chip-list span {
+  border-color: var(--component-doc-frame);
 }
 
 .component-workbench {
   background: var(--card);
-  border: 1px solid var(--border);
+  border: 1px solid var(--component-doc-frame);
   display: grid;
   gap: var(--space-3);
   margin: var(--space-6) var(--space-6) 0;
@@ -356,7 +364,7 @@ body {
 }
 
 .component-workbench details {
-  border-block-start: 1px solid var(--border);
+  border-block-start: 1px solid var(--component-doc-divider);
   padding-block-start: var(--space-3);
 }
 
@@ -1581,7 +1589,7 @@ body {
 
 .docs-article h2 {
   margin: 0;
-  color: var(--foreground);
+  color: inherit;
   font-size: 30px;
   font-weight: var(--font-weight-strong);
   line-height: 1.18;
@@ -1589,7 +1597,7 @@ body {
 
 .docs-article p {
   margin: 0;
-  color: var(--foreground-muted);
+  color: color-mix(in srgb, currentColor 68%, transparent);
   font-size: 17px;
   line-height: 1.6;
 }
@@ -1912,6 +1920,11 @@ body {
   grid-template-columns: repeat(3, minmax(0, 1fr));
 }
 
+.foundation-card-grid,
+.illustration-preview-grid {
+  align-items: stretch;
+}
+
 .foundation-card,
 .type-scale article,
 .mixed-script-grid div,
@@ -1927,6 +1940,12 @@ body {
   border-radius: var(--radius-surface);
   background: var(--surface);
   padding: 16px;
+}
+
+.foundation-card-grid > .foundation-card,
+.illustration-preview-grid > article {
+  align-content: start;
+  block-size: 100%;
 }
 
 .foundation-card strong,
@@ -3382,7 +3401,7 @@ body {
 .component-tabs {
   display: flex;
   gap: 24px;
-  border-bottom: 1px solid var(--border);
+  border-bottom: 1px solid var(--component-doc-divider);
   margin-top: 8px;
 }
 
@@ -3402,7 +3421,7 @@ body {
   gap: 18px;
   min-height: 360px;
   place-items: center;
-  border: 1px solid var(--border);
+  border: 1px solid var(--component-doc-frame);
   border-radius: var(--radius-surface);
   background: var(--background);
 }
@@ -4858,7 +4877,7 @@ body {
 .overview-contract > div {
   display: grid;
   gap: 10px;
-  border-top: 1px solid var(--border);
+  border-top: 1px solid var(--component-doc-divider);
   padding-top: 18px;
 }
 
@@ -4874,7 +4893,7 @@ body {
 
 .example-card {
   overflow: hidden;
-  border: 1px solid var(--border);
+  border: 1px solid var(--component-doc-frame);
   border-radius: var(--radius-surface);
   background: var(--background);
 }
@@ -4910,7 +4929,7 @@ body {
 .example-card-footer {
   display: grid;
   gap: 14px;
-  border-top: 1px solid var(--border);
+  border-top: 1px solid var(--component-doc-divider);
   padding: 14px 16px 18px;
 }
 
@@ -4930,7 +4949,7 @@ body {
 .practice-table,
 .props-table {
   overflow: hidden;
-  border: 1px solid var(--border);
+  border: 1px solid var(--component-doc-frame);
   border-radius: var(--radius-surface);
 }
 
@@ -4939,7 +4958,7 @@ body {
   display: grid;
   grid-template-columns: 110px minmax(0, 1fr) 220px;
   gap: 24px;
-  border-bottom: 1px solid var(--border);
+  border-bottom: 1px solid var(--component-doc-divider);
   padding: 18px 16px;
 }
 
@@ -4960,19 +4979,19 @@ body {
 .practice-row p,
 .prop-row p {
   margin: 0;
-  color: var(--foreground-muted);
+  color: color-mix(in srgb, currentColor 68%, transparent);
   line-height: 1.55;
 }
 
 .prop-row strong {
-  color: var(--foreground);
+  color: inherit;
   font-size: 14px;
 }
 
 .prop-row code {
   display: block;
   margin-bottom: 8px;
-  color: var(--foreground);
+  color: inherit;
   font-size: 14px;
   white-space: pre-wrap;
 }
@@ -6408,6 +6427,10 @@ html[data-theme="utopia-default"] .app-shell[data-area="themes"] .page-hero {
   container-type: inline-size;
 }
 
+html[data-theme="utopia-default"] .foundations-page[data-foundation="illustrations"] .page-hero {
+  container-type: inline-size;
+}
+
 html[data-theme="utopia-default"] .page-hero::before,
 html[data-theme="utopia-default"] .components-library-hero::before {
   position: absolute;
@@ -6468,6 +6491,14 @@ html[data-theme="utopia-default"] .app-shell[data-area="themes"] .page-hero h1 {
   line-height: 0.92;
 }
 
+html[data-theme="utopia-default"] .foundations-page[data-foundation="illustrations"] .page-hero h1 {
+  inline-size: 100%;
+  min-inline-size: 0;
+  max-inline-size: 100%;
+  font-size: clamp(1.875rem, 8cqi, 6.75rem);
+  white-space: nowrap;
+}
+
 html[data-theme="utopia-default"] .app-shell[data-locale="ko"] .page-hero h1,
 html[data-theme="utopia-default"] .app-shell[data-locale="ko"] .components-library-hero h1,
 html[data-theme="utopia-default"] .app-shell[data-locale="ar"] .page-hero h1,
@@ -6498,6 +6529,10 @@ html[data-theme="utopia-default"] .docs-article > section {
   gap: clamp(1.25rem, 3vw, 2rem);
   border-block-start: 1px solid var(--brand-rule-light);
   padding-block-start: clamp(2rem, 5vw, 4rem);
+}
+
+html[data-theme="utopia-default"] .component-detail-shell .docs-article > section {
+  border-block-start-color: var(--component-doc-divider);
 }
 
 html[data-theme="utopia-default"] .docs-article h2,

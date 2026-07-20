@@ -105,6 +105,106 @@ test('keeps the Themes hero heading inside its responsive frame', async ({ page 
   expect(metrics.heroScrollWidth).toBeLessThanOrEqual(metrics.heroClientWidth + 1)
 })
 
+test('keeps the Illustrations hero and comparison boxes inside one layout rhythm', async ({ page }) => {
+  await page.goto('/#/docs/foundations/semantic-tokens/illustrations')
+
+  const headingLayout = await page.locator('.page-hero').evaluate((hero) => {
+    const heading = hero.querySelector('h1')!
+    const headingBounds = heading.getBoundingClientRect()
+    const heroBounds = hero.getBoundingClientRect()
+    return {
+      documentClientWidth: document.documentElement.clientWidth,
+      documentScrollWidth: document.documentElement.scrollWidth,
+      headingClientWidth: heading.clientWidth,
+      headingRight: headingBounds.right,
+      headingScrollWidth: heading.scrollWidth,
+      heroRight: heroBounds.right,
+    }
+  })
+
+  expect(headingLayout.headingScrollWidth).toBeLessThanOrEqual(headingLayout.headingClientWidth + 1)
+  expect(headingLayout.headingRight).toBeLessThanOrEqual(headingLayout.heroRight + 1)
+  expect(headingLayout.documentScrollWidth).toBeLessThanOrEqual(headingLayout.documentClientWidth + 1)
+
+  for (const selector of ['#overview .foundation-card', '#empty-state .foundation-empty-state']) {
+    const rowHeightDeltas = await page.locator(selector).evaluateAll((elements) => {
+      const rows = new Map<number, number[]>()
+      for (const element of elements) {
+        const bounds = element.getBoundingClientRect()
+        const row = Math.round(bounds.top)
+        rows.set(row, [...(rows.get(row) ?? []), bounds.height])
+      }
+      return [...rows.values()].map((heights) => Math.max(...heights) - Math.min(...heights))
+    })
+    expect(Math.max(...rowHeightDeltas), selector).toBeLessThanOrEqual(1)
+  }
+})
+
+test('keeps component documentation colors legible and borders quiet', async ({ page }) => {
+  await page.goto('/#/components/chat-composer')
+
+  const readVisualHierarchy = () => page.locator('.component-detail-shell').evaluate((root) => {
+    const channels = (color: string) => {
+      const values = color.match(/[\d.]+/g)!.map(Number)
+      const rgb = values.slice(0, 3)
+      return [...(color.startsWith('color(srgb') ? rgb.map((value) => value * 255) : rgb), values[3] ?? 1]
+    }
+    const composite = (foreground: string, background: string) => {
+      const [red, green, blue, alpha] = channels(foreground)
+      const [backgroundRed, backgroundGreen, backgroundBlue] = channels(background)
+      return `rgb(${(red * alpha) + (backgroundRed * (1 - alpha))} ${(green * alpha) + (backgroundGreen * (1 - alpha))} ${(blue * alpha) + (backgroundBlue * (1 - alpha))})`
+    }
+    const luminance = (color: string) => {
+      const linear = channels(color).map((channel) => {
+        const value = channel / 255
+        return value <= 0.04045 ? value / 12.92 : ((value + 0.055) / 1.055) ** 2.4
+      })
+      return (0.2126 * linear[0]) + (0.7152 * linear[1]) + (0.0722 * linear[2])
+    }
+    const contrast = (foreground: string, background: string) => {
+      const compositedForeground = composite(foreground, background)
+      const lighter = Math.max(luminance(compositedForeground), luminance(background))
+      const darker = Math.min(luminance(compositedForeground), luminance(background))
+      return (lighter + 0.05) / (darker + 0.05)
+    }
+    const background = getComputedStyle(document.body).backgroundColor
+
+    return {
+      background,
+      component: getComputedStyle(root.querySelector('.uds-chat-composer')!).borderTopColor,
+      descriptionContrast: contrast(getComputedStyle(root.querySelector('.prop-row p')!).color, background),
+      divider: getComputedStyle(root.querySelector('.practice-row')!).borderBottomColor,
+      frame: getComputedStyle(root.querySelector('.component-stage')!).borderTopColor,
+      nameContrast: contrast(getComputedStyle(root.querySelector('.prop-row strong')!).color, background),
+      section: getComputedStyle(root.querySelector('#best-practices')!).borderTopColor,
+      shellBackground: getComputedStyle(root).backgroundColor,
+      stageBackground: getComputedStyle(root.querySelector('.component-stage')!).backgroundColor,
+      table: getComputedStyle(root.querySelector('.practice-table')!).borderTopColor,
+      typeContrast: contrast(getComputedStyle(root.querySelector('.prop-row code')!).color, background),
+    }
+  })
+
+  let darkStageBackground = ''
+
+  await expect(page.getByRole('button', { name: 'Dark' })).toHaveAttribute('aria-pressed', 'true')
+
+  for (const mode of ['dark', 'light']) {
+    if (mode === 'light') await page.getByRole('button', { name: 'Dark' }).click()
+    const visual = await readVisualHierarchy()
+    expect(visual.nameContrast).toBeGreaterThanOrEqual(4.5)
+    expect(visual.typeContrast).toBeGreaterThanOrEqual(4.5)
+    expect(visual.descriptionContrast).toBeGreaterThanOrEqual(4.5)
+    expect(visual.table).toBe(visual.frame)
+    expect(visual.section).toBe(visual.divider)
+    expect(visual.frame).not.toBe(visual.divider)
+    expect(visual.component).not.toBe(visual.frame)
+    expect(visual.shellBackground).toBe('rgba(0, 0, 0, 0)')
+
+    if (mode === 'dark') darkStageBackground = visual.stageBackground
+    else expect(visual.stageBackground).not.toBe(darkStageBackground)
+  }
+})
+
 test('documents Native Select limits and the themeable Select migration', async ({ page }) => {
   await page.goto('/#/components/native-select')
 

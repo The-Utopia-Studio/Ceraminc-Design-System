@@ -13,7 +13,7 @@ export function ComponentDetailWorkbench({ children, entry }: { children: ReactN
   const { themeId } = useTheme()
   const isArabic = locale === 'ar'
   const [previewRtl, setPreviewRtl] = useState(false)
-  const [previewDark, setPreviewDark] = useState(false)
+  const [previewDark, setPreviewDark] = useState(true)
   const [copied, setCopied] = useState(false)
   const related = useMemo(() => components.components
     .filter((candidate) => candidate.category === entry.category && candidate.name !== entry.name)
