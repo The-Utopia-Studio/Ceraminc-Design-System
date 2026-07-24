@@ -17,7 +17,7 @@ import { Alert, AlertDescription, AlertTitle } from '../../packages/design-syste
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from '../../packages/design-system/src/AlertDialog'
 import { Attachment, AttachmentAction, AttachmentActions, AttachmentContent, AttachmentDescription, AttachmentGroup, AttachmentMedia, AttachmentTitle, AttachmentTrigger } from '../../packages/design-system/src/Attachment'
 import { ChatComposer, ChatComposerInput, ChatComposerTokenElement, ChatDictationButton, ChatLayout, ChatLayoutScrollButton, ChatMessage, ChatMessageBubble, ChatMessageList, ChatMessageMetadata, ChatSendButton, ChatSystemMessage, ChatTokenizedText, ChatToolCalls } from '../../packages/design-system/src/Chat'
-import { Breadcrumb, BreadcrumbEllipsis, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator, Breadcrumbs, CommandPalette, CommandPaletteEmpty, CommandPaletteGroup, CommandPaletteInput, CommandPaletteItem, CommandPaletteList, CommandPaletteSeparator, CommandPaletteShortcut, ContextMenu, ContextMenuCheckboxItem, ContextMenuContent, ContextMenuItem, ContextMenuLabel, ContextMenuSeparator, ContextMenuShortcut, ContextMenuSub, ContextMenuSubContent, ContextMenuSubTrigger, ContextMenuTrigger, DropdownMenu, DropdownMenuCheckboxItem, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuLabel, DropdownMenuRadioGroup, DropdownMenuRadioItem, DropdownMenuSeparator, DropdownMenuShortcut, DropdownMenuSub, DropdownMenuSubContent, DropdownMenuSubTrigger, DropdownMenuTrigger, MobileNav, MobileNavContent, MobileNavToggle, MobileNavTrigger, NavHeadingMenu, NavHeadingMenuContent, NavHeadingMenuTrigger, NavIcon, PanelIcon, SideNav, SideNavAccount, SideNavAuxiliary, SideNavCollapseButton, SideNavCommand, SideNavContent, SideNavFooter, SideNavHeader, SideNavHeading, SideNavItem, SideNavMain, SideNavSection, SideNavStatus, Tab, TabList, TabPanel, Tabs, TopNav, TopNavHeading, TopNavItem, TopNavMegaMenu, TopNavMegaMenuFeaturedCard, TopNavMegaMenuItem, TopNavMenu, TopNavMenuItem } from '../../packages/design-system/src/Navigation'
+import { Breadcrumb, BreadcrumbEllipsis, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator, Breadcrumbs, CommandPalette, CommandPaletteEmpty, CommandPaletteGroup, CommandPaletteInput, CommandPaletteItem, CommandPaletteList, CommandPaletteSeparator, CommandPaletteShortcut, ContextMenu, ContextMenuCheckboxItem, ContextMenuContent, ContextMenuItem, ContextMenuLabel, ContextMenuSeparator, ContextMenuShortcut, ContextMenuSub, ContextMenuSubContent, ContextMenuSubTrigger, ContextMenuTrigger, DropdownMenu, DropdownMenuCheckboxItem, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuLabel, DropdownMenuRadioGroup, DropdownMenuRadioItem, DropdownMenuSeparator, DropdownMenuShortcut, DropdownMenuSub, DropdownMenuSubContent, DropdownMenuSubTrigger, DropdownMenuTrigger, MobileNav, MobileNavContent, MobileNavToggle, MobileNavTrigger, NavHeadingMenu, NavHeadingMenuContent, NavHeadingMenuTrigger, NavIcon, NavigationIcon, PanelIcon, SideNav, SideNavAccount, SideNavAuxiliary, SideNavCollapseButton, SideNavCommand, SideNavContent, SideNavFooter, SideNavHeader, SideNavHeading, SideNavItem, SideNavMain, SideNavSection, SideNavStatus, Tab, TabList, TabPanel, Tabs, TopNav, TopNavHeading, TopNavItem, TopNavMegaMenu, TopNavMegaMenuFeaturedCard, TopNavMegaMenuItem, TopNavMenu, TopNavMenuItem } from '../../packages/design-system/src/Navigation'
 import { HoverCard, HoverCardContent, HoverCardTrigger, Popover, PopoverClose, PopoverContent, PopoverDescription, PopoverHeader, PopoverTitle, PopoverTrigger, Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '../../packages/design-system/src/Surface'
 import { ToggleButton } from '../../packages/design-system/src/ToggleButton'
 import { ToggleButtonGroup, ToggleButtonGroupItem } from '../../packages/design-system/src/ToggleButtonGroup'
@@ -3046,6 +3046,7 @@ function genericPropRows(name: string) {
     if (name === 'Breadcrumb' || name === 'Breadcrumbs' || name === 'Breadcrumb Item') {
       return [
         { name: 'aria-label', type: 'string', description: 'Localized nav landmark label for the Breadcrumb root.', control: <input aria-label="aria-label value" placeholder="Breadcrumb" /> },
+        { name: 'variant', type: '"default" | "inverse"', description: 'Use inverse when Breadcrumb sits on --surface-inverse. Defaults to default.', control: <select aria-label="variant value" defaultValue="default"><option value="default">default</option><option value="inverse">inverse</option></select> },
         { name: 'BreadcrumbList / Breadcrumbs', type: 'ReactNode', description: 'Ordered list wrapper. Breadcrumbs is the compact alias for BreadcrumbList.', control: <input aria-label="Breadcrumbs value" placeholder="items" /> },
         { name: 'BreadcrumbItem', type: 'ReactNode', description: 'One hierarchy segment. Wrap links, current page, or collapsed menu trigger.', control: <input aria-label="BreadcrumbItem value" placeholder="item" /> },
         { name: 'BreadcrumbLink', type: 'AnchorProps', description: 'Clickable ancestor page. Use app router composition when needed.', control: <input aria-label="BreadcrumbLink value" placeholder="/docs" /> },
@@ -3578,28 +3579,41 @@ function BreadcrumbPreview({ locale, openMenu = true, variant = 'root' }: { loca
   }
 
   return (
-    <Breadcrumb aria-label={isArabic ? 'مسار التنقل' : 'Breadcrumb'} dir={isArabic ? 'rtl' : 'ltr'} lang={isArabic ? 'ar' : 'en'}>
-      <BreadcrumbList>
-        <BreadcrumbItem><BreadcrumbLink href="#/">{labels.home}</BreadcrumbLink></BreadcrumbItem>
-        <BreadcrumbSeparator />
-        <BreadcrumbItem>
-          <DropdownMenu defaultOpen={openMenu}>
-            <DropdownMenuTrigger asChild>
-              <BreadcrumbEllipsis label={labels.more} />
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="start">
-              <DropdownMenuItem>{labels.docs}</DropdownMenuItem>
-              <DropdownMenuItem>{labels.themes}</DropdownMenuItem>
-              <DropdownMenuItem>{labels.github}</DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
-        </BreadcrumbItem>
-        <BreadcrumbSeparator />
-        <BreadcrumbItem><BreadcrumbLink href="#/components">{labels.components}</BreadcrumbLink></BreadcrumbItem>
-        <BreadcrumbSeparator />
-        <BreadcrumbItem><BreadcrumbPage>{labels.current}</BreadcrumbPage></BreadcrumbItem>
-      </BreadcrumbList>
-    </Breadcrumb>
+    <div className="breadcrumb-demo-stack" dir={isArabic ? 'rtl' : 'ltr'} lang={isArabic ? 'ar' : 'en'}>
+      <Breadcrumb aria-label={isArabic ? 'مسار التنقل' : 'Breadcrumb'}>
+        <BreadcrumbList>
+          <BreadcrumbItem><BreadcrumbLink href="#/">{labels.home}</BreadcrumbLink></BreadcrumbItem>
+          <BreadcrumbSeparator />
+          <BreadcrumbItem>
+            <DropdownMenu defaultOpen={openMenu}>
+              <DropdownMenuTrigger asChild>
+                <BreadcrumbEllipsis label={labels.more} />
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="start">
+                <DropdownMenuItem>{labels.docs}</DropdownMenuItem>
+                <DropdownMenuItem>{labels.themes}</DropdownMenuItem>
+                <DropdownMenuItem>{labels.github}</DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </BreadcrumbItem>
+          <BreadcrumbSeparator />
+          <BreadcrumbItem><BreadcrumbLink href="#/components">{labels.components}</BreadcrumbLink></BreadcrumbItem>
+          <BreadcrumbSeparator />
+          <BreadcrumbItem><BreadcrumbPage>{labels.current}</BreadcrumbPage></BreadcrumbItem>
+        </BreadcrumbList>
+      </Breadcrumb>
+      <div className="breadcrumb-inverse-surface">
+        <Breadcrumb aria-label={isArabic ? 'مسار تنقل معكوس' : 'Inverse breadcrumb'} variant="inverse">
+          <BreadcrumbList>
+            <BreadcrumbItem><BreadcrumbLink href="#/">{labels.home}</BreadcrumbLink></BreadcrumbItem>
+            <BreadcrumbSeparator />
+            <BreadcrumbItem><BreadcrumbLink href="#/components">{labels.components}</BreadcrumbLink></BreadcrumbItem>
+            <BreadcrumbSeparator />
+            <BreadcrumbItem><BreadcrumbPage>{labels.current}</BreadcrumbPage></BreadcrumbItem>
+          </BreadcrumbList>
+        </Breadcrumb>
+      </div>
+    </div>
   )
 }
 
@@ -5022,9 +5036,9 @@ function SidebarPreview({ locale }: { locale: Locale }) {
           <SidebarHeader><SidebarTrigger collapseLabel={isArabic ? 'طي الشريط الجانبي' : 'Collapse sidebar'} expandLabel={isArabic ? 'توسيع الشريط الجانبي' : 'Expand sidebar'} /><strong>{isArabic ? 'سيراميك' : 'Ceramic'}</strong></SidebarHeader>
           <SidebarContent>
             <SidebarGroup><SidebarGroupLabel>{isArabic ? 'مساحة العمل' : 'Workspace'}</SidebarGroupLabel><SidebarMenu>
-              <SidebarMenuItem><SidebarMenuButton isActive><Box aria-hidden="true" /><span>{isArabic ? 'نظرة عامة' : 'Overview'}</span></SidebarMenuButton></SidebarMenuItem>
-              <SidebarMenuItem><SidebarMenuButton><BarChart3 aria-hidden="true" /><span>{isArabic ? 'التحليلات' : 'Analytics'}</span><SidebarMenuBadge>12</SidebarMenuBadge></SidebarMenuButton></SidebarMenuItem>
-              <SidebarMenuItem><SidebarMenuButton><Settings aria-hidden="true" /><span>{isArabic ? 'الإعدادات' : 'Settings'}</span></SidebarMenuButton></SidebarMenuItem>
+              <SidebarMenuItem><SidebarMenuButton activeVariant="both" isActive tooltip={isArabic ? 'نظرة عامة' : 'Overview'}><NavigationIcon name="dashboard" /><span>{isArabic ? 'نظرة عامة' : 'Overview'}</span></SidebarMenuButton></SidebarMenuItem>
+              <SidebarMenuItem><SidebarMenuButton tooltip={isArabic ? 'التحليلات' : 'Analytics'}><NavigationIcon name="analytics" /><span>{isArabic ? 'التحليلات' : 'Analytics'}</span><SidebarMenuBadge>12</SidebarMenuBadge></SidebarMenuButton></SidebarMenuItem>
+              <SidebarMenuItem><SidebarMenuButton tooltip={isArabic ? 'الإعدادات' : 'Settings'}><NavigationIcon name="settings" /><span>{isArabic ? 'الإعدادات' : 'Settings'}</span></SidebarMenuButton></SidebarMenuItem>
             </SidebarMenu></SidebarGroup>
           </SidebarContent>
           <SidebarFooter><span>{isArabic ? 'ثيم يوتوبيا' : 'Utopia theme'}</span></SidebarFooter>

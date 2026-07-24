@@ -1,4 +1,5 @@
 import assert from 'node:assert/strict'
+import { readFile } from 'node:fs/promises'
 import React from 'react'
 import { renderToStaticMarkup } from 'react-dom/server'
 import { ChatSystemMessage } from '../packages/design-system/dist/Chat.mjs'
@@ -15,6 +16,8 @@ const {
 } = await import('../packages/design-system/dist/Forms.mjs')
 const rootExports = await import('../packages/design-system/dist/index.mjs')
 const shadcnExports = await import('../packages/design-system/dist/ShadcnPrimitives.mjs')
+const navigationExports = await import('../packages/design-system/dist/Navigation.mjs')
+const sidebarExports = await import('../packages/design-system/dist/Sidebar.mjs')
 
 function renderChatSystemMessage(props, children) {
   return renderToStaticMarkup(React.createElement(ChatSystemMessage, props, children))
@@ -86,5 +89,39 @@ const themeableSelect = renderToStaticMarkup(React.createElement(
 assert.match(themeableSelect, /<svg[^>]*class="lucide lucide-chevron-down uds-select-trigger-icon"/)
 assert.match(themeableSelect, /aria-hidden="true"/)
 assert.doesNotMatch(themeableSelect, />⌄</)
+
+const inverseBreadcrumb = renderToStaticMarkup(React.createElement(
+  navigationExports.Breadcrumb,
+  { 'aria-label': 'Current location', variant: 'inverse' },
+  React.createElement(
+    navigationExports.BreadcrumbList,
+    null,
+    React.createElement(navigationExports.BreadcrumbItem, null,
+      React.createElement(navigationExports.BreadcrumbLink, { href: '/' }, 'Home')),
+    React.createElement(navigationExports.BreadcrumbSeparator),
+    React.createElement(navigationExports.BreadcrumbItem, null,
+      React.createElement(navigationExports.BreadcrumbPage, null, 'Projects')),
+  ),
+))
+assert.match(inverseBreadcrumb, /class="uds-breadcrumb" data-variant="inverse"/)
+assert.match(inverseBreadcrumb, /aria-current="page"/)
+
+const activeSidebarItem = renderToStaticMarkup(React.createElement(
+  sidebarExports.SidebarMenuButton,
+  { activeVariant: 'both', isActive: true, tooltip: 'Projects' },
+  React.createElement(navigationExports.NavigationIcon, { name: 'projects' }),
+  React.createElement('span', null, 'Projects'),
+))
+assert.match(activeSidebarItem, /aria-current="page"/)
+assert.match(activeSidebarItem, /aria-label="Projects"/)
+assert.match(activeSidebarItem, /data-active=""/)
+assert.match(activeSidebarItem, /data-active-variant="both"/)
+assert.match(activeSidebarItem, /class="lucide lucide-folder-kanban uds-navigation-icon"/)
+assert.match(activeSidebarItem, /aria-hidden="true"/)
+
+const designSystemCss = await readFile(new URL('../packages/design-system/src/core.css', import.meta.url), 'utf8')
+assert.doesNotMatch(designSystemCss, /var\(--font-size-xs\)/, 'Sidebar typography must resolve from a shipped token')
+assert.match(designSystemCss, /\.uds-breadcrumb\[data-variant=['"]inverse['"]\]/)
+assert.match(designSystemCss, /inset-inline-start:\s*0/, 'Sidebar active indicator must use logical inline positioning')
 
 console.log('Component contract tests passed')

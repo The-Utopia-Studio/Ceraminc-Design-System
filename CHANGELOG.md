@@ -2,7 +2,18 @@
 
 All notable changes to Ceramic Design System are documented here.
 
-## Unreleased
+## 0.4.5 — 2026-07-23
+
+### Added
+
+- Official `NavigationIcon` destination icons for standard collapsed product navigation without consumer icon packages or raw SVG paths.
+- `Breadcrumb variant="inverse"` with theme-owned link, current-page, separator, hover, and focus roles for `--surface-inverse`.
+- `SidebarMenuButton` active variants for background, logical inline-start indicator, or both.
+
+### Fixed
+
+- Sidebar group labels and badges now use the shipped `--font-size-supporting` token instead of the undefined `--font-size-xs` alias.
+- Active Sidebar menu buttons now expose `aria-current="page"` by default and retain official icon and tooltip affordances when collapsed.
 
 ## 0.4.4 — 2026-07-17
 

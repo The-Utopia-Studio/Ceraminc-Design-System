@@ -110,8 +110,8 @@ Use `Select`, `SelectTrigger`, `SelectContent`, `SelectValue`, and `SelectItem` 
 
 Published packages:
 
-- `@utopia-studio-design/design-system@0.4.4`
-- `@utopia-studio-design/design-system-cli@0.3.0`
+- `@utopia-studio-design/design-system@0.4.5`
+- `@utopia-studio-design/design-system-cli@0.3.2`
 
 Run `npm run release:check` before publishing. It gates the release on TypeScript, MCP protocol tests, desktop/mobile Playwright coverage, visual baselines, component audits, production builds, and package dry-runs. See `CHANGELOG.md` for release notes.
 

@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { CalendarDays, Check, ChevronDown, FileText, FolderOpen, Inbox, Search, X } from 'lucide-react'
+import { CalendarDays, Check, ChevronDown, FileText, FolderOpen, Search, X } from 'lucide-react'
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '../../packages/design-system/src/Accordion'
 import { Alert, AlertDescription, AlertTitle } from '../../packages/design-system/src/Alert'
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from '../../packages/design-system/src/AlertDialog'
@@ -9,7 +9,7 @@ import { ChatComposer, ChatComposerInput, ChatComposerTokenElement, ChatDictatio
 import { Calendar, DatePicker, EmptyState, ProgressBar, Skeleton, Spinner, Table, TableBody, TableCell, TableHead, TableHeader, TableRow, Toast, ToastDescription, ToastIcon, ToastTitle } from '../../packages/design-system/src/DataDisplay'
 import { Checkbox, Field, FieldLabel, RadioGroup, RadioGroupItem, TextInput } from '../../packages/design-system/src/Forms'
 import { AspectRatio, Center, HStack, VStack } from '../../packages/design-system/src/Layout'
-import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator, Breadcrumbs, CommandPalette, CommandPaletteEmpty, CommandPaletteGroup, CommandPaletteInput, CommandPaletteItem, CommandPaletteList, CommandPaletteShortcut, ContextMenu, ContextMenuContent, ContextMenuItem, ContextMenuLabel, ContextMenuSeparator, ContextMenuShortcut, ContextMenuTrigger } from '../../packages/design-system/src/Navigation'
+import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator, Breadcrumbs, CommandPalette, CommandPaletteEmpty, CommandPaletteGroup, CommandPaletteInput, CommandPaletteItem, CommandPaletteList, CommandPaletteShortcut, ContextMenu, ContextMenuContent, ContextMenuItem, ContextMenuLabel, ContextMenuSeparator, ContextMenuShortcut, ContextMenuTrigger, NavigationIcon } from '../../packages/design-system/src/Navigation'
 import { Sidebar, SidebarContent, SidebarGroup, SidebarGroupLabel, SidebarHeader, SidebarMenu, SidebarMenuBadge, SidebarMenuButton, SidebarMenuItem, SidebarProvider, SidebarTrigger } from '../../packages/design-system/src/Sidebar'
 import {
   Bubble,
@@ -336,8 +336,8 @@ export function QueuedComponentPreview({ locale, name }: PreviewProps & { name: 
             <SidebarGroup>
               <SidebarGroupLabel>{isArabic ? 'مساحة العمل' : 'Workspace'}</SidebarGroupLabel>
               <SidebarMenu>
-                <SidebarMenuItem><SidebarMenuButton isActive tooltip={isArabic ? 'الوارد' : 'Inbox'}><Inbox aria-hidden="true" /><span>{isArabic ? 'الوارد' : 'Inbox'}</span><SidebarMenuBadge>4</SidebarMenuBadge></SidebarMenuButton></SidebarMenuItem>
-                <SidebarMenuItem><SidebarMenuButton tooltip={isArabic ? 'الملفات' : 'Files'}><FileText aria-hidden="true" /><span>{isArabic ? 'الملفات' : 'Files'}</span></SidebarMenuButton></SidebarMenuItem>
+                <SidebarMenuItem><SidebarMenuButton activeVariant="both" isActive tooltip={isArabic ? 'الوارد' : 'Inbox'}><NavigationIcon name="inbox" /><span>{isArabic ? 'الوارد' : 'Inbox'}</span><SidebarMenuBadge>4</SidebarMenuBadge></SidebarMenuButton></SidebarMenuItem>
+                <SidebarMenuItem><SidebarMenuButton tooltip={isArabic ? 'الملفات' : 'Files'}><NavigationIcon name="files" /><span>{isArabic ? 'الملفات' : 'Files'}</span></SidebarMenuButton></SidebarMenuItem>
               </SidebarMenu>
             </SidebarGroup>
           </SidebarContent>

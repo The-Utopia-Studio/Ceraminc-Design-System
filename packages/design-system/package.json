@@ -1,6 +1,6 @@
 {
   "name": "@utopia-studio-design/design-system",
-  "version": "0.4.4",
+  "version": "0.4.5",
   "description": "shadcn-founded, theme-extensible, Arabic-friendly Ceramic Design System",
   "type": "module",
   "license": "MIT",

@@ -145,6 +145,11 @@
   --surface-elevated: rgb(255 255 255 / 7%);
   --surface-hover: var(--surface-strong);
   --surface-inverse: var(--utopia-white);
+  --inverse-foreground: var(--utopia-special-black);
+  --inverse-foreground-muted: var(--utopia-black-80);
+  --inverse-foreground-subtle: var(--utopia-black-60);
+  --inverse-hover: var(--utopia-black-20);
+  --inverse-focus-ring: var(--utopia-brick-red);
   --overlay: rgb(60 50 53 / 86%);
   --modal-surface: var(--utopia-special-black);
   --popover-surface: var(--utopia-special-black);

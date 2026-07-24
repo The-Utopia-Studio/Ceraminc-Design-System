@@ -1,6 +1,6 @@
 {
   "name": "@utopia-studio-design/design-system-cli",
-  "version": "0.3.1",
+  "version": "0.3.2",
   "description": "AI-readable CLI and MCP server for Ceramic Design System",
   "type": "module",
   "license": "MIT",

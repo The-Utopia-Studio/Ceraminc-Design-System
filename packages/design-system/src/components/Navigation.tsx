@@ -6,15 +6,35 @@ import * as NavigationMenuPrimitive from '@radix-ui/react-navigation-menu'
 import * as TabsPrimitive from '@radix-ui/react-tabs'
 import { Slot, Slottable } from '@radix-ui/react-slot'
 import { Command as CommandPrimitive } from 'cmdk'
-import { Search } from 'lucide-react'
+import {
+  BarChart3,
+  CalendarDays,
+  CircleHelp,
+  FileText,
+  FolderKanban,
+  House,
+  Inbox,
+  LayoutDashboard,
+  ListChecks,
+  PanelsTopLeft,
+  Search,
+  Settings,
+  Users,
+  type LucideIcon,
+} from 'lucide-react'
 import { Button, type ButtonProps } from './Button'
 import { cn } from '../lib/utils'
 import { useMotionPattern } from './Motion'
 
 type AnchorProps = React.AnchorHTMLAttributes<HTMLAnchorElement>
 
-export function Breadcrumb({ className, ...props }: React.HTMLAttributes<HTMLElement> & { 'aria-label': string }) {
-  return <nav className={cn('uds-breadcrumb', className)} {...props} />
+export interface BreadcrumbProps extends React.HTMLAttributes<HTMLElement> {
+  'aria-label': string
+  variant?: 'default' | 'inverse'
+}
+
+export function Breadcrumb({ className, variant = 'default', ...props }: BreadcrumbProps) {
+  return <nav className={cn('uds-breadcrumb', className)} data-variant={variant} {...props} />
 }
 
 export function BreadcrumbList({ className, ...props }: React.OlHTMLAttributes<HTMLOListElement>) {
@@ -51,6 +71,39 @@ export function BreadcrumbEllipsis({
 }
 
 export const Breadcrumbs = BreadcrumbList
+
+const navigationIcons = {
+  analytics: BarChart3,
+  calendar: CalendarDays,
+  dashboard: LayoutDashboard,
+  files: FileText,
+  help: CircleHelp,
+  home: House,
+  inbox: Inbox,
+  projects: FolderKanban,
+  settings: Settings,
+  tasks: ListChecks,
+  team: Users,
+  workspace: PanelsTopLeft,
+} satisfies Record<string, LucideIcon>
+
+export type NavigationIconName = keyof typeof navigationIcons
+
+export interface NavigationIconProps extends Omit<React.SVGProps<SVGSVGElement>, 'children'> {
+  name: NavigationIconName
+}
+
+export function NavigationIcon({ className, name, ...props }: NavigationIconProps) {
+  const Icon = navigationIcons[name]
+  return (
+    <Icon
+      aria-hidden={props['aria-label'] ? undefined : true}
+      className={cn('uds-navigation-icon', className)}
+      focusable="false"
+      {...props}
+    />
+  )
+}
 
 export function TopNav({ children, className, ...props }: React.ComponentProps<typeof NavigationMenuPrimitive.Root>) {
   return (

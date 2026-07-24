@@ -51,6 +51,7 @@ export {
   NavHeadingMenuContent,
   NavHeadingMenuTrigger,
   NavIcon,
+  NavigationIcon,
   PanelIcon,
   SideNav,
   SideNavAccount,
@@ -89,4 +90,7 @@ export {
   type SideNavContextValue,
   type SideNavMainProps,
   type SideNavStatusProps,
+  type BreadcrumbProps,
+  type NavigationIconName,
+  type NavigationIconProps,
 } from './components/Navigation'

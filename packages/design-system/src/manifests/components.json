@@ -481,6 +481,11 @@
         "--foreground",
         "--muted-foreground",
         "--foreground-subtle",
+        "--inverse-foreground",
+        "--inverse-foreground-muted",
+        "--inverse-foreground-subtle",
+        "--inverse-hover",
+        "--inverse-focus-ring",
         "--surface-hover",
         "--radius-control",
         "--space-2",
@@ -493,7 +498,8 @@
       "useWhen": [
         "A deep page needs parent-page context",
         "Users need to understand where the current resource sits in a hierarchy",
-        "A long path may need collapsed middle items or an overflow menu"
+        "A long path may need collapsed middle items or an overflow menu",
+        "A top bar on --surface-inverse needs Ceramic-owned link, separator, current-page, hover, and focus colors"
       ],
       "avoidWhen": [
         "Primary navigation is needed; use Top Nav, Side Nav, or Navigation Menu",
@@ -508,6 +514,7 @@
       "ai": {
         "props": {
           "aria-label": "Required localized label for the breadcrumb navigation landmark.",
+          "variant": "Use default for ordinary surfaces and inverse when the Breadcrumb is placed on --surface-inverse.",
           "Breadcrumb": "Root nav landmark. Keep aria-label descriptive and localized when needed.",
           "BreadcrumbList": "Ordered list wrapper for breadcrumb items and separators.",
           "BreadcrumbItem": "List item wrapper for link, current page, or collapsed menu trigger.",
@@ -3624,7 +3631,7 @@
       "name": "Side Nav",
       "category": "Navigation",
       "status": "available",
-      "packageImport": "import { PanelIcon, SideNav, SideNavAccount, SideNavAuxiliary, SideNavCollapseButton, SideNavCommand, SideNavContent, SideNavFooter, SideNavHeader, SideNavHeading, SideNavItem, SideNavMain, SideNavNestedGroup, SideNavNestedItems, SideNavSearch, SideNavSection, SideNavStatus, SideNavWorkspaceSwitcher } from '@utopia-studio-design/design-system/Navigation';",
+      "packageImport": "import { NavigationIcon, PanelIcon, SideNav, SideNavAccount, SideNavAuxiliary, SideNavCollapseButton, SideNavCommand, SideNavContent, SideNavFooter, SideNavHeader, SideNavHeading, SideNavItem, SideNavMain, SideNavNestedGroup, SideNavNestedItems, SideNavSearch, SideNavSection, SideNavStatus, SideNavWorkspaceSwitcher } from '@utopia-studio-design/design-system/Navigation';",
       "sourcePath": "packages/design-system/src/components/Navigation.tsx",
       "shadcnFoundation": [
         "sidebar",
@@ -3683,6 +3690,7 @@
           "SideNavSearch": "Package-owned search field for filtering navigation lists without local input styling.",
           "SideNavNestedGroup": "Groups a parent SideNavItem and its nested child collection.",
           "SideNavNestedItems": "Indented child item collection using logical inline-start spacing and border.",
+          "NavigationIcon": "Official Ceramic destination icon set. Use names such as dashboard, projects, tasks, inbox, files, analytics, team, settings, and help without importing an app icon package.",
           "PanelIcon": "Direction-neutral icon exported for SideNavCollapseButton examples. Prefer it over directional arrows unless the directional icon has an RTL mirror rule."
         },
         "arabicFriendly": "Use logical start/end spacing in nested items and let document direction control order. Closed disclosure indicators rotate toward the inline start in LTR and RTL. Preserve scroll position when the side nav collapses and expands, and do not use left/right naming in generated side navigation layouts."
@@ -3948,6 +3956,8 @@
         "--foreground",
         "--border",
         "--surface-hover",
+        "--primary",
+        "--font-size-supporting",
         "--popover-surface",
         "--radius-control",
         "--radius-surface",
@@ -3997,6 +4007,11 @@
           "SidebarTrigger",
           "useSidebar"
         ],
+        "props": {
+          "SidebarMenuButton.activeVariant": "Use background for backward compatibility, indicator for a logical inline-start current marker, or both for the marker plus background.",
+          "SidebarMenuButton.isActive": "Marks the item active and supplies aria-current=page unless the consumer provides another aria-current value.",
+          "SidebarMenuButton.tooltip": "Provides collapsed hover/focus help and an accessible name when aria-label is omitted."
+        },
         "arabicFriendly": "Use dir=rtl at the shell boundary and provide localized collapseLabel, expandLabel, overlay labels, rail labels, and tooltip strings. Logical borders, alignment, off-canvas motion, submenus, and badges mirror without changing the component API."
       }
     },

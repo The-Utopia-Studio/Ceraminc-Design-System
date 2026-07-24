@@ -236,6 +236,58 @@ test('documents Native Select limits and the themeable Select migration', async 
   await expect(page.locator('#usage pre')).toContainText('<SelectItem value="default">')
 })
 
+test('ships inverse Breadcrumb and theme-owned Sidebar navigation states', async ({ page }, testInfo) => {
+  await page.goto('/#/components/breadcrumb')
+
+  const inverseBreadcrumb = page.locator('#overview .component-stage .uds-breadcrumb[aria-label="Inverse breadcrumb"]')
+  await expect(inverseBreadcrumb).toBeVisible()
+  await expect(inverseBreadcrumb.locator('.uds-breadcrumb-link[href="#/"]')).toBeVisible()
+  await expect(inverseBreadcrumb.locator('[aria-current="page"]')).toBeVisible()
+
+  const inverseColors = await inverseBreadcrumb.evaluate((breadcrumb) => {
+    const surface = breadcrumb.parentElement!
+    const link = breadcrumb.querySelector('.uds-breadcrumb-link')!
+    const page = breadcrumb.querySelector('.uds-breadcrumb-page')!
+    const separator = breadcrumb.querySelector('.uds-breadcrumb-separator')!
+    return {
+      current: getComputedStyle(page).color,
+      link: getComputedStyle(link).color,
+      separator: getComputedStyle(separator).color,
+      surface: getComputedStyle(surface).backgroundColor,
+    }
+  })
+  expect(inverseColors.current).not.toBe(inverseColors.surface)
+  expect(inverseColors.link).not.toBe(inverseColors.surface)
+  expect(inverseColors.separator).not.toBe(inverseColors.surface)
+
+  await page.goto('/#/components/sidebar')
+
+  const sidebar = page.locator('#overview .sidebar-detail-preview .uds-sidebar')
+  const currentItem = sidebar.locator('.uds-sidebar-menu-button[data-active]')
+  await expect(currentItem).toHaveAttribute('aria-current', 'page')
+  await expect(currentItem).toHaveAttribute('data-active-variant', 'both')
+  await expect(currentItem.locator('.uds-navigation-icon')).toBeVisible()
+
+  const ltrIndicator = await currentItem.evaluate((button) => {
+    const style = getComputedStyle(button, '::before')
+    return { inlineSize: style.inlineSize, left: style.left, right: style.right }
+  })
+  expect(Number.parseFloat(ltrIndicator.inlineSize)).toBeGreaterThan(0)
+
+  await sidebar.evaluate((element) => element.parentElement!.setAttribute('dir', 'rtl'))
+  const rtlIndicator = await currentItem.evaluate((button) => {
+    const style = getComputedStyle(button, '::before')
+    return { left: style.left, right: style.right }
+  })
+  expect(rtlIndicator.right).not.toBe(ltrIndicator.right)
+
+  if (!testInfo.project.name.startsWith('mobile')) {
+    await sidebar.getByRole('button', { name: 'Collapse sidebar' }).click()
+    await expect(sidebar).toHaveAttribute('data-collapsed', '')
+    await expect(currentItem.locator('.uds-navigation-icon')).toBeVisible()
+  }
+})
+
 test('keeps the Select indicator centered as a fixed-size SVG under zoom', async ({ page }) => {
   await page.goto('/#/components/select')
 

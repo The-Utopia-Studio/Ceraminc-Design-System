@@ -23,6 +23,55 @@ Guide pages are the operating layer of Ceramic. They define how humans and AI ag
 - Guide pages must not put Utopia Default visual philosophy into reusable core rules.
 - Guide pages must link AI agents back to manifests, package exports, foundations, and Arabic-friendly rules.
 
+## Navigation Composition
+
+Ceramic owns the visual primitives for standard product navigation. Consumers provide route labels and destinations, while the design system provides icons, collapsed behavior, tooltips, current-state treatment, and surface-aware Breadcrumb colors.
+
+```tsx
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+  NavigationIcon,
+  PanelIcon,
+  SideNavCollapseButton,
+} from '@utopia-studio-design/design-system/Navigation'
+import {
+  SidebarMenuButton,
+  SidebarMenuItem,
+} from '@utopia-studio-design/design-system/Sidebar'
+
+<SideNavCollapseButton aria-expanded={!collapsed} aria-label="Collapse navigation">
+  <PanelIcon />
+</SideNavCollapseButton>
+
+<SidebarMenuItem>
+  <SidebarMenuButton activeVariant="both" isActive tooltip="Projects">
+    <NavigationIcon name="projects" />
+    <span>Projects</span>
+  </SidebarMenuButton>
+</SidebarMenuItem>
+
+<div style={{ background: 'var(--surface-inverse)' }}>
+  <Breadcrumb aria-label="Current location" variant="inverse">
+    <BreadcrumbList>
+      <BreadcrumbItem><BreadcrumbLink href="/">Home</BreadcrumbLink></BreadcrumbItem>
+      <BreadcrumbSeparator />
+      <BreadcrumbItem><BreadcrumbPage>Projects</BreadcrumbPage></BreadcrumbItem>
+    </BreadcrumbList>
+  </Breadcrumb>
+</div>
+```
+
+- Use `NavigationIcon` instead of an app-owned icon package or raw SVG for standard destinations.
+- Keep `tooltip` on collapsed Sidebar items; it also supplies an accessible name when no explicit `aria-label` is provided.
+- Use `activeVariant="indicator"` or `"both"` when current navigation needs the logical inline-start accent. The default `"background"` variant remains backward compatible.
+- `isActive` supplies `aria-current="page"` unless the consumer explicitly provides another valid value.
+- Use `Breadcrumb variant="inverse"` on `--surface-inverse`; do not remap `--foreground` or add component selectors in the consuming app.
+
 ## AI Rule
 
 Before generating UI, read:

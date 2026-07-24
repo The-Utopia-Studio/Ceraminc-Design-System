@@ -126,8 +126,38 @@ export function SidebarGroupLabel({ className, ...props }: React.HTMLAttributes<
 export function SidebarGroupAction({ className, ...props }: React.ButtonHTMLAttributes<HTMLButtonElement>) { return <button className={cn('uds-sidebar-group-action', className)} type="button" {...props} /> }
 export function SidebarMenu({ className, ...props }: React.HTMLAttributes<HTMLUListElement>) { return <ul className={cn('uds-sidebar-menu', className)} {...props} /> }
 export function SidebarMenuItem({ className, ...props }: React.HTMLAttributes<HTMLLIElement>) { return <li className={cn('uds-sidebar-menu-item', className)} {...props} /> }
-export function SidebarMenuButton({ children, className, isActive, tooltip, ...props }: React.ButtonHTMLAttributes<HTMLButtonElement> & { isActive?: boolean; tooltip?: string }) {
-  return <button aria-label={props['aria-label'] ?? tooltip} className={cn('uds-sidebar-menu-button', className)} data-active={isActive ? '' : undefined} data-tooltip={tooltip} type="button" {...props}>{children}</button>
+
+export type SidebarMenuActiveVariant = 'background' | 'indicator' | 'both'
+
+export interface SidebarMenuButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+  activeVariant?: SidebarMenuActiveVariant
+  isActive?: boolean
+  tooltip?: string
+}
+
+export function SidebarMenuButton({
+  activeVariant = 'background',
+  children,
+  className,
+  isActive,
+  tooltip,
+  type = 'button',
+  ...props
+}: SidebarMenuButtonProps) {
+  return (
+    <button
+      {...props}
+      aria-current={props['aria-current'] ?? (isActive ? 'page' : undefined)}
+      aria-label={props['aria-label'] ?? tooltip}
+      className={cn('uds-sidebar-menu-button', className)}
+      data-active={isActive ? '' : undefined}
+      data-active-variant={activeVariant}
+      data-tooltip={tooltip}
+      type={type}
+    >
+      {children}
+    </button>
+  )
 }
 export function SidebarMenuAction({ className, ...props }: React.ButtonHTMLAttributes<HTMLButtonElement>) { return <button className={cn('uds-sidebar-menu-action', className)} type="button" {...props} /> }
 export function SidebarMenuBadge({ className, ...props }: React.HTMLAttributes<HTMLSpanElement>) { return <span className={cn('uds-sidebar-menu-badge', className)} {...props} /> }

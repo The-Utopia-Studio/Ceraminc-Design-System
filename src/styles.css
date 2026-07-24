@@ -3563,6 +3563,16 @@ body {
   inline-size: min(100%, 20rem);
 }
 
+.breadcrumb-demo-stack {
+  display: grid;
+  gap: var(--space-4);
+}
+
+.breadcrumb-inverse-surface {
+  padding: var(--space-4);
+  background: var(--surface-inverse);
+}
+
 .component-stage .form-preview-field {
   inline-size: min(100%, 18rem);
 }

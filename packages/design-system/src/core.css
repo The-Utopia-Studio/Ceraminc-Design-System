@@ -26,6 +26,11 @@
   --surface-elevated: color-mix(in srgb, CanvasText 10%, Canvas 90%);
   --surface-hover: var(--surface-strong);
   --surface-inverse: CanvasText;
+  --inverse-foreground: Canvas;
+  --inverse-foreground-muted: color-mix(in srgb, Canvas 76%, CanvasText 24%);
+  --inverse-foreground-subtle: color-mix(in srgb, Canvas 58%, CanvasText 42%);
+  --inverse-hover: color-mix(in srgb, CanvasText 8%, transparent);
+  --inverse-focus-ring: Highlight;
   --overlay: color-mix(in srgb, var(--background) 72%, transparent);
   --modal-surface: var(--surface-elevated);
   --popover-surface: var(--surface-elevated);
@@ -243,11 +248,16 @@
 .uds-sidebar-header, .uds-sidebar-footer { display: flex; align-items: center; gap: var(--space-2); padding: var(--space-3); }
 .uds-sidebar-content { flex: 1; min-block-size: 0; overflow-y: auto; padding: var(--space-2); }
 .uds-sidebar-group { display: grid; gap: var(--space-1); padding-block: var(--space-2); }
-.uds-sidebar-group-label { margin: 0; padding-inline: var(--space-2); color: var(--muted-foreground); font-size: var(--font-size-xs); }
+.uds-sidebar-group-label { margin: 0; padding-inline: var(--space-2); color: var(--muted-foreground); font-size: var(--font-size-supporting); }
 .uds-sidebar-menu { display: grid; gap: var(--space-1); margin: 0; padding: 0; list-style: none; }
-.uds-sidebar-menu-button { display: flex; align-items: center; gap: var(--space-2); inline-size: 100%; min-block-size: var(--control-height-sm); padding-inline: var(--space-2); border: 0; border-radius: var(--radius-control); background: transparent; color: inherit; text-align: start; cursor: pointer; }
-.uds-sidebar-menu-button:hover, .uds-sidebar-menu-button[data-active] { background: var(--surface-hover); }
-.uds-sidebar-menu-badge { margin-inline-start: auto; color: var(--muted-foreground); font-size: var(--font-size-xs); }
+.uds-sidebar-menu-button { position: relative; display: flex; align-items: center; gap: var(--space-2); inline-size: 100%; min-block-size: var(--control-height-sm); padding-inline: var(--space-2); border: 0; border-radius: var(--radius-control); background: transparent; color: inherit; text-align: start; cursor: pointer; }
+.uds-sidebar-menu-button:hover,
+.uds-sidebar-menu-button[data-active][data-active-variant='background'],
+.uds-sidebar-menu-button[data-active][data-active-variant='both'] { background: var(--surface-hover); }
+.uds-sidebar-menu-button[data-active][data-active-variant='indicator']::before,
+.uds-sidebar-menu-button[data-active][data-active-variant='both']::before { position: absolute; inset-block: var(--space-2); inset-inline-start: 0; inline-size: var(--border-width-strong); background: var(--primary); content: ''; }
+.uds-sidebar-menu-button:focus-visible { outline: var(--focus-ring-width) solid var(--focus-ring); outline-offset: var(--focus-ring-offset); }
+.uds-sidebar-menu-badge { margin-inline-start: auto; color: var(--muted-foreground); font-size: var(--font-size-supporting); }
 .uds-sidebar-inset { min-inline-size: 0; flex: 1; background: var(--background); }
 .uds-sidebar[data-collapsed] .uds-sidebar-group-label, .uds-sidebar[data-collapsed] .uds-sidebar-menu-button > :not(svg):not([aria-hidden='true']) { overflow: hidden; inline-size: 0; opacity: 0; }
 .uds-sidebar-rail { position: absolute; inset-block: 0; inset-inline-end: calc(-1 * var(--sidebar-rail-size)); inline-size: var(--sidebar-rail-size); border: 0; background: transparent; cursor: col-resize; }
@@ -1288,6 +1298,12 @@ a {
   color: var(--foreground);
 }
 
+.uds-breadcrumb-link:focus-visible {
+  border-radius: var(--radius-control);
+  outline: var(--focus-ring-width) solid var(--focus-ring);
+  outline-offset: var(--focus-ring-offset);
+}
+
 .uds-breadcrumb-page {
   color: var(--foreground);
   font-weight: var(--font-weight-medium);
@@ -1297,6 +1313,41 @@ a {
   display: inline-flex;
   align-items: center;
   color: var(--foreground-subtle);
+}
+
+.uds-breadcrumb[data-variant='inverse'] {
+  color: var(--inverse-foreground);
+}
+
+.uds-breadcrumb[data-variant='inverse'] .uds-breadcrumb-list,
+.uds-breadcrumb[data-variant='inverse'] .uds-breadcrumb-link {
+  color: var(--inverse-foreground-muted);
+}
+
+.uds-breadcrumb[data-variant='inverse'] .uds-breadcrumb-page {
+  color: var(--inverse-foreground);
+}
+
+.uds-breadcrumb[data-variant='inverse'] .uds-breadcrumb-separator {
+  color: var(--inverse-foreground-subtle);
+}
+
+.uds-breadcrumb[data-variant='inverse'] .uds-breadcrumb-link:hover {
+  background: var(--inverse-hover);
+  color: var(--inverse-foreground);
+}
+
+.uds-breadcrumb[data-variant='inverse'] .uds-breadcrumb-link:focus-visible {
+  color: var(--inverse-foreground);
+  outline-color: var(--inverse-focus-ring);
+}
+
+.uds-navigation-icon {
+  flex: 0 0 auto;
+  inline-size: var(--icon-size-md);
+  block-size: var(--icon-size-md);
+  color: currentColor;
+  stroke-width: 1.8;
 }
 
 .uds-breadcrumb-ellipsis {

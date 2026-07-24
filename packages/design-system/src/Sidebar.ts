@@ -22,4 +22,10 @@ export {
   useSidebar,
 } from './components/Sidebar'
 
-export type { SidebarProps, SidebarProviderProps, SidebarTriggerProps } from './components/Sidebar'
+export type {
+  SidebarMenuActiveVariant,
+  SidebarMenuButtonProps,
+  SidebarProps,
+  SidebarProviderProps,
+  SidebarTriggerProps,
+} from './components/Sidebar'
